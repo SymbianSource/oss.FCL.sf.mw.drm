@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<api id="4e432dd831f10b72a954a46f3e552f83" dataversion="1.0">
+  <name>DRM License Manager API</name>
+  <description>Protection for native applications and skins</description>
+  <type>c++</type>
+  <subsystem>omadrm</subsystem>
+  <libs>
+    <lib name="DRMLicenseManager.lib" />
+  </libs>
+  <release category="domain"/>
+  <attributes>
+     <!-- This indicates wether the api provedes separate html documentation -->
+     <!-- or is the additional documentation generated from headers. -->
+     <!-- If you are unsuere then the value is "no" -->
+     <htmldocprovided>yes</htmldocprovided>
+     <adaptation>no</adaptation>
+  </attributes>
+</api>

@@ -1,0 +1,9 @@
+EXPORTS
+	_ZN18CDRMLicenseChecker12CheckLicenseERK7TDesC16RP6HBufC8 @ 1 NONAME
+	_ZN18CDRMLicenseChecker4NewLEv @ 2 NONAME
+	_ZN18CDRMLicenseCheckerD0Ev @ 3 NONAME
+	_ZN18CDRMLicenseCheckerD1Ev @ 4 NONAME
+	_ZN18CDRMLicenseCheckerD2Ev @ 5 NONAME
+	_ZTI18CDRMLicenseChecker @ 6 NONAME ; #<TI>#
+	_ZTV18CDRMLicenseChecker @ 7 NONAME ; #<VT>#
+

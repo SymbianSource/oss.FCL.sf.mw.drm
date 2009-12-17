@@ -1,0 +1,113 @@
+/*
+* Copyright (c) 2005 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:
+*
+*/
+
+
+//  RESOURCE IDENTIFIER
+//NAME    TYPE
+
+//  INCLUDES
+#include <badef.rh>
+#include "DRMCommon.rh"
+//RESOURCE RSS_SIGNATURE { }
+
+//RESOURCE TBUF16 { buf=""; }
+
+//  CONSTANTS  
+//#define ?constant   ?value
+
+
+//  MACROS  
+//#define ?macro
+
+
+//  RESOURCE DEFINITIONS 
+// ---------------------------------------------------------
+//   
+//    Data Type
+//    for capability checking
+//
+// ---------------------------------------------------------
+//
+
+
+RESOURCE MIMEARRAY datatype
+{
+	num = 49;
+	items=
+    {
+		// Note: To optimize performance, prioritize mime-types bases on frequency of usage
+
+		LBUF { txt="image/jpg"; },
+		LBUF { txt="image/gif"; },
+		LBUF { txt="image/png"; },
+		LBUF { txt="audio/amr"; },
+		LBUF { txt="image/jpeg"; },
+		LBUF { txt="audio/midi"; },
+		LBUF { txt="audio/x-ms-wma"; },
+		LBUF { txt="audio/basic"; },
+		LBUF { txt="audio/aac"; },
+		LBUF { txt="audio/wav"; },
+		LBUF { txt="application/java"; },
+		LBUF { txt="application/java-archive"; },
+		LBUF { txt="application/vnd.nokia.ringing-tone"; },
+		LBUF { txt="video/3gpp"; },
+		LBUF { txt="video/3gpp2"; },
+    LBUF { txt="video/3gp"; },
+    LBUF { txt="video/mp4"; },
+    LBUF { txt="video/mp4v-es"; },
+		LBUF { txt="audio/mpeg"; },
+		LBUF { txt="audio/mp4"; },
+		LBUF { txt="audio/3gpp"; },
+		LBUF { txt="audio/rmf"; },
+		LBUF { txt="application/vnd.symbian.install"; },
+		LBUF { txt="audio/x-rmf"; },
+		LBUF { txt="audio/x-midi"; },
+		LBUF { txt="audio/amr-wb"; },
+		LBUF { txt="audio/sp-midi"; },
+		LBUF { txt="audio/x-beatnik-rmf"; },
+		LBUF { txt="audio/x-wav"; },
+		LBUF { txt="application/x-java-archive"; },
+    LBUF { txt="image/svg+xml"; },
+		LBUF { txt="image/svg"; },
+    LBUF { txt="x-epoc/x-sisx-app"; },
+    LBUF { txt="audio/3gpp2"; },                
+    LBUF { txt="audio/mp3"; },
+		LBUF { txt="audio/x-mpeg"; },
+		LBUF { txt="image/vnd.wap.wbmp"; },
+		LBUF { txt="image/bmp"; },
+		LBUF { txt="audio/mid"; },
+		
+		// DRM License Manager Install Package
+		LBUF { txt="application/x-pip"; }, 
+
+		// OMA related mime-types. Do not remove!
+		LBUF { txt="application/vnd.oma.drm.message"; },
+		LBUF { txt="application/vnd.oma.drm.content"; }, 
+
+		LBUF { txt="audio/vnd.rn-realaudio"; },        	
+		LBUF { txt="application/x-pn-realmedia"; },
+		LBUF { txt="application/x-shockwave-flash"; },
+		LBUF { txt="audio/x-realaudio"; },
+		LBUF { txt="audio/x-pn-realaudio"; },
+		LBUF { txt="video/x-pn-realvideo"; },
+    LBUF { txt="application/vnd.rn-realmedia"; }
+    };
+}
+
+            
+// End of File
+

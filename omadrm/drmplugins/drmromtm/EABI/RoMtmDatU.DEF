@@ -1,0 +1,7 @@
+EXPORTS
+	_Z18NewMtmUiDataLayerLR17CRegisteredMtmDll @ 1 NONAME
+	_ZTI22CRightsObjectMtmUiData @ 2 NONAME ; #<TI>#
+	_ZTI37CRightsObjectMtmUiDataSessionObserver @ 3 NONAME ; #<TI>#
+	_ZTV22CRightsObjectMtmUiData @ 4 NONAME ; #<VT>#
+	_ZTV37CRightsObjectMtmUiDataSessionObserver @ 5 NONAME ; #<VT>#
+

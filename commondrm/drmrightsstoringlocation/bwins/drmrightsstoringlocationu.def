@@ -1,0 +1,3 @@
+EXPORTS
+	?CheckDrmRightsStorageDriveL@DrmRightsStoringLocation@@SAHAAVRFs@@AAW4TDrmScheme@@AAVTChar@@@Z @ 1 NONAME ; int DrmRightsStoringLocation::CheckDrmRightsStorageDriveL(class RFs &, enum TDrmScheme &, class TChar &)
+

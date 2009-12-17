@@ -1,0 +1,83 @@
+/*
+* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  This is project specification file for the rohandler.dll
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+TARGET          RoHandler.dll
+targettype      PLUGIN
+VENDORID        VID_DEFAULT
+// uid2 specifies an ECom dll
+// uid3 specifies a unique identifier
+UID             0x10009D8D 0x101F7B92
+CAPABILITY      CAP_ECOM_PLUGIN DRM
+
+SOURCEPATH      ../src
+SOURCE          CRoHandler.cpp
+SOURCE          StringResourceReader.cpp
+SOURCE          rohandlerdmgrwrapper.cpp
+
+START RESOURCE  101F7B92.RSS
+TARGET          RoHandler
+
+END
+
+#include <data_caging_paths.hrh>
+
+START RESOURCE RoHandler.rss
+HEADER
+TARGETPATH      RESOURCE_FILES_DIR
+LANGUAGE_IDS
+END
+
+
+USERINCLUDE     ../inc
+USERINCLUDE     ../../../DRMEngine/Roap/inc
+USERINCLUDE     ../../drmromtm/client/inc
+USERINCLUDE     ../../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+
+LIBRARY         DrmParsers.lib
+LIBRARY         DrmDcf.lib
+LIBRARY         DrmRights.lib
+LIBRARY         DrmServerInterfaces.lib
+LIBRARY         drmroapwbxmlparser.lib // ROAP Wbxml to XML parsers
+
+LIBRARY         centralrepository.lib       // Browser default AP
+LIBRARY         cmmanager.lib
+LIBRARY         DownloadMgr.lib
+
+LIBRARY         euser.lib
+LIBRARY         ecom.lib
+LIBRARY         RoapHandler.lib
+LIBRARY         WapPushUtils.lib
+LIBRARY         msgs.lib        // for MMsvSessionObserver
+
+LIBRARY         efsrv.lib // RFs
+LIBRARY         inetprotutil.lib // TUri16 and so on
+LIBRARY         bafl.lib // RResourceFile
+LIBRARY         flogger.lib
+LIBRARY         sysutil.lib // SysUtil
+LIBRARY         esock.lib
+
+#ifdef RD_MULTIPLE_DRIVE
+LIBRARY         platformenv.lib
+#endif
+
+SMPSAFE

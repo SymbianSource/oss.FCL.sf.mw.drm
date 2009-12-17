@@ -1,0 +1,77 @@
+/*
+* Copyright (c) 2006-2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for DRM Utility Common functions
+*
+*/
+
+#include <data_caging_paths.hrh>
+#include <platform_paths.hrh>
+
+TARGET          drmutilitycommon.dll
+TARGETTYPE      dll
+UID             0x1000008D 0x10283302
+
+CAPABILITY      CAP_GENERAL_DLL DRM
+VENDORID        VID_DEFAULT
+
+#ifdef __DRM
+SOURCE          ../src/drmutilitycommon.cpp
+SOURCE          ../src/drmutilityui.cpp
+SOURCE          ../src/drmutilitywmdrm.cpp
+SOURCE          ../src/DrmUtilityGlobalNoteWrapper.cpp
+SOURCE          ../src/DrmUtilityInfoNoteWrapper.cpp
+#endif
+
+START RESOURCE ../data/drmutility.rss
+HEADER
+TARGETPATH RESOURCE_FILES_DIR
+LANGUAGE_IDS
+END  // RESOURCE
+
+USERINCLUDE     ../inc
+USERINCLUDE     ../../../omadrm/drmengine/server/inc
+USERINCLUDE     ../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+
+LIBRARY         euser.lib
+LIBRARY         efsrv.lib // RFile
+LIBRARY         bafl.lib
+LIBRARY         caf.lib // CAF
+LIBRARY         cone.lib // Control environment
+LIBRARY         avkon.lib // Avkon
+LIBRARY         commonengine.lib // RConeResourceLoader, StringLoader
+LIBRARY         estor.lib // Cover Display
+LIBRARY         mediatorclient.lib
+LIBRARY         featmgr.lib // Feature Manager
+LIBRARY         platformenv.lib // Platform Environment
+LIBRARY         eikdlg.lib
+LIBRARY         aknnotify.lib
+LIBRARY         drmrights.lib // Permission, Constraint
+LIBRARY         drmserverinterfaces.lib // DrmClockClient, DrmRightsClient
+
+DOCUMENT    bld.inf
+
+#if defined(ARMCC)
+deffile ../eabi/
+#elif defined( WINSCW )
+deffile ../bwinscw/
+#elif defined( WINS )
+deffile ../bwins/
+#else
+deffile ../bmarm/
+#endif
+
+SMPSAFE

@@ -1,0 +1,45 @@
+/*
+* Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description: 
+*
+*/
+
+
+// ECOM DLL UID:		    0x10205CB6
+// CA Agent interface UID:	0x10204740
+
+#include "registryinfo.rh"
+RESOURCE REGISTRY_INFO theInfo
+{
+        dll_uid = 0x10205CB6;
+        interfaces =
+        {
+                INTERFACE_INFO
+                {
+                interface_uid = 0x10204740;
+                implementations =
+                        {
+                        IMPLEMENTATION_INFO
+                                {
+                                implementation_uid = 0x10205CB6;
+                                version_no = 1;
+                                display_name = "WM DRM Agent";
+                                default_data = "512|,application/vnd.drm.asf,audio/x-ms-wma,video/x-ms-wmv,application/x-asf.drm.import:application/vnd.drm.asf";
+                                opaque_data = "10205CB6"; // the agent's private directory
+                                }
+                        };
+                }
+        };
+}
+

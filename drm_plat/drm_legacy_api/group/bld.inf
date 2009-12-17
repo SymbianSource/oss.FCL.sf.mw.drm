@@ -1,0 +1,36 @@
+/*
+* Copyright (c) 2006 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  File that exports the files belonging to 
+:                DRM Legacy API
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+PRJ_PLATFORMS
+DEFAULT
+
+PRJ_EXPORTS
+
+../inc/DRMEventAddRemove.h     MW_LAYER_PLATFORM_EXPORT_PATH(DRMEventAddRemove.h)
+../inc/DRMRightsClient.h     MW_LAYER_PLATFORM_EXPORT_PATH(DRMRightsClient.h)
+../inc/DRMLicenseManager.mmi     MW_LAYER_PLATFORM_EXPORT_PATH(DRMLicenseManager.mmi)
+../inc/DRMMessageParser.h     MW_LAYER_PLATFORM_EXPORT_PATH(DRMMessageParser.h)
+../inc/Oma1DcfCreator.h     MW_LAYER_PLATFORM_EXPORT_PATH(Oma1DcfCreator.h)
+../inc/DRMEventObserver.h     MW_LAYER_PLATFORM_EXPORT_PATH(DRMEventObserver.h)
+../inc/Oma2Dcf.h     MW_LAYER_PLATFORM_EXPORT_PATH(oma2dcf.h)
+../inc/DRMNotifier.h     MW_LAYER_PLATFORM_EXPORT_PATH(DRMNotifier.h)
+../inc/DRMEvent.h     MW_LAYER_PLATFORM_EXPORT_PATH(DRMEvent.h)
+../inc/DRMLicenseChecker.mmi     MW_LAYER_PLATFORM_EXPORT_PATH(DRMLicenseChecker.mmi)

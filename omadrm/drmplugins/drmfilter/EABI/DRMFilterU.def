@@ -1,0 +1,9 @@
+EXPORTS
+	_Z24ImplementationGroupProxyRi @ 1 NONAME
+	_ZTI10TDRMMemBuf @ 2 NONAME ; #<TI>#
+	_ZTI14CHTTPFilterDRM @ 3 NONAME ; #<TI>#
+	_ZTI26CHTTPFilterDRMDataSupplier @ 4 NONAME ; #<TI>#
+	_ZTV10TDRMMemBuf @ 5 NONAME ; #<VT>#
+	_ZTV14CHTTPFilterDRM @ 6 NONAME ; #<VT>#
+	_ZTV26CHTTPFilterDRMDataSupplier @ 7 NONAME ; #<VT>#
+

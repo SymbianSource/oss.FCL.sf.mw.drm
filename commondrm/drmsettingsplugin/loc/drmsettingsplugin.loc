@@ -1,0 +1,168 @@
+/*
+* Copyright (c) 2006-2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Localization strings for DRMSettingsPlugin component.
+*
+*/
+
+
+//  LOCALISATION STRINGS
+
+//d:Title pane of General Settings / Protected Content view
+//l:title_pane_t2/opt9 
+//w:
+//r: 3.1
+#define qtn_set_protected_content "Protected content"
+
+//d:Text of a list item in Protected Content view
+//l: list_setting_pane_t1 
+//w:
+//r: 3.1
+#define qtn_set_transaction_tracking "Transaction tracking"
+
+//d:Popup setting item
+//l:main_pane_set_t1 
+//w:
+//r: 3.1
+#define qtn_drm_set_popup_trans_track "Transaction tracking"
+
+//d:Item in the Transaction tracking popup setting page list
+//l: list_set_graphic_pane_t1
+//w:
+//r: 3.1
+#define qtn_set_transact_tracking_off "Disabled"
+
+//d:Item in popup setting page list
+//l: list_set_graphic_pane_t1
+//w:
+//r: 3.1
+#define qtn_set_transact_tracking_on "Enabled"
+
+//d:Text of a list item in Protected Content view
+//l:list_setting_pane_t1
+//w:
+//r: 3.1
+#define qtn_set_automatic_activation "Automatic activation"
+
+//d:Popup setting item 
+//l:main_pane_set_t1 
+//w:
+//r: 3.1
+#define qtn_drm_set_popup_autom_activat "Automatic activation"
+
+//d:Item in popup setting page list
+//l: list_set_graphic_pane_t1 
+//w:
+//r: 3.1
+#define qtn_set_automat_act_not_allowed "Not allowed"
+           
+//d:Item in popup setting page list
+//l:list_set_graphic_pane_t1
+//w:
+//r: 3.1
+#define qtn_set_automat_act_allowed "Allowed"
+
+//d:Text of a list item in Protected Content view
+//l:list_setting_pane_t1
+//w:
+//r:3.2
+#define qtn_drm_set_usage_reporting "Allow usage reporting for"
+
+//d:One of alternative values for 'Allow usage reporting for' setting
+//l:list_set_graphic_pane_t1
+//w:
+//r:3.2
+#define qtn_drm_set_several_services "Several services"
+
+//d:One of alternative values for 'Allow usage reporting for' setting
+//l:list_set_graphic_pane_t1
+//w:
+//r:3.2
+#define qtn_drm_set_usage_report_none "None"
+
+//d:Popup setting item
+//l:list_setting_pane_t1
+//w:
+//r:3.2
+#define qtn_drm_set_popup_usage_report "Allow usage reporting for"
+
+//d:Empty listbox text
+//l:set_content_pane/opt8
+//w:
+//r:3.2
+#define qtn_drm_set_pane_no_providers "No registered service providers"
+
+//d:Confirmation query text, shown when user has unmarked some service providers 
+//l:popup_note_window
+//w:
+//r:3.2
+#define qtn_drm_conf_query_metering "After changing this setting some of your protected media files may not be used. Continue?"
+
+//d:Text of a list item in Protected Content view
+//l:list_setting_pane_t1
+//w:
+//r:3.2
+//
+#define qtn_drm_set_license_deletion "WMDRM license deletion"
+
+//d:Confirmation query text
+//d:Shown when user has selected to delete WMDRM licenses in situation where disk space isn't running out
+//l:popup_note_window
+//w:
+//r:3.2
+//
+#define qtn_drm_conf_not_out_of_space "You are currently not out of space. Delete licenses anyway?"
+
+//d:Confirmation query text
+//d:Shown when user has selected to delete WMDRM licenses in low disk space situation
+//l:popup_note_window
+//w:
+//r:3.2
+//
+#define qtn_drm_conf_license_deletion "You may need to delete and re-sync your protected media files with PC after this operation. Continue?"
+
+//d:Confirmation query text
+//d:Shown when WMDRM licenses have been deleted
+//l:popup_note_window
+//w:
+//r:3.2
+//
+#define qtn_drm_licenses_deleted "Licenses deleted. If you are unable to use your protected media files, re-sync with PC."
+
+//d:Global confirmation query text
+//d:Shown when user is trying to synchronize WMDRM media from PC to phone, but disk space is running low
+//l:popup_note_window
+//w:
+//r:3.2
+//
+#define qtn_drm_note_memory_low "Not enough memory to sync protected media. Delete data from C:"
+
+//d:Global message query header text
+//d:Shown when user is trying to synchronize WMDRM media from PC to phone, but license store is full 
+//l:heading_pane_t1
+//w:
+//r:3.2
+//
+#define qtn_drm_header_license_store_full "License store full"
+
+//d:Global message query text
+//d:Shown when user is trying to synchronize WMDRM media from PC to phone, but license store is full
+//l:popup_info_list_pane_t1
+//w:
+//r:3.2
+//
+#define qtn_drm_license_store_full "The license store is full. To continue sync of protected media delete licenses from Security settings > Protected content settings"
+
+// End of File
+
+

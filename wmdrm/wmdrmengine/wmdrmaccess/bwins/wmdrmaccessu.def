@@ -1,0 +1,8 @@
+EXPORTS
+	?Close@CWmDrmAccess@@QAEHXZ @ 1 NONAME ; int CWmDrmAccess::Close(void)
+	?Initialize@CWmDrmAccess@@QAEHABVTDesC8@@@Z @ 2 NONAME ; int CWmDrmAccess::Initialize(class TDesC8 const &)
+	?NewL@CWmDrmAccess@@SAPAV1@XZ @ 3 NONAME ; class CWmDrmAccess * CWmDrmAccess::NewL(void)
+	?Decrypt@CWmDrmAccess@@QAEHAAVTDes8@@@Z @ 4 NONAME ; int CWmDrmAccess::Decrypt(class TDes8 &)
+	?NewLC@CWmDrmAccess@@SAPAV1@XZ @ 5 NONAME ; class CWmDrmAccess * CWmDrmAccess::NewLC(void)
+	??1CWmDrmAccess@@UAE@XZ @ 6 NONAME ; CWmDrmAccess::~CWmDrmAccess(void)
+

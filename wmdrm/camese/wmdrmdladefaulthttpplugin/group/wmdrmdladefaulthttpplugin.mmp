@@ -1,0 +1,63 @@
+/*
+* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for WMDMR DLA Default Http Plugin
+*
+*/
+
+
+#include <platform_paths.hrh>
+#include <data_caging_paths.hrh>
+
+TARGET                  wmdrmdladefaulthttpplugin.dll
+TARGETTYPE              PLUGIN
+UID                     0x10009D8D 0x20019574
+
+CAPABILITY              CAP_ECOM_PLUGIN
+VENDORID                VID_DEFAULT
+
+SOURCEPATH              ../src
+SOURCE                  wmdrmdladefaulthttppluginproxy.cpp
+SOURCE                  wmdrmdladefaulthttpplugin.cpp
+SOURCE					wmdrmdladefaultlicacq.cpp
+SOURCE					wmdrmdladefaultmetering.cpp
+SOURCE					wmdrmdladefaultplayready.cpp
+SOURCE                  wmdrmdladefaulthttpmanager.cpp 
+
+USERINCLUDE             ../inc
+USERINCLUDE				../../wmdrmdlautils/inc
+USERINCLUDE			    ../../../inc
+USERINCLUDE				../../../wmdrmengine/asf/inc
+
+MW_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE           /epoc32/include/ecom
+
+START RESOURCE          20019574.rss
+TARGET                  wmdrmdladefaulthttpplugin.rsc
+END
+
+LIBRARY                 euser.lib
+LIBRARY         		flogger.lib
+LIBRARY		            ecom.lib
+LIBRARY                 bafl.lib 
+LIBRARY					http.lib
+LIBRARY                 inetprotutil.lib
+LIBRARY                 commdb.lib
+LIBRARY                 esock.lib
+LIBRARY                 estor.lib 
+LIBRARY         		charconv.lib
+LIBRARY                 wmdrmdla.lib 
+LIBRARY					wmdrmdlautils.lib
+LIBRARY					drmasf.lib
+
+SMPSAFE

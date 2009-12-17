@@ -1,0 +1,7 @@
+EXPORTS
+	_ZN3DRM18CDrmRightsInfoImpl12CheckRightsLERK7TDesC16N13ContentAccess7TIntentERNS_14TDrmRightsInfoE @ 1 NONAME
+	_ZN3DRM18CDrmRightsInfoImpl15CancelOperationEi @ 2 NONAME
+	_ZN3DRM18CDrmRightsInfoImpl17CheckRightsAsyncLERK7TDesC16N13ContentAccess7TIntentERNS_14TDrmRightsInfoERNS_17MDrmAsyncObserverE @ 3 NONAME
+	_ZN3DRM18CDrmRightsInfoImpl4NewLEv @ 4 NONAME
+	_ZN3DRM18CDrmRightsInfoImpl5NewLCEv @ 5 NONAME
+

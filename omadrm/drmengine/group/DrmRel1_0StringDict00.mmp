@@ -1,0 +1,51 @@
+/*
+* Copyright (c) 2005-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  DRM parser strings
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+TARGET         DrmRel1_0StringDict00.dll
+TARGETTYPE     PLUGIN
+CAPABILITY     CAP_ECOM_PLUGIN DRM
+VENDORID       VID_DEFAULT
+
+// ECom Plugin Dll UID followed by the unique UID for this dll
+// Assigned to UID2 and UID3 respectively
+
+UID             0x10009D8D 0x101F6DB6
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+
+USERINCLUDE     ../RO/inc
+USERINCLUDE	    ../../../inc   // ADo level inc dir
+
+SOURCEPATH     ../RO/src
+SOURCE         DrmRel1_0StringDict00TagTable.cpp 
+SOURCE         DrmRel1_0StringDict00AttributeTable.cpp 
+SOURCE         DrmRel1_0StringDict00AttributeValueTable.cpp 
+SOURCE         DrmRel1_0StringDict00.cpp
+
+START RESOURCE 101F6DB6.RSS
+TARGET         DrmRel1_0StringDict00
+END
+
+LIBRARY        euser.lib
+LIBRARY        bafl.lib // for RStringPool
+LIBRARY        XmlFramework.lib
+
+SMPSAFE

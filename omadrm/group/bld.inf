@@ -1,0 +1,172 @@
+/*
+* Copyright (c) 2005-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Build file for DRM Engine core
+*
+*/
+
+#include <platform_paths.hrh>
+
+PRJ_PLATFORMS
+DEFAULT
+
+PRJ_EXPORTS
+../conf/drm5.confml                     MW_LAYER_CONFML(drm5.confml)
+../conf/drm5_10205CA7.crml              MW_LAYER_CRML(drm5_10205CA7.crml)
+../conf/drm5_10205CBF.crml              MW_LAYER_CRML(drm5_10205CBF.crml)
+../conf/drmsettings.confml              MW_LAYER_CONFML(drmsettings.confml)
+../conf/drmsettings_102823B4.crml       MW_LAYER_CRML(drmsettings_102823B4.crml)
+../conf/drm5_200195AD.crml              MW_LAYER_CRML(drm5_200195AD.crml)
+../conf/drmutility.confml               MW_LAYER_CONFML(drmutility.confml)
+../conf/drmutility_20022D51.crml        MW_LAYER_CRML(drmutility_20022D51.crml)
+../drmengine/group/CryptoPrep.flm       /epoc32/tools/makefile_templates/s60/CryptoPrep.flm
+../drmengine/group/CryptoPrep.xml       /epoc32/tools/makefile_templates/s60/CryptoPrep.xml
+../drmengine/server/data/101F51F2.exc		/epoc32/data/Z/private/102073ea/excludes/101F51F2.exc
+
+//Loc files
+// Ro Handler (only used if OMA DRM 1.0 Full is enabled)
+#ifdef __DRM_FULL
+../drmplugins/drmrohandler/loc/rohandler.loc MW_LAYER_LOC_EXPORT_PATH( rohandler.loc )
+#endif
+../drmplugins/drmromtm/loc/romtmui.loc MW_LAYER_LOC_EXPORT_PATH( romtmui.loc )
+
+
+// CMLA RnD keys
+../drmengine/keystorage/data/cmla/DevicePrivateKey.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
+../drmengine/keystorage/data/cmla/DeviceCert.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
+../drmengine/keystorage/data/cmla/SigningCert00.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
+../drmengine/keystorage/data/cmla/SigningCert01.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
+
+../drmengine/keystorage/data/cmla/DevicePrivateKey.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
+../drmengine/keystorage/data/cmla/DeviceCert.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
+../drmengine/keystorage/data/cmla/SigningCert00.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
+../drmengine/keystorage/data/cmla/SigningCert01.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
+
+../drmengine/keystorage/data/cmla/DevicePrivateKey.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
+../drmengine/keystorage/data/cmla/DeviceCert.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
+../drmengine/keystorage/data/cmla/SigningCert00.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
+../drmengine/keystorage/data/cmla/SigningCert01.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
+
+../drmengine/keystorage/data/cmla/DevicePrivateKey.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
+../drmengine/keystorage/data/cmla/DeviceCert.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
+../drmengine/keystorage/data/cmla/SigningCert00.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
+../drmengine/keystorage/data/cmla/SigningCert01.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
+
+// Default UDT Key
+#ifdef __DRM_USER_DATA_TRANSFER
+../drmengine/keystorage/data/UdtCertificate.der /epoc32/winscw/c/private/101F51F2/PKI/UdtCertificate.der
+
+../drmengine/keystorage/data/UdtCertificate.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/UdtCertificate.der
+../drmengine/keystorage/data/UdtCertificate.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/UdtCertificate.der
+
+../drmengine/keystorage/data/UdtCertificate.der /epoc32/data/z/private/101F51F2/PKI/UdtCertificate.der
+#endif
+
+// backup_registration.xml
+../drmengine/group/backup_registration.xml /epoc32/winscw/c/private/101F51F2/backup_registration.xml
+../drmengine/group/backup_registration.xml /epoc32/data/z/private/101F51F2/backup_registration.xml
+
+../drmengine/group/backup_registration.xml /epoc32/release/winscw/udeb/z/private/101F51F2/backup_registration.xml
+../drmengine/group/backup_registration.xml /epoc32/release/winscw/urel/z/private/101F51F2/backup_registration.xml
+
+// SIS stub
+../data/OmaDrm_Stub.SIS /epoc32/data/z/system/install/OmaDrm_Stub.SIS
+
+// IBY files
+../rom/drm5.iby                     CORE_MW_LAYER_IBY_EXPORT_PATH( drm5.iby )
+../rom/drmhelper.iby                CORE_MW_LAYER_IBY_EXPORT_PATH( drmhelper.iby)
+../rom/drmhelperresources.iby       LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmhelperresources.iby )
+../rom/drmlicensemanager.iby        CORE_MW_LAYER_IBY_EXPORT_PATH( drmlicensemanager.iby )
+../rom/drmroapwbxmlparser.iby       CORE_MW_LAYER_IBY_EXPORT_PATH( drmroapwbxmlparser.iby )
+../rom/drmrohandlerresources.iby    LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmrohandlerresources.iby )
+../rom/drmromtmresources.iby        LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmromtmresources.iby )
+../rom/httpfilterdrm.iby            CORE_MW_LAYER_IBY_EXPORT_PATH( httpfilterdrm.iby )
+../rom/romtm.iby                    CORE_MW_LAYER_IBY_EXPORT_PATH( romtm.iby )
+
+PRJ_MMPFILES
+
+// DrmRoapWbxmlParser
+../drmroapwbxmlparser/group/drmroapwbxmlparser.mmp
+
+// RoMTM
+
+../drmplugins/drmromtm/group/RoMtmCli.mmp
+../drmplugins/drmromtm/group/RoMtmSer.mmp
+../drmplugins/drmromtm/group/RoMtmUi.mmp
+../drmplugins/drmromtm/group/RoMtmDat.mmp
+
+// DRMEngine
+
+#ifndef SBSV2
+gnumakefile ../drmengine/group/CryptoPrep.mak // Copy the appropriate DRM crypto implemenation into place
+#endif
+
+../drmengine/group/DrmKeyStorage.mmp
+../drmengine/group/DrmStdKeyStorage.mmp
+../drmengine/group/DrmCrypto.mmp
+../drmengine/group/DrmRights.mmp
+../drmengine/group/DrmDcf.mmp
+../drmengine/group/DrmServerInterfaces.mmp
+../drmengine/group/DcfRep.mmp
+../drmengine/group/DrmParsers.mmp
+../drmengine/group/DRMCommon.mmp
+../drmengine/group/RightsServer.mmp
+../drmengine/group/DrmRel1_0StringDict00.mmp
+../drmengine/group/DrmRel2_1StringDict00.mmp
+../drmengine/group/OmaDrmAgent.mmp
+../drmengine/group/DcfRepSrv.mmp
+../drmengine/group/ROAPHandler.mmp
+
+#ifdef __DRM_USER_DATA_TRANSFER
+../drmplugins/drmudtmodule/group/DrmUdtModule.mmp
+#endif
+
+
+// DRMService API
+../drmengine/group/DrmServiceAPI.mmp
+
+
+// Helper server
+../drmhelper/drmhelperserver/group/DRMHelperServer.mmp
+
+// License manager
+../drmlicensemanager/group/DRMLicenseManager.mmp
+../drmlicensemanager/group/DRMLicenseChecker.mmp
+
+// Recognizer
+../drmplugins/drmrecognizer/group/recdrm.mmp
+
+// Ro Handler (only used if OMA DRM 1.0 Full is enabled)
+#ifdef __DRM_FULL
+../drmplugins/drmrohandler/group/CRohandler.mmp
+#endif
+
+// DRMFilter
+../drmplugins/drmfilter/group/HTTPFilterDRM.mmp
+
+// DRMHelper
+../drmhelper/group/DRMHelper.mmp
+../drmhelper/group/drmhelperdmgrwrapper.mmp
+
+#ifdef SBSV2
+PRJ_EXTENSIONS
+
+START EXTENSION s60/cryptoprep
+END
+#endif
+
+// Testfiles
+PRJ_TESTMMPFILES
+
+
+

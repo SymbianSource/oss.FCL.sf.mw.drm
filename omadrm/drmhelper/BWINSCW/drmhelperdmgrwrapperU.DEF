@@ -1,0 +1,3 @@
+EXPORTS
+	?GateFunctionDMgr@@YAPAXXZ @ 1 NONAME ; void * GateFunctionDMgr(void)
+

@@ -1,0 +1,11 @@
+EXPORTS
+	_ZN11CWmDrmDlaUi13ShowWaitNoteLEiP25MWmDrmDlaWaitNoteCallback @ 1 NONAME
+	_ZN11CWmDrmDlaUi14RemoveWaitNoteEv @ 2 NONAME
+	_ZN11CWmDrmDlaUi14ShowErrorNoteLEi @ 3 NONAME
+	_ZN11CWmDrmDlaUi14ShowListQueryLEP12MDesC16ArrayP9CArrayPtrI8CGulIconE @ 4 NONAME
+	_ZN11CWmDrmDlaUi4NewLEv @ 5 NONAME
+	_ZN11CWmDrmDlaUi5NewLCEv @ 6 NONAME
+	_ZN27CWmDrmDlaBrowserViewHandler18LaunchBrowserViewLEP24MWmDrmDlaBrowserObserver @ 7 NONAME
+	_ZN27CWmDrmDlaBrowserViewHandler4NewLEv @ 8 NONAME
+	_ZN27CWmDrmDlaBrowserViewHandler5NewLCEv @ 9 NONAME
+

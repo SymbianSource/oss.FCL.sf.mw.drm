@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<api id="d800b0a7e0bef93074308dda17745235" dataversion="1.0">
+  <name>DRM Common API</name>
+  <description>DRM utility functions (inspecting content files, checking rights)</description>
+  <type>c++</type>
+  <subsystem>omadrm</subsystem>
+  <libs>
+    <lib name="DRMCommon.lib" />
+  </libs>
+  <release category="domain" deprecatedsince="2.8"/>
+  <attributes>
+     <!-- This indicates wether the api provedes separate html documentation -->
+     <!-- or is the additional documentation generated from headers. -->
+     <!-- If you are unsuere then the value is "no" -->
+     <htmldocprovided>yes</htmldocprovided>
+     <adaptation>no</adaptation>
+  </attributes>
+</api>

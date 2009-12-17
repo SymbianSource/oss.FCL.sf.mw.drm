@@ -1,0 +1,55 @@
+/*
+* Copyright (c) 2002 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  HRH file for the Mtm Ui  and Mtm Ui Data components
+*
+*/
+
+
+
+#ifndef RoMTMUI_HRH
+#define RoMTMUI_HRH
+
+#include <uikon.hrh>
+#include <avkon.hrh>
+
+enum TRoSettingsDialogCommand
+	{
+	// Dialog specific command ids.
+	//
+	ERoSettingsDialogCmdChangeWithoutSettingPage,
+	ERoSettingsDialogCmdDelete,
+	//
+	// Ui framework defined command ids.
+	//
+	ERoSettingsDialogCmdChange	= EAknSoftkeySelect,// Required by CAknSettingPage::OfferKeyEventL.
+	ERoSettingsDialogCmdOptions	= EAknSoftkeyOptions,// = 3000
+  ERoSettingsDialogCmdHelp      = EAknCmdHelp,      // = 4003
+	ERoSettingsDialogCmdBack		= EAknSoftkeyBack,	// = 3001
+	ERoSettingsDialogCmdExit		= EEikCmdExit,		// = 0x100. Use in HandleCommanL.
+	ERoSettingsDialogCmdAknExit	= EAknCmdExit		// = 4011. Use in resources.
+	};
+
+enum TRoSettingsDialogControl
+	{
+	ERoSettingsDialogCntrlListBox = 1
+	};
+
+enum TRoLoadWaitNoteControl
+	{
+	ERoLoadWaitNoteCntrl = 1
+	};
+
+#endif // RoMTMUI_HRH
+
+// End of File

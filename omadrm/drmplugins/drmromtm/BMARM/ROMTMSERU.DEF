@@ -1,0 +1,3 @@
+EXPORTS
+	NewL__22CRightsObjectServerMtmR17CRegisteredMtmDllP15CMsvServerEntry @ 1 NONAME R3UNUSED ; CRightsObjectServerMtm::NewL(CRegisteredMtmDll &, CMsvServerEntry *)
+

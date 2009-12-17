@@ -1,0 +1,46 @@
+/*
+* Copyright (c) 2007-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for Oma Drm 2.1 String Dictionary
+*
+*/
+
+
+#include <platform_paths.hrh>
+#include <data_caging_paths.hrh>
+
+TARGET        DrmRel2_1StringDict00.dll
+TARGETTYPE    PLUGIN
+UID           0x10009D8D 0x2000B48A
+
+CAPABILITY    ALL -TCB
+VENDORID      VID_DEFAULT
+
+SOURCEPATH    ../utils/src           
+SOURCE        DrmRel2_1StringDict00.cpp
+SOURCE        DrmRel2_1StringDict00TagTable.cpp
+SOURCE        DrmRel2_1StringDict00AttributeTable.cpp
+SOURCE        DrmRel2_1StringDict00AttributeValueTable.cpp
+
+MW_LAYER_SYSTEMINCLUDE
+USERINCLUDE      ../utils/inc
+
+START RESOURCE    200B48A.rss
+TARGET            DrmRel2_1StringDict00
+END
+
+LIBRARY        euser.lib
+LIBRARY        bafl.lib // for RStringPool
+LIBRARY        xmlframework.lib
+
+SMPSAFE

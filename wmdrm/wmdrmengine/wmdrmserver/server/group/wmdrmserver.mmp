@@ -1,0 +1,69 @@
+/*
+* Copyright (c) 2007-2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for project WMDRM Server
+*
+*/
+
+
+#include <data_caging_paths.hrh>
+#include <platform_paths.hrh>
+
+TARGET          wmdrmserver.exe
+TARGETTYPE      EXE
+UID             0x1000008d 0x10282F1B
+VENDORID        VID_DEFAULT
+
+CAPABILITY      CAP_SERVER DRM AllFiles
+
+FEATUREVARIANT
+
+MW_LAYER_SYSTEMINCLUDE
+USERINCLUDE     ../inc
+USERINCLUDE     ../../../../inc_dist
+USERINCLUDE     ../../client/inc
+USERINCLUDE     ../../../wmdrmfileserver/client/inc
+USERINCLUDE     ../../../../inc
+USERINCLUDE		../../../../../inc
+
+SOURCEPATH      ../src
+
+SOURCE          wmdrmserver.cpp
+SOURCE			clock.cpp
+SOURCE			slotdata.cpp
+SOURCE			slot.cpp
+SOURCE			enumeratordata.cpp
+SOURCE          enumerator.cpp
+SOURCE          namespaceenumerator.cpp
+SOURCE          slotenumerator.cpp
+SOURCE          slotdatacache.cpp
+SOURCE          slotenumeratorcache.cpp
+SOURCE          wmdrmsession.cpp
+SOURCE          wmdrmdatastore.cpp
+SOURCE          wmdrmdb.cpp
+
+LIBRARY         euser.lib
+LIBRARY         flogger.lib
+LIBRARY         efsrv.lib
+LIBRARY         random.lib
+LIBRARY         ezlib.lib
+LIBRARY         bafl.lib
+LIBRARY     	cryptography.lib
+LIBRARY         centralrepository.lib
+LIBRARY         wmdrmkeystorage.lib
+LIBRARY         sqldb.lib
+LIBRARY         wmdrmfileserverclient.lib
+LIBRARY         drmrightsstoringlocation.lib
+LIBRARY         platformenv.lib
+
+SMPSAFE

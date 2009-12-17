@@ -1,0 +1,71 @@
+/*
+* Copyright (c) 2005-2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  DRM HTTP Filter component build configuration
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+TARGET HTTPFilterDRM.dll
+TARGETTYPE PLUGIN
+
+CAPABILITY CAP_ECOM_PLUGIN
+
+// ECom Recogniction UID followed by Unique 3rd UID
+UID 0x10009D8D 0x101F9710
+VENDORID VID_DEFAULT
+
+SOURCEPATH ../src
+SOURCE HTTPFilterDRMMain.cpp HTTPFilterDRM.cpp HTTPFilterDRMDataSupplier.cpp
+
+USERINCLUDE     ../inc
+USERINCLUDE     ../../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE /epoc32/include/ecom
+
+
+SOURCEPATH ../data
+START RESOURCE 101F9710.rss
+
+TARGET HTTPFilterDRM.rsc
+
+END
+
+LIBRARY euser.lib ecom.lib http.lib bafl.lib estlib.lib efsrv.lib estor.lib cone.lib commonui.lib caf.lib
+
+#ifndef __DRM_NO_BB
+MACRO BLOCK_BY_BLOCK
+#endif
+
+
+//#define _ENABLE_LOGGING  // uncomment this if you want the log
+
+#ifdef _ENABLE_LOGGING
+MACRO DEBUG_LOGGING
+DEBUGLIBRARY flogger.lib charconv.lib
+#endif
+
+#if defined (ARMCC)
+DEFFILE ../EABI/DRMFilter.def
+#endif
+LIBRARY         DrmParsers.lib
+LIBRARY         DrmDcf.lib
+LIBRARY         DrmRights.lib
+LIBRARY         DrmServerInterfaces.lib
+LIBRARY         DRMCommon.lib
+
+SMPSAFE

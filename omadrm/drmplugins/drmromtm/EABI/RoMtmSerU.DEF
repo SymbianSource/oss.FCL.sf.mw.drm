@@ -1,0 +1,5 @@
+EXPORTS
+	_ZN22CRightsObjectServerMtm4NewLER17CRegisteredMtmDllP15CMsvServerEntry @ 1 NONAME
+	_ZTI22CRightsObjectServerMtm @ 2 NONAME ; #<TI>#
+	_ZTV22CRightsObjectServerMtm @ 3 NONAME ; #<VT>#
+

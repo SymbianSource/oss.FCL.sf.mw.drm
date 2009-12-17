@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api id="6d48dd3dc28a9a440c66082ef114909b" dataversion="2.0">
+  <name>WMDRM Access API</name>
+  <description>WMDRM Access API</description>
+  <type>c++</type>
+  <collection>wmdrm</collection>
+  <libs>
+    <lib name="wmdrmaccess.lib"/>
+  </libs>
+  <release category="platform" sinceversion="5.2"/>
+  <attributes>
+    <htmldocprovided>no</htmldocprovided>
+    <adaptation>no</adaptation>
+  </attributes>
+</api>

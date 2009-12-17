@@ -1,0 +1,5 @@
+EXPORTS
+	_Z9NewMtmUiLR8CBaseMtmR17CRegisteredMtmDll @ 1 NONAME
+	_ZTI18CRightsObjectMtmUi @ 2 NONAME ; #<TI>#
+	_ZTV18CRightsObjectMtmUi @ 3 NONAME ; #<VT>#
+

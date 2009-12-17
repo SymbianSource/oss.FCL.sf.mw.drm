@@ -1,0 +1,8 @@
+EXPORTS
+	?GetDevicePublicKeyDerL@CDrmServiceApi@DRM@@QAEXAAPAVHBufC8@@@Z @ 1 NONAME ; void DRM::CDrmServiceApi::GetDevicePublicKeyDerL(class HBufC8 * &)
+	?GetSecureTime@CDrmServiceApi@DRM@@QBEHAAVTTime@@AAHAAW4ESecurityLevel@DRMClock@@@Z @ 2 NONAME ; int DRM::CDrmServiceApi::GetSecureTime(class TTime &, int &, enum DRMClock::ESecurityLevel &) const
+	?NewL@CDrmServiceApi@DRM@@SAPAV12@XZ @ 3 NONAME ; class DRM::CDrmServiceApi * DRM::CDrmServiceApi::NewL(void)
+	?NewLC@CDrmServiceApi@DRM@@SAPAV12@XZ @ 4 NONAME ; class DRM::CDrmServiceApi * DRM::CDrmServiceApi::NewLC(void)
+	?SignL@CDrmServiceApi@DRM@@QAEXABVTDesC8@@AAPAVHBufC8@@@Z @ 5 NONAME ; void DRM::CDrmServiceApi::SignL(class TDesC8 const &, class HBufC8 * &)
+	?UpdateSecureTime@CDrmServiceApi@DRM@@QAEHABVTTime@@ABH@Z @ 6 NONAME ; int DRM::CDrmServiceApi::UpdateSecureTime(class TTime const &, int const &)
+

@@ -1,0 +1,41 @@
+/*
+* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies). 
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:        ?Description
+*
+*/
+
+PRJ_PLATFORMS
+DEFAULT
+
+PRJ_TESTEXPORTS
+
+PRJ_EXPORTS
+// Static testcontent for BC tests
+../data/content-noenc-trunc.odf /epoc32/winscw/c/content-noenc-trunc.odf
+../data/content.odf /epoc32/winscw/c/content.odf
+../data/content.txt /epoc32/winscw/c/content.txt
+../data/content-noenc.odf /epoc32/winscw/c/content-noenc.odf
+../data/content.dcf /epoc32/winscw/c/content.dcf
+
+drmcaf_z.bat		/epoc32/winscw/c/drmcaf_z.bat
+drmcaf_c.bat		/epoc32/winscw/c/drmcaf_c.bat
+drm_caf.cfg         /epoc32/winscw/c/testframework/drm_caf.cfg
+testframework.ini   /epoc32/winscw/c/testframework/testframework_drmcaf.ini
+
+PRJ_TESTMMPFILES
+
+PRJ_MMPFILES
+drm_caf.mmp
+
+//  End of File

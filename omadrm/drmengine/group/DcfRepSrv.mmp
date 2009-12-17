@@ -1,0 +1,63 @@
+/*
+* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Server side implementation
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+TARGET          DcfRepSrv.exe
+TARGETTYPE      EXE
+
+UID             0x1000008d 0x10205CA8
+CAPABILITY      CAP_SERVER ALLFILES PowerMgmt
+VENDORID        VID_DEFAULT
+
+//macro _DRM_TESTING
+
+SOURCEPATH      ../DcfRepository/server/src
+SOURCE          DcfRepSrv.cpp
+SOURCE          DcfRepSrvSes.cpp
+SOURCE          FileScan.cpp
+SOURCE          Pair.cpp
+SOURCE          SearchLeaf.cpp
+
+SOURCEPATH      ../utils/src
+SOURCE          procwatcher.cpp
+
+
+USERINCLUDE     ../DcfRepository/server/inc
+USERINCLUDE     ../DcfRepository/common
+USERINCLUDE     ../utils/inc
+USERINCLUDE     ../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+
+LIBRARY         caf.lib //caf
+LIBRARY         euser.lib
+LIBRARY         estor.lib
+LIBRARY         efsrv.lib
+LIBRARY         edbms.lib //database
+LIBRARY         drmdcf.lib // Oma2Dcf
+LIBRARY         cafutils.lib
+LIBRARY         flogger.lib // debug logging
+LIBRARY         StarterClient.lib // shutdown
+
+#ifdef RD_MULTIPLE_DRIVE
+LIBRARY         platformenv.lib
+#endif
+
+SMPSAFE

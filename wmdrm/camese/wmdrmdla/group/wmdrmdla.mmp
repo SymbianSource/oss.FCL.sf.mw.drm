@@ -1,0 +1,60 @@
+/*
+* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for project dla framework
+*
+*/
+
+
+#include <platform_paths.hrh>
+#include <data_caging_paths.hrh>
+
+TARGET                  wmdrmdla.dll
+TARGETTYPE              dll
+UID                     0x1000008D 0x20019573
+
+CAPABILITY              CAP_GENERAL_DLL
+VENDORID                VID_DEFAULT
+
+SOURCEPATH              ../src
+SOURCE                  wmdrmdlahandler.cpp
+SOURCE                  wmdrmdlahandlerimpl.cpp
+SOURCE                  wmdrmdlauinotifier.cpp
+SOURCE                  wmdrmdlauinotifierimpl.cpp
+SOURCE                  wmdrmdlarequest.cpp 
+SOURCE					wmdrmdlahttplicacqpluginfw.cpp
+SOURCE					wmdrmdlahttpmeteringpluginfw.cpp
+SOURCE					wmdrmdlaparser.cpp
+SOURCE					wmdrmdlaplugincontainer.cpp
+SOURCE					wmdrmdlahttpfwpluginresolver.cpp
+
+USERINCLUDE             ../inc
+USERINCLUDE				../../wmdrmdlautils/inc
+USERINCLUDE			    ../../../inc
+
+MW_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE           /epoc32/include/ecom
+
+LIBRARY                 euser.lib
+LIBRARY					efsrv.lib
+LIBRARY         		flogger.lib
+LIBRARY					avkon.lib
+LIBRARY					aknicon.lib
+LIBRARY					egul.lib
+LIBRARY		            ecom.lib
+LIBRARY                 bafl.lib 
+LIBRARY					xmlframework.lib
+LIBRARY         		charconv.lib
+LIBRARY					wmdrmdlautils.lib
+
+SMPSAFE

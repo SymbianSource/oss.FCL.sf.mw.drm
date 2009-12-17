@@ -1,0 +1,56 @@
+/*
+* Copyright (c) 2002-2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file
+*
+*/
+
+#include <data_caging_paths.hrh>
+#include <platform_paths.hrh>
+
+TARGET          RoMtmUi.dll
+TARGETTYPE      dll
+UID             0x10004845 0x101F6DBE
+TARGETPATH      SHARED_LIB_DIR
+
+CAPABILITY      CAP_GENERAL_DLL
+VENDORID        VID_DEFAULT
+
+SOURCEPATH      ../ui/src
+SOURCE          RoMtmui.cpp
+
+USERINCLUDE     ../inc
+USERINCLUDE     ../ui/inc
+USERINCLUDE     ../../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+
+LIBRARY   euser.lib efsrv.lib
+LIBRARY   msgs.lib mtur.lib
+LIBRARY   apparc.lib cone.lib
+LIBRARY   avkon.lib //dialog
+LIBRARY   apgrfx.lib //RApaLsSession
+LIBRARY   ServiceHandler.lib
+LIBRARY   commonui.lib//CDocumentDandler
+LIBRARY   apmime.lib  //TDataType
+LIBRARY   ROAPHandler.lib // CRoapEng
+LIBRARY   commonengine.lib // resource loader
+
+#ifdef RD_MULTIPLE_DRIVE
+LIBRARY   platformenv.lib
+#endif
+
+SMPSAFE
+
+// EXPORTUNFROZEN

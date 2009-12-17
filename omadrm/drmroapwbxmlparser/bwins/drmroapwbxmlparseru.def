@@ -1,0 +1,6 @@
+EXPORTS
+	??1CWbxmlRoapTriggerParser@DRM@@UAE@XZ @ 1 NONAME ; DRM::CWbxmlRoapTriggerParser::~CWbxmlRoapTriggerParser(void)
+	?NewL@CWbxmlRoapTriggerParser@DRM@@SAPAV12@XZ @ 2 NONAME ; class DRM::CWbxmlRoapTriggerParser * DRM::CWbxmlRoapTriggerParser::NewL(void)
+	?NewLC@CWbxmlRoapTriggerParser@DRM@@SAPAV12@XZ @ 3 NONAME ; class DRM::CWbxmlRoapTriggerParser * DRM::CWbxmlRoapTriggerParser::NewLC(void)
+	?ParseL@CWbxmlRoapTriggerParser@DRM@@QAEPAVHBufC8@@ABVTDesC8@@@Z @ 4 NONAME ; class HBufC8 * DRM::CWbxmlRoapTriggerParser::ParseL(class TDesC8 const &)
+

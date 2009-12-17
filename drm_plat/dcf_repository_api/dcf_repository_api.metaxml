@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<api id="7ef7309b014a80bb32284c6941556225" dataversion="1.0">
+  <name>DCF Repository API</name>
+  <description>An API for accessing services provided by DCF Repository Server. Can be used e.g. for getting a list of the device's DCFs,</description>
+  <type>c++</type>
+  <subsystem>omadrm</subsystem>
+  <libs>
+    <lib name="DcfRep.lib" />
+  </libs>
+  <release category="domain"/>
+  <attributes>
+     <!-- This indicates wether the api provedes separate html documentation -->
+     <!-- or is the additional documentation generated from headers. -->
+     <!-- If you are unsuere then the value is "no" -->
+     <htmldocprovided>yes</htmldocprovided>
+     <adaptation>no</adaptation>
+  </attributes>
+</api>

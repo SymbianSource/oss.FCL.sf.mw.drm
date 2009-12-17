@@ -1,0 +1,107 @@
+/*
+* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Internal drm test tool
+*
+*/
+
+#include <data_caging_paths.hrh>
+#include <platform_paths.hrh>
+
+TARGET         DRMEncryptor.exe
+TARGETTYPE     exe
+
+UID            0x100039CE  0x01105901
+
+CAPABILITY CAP_APPLICATION ReadUserData AllFiles DRM PowerMgmt CommDD
+VENDORID VID_DEFAULT
+
+SOURCEPATH     ../src
+SOURCE         DrmKeyStorage.cpp
+SOURCE         DrmBb5KeyStorage.cpp
+SOURCE         DRMEncryptorApp.cpp
+SOURCE         DRMEncryptorAppUi.cpp
+SOURCE         DRMEncryptorDocument.cpp
+SOURCE         DRMEncryptorContainer.cpp
+SOURCE         DRMEncryptorImage.cpp
+SOURCE         DrmEncryptor.cpp
+SOURCE         DRMPlayServerTest.cpp
+SOURCE         Performance.cpp
+
+
+START RESOURCE ../data/DRMEncryptor.rss
+
+HEADER
+TARGETPATH APP_RESOURCE_DIR
+
+END //RESOURCE
+
+START RESOURCE ../data/DRMEncryptor_reg.rss
+DEPENDS drmencryptor.rsg
+    TARGETPATH /private/10003a3f/apps
+END
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+
+USERINCLUDE    ../inc
+USERINCLUDE    ../../../inc
+
+LIBRARY        DrmParsers.lib
+LIBRARY        DrmDcf.lib
+LIBRARY        DrmRights.lib
+LIBRARY        DrmServerInterfaces.lib
+LIBRARY        DRMCommon.lib
+LIBRARY        apparc.lib
+LIBRARY        avkon.lib
+LIBRARY        bafl.lib
+LIBRARY        cone.lib
+LIBRARY        eikcoctl.lib
+LIBRARY        eikcore.lib
+LIBRARY        euser.lib
+LIBRARY        fbscli.lib
+LIBRARY        efsrv.lib
+LIBRARY        estor.lib
+LIBRARY        asn1.lib
+LIBRARY        cryptography.lib
+LIBRARY        crypto.lib
+LIBRARY        x509.lib
+LIBRARY        pkixcert.lib
+LIBRARY        random.lib
+LIBRARY        hash.lib
+LIBRARY        flogger.lib
+LIBRARY        ezip.lib
+
+// DRMKeyStorage
+LIBRARY        DrmKeyStorage.lib
+LIBRARY        DrmCrypto.lib
+
+LIBRARY        gdi.lib
+
+
+LIBRARY        caf.lib
+LIBRARY        cafutils.lib
+LIBRARY        drmhelper.lib
+LIBRARY        XmlFramework.lib
+LIBRARY        apmime.lib
+LIBRARY        DcfRep.lib
+LIBRARY        ecom.lib
+
+#ifdef RD_MULTIPLE_DRIVE
+LIBRARY        platformenv.lib
+#endif
+
+LIBRARY        drmaudioplayutility.lib
+
+SMPSAFE
+// End of File

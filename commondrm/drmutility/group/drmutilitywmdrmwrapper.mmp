@@ -1,0 +1,68 @@
+/*
+* Copyright (c) 2006 - 2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for DRM Utility WM Drm Wrapper
+*
+*/
+
+#include <data_caging_paths.hrh>
+#include <platform_paths.hrh>
+
+TARGET          drmutilitywmdrmwrapper.dll
+TARGETTYPE      dll
+UID             0x1000008D 0x10283301
+
+CAPABILITY      CAP_GENERAL_DLL DRM
+VENDORID        VID_DEFAULT
+
+#ifdef __DRM
+SOURCE          ../src/drmutilitywmdrmwrapper.cpp
+SOURCE          ../src/drmutilitywmdrmutilities.cpp
+#endif
+
+USERINCLUDE     ../inc
+USERINCLUDE     ../../../omadrm/drmengine/server/inc
+USERINCLUDE     ../../../inc
+
+// Default system include paths for application layer modules.
+APP_LAYER_SYSTEMINCLUDE
+
+LIBRARY         aknnotify.lib
+LIBRARY         apparc.lib // for launching rights mgr ui embedded
+LIBRARY         euser.lib
+LIBRARY         avkon.lib
+LIBRARY         caf.lib     // CAF
+LIBRARY         cafutils.lib // CRightsInfo
+LIBRARY         efsrv.lib   // RFile
+LIBRARY         apgrfx.lib
+LIBRARY         ws32.lib
+LIBRARY         centralrepository.lib
+LIBRARY         cmmanager.lib
+LIBRARY         drmutilitycommon.lib // Common utility
+LIBRARY         servicehandler.lib
+LIBRARY         drmserverinterfaces.lib // DrmClockClient
+LIBRARY         drmrights.lib
+
+DOCUMENT    bld.inf
+
+#if defined(ARMCC)
+deffile ../eabi/
+#elif defined( WINSCW )
+deffile ../bwinscw/
+#elif defined( WINS )
+deffile ../bwins/
+#else
+deffile ../bmarm/
+#endif
+
+SMPSAFE

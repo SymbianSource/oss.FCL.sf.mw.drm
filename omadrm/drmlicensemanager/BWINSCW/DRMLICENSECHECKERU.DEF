@@ -1,0 +1,5 @@
+EXPORTS
+	??1CDRMLicenseChecker@@UAE@XZ @ 1 NONAME ; CDRMLicenseChecker::~CDRMLicenseChecker(void)
+	?CheckLicense@CDRMLicenseChecker@@QAEHABVTDesC16@@AAPAVHBufC8@@@Z @ 2 NONAME ; int CDRMLicenseChecker::CheckLicense(class TDesC16 const &, class HBufC8 * &)
+	?NewL@CDRMLicenseChecker@@SAPAV1@XZ @ 3 NONAME ; class CDRMLicenseChecker * CDRMLicenseChecker::NewL(void)
+

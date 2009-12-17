@@ -1,0 +1,35 @@
+EXPORTS
+	??1CDcfEntry@@UAE@XZ @ 1 NONAME ; CDcfEntry::~CDcfEntry(void)
+	??1CDcfRep@@UAE@XZ @ 2 NONAME ; CDcfRep::~CDcfRep(void)
+	?Cid@CDcfEntry@@QBEABVTDesC8@@XZ @ 3 NONAME ; class TDesC8 const & CDcfEntry::Cid(void) const
+	?FileName@CDcfEntry@@QBEABVTDesC16@@XZ @ 4 NONAME ; class TDesC16 const & CDcfEntry::FileName(void) const
+	?GetFileHandleL@CDcfRep@@QAEXABVTDesC8@@AAVRFile@@AAVRFs@@@Z @ 5 NONAME ; void CDcfRep::GetFileHandleL(class TDesC8 const &, class RFile &, class RFs &)
+	?GetTtidL@CDcfRep@@QAEXAAV?$RArray@UTPair@@@@@Z @ 6 NONAME ; void CDcfRep::GetTtidL(class RArray<struct TPair> &)
+	?GroupId@CDcfEntry@@QBEABVTDesC8@@XZ @ 7 NONAME ; class TDesC8 const & CDcfEntry::GroupId(void) const
+	?NewL@CDcfEntry@@SAPAV1@XZ @ 8 NONAME ; class CDcfEntry * CDcfEntry::NewL(void)
+	?NewL@CDcfRep@@SAPAV1@XZ @ 9 NONAME ; class CDcfRep * CDcfRep::NewL(void)
+	?NextL@CDcfRep@@QAEPAVCDcfEntry@@XZ @ 10 NONAME ; class CDcfEntry * CDcfRep::NextL(void)
+	?NotifyServerIdle@CDcfRep@@QAEXAAVTRequestStatus@@@Z @ 11 NONAME ; void CDcfRep::NotifyServerIdle(class TRequestStatus &)
+	?OrderListL@CDcfRep@@QAEXABVTDesC8@@@Z @ 12 NONAME ; void CDcfRep::OrderListL(class TDesC8 const &)
+	?OrderListL@CDcfRep@@QAEXXZ @ 13 NONAME ; void CDcfRep::OrderListL(void)
+	?Position@CDcfEntry@@QBEGXZ @ 14 NONAME ; unsigned short CDcfEntry::Position(void) const
+	?RefreshDcf@CDcfRep@@QAEXAAV?$RPointerArray@VHBufC8@@@@AAVTRequestStatus@@@Z @ 15 NONAME ; void CDcfRep::RefreshDcf(class RPointerArray<class HBufC8> &, class TRequestStatus &)
+	?RefreshDcf@CDcfRep@@QAEXAAVTRequestStatus@@@Z @ 16 NONAME ; void CDcfRep::RefreshDcf(class TRequestStatus &)
+	?RemoveDcfFromDbL@CDcfRep@@QAEXABVTDesC16@@@Z @ 17 NONAME ; void CDcfRep::RemoveDcfFromDbL(class TDesC16 const &)
+	?SetCidL@CDcfEntry@@QAEXABVTDesC8@@@Z @ 18 NONAME ; void CDcfEntry::SetCidL(class TDesC8 const &)
+	?SetGroupIdL@CDcfEntry@@QAEXABVTDesC8@@@Z @ 19 NONAME ; void CDcfEntry::SetGroupIdL(class TDesC8 const &)
+	?SetLocationL@CDcfEntry@@QAEXABVTDesC16@@ABG@Z @ 20 NONAME ; void CDcfEntry::SetLocationL(class TDesC16 const &, unsigned short const &)
+	?SetTtid@CDcfRep@@QAEXAAV?$RArray@UTPair@@@@AAVTRequestStatus@@H@Z @ 21 NONAME ; void CDcfRep::SetTtid(class RArray<struct TPair> &, class TRequestStatus &, int)
+	?UpdateL@CDcfRep@@QAEXPBVCDcfEntry@@@Z @ 22 NONAME ; void CDcfRep::UpdateL(class CDcfEntry const *)
+	??0RDcfRepCli@@QAE@XZ @ 23 NONAME ; RDcfRepCli::RDcfRepCli(void)
+	??1RDcfRepCli@@UAE@XZ @ 24 NONAME ; RDcfRepCli::~RDcfRepCli(void)
+	?AddFile@RDcfRepCli@@QAEHABVTDesC16@@@Z @ 25 NONAME ; int RDcfRepCli::AddFile(class TDesC16 const &)
+	?Close@RDcfRepCli@@QAEXXZ @ 26 NONAME ; void RDcfRepCli::Close(void)
+	?Connect@RDcfRepCli@@QAEHXZ @ 27 NONAME ; int RDcfRepCli::Connect(void)
+	?NotifyServerIdle@RDcfRepCli@@QAEXAAVTRequestStatus@@@Z @ 28 NONAME ; void RDcfRepCli::NotifyServerIdle(class TRequestStatus &)
+	?ScanDcf@RDcfRepCli@@QAEXAAV?$RPointerArray@VHBufC8@@@@AAVTRequestStatus@@@Z @ 29 NONAME ; void RDcfRepCli::ScanDcf(class RPointerArray<class HBufC8> &, class TRequestStatus &)
+	?ScanDcf@RDcfRepCli@@QAEXAAVTRequestStatus@@@Z @ 30 NONAME ; void RDcfRepCli::ScanDcf(class TRequestStatus &)
+	?SetTtid@RDcfRepCli@@QAEXAAV?$RArray@UTPair@@@@AAVTRequestStatus@@@Z @ 31 NONAME ; void RDcfRepCli::SetTtid(class RArray<struct TPair> &, class TRequestStatus &)
+	?StopWatching@RDcfRepCli@@QAEXXZ @ 32 NONAME ; void RDcfRepCli::StopWatching(void)
+	?Version@RDcfRepCli@@QBE?AVTVersion@@XZ @ 33 NONAME ; class TVersion RDcfRepCli::Version(void) const
+

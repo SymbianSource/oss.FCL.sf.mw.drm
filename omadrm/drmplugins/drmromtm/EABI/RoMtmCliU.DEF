@@ -1,0 +1,5 @@
+EXPORTS
+	_ZN22CRightsObjectMtmClient4NewLER17CRegisteredMtmDllR11CMsvSession @ 1 NONAME
+	_ZTI22CRightsObjectMtmClient @ 2 NONAME ; #<TI>#
+	_ZTV22CRightsObjectMtmClient @ 3 NONAME ; #<VT>#
+

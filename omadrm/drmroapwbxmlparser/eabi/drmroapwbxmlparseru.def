@@ -1,0 +1,8 @@
+EXPORTS
+	_ZN3DRM23CWbxmlRoapTriggerParser4NewLEv @ 1 NONAME
+	_ZN3DRM23CWbxmlRoapTriggerParser5NewLCEv @ 2 NONAME
+	_ZN3DRM23CWbxmlRoapTriggerParser6ParseLERK6TDesC8 @ 3 NONAME
+	_ZN3DRM23CWbxmlRoapTriggerParserD0Ev @ 4 NONAME
+	_ZN3DRM23CWbxmlRoapTriggerParserD1Ev @ 5 NONAME
+	_ZN3DRM23CWbxmlRoapTriggerParserD2Ev @ 6 NONAME
+

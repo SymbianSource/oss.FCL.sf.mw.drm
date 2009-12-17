@@ -1,0 +1,11 @@
+EXPORTS
+	?CheckFileHandleL@CDrmUtility@DRM@@QBEXAAVRFile@@@Z @ 1 NONAME ; void DRM::CDrmUtility::CheckFileHandleL(class RFile &) const
+	?GetAgentL@CDrmUtility@DRM@@QBEHAAVRFile@@AAVTPtrC16@@@Z @ 2 NONAME ; int DRM::CDrmUtility::GetAgentL(class RFile &, class TPtrC16 &) const
+	?GetAgentL@CDrmUtility@DRM@@QBEHABVTDesC8@@AAVTPtrC16@@@Z @ 3 NONAME ; int DRM::CDrmUtility::GetAgentL(class TDesC8 const &, class TPtrC16 &) const
+	?GetDrmInfoL@CDrmUtility@DRM@@QBEHAAVRFile@@AAVTPtrC16@@AAW4TDrmProtectionStatus@2@@Z @ 4 NONAME ; int DRM::CDrmUtility::GetDrmInfoL(class RFile &, class TPtrC16 &, enum DRM::TDrmProtectionStatus &) const
+	?GetDrmInfoL@CDrmUtility@DRM@@QBEHABVTDesC8@@AAVTPtrC16@@AAW4TDrmProtectionStatus@2@@Z @ 5 NONAME ; int DRM::CDrmUtility::GetDrmInfoL(class TDesC8 const &, class TPtrC16 &, enum DRM::TDrmProtectionStatus &) const
+	?IsProtectedL@CDrmUtility@DRM@@QBEHAAVRFile@@@Z @ 6 NONAME ; int DRM::CDrmUtility::IsProtectedL(class RFile &) const
+	?IsProtectedL@CDrmUtility@DRM@@QBEHABVTDesC8@@@Z @ 7 NONAME ; int DRM::CDrmUtility::IsProtectedL(class TDesC8 const &) const
+	?NewL@CDrmUtility@DRM@@SAPAV12@XZ @ 8 NONAME ; class DRM::CDrmUtility * DRM::CDrmUtility::NewL(void)
+	?NewLC@CDrmUtility@DRM@@SAPAV12@XZ @ 9 NONAME ; class DRM::CDrmUtility * DRM::CDrmUtility::NewLC(void)
+

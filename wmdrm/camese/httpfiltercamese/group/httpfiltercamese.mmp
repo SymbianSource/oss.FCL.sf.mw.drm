@@ -1,0 +1,60 @@
+/*
+* Copyright (c) 2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for project httpfiltercamese
+*
+*/
+
+
+#include <platform_paths.hrh>
+#include <data_caging_paths.hrh>
+
+TARGET                  httpfiltercamese.dll
+TARGETTYPE              PLUGIN
+
+UID                     0x10009D8D 0x10282936
+
+VENDORID                VID_DEFAULT
+CAPABILITY              CAP_ECOM_PLUGIN
+
+USERINCLUDE             ../inc
+USERINCLUDE             ../../inc 
+USERINCLUDE				../../wmdrmdla/inc
+
+MW_LAYER_SYSTEMINCLUDE
+
+SOURCEPATH              ../src
+SOURCE                  httpfiltercamesedrmheader.cpp
+SOURCE                  httpfiltercamesemain.cpp
+SOURCE                  httpfiltercamesedatasupplier.cpp
+
+START RESOURCE          ../data/10282936.rss
+HEADER
+TARGET                  httpfiltercamese.rsc
+// *** Uncomment LANGUAGE_IDS below if and only if the resource file needs localisation
+// LANGUAGE_IDS
+END // RESOURCE
+
+LIBRARY                 euser.lib
+LIBRARY                 flogger.lib
+LIBRARY                 bafl.lib
+LIBRARY                 httpfiltercommon.lib
+LIBRARY                 http.lib
+LIBRARY                 inetprotutil.lib
+LIBRARY                 esock.lib
+LIBRARY                 ecom.lib
+LIBRARY         		charconv.lib
+LIBRARY					wmdrmdla.lib
+LIBRARY                 centralrepository.lib // central repository
+
+SMPSAFE

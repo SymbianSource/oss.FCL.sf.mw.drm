@@ -1,0 +1,68 @@
+/*
+* Copyright (c) 2003-2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Resource header file
+*                This file contains declarations for constants of 
+*                DRMRightsManager.
+*                The file can be included in C++ or resource file.
+*
+*/
+
+
+
+#ifndef DRMRIGHTSMANAGER_HRH
+#define DRMRIGHTSMANAGER_HRH
+
+// DEFINES
+
+// Uid of the application
+#define EUidDRMRightsManager 0x101F85C7
+
+
+// ENUMERATIONS
+
+// Commands IDs
+enum TDRMRightsManagerCommandIds
+    {
+    EDRMRightsManagerCmdAppViewDet = 1      // View details
+    };
+ 
+// IDs of the views
+enum TDRMViewId
+    {
+    EDRMDetailsView                         // Details View
+    };
+
+// IDs of controls
+enum TDRMRightsMgrControlIds
+    {
+    EDRMRightsMgrCtrlIdWaitNote = 0x100     // Wait note
+    };
+
+// Type of object
+enum TObjectType
+    {
+    EUndefinedObject   = 0x0000,            // No definition
+    EValidObject       = 0x0001,            // Object is valid
+    EInvalidObject     = 0x0002,            // Object is invalid
+    EUnusedObject      = 0x0004,            // Object is unused
+    EExpiredObject     = 0x0010,            // Object has expired rights
+    EFutureObject      = 0x0020,            // Object has future rights
+    EGroupObject       = 0x0100,            // Group Object
+    EGroupObjectMember = 0x0200             // Object is a member of a group
+    };
+
+
+#endif      // DRMRIGHTSMANAGER_HRH
+
+// End of File

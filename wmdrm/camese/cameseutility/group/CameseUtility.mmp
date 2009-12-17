@@ -1,0 +1,42 @@
+/*
+* Copyright (c) 2006-2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for project camese utility
+*
+*/
+
+
+#include <platform_paths.hrh>
+#include <data_caging_paths.hrh>
+
+TARGET                  cameseutility.dll
+TARGETTYPE              dll
+UID                     0x1000008D 0x101FFB99
+
+CAPABILITY              CAP_GENERAL_DLL
+VENDORID                VID_DEFAULT
+
+SOURCEPATH              ../src
+SOURCE                  CameseUtility.cpp
+
+USERINCLUDE             ../inc
+USERINCLUDE             ../../inc
+
+MW_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE           /epoc32/include/ecom
+
+LIBRARY                 euser.lib
+LIBRARY                 flogger.lib
+LIBRARY                 esock.lib
+
+SMPSAFE

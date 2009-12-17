@@ -1,0 +1,164 @@
+/*
+* Copyright (c) 2005 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  IBY file
+*
+*/
+
+
+#ifndef __DRM5_IBY__
+#define __DRM5_IBY__
+
+#include <Xml.iby>
+
+// -------------------------------------------------------------------------------------------------
+// Files that always go into the ROM
+// -------------------------------------------------------------------------------------------------
+
+// DRM Common API
+file=ABI_DIR\BUILD_DIR\DRMCOMMON.DLL                SHARED_LIB_DIR\DRMCOMMON.DLL
+
+// -------------------------------------------------------------------------------------------------
+// Files that are only in ROM when DRM is enabled
+// -------------------------------------------------------------------------------------------------
+
+#ifdef __DRM
+
+// DRM Engine resource file for MIME-types
+data=DATAZ_\RESOURCE_FILES_DIR\DRMCOMMON.RSC        RESOURCE_FILES_DIR\DRMCOMMON.RSC
+
+// DCF Repository Server
+file=ABI_DIR\BUILD_DIR\DcfRep.dll                   PROGRAMS_DIR\DcfRep.dll
+file=ABI_DIR\BUILD_DIR\DcfRepSrv.EXE                PROGRAMS_DIR\DcfRepSrv.EXE
+
+// Helper Server
+file=ABI_DIR\BUILD_DIR\DRMHELPERSERVER.EXE          PROGRAMS_DIR\DRMHELPERSERVER.EXE
+
+// Standard, file based storage for PKI keys
+file=ABI_DIR\BUILD_DIR\DrmKeyStorage.dll            SHARED_LIB_DIR\DrmKeyStorage.dll
+file=ABI_DIR\BUILD_DIR\DrmStdKeyStorage.dll         SHARED_LIB_DIR\DrmStdKeyStorage.dll
+
+// Standard OMA DRM cryptography functions
+file=ABI_DIR\BUILD_DIR\DrmCrypto.DLL                SHARED_LIB_DIR\DrmCrypto.DLL
+
+// Client side libraries
+file=ABI_DIR\BUILD_DIR\DrmDcf.DLL                   SHARED_LIB_DIR\DrmDcf.DLL
+file=ABI_DIR\BUILD_DIR\DrmRights.DLL                SHARED_LIB_DIR\DrmRights.DLL
+file=ABI_DIR\BUILD_DIR\DrmServerInterfaces.DLL      SHARED_LIB_DIR\DrmServerInterfaces.DLL
+file=ABI_DIR\BUILD_DIR\DrmParsers.DLL               SHARED_LIB_DIR\DrmParsers.DLL
+
+// DRM Rights server 
+file=ABI_DIR\BUILD_DIR\RightsServer.EXE             PROGRAMS_DIR\RightsServer.EXE
+
+// DRM Service API
+file=ABI_DIR\BUILD_DIR\DrmServiceAPI.dll            SHARED_LIB_DIR\DrmServiceAPI.dll
+
+// DRM UDT Module
+#ifdef __DRM_USER_DATA_TRANSFER
+file=ABI_DIR\BUILD_DIR\DRMUDTMODULE.DLL                SHARED_LIB_DIR\DRMUDTMODULE.DLL
+#endif
+
+// DRM recognizer for protected contents
+#ifdef __DRM
+//S60_INTEGRATION file=ABI_DIR\BUILD_DIR\RECDRM.DLL         RECOGNISERS_DIR\RECDRM.DLL
+//S60_INTEGRATION data=ZSYSTEM\Libs\Plugins\101F51F4.RSC    RESOURCE_FILES_DIR\101F51F4.RSC
+
+ECOM_PLUGIN(RECDRM.DLL,101F51F4.RSC)
+
+// RFS exclude list
+data=DATAZ_\private\102073ea\excludes\101F51F2.exc	private\102073ea\excludes\101F51F2.exc
+
+#endif
+
+// OMA DRM CAF Agent
+ECOM_PLUGIN(OmaDrmAgent.dll,101F6DB4.rsc)
+
+
+// WBXML String Dictionary Plugin for Oma Drm 1.0
+ECOM_PLUGIN(DrmRel1_0StringDict00.dll,101F6DB6.rsc)
+
+// WBXML String Dictionary Plugin for Oma Drm 2.1
+ECOM_PLUGIN(DrmRel2_1StringDict00.dll,2000B48A.rsc)
+
+// Rights Object Handler (Wap push watcher)
+#ifdef __DRM
+//S60_INTEGRATION file=ABI_DIR\BUILD_DIR\ROHANDLER.DLL      PLUGINS_1_DIR\ROHANDLER.DLL
+//S60_INTEGRATION data=ZSYSTEM\Libs\Plugins\101F7B92.RSC    ECOM_RESOURCE_DIR\101F7B92.RSC
+
+#ifdef __DRM_FULL
+ECOM_PLUGIN(ROHANDLER.DLL,101F7B92.RSC)
+#endif
+
+
+
+#endif
+
+
+// ROAP Handler
+file=ABI_DIR\BUILD_DIR\RoapHandler.DLL              SHARED_LIB_DIR\RoapHandler.DLL
+
+
+#ifndef __HTTPFILTERDRM_IBY_
+#define __HTTPFILTERDRM_IBY_
+
+// ECom DrmFilter
+
+ECOM_PLUGIN(HTTPFilterDRM.dll,101F9710.rsc)
+
+#endif
+
+
+// -------------------------------------------------------------------------------------------------
+// Testing and other files which do not go into the ROM by default
+// -------------------------------------------------------------------------------------------------
+
+// Rights Object MTM
+// file=ABI_DIR\BUILD_DIR\ROMTMCLI.DLL              SHARED_LIB_DIR\ROMTMCLI.DLL
+// file=ABI_DIR\BUILD_DIR\ROMTMDAT.DLL              SHARED_LIB_DIR\ROMTMDAT.DLL
+// file=ABI_DIR\BUILD_DIR\ROMTMSER.DLL              SHARED_LIB_DIR\ROMTMSER.DLL
+// file=ABI_DIR\BUILD_DIR\ROMTMUI.DLL               SHARED_LIB_DIR\ROMTMUI.DLL
+// data=ABI_DIR\BUILD_DIR\ROMTMREG.rsc              MTM_INFO_FILE_DIR\ROMTMREG.rsc
+
+// Testing
+// file=ABI_DIR\BUILD_DIR\DRM_API_BAT.EXE           DRM_API_BAT.EXE
+// End_Testing
+
+// UI Test application includes
+// Take the comments off from the two following lines
+// #include <DRM_API_BAT.iby>
+// #include <DRM_API_BATResources.iby>
+
+// DRMEncryptor iby files
+// #include <DRMEncryptor.iby>
+// #include <DRMEncryptorResources.iby>
+
+// Default CMLA RnD Test Keys
+
+data=ZPRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\DevicePrivateKey.der PRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\DevicePrivateKey.der
+data=ZPRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\DeviceCert.der PRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\DeviceCert.der
+data=ZPRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\SigningCert00.der PRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\SigningCert00.der
+data=ZPRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\SigningCert01.der PRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\SigningCert01.der
+
+// Default UDT key
+#ifdef __DRM_USER_DATA_TRANSFER
+data=ZPRIVATE\101F51F2\PKI\UdtCertificate.der	PRIVATE\101F51F2\PKI\UdtCertificate.der
+#endif
+
+// Backup registration
+data=ZPRIVATE\101F51F2\backup_registration.xml	PRIVATE\101F51F2\backup_registration.xml
+
+// SIS stub for agent upgrades	
+data=ZSYSTEM\Install\OmaDrm_Stub.SIS			\system\install\OmaDrm_Stub.SIS
+
+#endif // DRM
+#endif // __DRM5_IBY__

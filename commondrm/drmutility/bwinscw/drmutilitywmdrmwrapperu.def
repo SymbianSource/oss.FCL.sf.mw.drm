@@ -1,0 +1,12 @@
+EXPORTS
+	?CheckWmRightsAmountL@CDrmUtilityWMDrmWrapper@DRM@@UAEXAAVCData@ContentAccess@@W4TIntent@4@PAVMDrmUiCheckRightsObserver@2@H@Z @ 1 NONAME ; void DRM::CDrmUtilityWMDrmWrapper::CheckWmRightsAmountL(class ContentAccess::CData &, enum ContentAccess::TIntent, class DRM::MDrmUiCheckRightsObserver *, int)
+	?HandleWmErrorL@CDrmUtilityWMDrmWrapper@DRM@@UAEXAAVCData@ContentAccess@@W4TIntent@4@HPAVMDrmHandleErrorObserver@2@H@Z @ 2 NONAME ; void DRM::CDrmUtilityWMDrmWrapper::HandleWmErrorL(class ContentAccess::CData &, enum ContentAccess::TIntent, int, class DRM::MDrmHandleErrorObserver *, int)
+	?NewL@CDrmUtilityWMDrmWrapper@DRM@@SAPAV12@XZ @ 3 NONAME ; class DRM::CDrmUtilityWMDrmWrapper * DRM::CDrmUtilityWMDrmWrapper::NewL(void)
+	?NewLC@CDrmUtilityWMDrmWrapper@DRM@@SAPAV12@XZ @ 4 NONAME ; class DRM::CDrmUtilityWMDrmWrapper * DRM::CDrmUtilityWMDrmWrapper::NewLC(void)
+	?SetCoeEnv@CDrmUtilityWMDrmWrapper@DRM@@UAEXPAVCCoeEnv@@@Z @ 5 NONAME ; void DRM::CDrmUtilityWMDrmWrapper::SetCoeEnv(class CCoeEnv *)
+	?CheckWmDrmRightsL@DrmUtilityWmDrmUtilities@@SAXAAHAAVTTimeIntervalSeconds@@0AAVCRightsInfo@ContentAccess@@@Z @ 6 NONAME ; void DrmUtilityWmDrmUtilities::CheckWmDrmRightsL(int &, class TTimeIntervalSeconds &, int &, class ContentAccess::CRightsInfo &)
+	?ParseWmDrmCountRightsL@DrmUtilityWmDrmUtilities@@SAHAAVTLex16@@AAK@Z @ 7 NONAME ; int DrmUtilityWmDrmUtilities::ParseWmDrmCountRightsL(class TLex16 &, unsigned long &)
+	?ParseWmDrmDurationRightsL@DrmUtilityWmDrmUtilities@@SAHAAVTLex16@@AAVTTimeIntervalSeconds@@@Z @ 8 NONAME ; int DrmUtilityWmDrmUtilities::ParseWmDrmDurationRightsL(class TLex16 &, class TTimeIntervalSeconds &)
+	?ParseWmDrmStringL@DrmUtilityWmDrmUtilities@@SAXAAVCRightsInfo@ContentAccess@@AAPAVCDRMRightsConstraints@@@Z @ 9 NONAME ; void DrmUtilityWmDrmUtilities::ParseWmDrmStringL(class ContentAccess::CRightsInfo &, class CDRMRightsConstraints * &)
+	?ParseWmDrmTimeRightsL@DrmUtilityWmDrmUtilities@@SAXAAVTLex16@@AAVTTime@@1@Z @ 10 NONAME ; void DrmUtilityWmDrmUtilities::ParseWmDrmTimeRightsL(class TLex16 &, class TTime &, class TTime &)
+

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE SystemDefinition SYSTEM "sysdef_1_4_0.dtd" [
+  <!ENTITY layer_real_source_path "sf/mw/drm" >
+]>
+
+<SystemDefinition name="drm" schema="1.4.0">
+  <systemModel>
+    <layer name="mw_layer">
+      <module name="drm">
+        <unit unitID="sedo.drm" mrp="" bldFile="&layer_real_source_path;/group" name="drm" />
+      </module>
+    </layer>
+    <layer name="api_test_layer">
+      <module name="drm_test">
+        <unit unitID="sedo.drm_test" mrp="" bldFile="&layer_real_source_path;/tsrc/group" name="drm_test" />
+      </module>
+    </layer>
+  </systemModel>
+</SystemDefinition>

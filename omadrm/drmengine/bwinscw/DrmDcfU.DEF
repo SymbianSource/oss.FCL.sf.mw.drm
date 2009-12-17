@@ -1,0 +1,15 @@
+EXPORTS
+	??1CDcfCommon@@UAE@XZ @ 1 NONAME ; CDcfCommon::~CDcfCommon(void)
+	??1COma1Dcf@@UAE@XZ @ 2 NONAME ; COma1Dcf::~COma1Dcf(void)
+	??1COma2Dcf@@UAE@XZ @ 3 NONAME ; COma2Dcf::~COma2Dcf(void)
+	?IsValidDcf@COma1Dcf@@SAHABVTDesC8@@@Z @ 4 NONAME ; int COma1Dcf::IsValidDcf(class TDesC8 const &)
+	?IsValidDcf@COma2Dcf@@SAHABVTDesC8@@@Z @ 5 NONAME ; int COma2Dcf::IsValidDcf(class TDesC8 const &)
+	?NewL@CDcfCommon@@SAPAV1@ABVRFile@@@Z @ 6 NONAME ; class CDcfCommon * CDcfCommon::NewL(class RFile const &)
+	?NewL@CDcfCommon@@SAPAV1@ABVTDesC16@@PAVRFs@@@Z @ 7 NONAME ; class CDcfCommon * CDcfCommon::NewL(class TDesC16 const &, class RFs *)
+	?NewL@COma1Dcf@@SAPAV1@ABVRFile@@@Z @ 8 NONAME ; class COma1Dcf * COma1Dcf::NewL(class RFile const &)
+	?NewL@COma1Dcf@@SAPAV1@ABVTDesC8@@@Z @ 9 NONAME ; class COma1Dcf * COma1Dcf::NewL(class TDesC8 const &)
+	?NewL@COma2Dcf@@SAPAV1@ABVRFile@@H@Z @ 10 NONAME ; class COma2Dcf * COma2Dcf::NewL(class RFile const &, int)
+	?SetRightsObjectsL@COma2Dcf@@QAEXAAV?$RPointerArray@VHBufC8@@@@@Z @ 11 NONAME ; void COma2Dcf::SetRightsObjectsL(class RPointerArray<class HBufC8> &)
+	?SetTransactionIdL@COma2Dcf@@QAEXABVTDesC8@@@Z @ 12 NONAME ; void COma2Dcf::SetTransactionIdL(class TDesC8 const &)
+	?GetHeaderL@COma1Dcf@@QAEHABVTDesC8@@AAVTPtrC8@@@Z @ 13 NONAME ; int COma1Dcf::GetHeaderL(class TDesC8 const &, class TPtrC8 &)
+

@@ -1,0 +1,51 @@
+/*
+* Copyright (c) 2002-2006 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Symbian recognizer for OMA DRM protected files
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+target          RECDRM.DLL
+targettype      PLUGIN
+VENDORID        VID_DEFAULT
+
+UID		0x10009D8D 0x101F51F4
+
+capability	CAP_ECOM_PLUGIN TrustedUI ProtServ
+
+SOURCEPATH	    ../SRC
+USERINCLUDE     ../INC
+USERINCLUDE	    ../../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+systeminclude	/epoc32/INCLUDE/Ecom
+
+source		RECDRM.CPP
+
+START RESOURCE 101F51F4.RSS
+TARGET         RECDRM
+
+END
+
+#ifdef __DRM_OMA2
+MACRO       DRM_OMA2_ENABLED
+#endif
+
+library		EUSER.LIB	
+library		APMIME.LIB
+
+SMPSAFE

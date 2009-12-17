@@ -1,0 +1,9 @@
+EXPORTS
+	??1CDRMLicenseManager@@UAE@XZ @ 1 NONAME ; CDRMLicenseManager::~CDRMLicenseManager(void)
+	?ExtractSISFileL@CDRMLicenseManager@@QAEHAAVRFile@@ABVTDesC16@@@Z @ 2 NONAME ; int CDRMLicenseManager::ExtractSISFileL(class RFile &, class TDesC16 const &)
+	?ExtractSISFileL@CDRMLicenseManager@@QAEHABVTDesC16@@0@Z @ 3 NONAME ; int CDRMLicenseManager::ExtractSISFileL(class TDesC16 const &, class TDesC16 const &)
+	?GetSISMemberL@CDRMLicenseManager@@QAEPAVCZipFileMember@@XZ @ 4 NONAME ; class CZipFileMember * CDRMLicenseManager::GetSISMemberL(void)
+	?NewL@CDRMLicenseManager@@SAPAV1@XZ @ 5 NONAME ; class CDRMLicenseManager * CDRMLicenseManager::NewL(void)
+	?ProcessL@CDRMLicenseManager@@QAEHAAVRFile@@ABVTDesC16@@@Z @ 6 NONAME ; int CDRMLicenseManager::ProcessL(class RFile &, class TDesC16 const &)
+	?ProcessL@CDRMLicenseManager@@QAEHABVTDesC16@@0@Z @ 7 NONAME ; int CDRMLicenseManager::ProcessL(class TDesC16 const &, class TDesC16 const &)
+

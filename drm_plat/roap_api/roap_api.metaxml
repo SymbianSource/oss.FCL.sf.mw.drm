@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<api id="2f1105a85f5d8839cd6cc58f9f9093df" dataversion="1.0">
+  <name>ROAP API</name>
+  <description>API for Rights Object Acquisition Protocoll</description>
+  <type>c++</type>
+  <subsystem>omadrm</subsystem>
+  <libs>
+    <lib name="RoapHandler.lib" />
+  </libs>
+  <release category="domain"/>
+  <attributes>
+     <!-- This indicates wether the api provedes separate html documentation -->
+     <!-- or is the additional documentation generated from headers. -->
+     <!-- If you are unsuere then the value is "no" -->
+     <htmldocprovided>yes</htmldocprovided>
+     <adaptation>no</adaptation>
+  </attributes>
+</api>

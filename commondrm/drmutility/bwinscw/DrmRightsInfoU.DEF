@@ -1,0 +1,8 @@
+EXPORTS
+	?CancelOperation@CDrmRightsInfo@DRM@@QAEHH@Z @ 1 NONAME ; int DRM::CDrmRightsInfo::CancelOperation(int)
+	?CheckRightsAsyncL@CDrmRightsInfo@DRM@@QAEHABVTDesC16@@W4TIntent@ContentAccess@@AAW4TDrmRightsInfo@2@AAVMDrmAsyncObserver@2@@Z @ 2 NONAME ; int DRM::CDrmRightsInfo::CheckRightsAsyncL(class TDesC16 const &, enum ContentAccess::TIntent, enum DRM::TDrmRightsInfo &, class DRM::MDrmAsyncObserver &)
+	?CheckRightsL@CDrmRightsInfo@DRM@@QAEXABVTDesC16@@W4TIntent@ContentAccess@@AAW4TDrmRightsInfo@2@@Z @ 3 NONAME ; void DRM::CDrmRightsInfo::CheckRightsL(class TDesC16 const &, enum ContentAccess::TIntent, enum DRM::TDrmRightsInfo &)
+	?GetUtility@CDrmRightsInfo@DRM@@QBEAAVCDrmUtility@2@XZ @ 4 NONAME ; class DRM::CDrmUtility & DRM::CDrmRightsInfo::GetUtility(void) const
+	?NewL@CDrmRightsInfo@DRM@@SAPAV12@XZ @ 5 NONAME ; class DRM::CDrmRightsInfo * DRM::CDrmRightsInfo::NewL(void)
+	?NewLC@CDrmRightsInfo@DRM@@SAPAV12@XZ @ 6 NONAME ; class DRM::CDrmRightsInfo * DRM::CDrmRightsInfo::NewLC(void)
+

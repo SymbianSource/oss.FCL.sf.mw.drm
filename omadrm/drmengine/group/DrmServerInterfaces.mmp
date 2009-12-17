@@ -1,0 +1,90 @@
+/*
+* Copyright (c) 2002-2006 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Server interfaces build configuration
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+TARGET          DrmServerInterfaces.dll
+TARGETTYPE      DLL
+UID             0x1000008D 0x101F6DB5
+CAPABILITY      CAP_GENERAL_DLL DRM CommDD
+VENDORID        VID_DEFAULT
+
+USERINCLUDE     ../DCF/inc
+USERINCLUDE     ../RO/inc
+USERINCLUDE     ../ROAP/inc
+USERINCLUDE     ../Utils/inc
+USERINCLUDE     ../DM/inc
+USERINCLUDE     ../Legacy/inc
+USERINCLUDE     ../AgentV2/inc
+USERINCLUDE     ../Server/inc
+USERINCLUDE     ../Notifier/inc
+USERINCLUDE     ../RoapStorage/inc
+USERINCLUDE     ../DrmClock/inc
+#ifdef __DRM_FULL
+USERINCLUDE		../../DRMHelper/inc
+#endif
+USERINCLUDE	    ../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE   /epoc32/include/libc
+SYSTEMINCLUDE   /epoc32/include/ecom
+SYSTEMINCLUDE   /epoc32/include/caf
+
+SOURCEPATH      ../Server/src
+SOURCE          DRMRightsClient.cpp
+
+SOURCEPATH      ../Notifier/src
+SOURCE          DRMEvent.cpp
+SOURCE          DRMEventAddRemove.cpp
+SOURCE          DRMEventModify.cpp
+SOURCE		    DRMEventTimeChange.cpp
+SOURCE          DRMNotifier.cpp
+SOURCE          DRMEventHandler.cpp
+SOURCE          DRMNotifierClient.cpp
+
+SOURCEPATH      ../RoapStorage/src
+SOURCE          DrmDomainContext.cpp
+SOURCE          DrmRiContext.cpp
+SOURCE          RoapStorageClient.cpp
+
+SOURCEPATH      ../DRMClock/src
+SOURCE          DRMClockClient2.cpp
+
+#ifdef __DRM_FULL
+SOURCEPATH			../../DRMHelper/src
+SOURCE					RDRMHelper.cpp
+#endif
+
+LIBRARY         x509.lib asn1.lib ecom.lib x500.lib crypto.lib
+LIBRARY		    drmcrypto.lib drmrights.lib flogger.lib
+LIBRARY         euser.lib XmlFramework.lib hash.lib
+LIBRARY         estor.lib efsrv.lib apmime.lib InetProtUtil.lib bnf.lib
+LIBRARY         cryptography.lib random.lib bafl.lib charconv.lib
+
+#if defined(ARMCC)
+deffile ../eabi/ 
+#elif defined( WINSCW )
+deffile ../bwinscw/ 
+#elif defined( WINS )
+deffile ../bwins/ 
+#else
+deffile ../bmarm/ 
+#endif
+
+SMPSAFE

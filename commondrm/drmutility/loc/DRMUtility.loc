@@ -1,0 +1,162 @@
+/*
+* Copyright (c) 2007-2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Localization strings for DRMUtility
+*
+*/
+
+
+//d: Text in information note when usage rights are not yet valid.
+//d: %U is start date of rights object
+//l: popup_note_window
+//w:
+//r: 2.6
+//
+#define qtn_drm_note_ro_valid_on_future "File can be used from %U"
+
+//d:Progress note shown while rights are acquired silently
+//l:popup_note_wait_window
+//r:3.2
+//
+#define qtn_drm_progress_opening "Opening"
+
+//d: Confirmation query for silent rights acquisition if not allowed in settings
+//l: popup_note_window
+//r: 3.2
+//
+#define qtn_drm_qry_connect_to_activate "File will be unlocked. Connection to Internet is needed. Continue?"
+
+//d: Information note shown when user tries to play content with a silent header and there is no
+//d: connection method defined on the phone.
+//l: popup_note_window
+//w:
+//r: 3.2
+//
+#define qtn_drm_warn_no_conn_defined "Unable to unlock file. Define at least one access point."
+
+//d: Information note shown when user tries to play content with a silent header and the server cannot
+//d: be contacted either because the access point is invalid, packet data context cannot be established,
+//d: or the access point is of wrong type.
+//l: popup_note_window
+//w:
+//r: 3.2
+//
+#define qtn_drm_warn_invalid_or_no_ap "Unable to unlock file. Connection failed with used access point."
+
+//d: Information note shown when user tries to play content with a silent header and there occurs a permanent
+//d: type of ROAP error.
+//l: popup_note_window
+//w:
+//r: 3.2
+//
+#define qtn_drm_err_opening_fail_perm  "Unable to unlock file."
+
+//d: Confirmation query shown when user tries to play content with a silent header and there occurs a temporary
+//d: type of ROAP error. If user accepts the query Browser opens error url.
+//l: popup_note_window
+//r: 3.2
+//
+#define qtn_drm_query_open_error_url "Unable to unlock file. See more information online?"
+
+//d: Text in confirmation query that is displayed when user tries to render MO that is missing RO.
+//d: The waiting time of RO to arrive has not passed yet.
+//l: popup_note_window
+//w:
+//r: 3.0
+//
+#define qtn_drm_query_waiting_for_ro "Waiting for licence. Try again later."
+
+//d: Text in confirmation query that is displayed when user tries to render MO that is missing RO.
+//d: The waiting time of RO to arrive has passed, and there is no possibility to get new RO (no rights
+//d: issuer url).
+//l: popup_note_window
+//w:
+//r: 3.0
+//
+#define qtn_drm_query_ro_late "Licence not yet received. Expected time of delivery elapsed."
+
+//d: Text in confirmation query that is displayed when user tries to render MO that is missing RO.
+//d: The waiting time of RO to arrive has passed, and there is possibility to get new RO (rights issuer url exists).
+//l: popup_note_window
+//w:
+//r: 3.0
+//
+#define qtn_drm_query_ro_late_activate "Licence not yet received. Expected time of delivery elapsed. Get new licence?"
+
+//d: Text in confirmation query when user is asked about updating account.
+//d: Device is already connected to network, but must upgrade the domain key before rendering,
+//l: popup_note_window
+//w:
+//r: 3.0
+//
+#define qtn_drm_query_activate_account "Registration will be updated. Continue?"
+
+//d: Text in confirmation query shown when content cannot be rendered because of wrong SIM card in device
+//l: popup_note_window
+//w:
+//r: 3.1
+//
+#define qtn_drm_query_sim_not_allowed "File locked with current SIM card. Unlock for this SIM card?"
+
+//d: Text in information note shown when user tries to set a non-superdistributable file as automated content, but is not allowed with the current SIM
+//l: popup_info_list_pane_t1
+//w:
+//r: 3.1
+//
+#define qtn_drm_info_sim_not_allowed "File locked with current SIM card"
+
+//d: Information note shown when the user attempts to open or play a non-superdistributable MO related to an
+//d: expired RO or a missing RO.
+//l: popup_info_list_pane_t1
+//w:
+//r: 3.2
+//
+#define qtn_drm_info_expired_or_no_ro "License has expired or it is missing"
+
+//d: Confirmation query shown when the user attempts to open or play a non-superdistributable MO related to an
+//d: expired RO or a missing RO. %U in the query stands for the file name.
+//l: popup_note_window
+//w:
+//r: 3.2
+//
+#define qtn_drm_query_expired_or_no_ro "License for %U expired or missing. Get new license now?"
+
+
+//d: Text in confirmation query when content with activated rights is set as automated content.
+//d: %U is expiration date of rights object
+//l: popup_note_window
+//w:
+//r:
+//
+#define qtn_drm_query_valid_rights_until "Licence for selected item valid until %U. Continue?"
+
+//d: Text in confirmation query
+//l: popup_note_window
+//w:
+//r: 3.2
+//
+#define qtn_drm_query_set_auto_interval "Selected item is valid for limited time. Continue?"
+
+//d: Text in confirmation note when trying to open file but usage reporting is not allowed.
+//l: popup_note_window
+//w:
+//r: 3.2
+//
+#define qtn_drm_query_metering_disabled   "Unable to open file. Change 'Allow usage reporting for' settings."
+
+//d: Heading in message query when user attemps to play a WMDRM file with an expired or missing rights.
+//l: heading_pane_t1
+//w:
+//r: 9.1
+//
+#define qtn_drm_msg_qry_head_no_license "No license"

@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<api id="55bb51a038a2199b4ffb2e63815065d6" dataversion="1.0">
+  <name>DRM Helper API</name>
+  <description>Provides methods for DRM specific error handling and registering and unregistering DRM protected content as automated content</description>
+  <type>c++</type>
+  <subsystem>omadrm</subsystem>
+  <libs>
+    <lib name="DRMHelper.lib" />
+  </libs>
+  <release category="sdk" sinceversion="2.6"/>
+  <attributes>
+     <!-- This indicates wether the api provedes separate html documentation -->
+     <!-- or is the additional documentation generated from headers. -->
+     <!-- If you are unsuere then the value is "no" -->
+     <htmldocprovided>yes</htmldocprovided>
+     <adaptation>no</adaptation>
+  </attributes>
+</api>

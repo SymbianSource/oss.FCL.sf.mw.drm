@@ -1,0 +1,32 @@
+/*
+* Copyright (c) 2006 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  File that exports the files belonging to 
+:                ROAP API
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+PRJ_PLATFORMS
+DEFAULT
+
+PRJ_EXPORTS
+
+../inc/RoapEng.h     MW_LAYER_PLATFORM_EXPORT_PATH(RoapEng.h)
+../inc/RoapEngBase.h     MW_LAYER_PLATFORM_EXPORT_PATH(RoapEngBase.h)
+../inc/RoapTrigger.h     MW_LAYER_PLATFORM_EXPORT_PATH(RoapTrigger.h)
+../inc/RoapObserver.h     MW_LAYER_PLATFORM_EXPORT_PATH(RoapObserver.h)
+../inc/RoapMessage.h     MW_LAYER_PLATFORM_EXPORT_PATH(RoapMessage.h)
+../inc/RoapDef.h     MW_LAYER_PLATFORM_EXPORT_PATH(RoapDef.h)

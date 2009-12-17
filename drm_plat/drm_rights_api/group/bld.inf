@@ -1,0 +1,34 @@
+/*
+* Copyright (c) 2006 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  File that exports the files belonging to 
+:                DRM Rights API
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+PRJ_PLATFORMS
+DEFAULT
+
+PRJ_EXPORTS
+
+../inc/DRMTypes.h     MW_LAYER_PLATFORM_EXPORT_PATH(DRMTypes.h)
+../inc/DrmAsset.h     MW_LAYER_PLATFORM_EXPORT_PATH(DrmAsset.h)
+../inc/DrmRights.h     MW_LAYER_PLATFORM_EXPORT_PATH(DRMRights.h)
+../inc/DRMIndividualConstraintExtension.h     MW_LAYER_PLATFORM_EXPORT_PATH(DRMIndividualConstraintExtension.h)
+../inc/DcfCommon.h     MW_LAYER_PLATFORM_EXPORT_PATH(DcfCommon.h)
+../inc/DcfCommon.inl     MW_LAYER_PLATFORM_EXPORT_PATH(DcfCommon.inl)
+../inc/DRMConstraint.h     MW_LAYER_PLATFORM_EXPORT_PATH(DrmConstraint.h)
+../inc/DRMPermission.h     MW_LAYER_PLATFORM_EXPORT_PATH(DrmPermission.h)

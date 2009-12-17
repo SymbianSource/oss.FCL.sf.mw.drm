@@ -1,0 +1,425 @@
+/*
+* Copyright (c) 2002-2004 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description: 
+*     This file contains the localised strings for RoMTM
+*
+*
+*/
+
+
+//  LOCALISATION STRINGS
+
+//d: Second line of the Inbox list item
+//d: Shown when device is joining to account or leaving from account.
+//l: list_double_graphic_pane_t2_cp2
+//w:
+//r: 3.0
+//
+#define qtn_drm_roap_trigger_msg_domain "Account configuration"
+
+// d: Second line of the Inbox list item
+// l: list_double_graphic_pane_t2_cp2
+//
+#define qtn_drm_mgr_inb_title			"Usage rights"
+
+// d: Confirmation query - MMS access points are either missing or contain settings that are not valid.
+// d: This query is given when starting to write a new or edit an existing multimedia message.
+// l: popup_note_window
+//
+#define qtn_mce_conf_no_ap              "No access point defined or it is not valid. Modify now?"
+
+// d: Submenu item in mce application that starts writing a multimedia message.
+// l: list_single_popup_submenu_pane_t1
+//
+#define qtn_mce_inbox_write_mms         "Rights Object message"
+
+// d: Popup query item in mce application that starts writing a multimedia message.
+// l: list_single_pane_t1_cp2
+//
+#define qtn_mce_pop_up_mms              "Rights Object message"
+
+// d: Settings dialog item in mce application for multimedia messaging settings.
+// l: list_double_pane_t1_cp2
+//
+#define qtn_mce_settings_mms            "Rights Object message"
+
+// Note: qtn_options_send_via_mms is in avkon.loc
+
+// d: Multimedia message settings dialog title
+// l: title_pane_t2/opt12
+//
+#define qtn_mce_title_settings_mms      "Rights Object message"
+
+// d: Multimedia message sending settings dialog menu item.
+// d: Change selected item.
+// l: list_single_pane_t1_cp2
+//
+#define qtn_mms_om_change               "Change"
+
+// d: Multimedia message settings dialog menu item.
+// d: Change selected item.
+// l: list_single_pane_t1_cp2
+//
+#define qtn_mce_settings_change         "Change"
+
+// d: Multimedia message settings dialog menu item.
+// d: Closes settings dialog.
+// l: list_single_pane_t1_cp2
+//
+#define qtn_mce_settings_exit           "Exit"
+
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select a WAP access point.
+// l: list_setting_pane_t1
+//
+#define qtn_mce_mms_pc                  "Connection"
+
+// d: Multimedia message settings list item value
+// d: Means that this access point is not defined.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_none       "None"
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select when to receive MMS messages (e.g. enabled in home network).
+// l: list_setting_pane_t1
+//
+#define qtn_mms_stng_mms_reception      "MMS reception"
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select what to do when receiving MMS notifications & MMS receiving is enabled (e.g. fetch)
+// l: list_setting_pane_t1
+//
+#define qtn_mms_stng_mms_rctp_enabled   "When Enabled"
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select to select receive mode for anonymous (sender unknown) messages.
+// l: list_setting_pane_t1
+//
+#define qtn_mce_mms_fetch_anonymous     "Fetch anonymous messages"
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select receive mode for multimedia message advertisements.
+// l: list_setting_pane_t1
+//
+#define qtn_mce_mms_receive_ad          "Receiving of advertisements"
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select the default delivery report status (yes/no).
+// l: list_setting_pane_t1
+//
+#define qtn_mce_mms_dr                  "Delivery report"
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select the status of allowing sending of delivery reports for received multimedia messages.
+// l: list_setting_pane_t1
+//
+#define qtn_mce_mms_deny_dr             "Deny sending of delivery reports"
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select the default validity period.
+// l: list_setting_pane_t1
+//
+#define qtn_mce_mms_validity_period     "Validity period"
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select the default image resolution limit.
+// l: list_setting_pane_t1
+//
+#define qtn_mce_mms_image_size          "Image size"
+
+// d: Multimedia message settings list item.
+// d: If chosen opens a dialog to select the default speaker to be used in multimedia message viewing.
+// l: list_setting_pane_t1
+//
+#define qtn_mce_mms_ihf                 "Default speaker"
+
+// d: Confirmation query - user must confirm the made selection.
+// d: Given when "always enabled" has been selected for "MMS reception".
+// l: popup_note_window
+//
+#define qtn_mms_sttng_enabled_conf_q    "Automatic MMS message reception creates network connections independently. This can be more costly while roaming. Do you wish to set this to always enabled?"
+
+// d: Confirmation query - user must accept erroneous settings
+// d: Given when settings are erroneous and user is exiting MMS Settings dialog.
+// l: popup_note_window
+//
+#define qtn_mce_settings_mms_invalid    "Multimedia message doesn't work without Connection. Exit anyway?"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Sets multimedia message receiving to be on in home network & off in roaming.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mms_stng_mms_rcpt_enab_home "Enabled in home network"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Sets multimedia message receiving to be always on, i.e. both in home network & in roaming.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mms_stng_mms_rcpt_enab_alw  "Always enabled"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Sets multimedia message receiving to be always off, i.e. both in home network & in roaming.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mms_stng_mms_rcpt_disenab   "Disabled"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: If MMS receiving is currently on (enabled), sets that multimedia messages are tried to fetch automatically.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mms_stng_rctp_enab_ftch     "Fetch"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: If MMS receiving is currently on (enabled), sets that multimedia messages are not fetched now.
+// d: Multimedia service center is notified that the message is fetched later.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mms_stng_rctp_enab_pstp     "Postpone"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: If MMS receiving is currently on (enabled), sets that multimedia messages are not fetched.
+// d: Multimedia service center is notified that the message can be destroyed. It will not be fetched ever.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mms_stng_rctp_enab_reject   "Reject"
+
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Requests delivery reports for sent messages.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_yes        "Yes"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Does not request delivery reports for sent messages.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_no         "No"
+
+
+//
+// MMS editor sending settings
+//
+
+// d: Multimedia message sending settings list item.
+// d: If chosen opens a dialog to select the delivery report status (yes/no) for the current message.
+// l: list_setting_pane_t1
+//
+#define qtn_mms_setting_delivery_report "Delivery report"
+
+// d: Multimedia message sending settings list item.
+// d: If chosen opens a dialog to select the validity period for the current message.
+// l: list_setting_pane_t1
+//
+#define qtn_mms_setting_validity_period "Validity period"
+
+// d: Multimedia message sending settings list item.
+// d: If chosen opens a dialog to select the image resolution limit for the current message.
+// l: list_setting_pane_t1
+//
+#define qtn_mms_setting_image_size      "Image size"
+
+// d: Title for the multimedia message sending settings dialog.
+// l: title_pane_t2/opt12
+//
+#define qtn_mms_title_sending_options   "Sending options"
+
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Requests vality period time of one hour for sent messages.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_1          "1 h"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Requests vality period time of six hours for sent messages.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_6          "6 h"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Requests vality period time of 1 day for sent messages.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_24         "24 h"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Requests vality period time of three days for sent messages.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_3          "3 days"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Requests vality period time of one week for sent message´s.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_week       "Week"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Requests maximum vality period time for sent messages.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_maximum    "Maximum"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Largest image resolution value to be used in sending images.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_large      "Large"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Smallest image resolution value to be used in sending images.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_small      "Small"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Default value for the audio speaker - integrated handsfree.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_ihf_hf     "Handsfree"
+
+// d: Multimedia message setting item list value. Also a choice item in a select dialog.
+// d: Default value for the audio speaker - handset.
+// l: list_set_graphic_pane_t1
+//
+#define qtn_mce_settings_mms_ihf_hs     "Handset"
+
+
+//
+// Message info
+//
+
+// d: Message info popup item value
+// d: Type of the message.
+// l: list_single_heading_pane_t1_cp2
+//
+#define qtn_mms_msginfo_mms           	"Multimedia message"
+
+// d: Command in options list in Mce. 
+// d: Opens Message info dialog
+// d: Visible when one message selected.
+// l: list_single_pane_t1_cp2
+//
+#define qtn_mce_info                    "Message info"
+
+// d: Message info popup item.
+// d: Sender of the message. Shown in the case of a received message, i.e. a mobile terminated.
+// l: list_single_heading_pane_t2_cp2
+//
+#define qtn_mms_from                    "from"
+
+// d: Message info popup item.
+// d: Subject of the message. Shown empty if there's no subject.
+// l: list_single_heading_pane_t2_cp2
+//
+#define qtn_mms_subject                 "subject"
+
+// d: Message info popup item.
+// d: For mobile terminated messages: the date the message was received in MMSC.
+// d: For mobile originated message: the date the message was last modified (=saved).
+// l: list_single_heading_pane_t2_cp2
+//
+#define qtn_mms_date                    "date"
+
+// d: Message info popup item.
+// d: For mobile terminated messages: the time the message was received in MMSC.
+// d: For mobile originated message: the time the message was last modified (=saved).
+// l: list_single_heading_pane_t2_cp2
+//
+#define qtn_mms_time                    "time"
+
+// d: Message info popup item.
+// d: The type of the message. Always: multimedia message.
+// d: For mobile originated message: the date the message was last modified (=saved).
+// l: list_single_heading_pane_t2_cp2
+//
+#define qtn_mms_type                    "type"
+
+// d: Message info popup item.
+// d: The size of the whole multimedia message including content and the headers.
+// l: loc_type_pane
+//
+#define qtn_mms_size                    "size"
+
+// d: Message info popup item.
+// d: Recipients of the multimedia message.
+// l: list_single_heading_pane_t2_cp2
+//
+#define qtn_mms_to                      "to"
+
+
+// Outbox statuses
+
+// d: A status of the message when waiting for sending in Outbox
+// d: listbox text
+// l: list_double_graphic_pane_t2_cp2
+//
+#define qtn_mce_outbox_status_sending   "Sending"
+
+// d: A status of the message when waiting for sending in Outbox
+// d: listbox text
+// l: list_double_graphic_pane_t2_cp2
+//
+#define qtn_mce_outbox_status_waiting   "Waiting"
+
+// d: A status of the message when waiting for sending in Outbox
+// d: listbox text
+// l: list_double_graphic_pane_t2_cp2
+//
+#define qtn_mce_outbox_status_retry_at  "Retry at %U"
+
+// d: A status of the message when waiting for sending in Outbox
+// d: listbox text
+// l: list_double_graphic_pane_t2_cp2
+//
+#define qtn_mce_outbox_status_suspended "Suspended"
+
+// d: A status of the message when waiting for sending in Outbox
+// d: listbox text
+// l: list_double_graphic_pane_t2_cp2
+//
+#define qtn_mce_outbox_status_queued    "Queued"
+
+// d: A status of the message when waiting for sending in Outbox
+// d: listbox text
+// l: list_double_graphic_pane_t2_cp2
+//
+#define qtn_mce_outbox_status_failed    "Failed"
+
+
+//d:Confirmation query text used when triggering rights acquisition
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_query_rights_acq_msg   "Connect to server to get a licence?"
+
+//d:Confirmation query text used when triggering registration to a domain
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_query_join_domain_msg   "Connect to server to register the phone?"
+
+//d:Confirmation query text used when triggering unregistration to a domain
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_query_leave_domain_msg    "Connect to server to unregister the phone?"
+
+// End of File

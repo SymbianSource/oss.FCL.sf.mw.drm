@@ -1,0 +1,22 @@
+EXPORTS
+	??1CRoapEng@Roap@@UAE@XZ @ 1 NONAME ; Roap::CRoapEng::~CRoapEng(void)
+	??1CRoapEngBase@Roap@@UAE@XZ @ 2 NONAME ; Roap::CRoapEngBase::~CRoapEngBase(void)
+	??1CRoapTrigger@Roap@@UAE@XZ @ 3 NONAME ; Roap::CRoapTrigger::~CRoapTrigger(void)
+	?AcceptL@CRoapEngBase@Roap@@QAEXPAVMRoapObserver@2@PAVTRequestStatus@@@Z @ 4 NONAME ; void Roap::CRoapEngBase::AcceptL(class Roap::MRoapObserver *, class TRequestStatus *)
+	?DoCleanup@CRoapEngBase@Roap@@QAEHXZ @ 5 NONAME ; int Roap::CRoapEngBase::DoCleanup(void)
+	?HandleRoReponseL@CRoapEngBase@Roap@@QAEXABVTDesC8@@AAV?$RPointerArray@VCDRMRights@@@@@Z @ 6 NONAME ; void Roap::CRoapEngBase::HandleRoReponseL(class TDesC8 const &, class RPointerArray<class CDRMRights> &)
+	?MessageAsXmlL@CRoapTrigger@Roap@@UAEPAVHBufC8@@XZ @ 7 NONAME ; class HBufC8 * Roap::CRoapTrigger::MessageAsXmlL(void)
+	?NewL@CRoapEng@Roap@@SAPAV12@XZ @ 8 NONAME ; class Roap::CRoapEng * Roap::CRoapEng::NewL(void)
+	?NewL@CRoapTrigger@Roap@@SAPAV12@ABW4TTriggerType@2@ABVTDesC8@@11ABV?$RPointerArray@VHBufC8@@@@2@Z @ 9 NONAME ; class Roap::CRoapTrigger * Roap::CRoapTrigger::NewL(enum Roap::TTriggerType const &, class TDesC8 const &, class TDesC8 const &, class TDesC8 const &, class RPointerArray<class HBufC8> const &, class RPointerArray<class HBufC8> const &)
+	?NewL@CRoapTrigger@Roap@@SAPAV12@XZ @ 10 NONAME ; class Roap::CRoapTrigger * Roap::CRoapTrigger::NewL(void)
+	?Reject@CRoapEngBase@Roap@@QAEXXZ @ 11 NONAME ; void Roap::CRoapEngBase::Reject(void)
+	?SetTriggerL@CRoapEngBase@Roap@@QAEXABVTDesC8@@PBVCAiwGenericParamList@@AAW4TTriggerType@2@AAW4TRiContextStatus@2@AAW4TDomainOperation@2@AAV?$RPointerArray@VHBufC8@@@@@Z @ 12 NONAME ; void Roap::CRoapEngBase::SetTriggerL(class TDesC8 const &, class CAiwGenericParamList const *, enum Roap::TTriggerType &, enum Roap::TRiContextStatus &, enum Roap::TDomainOperation &, class RPointerArray<class HBufC8> &)
+	?ValidTrigger@CRoapTrigger@Roap@@QAEHXZ @ 13 NONAME ; int Roap::CRoapTrigger::ValidTrigger(void)
+	?Trigger@CRoapEngBase@Roap@@QBEABVCRoapTrigger@2@XZ @ 14 NONAME ; class Roap::CRoapTrigger const & Roap::CRoapEngBase::Trigger(void) const
+	??1CRoapSyncWrapper@@UAE@XZ @ 15 NONAME ; CRoapSyncWrapper::~CRoapSyncWrapper(void)
+	?HandleTriggerL@CRoapSyncWrapper@@QAEXABVTDesC8@@@Z @ 16 NONAME ; void CRoapSyncWrapper::HandleTriggerL(class TDesC8 const &)
+	?NewL@CRoapSyncWrapper@@SAPAV1@XZ @ 17 NONAME ; class CRoapSyncWrapper * CRoapSyncWrapper::NewL(void)
+	?HandleTriggerSilentlyL@CRoapSyncWrapper@@QAEHABVTDesC8@@@Z @ 18 NONAME ; int CRoapSyncWrapper::HandleTriggerSilentlyL(class TDesC8 const &)
+	?GetErrorUrlL@CRoapSyncWrapper@@QAEPAVHBufC8@@HAAH@Z @ 19 NONAME ; class HBufC8 * CRoapSyncWrapper::GetErrorUrlL(int, int &)
+	?GetPostResponseUrlL@CRoapSyncWrapper@@QAEPAVHBufC8@@XZ @ 20 NONAME ; class HBufC8 * CRoapSyncWrapper::GetPostResponseUrlL(void)
+

@@ -1,0 +1,600 @@
+/*
+* Copyright (c) 2007-2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Resource definitions for DrmUtility
+*
+*/
+
+
+// RESOURCE IDENTIFIER
+NAME DRMU
+
+//  INCLUDES
+#include <eikon.rh>
+#include <eikon.rsg>
+#include <avkon.rh>
+#include <avkon.rsg>
+#include <avkon.loc>
+#include <avkon.mbg>
+
+#include <drmutility.loc>
+
+// RESOURCE DEFINITIONS
+RESOURCE RSS_SIGNATURE { }
+
+RESOURCE TBUF16 { buf=""; }
+
+
+// -----------------------------------------------------------------------------
+// r_drmutility_confirmation_query
+// Confirmation query dialog
+// -----------------------------------------------------------------------------
+RESOURCE DIALOG r_drmutility_confirmation_query
+    {
+    flags=EGeneralQueryFlags;
+    buttons=R_AVKON_SOFTKEYS_YES_NO__YES;
+    items=
+        {
+        DLG_LINE
+            {
+            type=EAknCtQuery;
+            id=EGeneralQuery;
+            control= AVKON_CONFIRMATION_QUERY
+                {
+                layout = EConfirmationQueryLayout;
+                label = " ";
+                };
+            }
+        };
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_waiting_rights_confirmation_query
+// Confirmation query dialog
+// -----------------------------------------------------------------------------
+RESOURCE DIALOG r_drmutility_waiting_rights_confirmation_query
+    {
+    flags=EGeneralQueryFlags;
+    buttons=R_AVKON_SOFTKEYS_OK_EMPTY__OK;
+    items=
+        {
+        DLG_LINE
+            {
+            type=EAknCtQuery;
+            id=EGeneralQuery;
+            control= AVKON_CONFIRMATION_QUERY
+                {
+                layout = EConfirmationQueryLayout;
+                label = " ";
+                animation = R_QGN_NOTE_INFO_ANIM;
+                };
+            }
+        };
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_qry_connect_to_activate
+// Confirmation query for silent rights acquisition if not allowed in settings
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drm_qry_connect_to_activate
+    {
+    buf = qtn_drm_qry_connect_to_activate;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_warn_no_conn_defined
+// Info note shown when silent rights activation failed because
+// no access points are defined.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drm_warn_no_conn_defined
+    {
+    buf = qtn_drm_warn_no_conn_defined;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_warn_invalid_or_no_ap
+// Info note shown when silent rights activation failed because server cannot
+// be contacted either because access point is invalid, packet data context cannot
+// be established, or access point is of wrong type.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drm_warn_invalid_or_no_ap
+    {
+    buf = qtn_drm_warn_invalid_or_no_ap;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_err_opening_fail_perm
+// Info note shown when silent rights activation failed because of permanent type
+// of error.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drm_err_opening_fail_perm
+    {
+    buf = qtn_drm_err_opening_fail_perm;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_query_open_error_url
+// Confirmation query for opening error url in ROAP temporary error case.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drm_query_open_error_url
+    {
+    buf = qtn_drm_query_open_error_url;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_usage_rights_in_future
+// Text displayed when usage rights are not yet valid.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_usage_rights_in_future
+    {
+    buf = qtn_drm_note_ro_valid_on_future;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_info_expired_or_no_ro
+// String displayed in info note when usage rights expired or missing
+// rights.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drm_info_expired_or_no_ro
+    {
+    buf = qtn_drm_info_expired_or_no_ro;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_query_expired_or_no_ro
+// String displayed in query when usage rights expired or missing
+// rights.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drm_query_expired_or_no_ro
+    {
+    buf = qtn_drm_query_expired_or_no_ro;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_waiting_for_rights
+// Text displayed when waiting for rights
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_waiting_for_rights
+    {
+    buf = qtn_drm_query_waiting_for_ro;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_rights_should_have_come_no_ri
+// Text displayed when usage rights are missing but according to
+// x-oma-separate-delivery header they should have arrived
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_rights_should_have_come_no_ri
+    {
+    buf = qtn_drm_query_ro_late;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_rights_should_have_come
+// Text displayed in query when usage rights are missing but according to
+// x-oma-separate-delivery header they should have arrived
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_rights_should_have_come
+    {
+    buf = qtn_drm_query_ro_late_activate;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_activate_account
+// Text displayed in query when domain account must be upgraded.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_activate_account
+    {
+    buf = qtn_drm_query_activate_account;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_info_sim_not_allowed
+// Text displayed in info note when content cannot be rendered because of wrong SIM.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drm_info_sim_not_allowed
+    {
+    buf = qtn_drm_info_sim_not_allowed;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_invalid_sim
+// Text displayed in query when content cannot be rendered because of wrong SIM.
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_invalid_sim
+    {
+    buf = qtn_drm_query_sim_not_allowed;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_query_set_automated
+// Text displayed in query when already activated content is set for automated
+// use.
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_query_set_automated
+    {
+    buf = qtn_drm_query_valid_rights_until;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_query_set_auto_interval
+// Confirmation query for setting content with interval as automated content.
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_query_set_auto_interval
+    {
+    buf = qtn_drm_query_set_auto_interval;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drm_query_metering_disabled
+// Text displayed on trying to open content with metering rights and when 
+// metering is set as disabled
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drm_query_metering_disabled
+    {
+    buf = qtn_drm_query_metering_disabled;
+    }
+
+#ifdef RD_DRM_PREVIEW_RIGHT_FOR_AUDIO
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmutility_prev_audio_get_list_query
+//    Preview list query for audio with preview rights url.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE AVKON_LIST_QUERY r_drmutility_prev_audio_get_list_query
+    {
+    softkeys = R_AVKON_SOFTKEYS_SELECT_CANCEL__SELECT;
+
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtPopupHeadingPane;
+            id = EAknMessageQueryHeaderId;
+            control = AVKON_HEADING
+                {
+                label = qtn_drm_prmpt_activate_preview;
+                headinglayout = R_AVKON_WML_SIGN_QUERY_HEADING_PANE; // not sure if this is needed
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMessageQuery;
+            id = EAknListQueryMessageBox;
+            control = AVKON_MESSAGE_QUERY
+                {
+                message = qtn_drm_desc_activate_or_prvw;
+                };
+            },
+        AVKON_LIST_QUERY_DLG_LINE
+            {
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = AVKON_LIST_QUERY_LIST
+                    {
+                    flags = EAknListBoxSelectionList;
+                    array_id = r_drmutility_audio_prev_get_list;
+                    };
+                heading = qtn_drm_prmpt_activate_preview;
+                };
+            }
+        };
+    }
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmutility_prev_video_get_list_query
+//    Preview list query for video with preview rights url.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE AVKON_LIST_QUERY r_drmutility_prev_video_get_list_query
+    {
+    softkeys = R_AVKON_SOFTKEYS_SELECT_CANCEL__SELECT;
+
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtPopupHeadingPane;
+            id = EAknMessageQueryHeaderId;
+            control = AVKON_HEADING
+                {
+                label = qtn_drm_prmpt_activate_preview;
+                headinglayout = R_AVKON_WML_SIGN_QUERY_HEADING_PANE; // not sure if this is needed
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMessageQuery;
+            id = EAknListQueryMessageBox;
+            control = AVKON_MESSAGE_QUERY
+                {
+                message = qtn_drm_desc_act_or_prev_video;
+                };
+            },
+        AVKON_LIST_QUERY_DLG_LINE
+            {
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = AVKON_LIST_QUERY_LIST
+                    {
+                    flags = EAknListBoxSelectionList;
+                    array_id = r_drmutility_video_prev_get_list;
+                    };
+                heading = qtn_drm_prmpt_activate_preview;
+                };
+            }
+        };
+    }
+
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmutility_prev_audio_play_list_query
+//    Preview list query for audio with embedded preview.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE AVKON_LIST_QUERY r_drmutility_prev_audio_play_list_query
+    {
+    softkeys = R_AVKON_SOFTKEYS_SELECT_CANCEL__SELECT;
+
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtPopupHeadingPane;
+            id = EAknMessageQueryHeaderId;
+            control = AVKON_HEADING
+                {
+                label = qtn_drm_prmpt_activate_preview;
+                headinglayout = R_AVKON_WML_SIGN_QUERY_HEADING_PANE; // not sure if this is needed
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMessageQuery;
+            id = EAknListQueryMessageBox;
+            control = AVKON_MESSAGE_QUERY
+                {
+                message = qtn_drm_desc_play_preview_audio;
+                };
+            },
+        AVKON_LIST_QUERY_DLG_LINE
+            {
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = AVKON_LIST_QUERY_LIST
+                    {
+                    flags = EAknListBoxSelectionList;
+                    array_id = r_drmutility_audio_prev_play_list;
+                    };
+                heading = qtn_drm_prmpt_activate_preview;
+                };
+            }
+        };
+    }
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmutility_prev_video_play_list_query
+//    Preview list query for video with embedded preview.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE AVKON_LIST_QUERY r_drmutility_prev_video_play_list_query
+    {
+    softkeys = R_AVKON_SOFTKEYS_SELECT_CANCEL__SELECT;
+
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtPopupHeadingPane;
+            id = EAknMessageQueryHeaderId;
+            control = AVKON_HEADING
+                {
+                label = qtn_drm_prmpt_activate_preview;
+                headinglayout = R_AVKON_WML_SIGN_QUERY_HEADING_PANE; // not sure if this is needed
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMessageQuery;
+            id = EAknListQueryMessageBox;
+            control = AVKON_MESSAGE_QUERY
+                {
+                message = qtn_drm_desc_play_preview_video;
+                };
+            },
+
+        AVKON_LIST_QUERY_DLG_LINE
+            {
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = AVKON_LIST_QUERY_LIST
+                    {
+                    flags = EAknListBoxSelectionList;
+                    array_id = r_drmutility_video_prev_play_list;
+                    };
+                heading = qtn_drm_prmpt_activate_preview;
+                };
+            }
+        };
+    }
+
+
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmutility_audio_prev_get_list
+//    Array elements for preview rights of audio dcf.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE ARRAY r_drmutility_audio_prev_get_list
+    {
+    items=
+        {
+        LBUF
+            {
+            txt = qtn_drm_options_activate;
+            },
+        LBUF
+            {
+            txt = qtn_drm_options_get_preview;
+            }
+        };
+    }
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmutility_video_prev_get_list
+//    Array elements for preview rights of video dcf.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE ARRAY r_drmutility_video_prev_get_list
+    {
+    items=
+        {
+        LBUF
+            {
+            txt = qtn_drm_options_activate;
+            },
+        LBUF
+            {
+            txt = qtn_drm_options_get_prev_video;
+            }
+        };
+    }
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmutility_audio_prev_play_list
+//    Array elements for embedded preview of audio dcf.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE ARRAY r_drmutility_audio_prev_play_list
+    {
+    items=
+        {
+        LBUF
+            {
+            txt = qtn_drm_options_activate;
+            },
+        LBUF
+            {
+            txt = qtn_drm_options_play_preview;
+            }
+        };
+    }
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmutility_video_prev_play_list
+//    Array elements for embedded preview of video dcf.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE ARRAY r_drmutility_video_prev_play_list
+    {
+    items=
+        {
+        LBUF
+            {
+            txt = qtn_drm_options_activate;
+            },
+        LBUF
+            {
+            txt = qtn_drm_options_play_prev_video;
+            }
+        };
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_activate_preview
+// Text displayed in header of global preview list query
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_activate_preview
+    {
+    buf = qtn_drm_prmpt_activate_preview;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_activate
+// Text displayed in global preview list query as a choise to activate content
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_activate
+    {
+    buf = qtn_drm_options_activate;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_play_preview
+// Text displayed in global preview list query as a choise to play preview
+// for audio
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_play_preview
+    {
+    buf = qtn_drm_options_play_preview;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_play_preview_video
+// Text displayed in global preview list query as a choise to play preview
+// for video
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_play_preview_video
+    {
+    buf = qtn_drm_options_play_prev_video;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_get_preview
+// Text displayed in global preview list query as a choise to get preview
+// rights for audio
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_get_preview
+    {
+    buf = qtn_drm_options_get_preview;
+    }
+
+// -----------------------------------------------------------------------------
+// r_drmutility_get_preview_video
+// Text displayed in global preview list query as a choise to get preview
+// rights for video
+// -----------------------------------------------------------------------------
+RESOURCE TBUF r_drmutility_get_preview_video
+    {
+    buf = qtn_drm_options_get_prev_video;
+    }
+
+#endif // RD_DRM_PREVIEW_RIGHT_FOR_AUDIO
+
+// End of File

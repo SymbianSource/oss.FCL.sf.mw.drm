@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<api id="48877fa588c2ec787dec2facaf96aa89" dataversion="1.0">
+  <name>DRM Utility API</name>
+  <description>DRM scheme agnostic interface for DRM specific error handling and registering and unregistering DRM protected content as automated content</description>
+  <type>c++</type>
+  <subsystem>commondrm</subsystem>
+  <libs>
+    <lib name="drmutility.lib" />
+    <lib name="drmrightsinfo.lib" />
+    <lib name="drmuihandling.lib" />
+    <lib name="drmautomatedusage.lib" />
+  </libs>
+  <release category="domain"/>
+  <attributes>
+     <!-- This indicates wether the api provedes separate html documentation -->
+     <!-- or is the additional documentation generated from headers. -->
+     <!-- If you are unsuere then the value is "no" -->
+     <htmldocprovided>yes</htmldocprovided>
+     <adaptation>no</adaptation>
+  </attributes>
+</api>

@@ -1,0 +1,11 @@
+EXPORTS
+	?NewLC@CWmDrmDlaUi@@SAPAV1@XZ @ 1 NONAME ; class CWmDrmDlaUi * CWmDrmDlaUi::NewLC(void)
+	?RemoveWaitNote@CWmDrmDlaUi@@QAEXXZ @ 2 NONAME ; void CWmDrmDlaUi::RemoveWaitNote(void)
+	?NewL@CWmDrmDlaUi@@SAPAV1@XZ @ 3 NONAME ; class CWmDrmDlaUi * CWmDrmDlaUi::NewL(void)
+	?ShowListQueryL@CWmDrmDlaUi@@QAEHPAVMDesC16Array@@PAV?$CArrayPtr@VCGulIcon@@@@@Z @ 4 NONAME ; int CWmDrmDlaUi::ShowListQueryL(class MDesC16Array *, class CArrayPtr<class CGulIcon> *)
+	?ShowWaitNoteL@CWmDrmDlaUi@@QAEXHPAVMWmDrmDlaWaitNoteCallback@@@Z @ 5 NONAME ; void CWmDrmDlaUi::ShowWaitNoteL(int, class MWmDrmDlaWaitNoteCallback *)
+	?LaunchBrowserViewL@CWmDrmDlaBrowserViewHandler@@QAEXPAVMWmDrmDlaBrowserObserver@@@Z @ 6 NONAME ; void CWmDrmDlaBrowserViewHandler::LaunchBrowserViewL(class MWmDrmDlaBrowserObserver *)
+	?ShowErrorNoteL@CWmDrmDlaUi@@QAEXH@Z @ 7 NONAME ; void CWmDrmDlaUi::ShowErrorNoteL(int)
+	?NewLC@CWmDrmDlaBrowserViewHandler@@SAPAV1@XZ @ 8 NONAME ; class CWmDrmDlaBrowserViewHandler * CWmDrmDlaBrowserViewHandler::NewLC(void)
+	?NewL@CWmDrmDlaBrowserViewHandler@@SAPAV1@XZ @ 9 NONAME ; class CWmDrmDlaBrowserViewHandler * CWmDrmDlaBrowserViewHandler::NewL(void)
+

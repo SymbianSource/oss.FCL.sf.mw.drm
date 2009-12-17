@@ -1,0 +1,53 @@
+/*
+* Copyright (c) 2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Resource file containing the ECom Resource Structure
+*
+*/
+
+
+//  INCLUDES
+#include <ecom/registryinfo.rh>
+#include "../inc/httpfiltercamese.hrh"
+
+//  RESOURCE DEFINITIONS 
+// -----------------------------------------------------------------------------
+// Registry info
+// The UIDs for the filters implemented in this DLL
+// -----------------------------------------------------------------------------
+//
+
+RESOURCE REGISTRY_INFO theInfo
+	{
+	dll_uid = KCameseFiltersDllUid;
+	interfaces=
+		{
+		INTERFACE_INFO
+			{
+			interface_uid = 0x101F446D;
+			implementations = 
+				{
+				IMPLEMENTATION_INFO
+					{
+					implementation_uid = KCameseFilterDrmHeaderImplementationUid;
+					version_no = 1;
+					display_name = "HTTP Camese Filter";
+					default_data = "HTTP/CAMESEDRMHDR";
+					opaque_data = "";
+					}
+   				};
+			}
+		};
+	}
+
+// End of File

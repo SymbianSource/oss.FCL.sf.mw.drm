@@ -1,0 +1,1268 @@
+/*
+* Copyright (c) 2003 - 2006 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Resource file for DRMHelper
+*
+*/
+
+
+
+//  RESOURCE IDENTIFIER
+NAME    DRMH
+
+//  INCLUDES
+#include <eikon.rh>
+#include <eikon.rsg>
+#include <avkon.rh>
+#include <avkon.rsg>
+#include <avkon.loc>
+#include <avkon.mbg>
+#ifdef __DRM
+#include <DRMCommon.loc>
+#endif
+
+//  CONSTANTS
+
+
+//  MACROS
+
+
+//  RESOURCE DEFINITIONS
+RESOURCE RSS_SIGNATURE { }
+
+RESOURCE TBUF16 { buf=""; }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_confirmation_query
+// Confirmation query dialog
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE DIALOG r_drmhelper_confirmation_query
+    {
+    flags=EGeneralQueryFlags;
+    buttons=R_AVKON_SOFTKEYS_YES_NO__YES;
+    items=
+        {
+        DLG_LINE
+            {
+            type=EAknCtQuery;
+            id=EGeneralQuery;
+            control= AVKON_CONFIRMATION_QUERY
+                {
+                layout = EConfirmationQueryLayout;
+                label = " ";
+                };
+            }
+        };
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_waiting_rights_confirmation_query
+// Confirmation query dialog
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE DIALOG r_drmhelper_waiting_rights_confirmation_query
+    {
+    flags=EGeneralQueryFlags;
+    buttons=R_AVKON_SOFTKEYS_OK_EMPTY__OK;
+    items=
+        {
+        DLG_LINE
+            {
+            type=EAknCtQuery;
+            id=EGeneralQuery;
+            control= AVKON_CONFIRMATION_QUERY
+                {
+                layout = EConfirmationQueryLayout;
+                label = " ";
+                animation = R_QGN_NOTE_INFO_ANIM;
+                };
+            }
+        };
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_usage_rights_expired_buy_new
+// String displayed in query for superdistributable content when rights have
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_usage_rights_expired_buy_new
+    {
+    buf = qtn_drm_sd_rights_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_usage_rights_expired
+// String displayed in query for non-superdistributable content when rights have
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_usage_rights_expired
+    {
+    buf = qtn_drm_info_ro_expired;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_no_usage_rights_buy_new
+// String displayed in query for superdistributable content when there is no
+// rights.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_no_usage_rights_buy_new
+    {
+    buf = qtn_drm_no_rights;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_no_usage_rights
+// String displayed in query for non-superdistributable content when there is no
+// rights.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_no_usage_rights
+    {
+    buf = qtn_drm_prof_rights_missing;
+    }
+
+
+#ifndef RD_DRM_REMOVAL_OF_EXPIRATION_WARNING_PROMPTS
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_usage_rights_to_expire
+// Text displayed in query when rights are about to expire and there is
+// both time and count based rights.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_usage_rights_to_expire
+    {
+    buf = qtn_drm_exp_warn_cnt_and_dt;
+    }
+#endif // RD_DRM_REMOVAL_OF_EXPIRATION_WARNING_PROMPTS
+
+
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_set_automated
+// Text displayed in query when already activated content is set for automated
+// use.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_set_automated
+    {
+    buf = qtn_drm_query_valid_rights_until;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_activate_and_set_automated
+// Text displayed in query when content, that is not yet activated, is set for
+// automated use.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_activate_and_set_automated
+    {
+    buf = qtn_drm_query_active_rights_until;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_cal_alert_invalid_sim_buy_new
+// Text displayed in query when superdistributable calendar alert is tried to
+// be used with wrong sim.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_cal_alert_invalid_sim_buy_new
+    {
+    buf = qtn_drm_calendar_tone_wrong_sim;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_cal_alert_expired_buy_new
+// Text displayed in query when superdistributable calendar alert is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_cal_alert_expired_buy_new
+    {
+    buf = qtn_drm_cal_tone_exp_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_cal_alert_expired
+// Text displayed in query when non-superdistributable calendar alert is
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_cal_alert_expired
+    {
+    buf = qtn_drm_info_calendar_tone_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_clock_alarm_invalid_sim_buy_new
+// Text displayed in query when superdistributable clock alarm is tried to be
+// used with wrong sim.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_clock_alarm_invalid_sim_buy_new
+    {
+    buf = qtn_drm_clock_alarm_wrong_sim;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_clock_alarm_expired_buy_new
+// Text displayed in query when superdistributable clock alarm is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_clock_alarm_expired_buy_new
+    {
+    buf = qtn_drm_clock_alrm_exp_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_clock_alarm_expired
+// Text displayed in query when non-superdistributable clock alarm is
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_clock_alarm_expired
+    {
+    buf = qtn_drm_info_clock_alarm_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_email_tone_expired_buy_new
+// Text displayed in query when superdistributable email tone is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_email_tone_expired_buy_new
+    {
+    buf = qtn_drm_email_tone_exp_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_email_tone_invalid_sim_buy_new
+// Text displayed in query when superdistributable email tone is tried to use
+// with wrong sim.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_email_tone_invalid_sim_buy_new
+    {
+    buf = qtn_drm_email_alert_wrong_sim;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_email_tone_expired
+// Text displayed in query when non-superdistributable email tone is
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_email_tone_expired
+    {
+    buf = qtn_drm_info_email_tone_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_im_tone_expired_buy_new
+// Text displayed in query when superdistributable IM tone is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_im_tone_expired_buy_new
+    {
+    buf = qtn_drm_im_tone_exp_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_im_tone_expired
+// Text displayed in query when non-superdistributable IM tone is
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_im_tone_expired
+    {
+    buf = qtn_drm_info_im_alert_tone_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_message_tone_invalid_sim_buy_new
+// Text displayed in query when superdistributable message tone is tried to use
+// with wrong sim.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_message_tone_invalid_sim_buy_new
+    {
+    buf = qtn_drm_message_alert_wrong_sim;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_message_tone_expired_buy_new
+// Text displayed in query when superdistributable message tone is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_message_tone_expired_buy_new
+    {
+    buf = qtn_drm_msg_tone_exp_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_message_tone_expired
+// Text displayed in query when non-superdistributable message tone is
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_message_tone_expired
+    {
+    buf = qtn_drm_info_msg_tone_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_ringing_tone_expired_buy_new
+// Text displayed in query when superdistributable ringing tone is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_ringing_tone_expired_buy_new
+    {
+    buf = qtn_drm_ring_tone_exp_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_ringing_tone_invalid_sim_buy_new
+// Text displayed in query when superdistributable ringing tone is tried to use
+// with wrong sim.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_ringing_tone_invalid_sim_buy_new
+    {
+    buf = qtn_drm_ringing_tone_wrong_sim;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_ringing_tone_expired
+// Text displayed in query when non-superdistributable ringing tone is
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_ringing_tone_expired
+    {
+    buf = qtn_drm_info_ring_tone_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_screensaver_invalid_sim_buy_new
+// Text displayed in query when superdistributable screensaver is tried to use
+// with wrong sim.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_screensaver_invalid_sim_buy_new
+    {
+    buf = qtn_drm_screensave_wrong_sim;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_screensaver_expired_buy_new
+// Text displayed in query when superdistributable screensaver is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_screensaver_expired_buy_new
+    {
+    buf = qtn_drm_screensave_exp_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_screensaver_expired
+// Text displayed in query when non-superdistributable screensaver is
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_screensaver_expired
+    {
+    buf = qtn_drm_info_screensaver_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_wallpaper_invalid_sim_buy_new
+// Text displayed in query when superdistributable wallpaper is tried to use
+// with wrong sim.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_wallpaper_invalid_sim_buy_new
+    {
+    buf = qtn_drm_wallpaper_wrong_sim;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_wallpaper_expired_buy_new
+// Text displayed in query when superdistributable wallpaper is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_wallpaper_expired_buy_new
+    {
+    buf = qtn_drm_wallpaper_exp_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_wallpaper_expired
+// Text displayed in query when non-superdistributable wallpaper is
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_wallpaper_expired
+    {
+    buf = qtn_drm_info_wallpaper_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_theme_invalid_sim_buy_new
+// Text displayed in query when superdistributable theme is tried to use with
+// wrong sim.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_theme_invalid_sim_buy_new
+    {
+    buf = qtn_drm_theme_wrong_sim;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_theme_expired_buy_new
+// Text displayed in query when superdistributable theme is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_theme_expired_buy_new
+    {
+    buf = qtn_drm_theme_exp_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_theme_expired
+// Text displayed in query when non-superdistributable theme is
+// expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_theme_expired
+    {
+    buf = qtn_drm_info_theme_exp;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_usage_rights_in_future
+// Text displayed in query when usage rights are not yet valid.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_usage_rights_in_future
+    {
+    buf = qtn_drm_note_ro_valid_on_future;
+    }
+
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_activate_after_preview
+// String displayed in query after embedded preview has been played.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_activate_after_preview
+    {
+    buf = qtn_drm_sd_rights_exp;
+    }
+
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_waiting_for_rights
+// Text displayed in query when usage rights are missing but according to
+// x-oma-separate-delivery header they should have come
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_waiting_for_rights
+    {
+    buf = qtn_drm_query_waiting_for_ro;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_rights_should_have_come
+// Text displayed in query when usage rights are missing but according to
+// x-oma-separate-delivery header they should have come
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_rights_should_have_come
+    {
+    buf = qtn_drm_query_ro_late_activate;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_rights_should_have_come_no_ri
+// Text displayed in query when usage rights for non-superdistributable content
+// are missing but according to x-oma-separate-delivery header they should have
+// come
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_rights_should_have_come_no_ri
+    {
+    buf = qtn_drm_query_ro_late;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_automated_sd_invalid_sim
+// Text displayed in query when superdistributable automated content is tried to
+// use with wrong sim.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_automated_sd_invalid_sim
+    {
+    buf = qtn_drm_automated_wrong_sim;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_automated_sd_expired
+// Text displayed in query when superdistributable automated content is expired.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_automated_sd_expired
+    {
+    buf = qtn_drm_note_sd_ro_expired;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_automated_cd_expired
+// Text displayed in query when automated content is about to expire in 1 day.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_automated_cd_expired
+    {
+    buf = qtn_drm_note_cd_ro_expired;
+    }
+
+//About to expired notes are about to be removed,
+#ifndef RD_DRM_REMOVAL_OF_EXPIRATION_WARNING_PROMPTS
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_info_exp_1_use
+// Text in information note for 1 count left when rendering a non-superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_info_exp_1_use
+    {
+    buf = qtn_drm_info_exp_1_use;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_info_exp_n_uses
+// Text in information note for more than 1 counts left when rendering a non-superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_info_exp_n_uses
+    {
+    buf = qtn_drm_info_exp_n_uses;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_info_exp_1_day
+// Text in information note for 1 day left when rendering a non-superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_info_exp_1_day
+    {
+    buf = qtn_drm_info_exp_1_day;
+    }
+
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_info_exp_n_days
+// Text in information note for more than 1 days left when rendering a non-superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_info_exp_n_days
+    {
+    buf = qtn_drm_info_exp_n_days;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_query_exp_1_use_get_new
+// Text in confirmation query shown for 1 count left when rendering a superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_query_exp_1_use_get_new
+    {
+    buf = qtn_drm_query_exp_1_use_get_new;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_query_exp_n_use_get_new
+// Text in confirmation query shown for n counts left when rendering a superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_query_exp_n_use_get_new
+    {
+    buf = qtn_drm_query_exp_n_use_get_new;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_query_exp_1_day_get_new
+// Text in confirmation query shown for 1 day left when rendering a superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_query_exp_1_day_get_new
+    {
+    buf = qtn_drm_query_exp_1_day_get_new;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_query_exp_n_day_get_new
+// Text in confirmation query shown for n days left when rendering a superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_query_exp_n_day_get_new
+    {
+    buf = qtn_drm_query_exp_n_day_get_new;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_query_exp_1_min_get_new
+// Text in confirmation query shown for 1 minute left when rendering a superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_query_exp_1_min_get_new
+    {
+    buf = qtn_drm_query_exp_1_min_get_new;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_query_exp_n_min_get_new
+// Text in confirmation query shown for n minutes left when rendering a superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_query_exp_n_min_get_new
+    {
+    buf = qtn_drm_query_exp_n_min_get_new;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_drmhelper_query_exp_many_constr
+// Text in confirmation query shown for multiple constraints when rendering a superdistributable content
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_query_exp_many_constr
+    {
+    buf = qtn_drm_query_exp_many_constr;
+    }
+#endif // RD_DRM_REMOVAL_OF_EXPIRATION_WARNING_PROMPTS
+
+#ifdef RD_DRM_PREVIEW_RIGHT_FOR_AUDIO
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmhelper_prev_audio_get_list_query
+//    Preview list query for audio with preview rights url.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE AVKON_LIST_QUERY r_drmhelper_prev_audio_get_list_query
+    {
+    softkeys = R_AVKON_SOFTKEYS_SELECT_CANCEL__SELECT;
+
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtPopupHeadingPane;
+            id = EAknMessageQueryHeaderId;
+            control = AVKON_HEADING
+                {
+                label = qtn_drm_prmpt_activate_preview;
+                headinglayout = R_AVKON_WML_SIGN_QUERY_HEADING_PANE; // not sure if this is needed
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMessageQuery;
+            id = EAknListQueryMessageBox;
+            control = AVKON_MESSAGE_QUERY
+                {
+                message = qtn_drm_desc_activate_or_prvw;
+                };
+            },
+        AVKON_LIST_QUERY_DLG_LINE
+            {
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = AVKON_LIST_QUERY_LIST
+                    {
+                    flags = EAknListBoxSelectionList;
+                    array_id = r_drmhelper_audio_prev_get_list;
+                    };
+                heading = qtn_drm_prmpt_activate_preview;
+                };
+            }
+        };
+    }
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmhelper_prev_video_get_list_query
+//    Preview list query for video with preview rights url.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE AVKON_LIST_QUERY r_drmhelper_prev_video_get_list_query
+    {
+    softkeys = R_AVKON_SOFTKEYS_SELECT_CANCEL__SELECT;
+
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtPopupHeadingPane;
+            id = EAknMessageQueryHeaderId;
+            control = AVKON_HEADING
+                {
+                label = qtn_drm_prmpt_activate_preview;
+                headinglayout = R_AVKON_WML_SIGN_QUERY_HEADING_PANE; // not sure if this is needed
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMessageQuery;
+            id = EAknListQueryMessageBox;
+            control = AVKON_MESSAGE_QUERY
+                {
+                message = qtn_drm_desc_act_or_prev_video;
+                };
+            },
+        AVKON_LIST_QUERY_DLG_LINE
+            {
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = AVKON_LIST_QUERY_LIST
+                    {
+                    flags = EAknListBoxSelectionList;
+                    array_id = r_drmhelper_video_prev_get_list;
+                    };
+                heading = qtn_drm_prmpt_activate_preview;
+                };
+            }
+        };
+    }
+
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmhelper_prev_audio_play_list_query
+//    Preview list query for audio with embedded preview.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE AVKON_LIST_QUERY r_drmhelper_prev_audio_play_list_query
+    {
+    softkeys = R_AVKON_SOFTKEYS_SELECT_CANCEL__SELECT;
+
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtPopupHeadingPane;
+            id = EAknMessageQueryHeaderId;
+            control = AVKON_HEADING
+                {
+                label = qtn_drm_prmpt_activate_preview;
+                headinglayout = R_AVKON_WML_SIGN_QUERY_HEADING_PANE; // not sure if this is needed
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMessageQuery;
+            id = EAknListQueryMessageBox;
+            control = AVKON_MESSAGE_QUERY
+                {
+                message = qtn_drm_desc_play_preview_audio;
+                };
+            },
+        AVKON_LIST_QUERY_DLG_LINE
+            {
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = AVKON_LIST_QUERY_LIST
+                    {
+                    flags = EAknListBoxSelectionList;
+                    array_id = r_drmhelper_audio_prev_play_list;
+                    };
+                heading = qtn_drm_prmpt_activate_preview;
+                };
+            }
+        };
+    }
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmhelper_prev_video_play_list_query
+//    Preview list query for video with embedded preview.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE AVKON_LIST_QUERY r_drmhelper_prev_video_play_list_query
+    {
+    softkeys = R_AVKON_SOFTKEYS_SELECT_CANCEL__SELECT;
+
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtPopupHeadingPane;
+            id = EAknMessageQueryHeaderId;
+            control = AVKON_HEADING
+                {
+                label = qtn_drm_prmpt_activate_preview;
+                headinglayout = R_AVKON_WML_SIGN_QUERY_HEADING_PANE; // not sure if this is needed
+                };
+            },
+        DLG_LINE
+            {
+            type = EAknCtMessageQuery;
+            id = EAknListQueryMessageBox;
+            control = AVKON_MESSAGE_QUERY
+                {
+                message = qtn_drm_desc_play_preview_video;
+                };
+            },
+
+        AVKON_LIST_QUERY_DLG_LINE
+            {
+            id = EListQueryControl;
+            control = AVKON_LIST_QUERY_CONTROL
+                {
+                listtype = EAknCtSinglePopupMenuListBox;
+                listbox = AVKON_LIST_QUERY_LIST
+                    {
+                    flags = EAknListBoxSelectionList;
+                    array_id = r_drmhelper_video_prev_play_list;
+                    };
+                heading = qtn_drm_prmpt_activate_preview;
+                };
+            }
+        };
+    }
+
+
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmhelper_audio_prev_get_list
+//    Array elements for preview rights of audio dcf.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE ARRAY r_drmhelper_audio_prev_get_list
+    {
+    items=
+        {
+        LBUF
+            {
+            txt = qtn_drm_options_activate;
+            },
+        LBUF
+            {
+            txt = qtn_drm_options_get_preview;
+            }
+        };
+    }
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmhelper_video_prev_get_list
+//    Array elements for preview rights of vedio dcf.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE ARRAY r_drmhelper_video_prev_get_list
+    {
+    items=
+        {
+        LBUF
+            {
+            txt = qtn_drm_options_get_prev_video;
+            }
+        };
+    }
+
+#endif //RD_DRM_PREVIEW_RIGHT_FOR_AUDIO
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmhelper_audio_prev_play_list
+//    Array elements for embedded preview of audio dcf.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE ARRAY r_drmhelper_audio_prev_play_list
+    {
+    items=
+        {
+        LBUF
+            {
+            txt = qtn_drm_options_play_preview;
+            }
+        };
+    }
+
+//-----------------------------------------------------------------------------
+//
+//    r_drmhelper_video_prev_play_list
+//    Array elements for embedded preview of vedio dcf.
+//
+//-----------------------------------------------------------------------------
+//
+RESOURCE ARRAY r_drmhelper_video_prev_play_list
+    {
+    items=
+        {
+        LBUF
+            {
+            txt = qtn_drm_options_play_prev_video;
+            }
+        };
+    }
+
+// r_drmhelper_invalid_sim
+// Text displayed in query when content cannot be rendered because of wrong SIM.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_invalid_sim
+    {
+    buf = qtn_drm_query_sim_not_allowed;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drmhelper_activate_account
+    {
+    buf = qtn_drm_query_activate_account;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_info_sim_not_allowed
+    {
+    buf = qtn_drm_info_sim_not_allowed;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_non_sd_calend_wrong_sim
+    {
+    buf = qtn_drm_non_sd_calend_wrong_sim;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_non_sd_clock_wrong_sim
+    {
+    buf = qtn_drm_non_sd_clock_wrong_sim;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_non_sd_email_wrong_sim
+    {
+    buf = qtn_drm_non_sd_email_wrong_sim;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_non_sd_msg_al_wrong_sim
+    {
+    buf = qtn_drm_non_sd_msg_al_wrong_sim;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_non_sd_rtone_wrong_sim
+    {
+    buf = qtn_drm_non_sd_rtone_wrong_sim;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_non_sd_screen_wrong_sim
+    {
+    buf = qtn_drm_non_sd_screen_wrong_sim;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_non_sd_theme_wrong_sim
+    {
+    buf = qtn_drm_non_sd_theme_wrong_sim;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_non_sd_wallp_wrong_sim
+    {
+    buf = qtn_drm_non_sd_wallp_wrong_sim;
+    }
+
+// r_drmhelper_activate_account
+// Text displayed in query when domain account has not been activated.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_non_sd_gener_wrong_sim
+    {
+    buf = qtn_drm_non_sd_gener_wrong_sim;
+    }
+
+
+// r_drm_qry_connect_to_activate
+// Confirmation query for silent rights acquisition if not allowed in settings
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_qry_connect_to_activate
+    {
+    buf = qtn_drm_qry_connect_to_activate;
+    }
+
+// r_drm_msq_qry_title_registrat
+//Title fo registration query
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_msq_qry_title_registrat
+    {
+    buf = qtn_drm_msq_qry_title_registrat;
+    }
+
+// r_drm_msq_query_registration
+// Info query for reqistration before silent rights acquisition, if not yet reqistered
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_msq_query_registration
+    {
+    buf = qtn_drm_msq_query_registration;
+    }
+
+// r_drm_msq_query_link_more_inf
+// Info query for reqistration before silent rights acquisition, if not yet reqistered
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_msq_query_link_more_inf
+    {
+    buf = qtn_drm_msq_query_link_more_inf;
+    }
+
+// r_drm_sk1_register
+// String for SK1 to be used in registration message query
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_sk1_register
+    {
+    buf = qtn_drm_sk1_register;
+    }
+
+// r_drm_err_opening_fail_perm
+// Info note shown when silent rights activation failed because of permanent type of error.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_err_opening_fail_perm
+    {
+    buf = qtn_drm_err_opening_fail_perm;
+    }
+
+// r_drm_warn_no_conn_defined
+// Info note shown when silent rights activation failed because
+// no access points are defined.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_warn_no_conn_defined
+    {
+    buf = qtn_drm_warn_no_conn_defined;
+    }
+
+// r_drm_warn_invalid_or_no_ap
+// Info note shown when silent rights activation failed because server cannot
+// be contacted either because access point is invalid, packet data context cannot
+// be established, or access point is of wrong type.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_warn_invalid_or_no_ap
+    {
+    buf = qtn_drm_warn_invalid_or_no_ap;
+    }
+
+// r_drm_query_open_error_url
+// Confirmation query for opening error url in ROAP temporary error case.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_query_open_error_url
+    {
+    buf = qtn_drm_query_open_error_url;
+    }
+
+// r_drm_query_set_auto_interval
+// Confirmation query for setting content with interval as automated content.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_query_set_auto_interval
+    {
+    buf = qtn_drm_query_set_auto_interval;
+    }
+
+
+// End of File
+

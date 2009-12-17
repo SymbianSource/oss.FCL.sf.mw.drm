@@ -1,0 +1,46 @@
+/*
+* Copyright (c) 2004-2005 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description: 
+*     This file contains the localised strings for RO Handler
+*
+*
+*/
+
+
+//  LOCALISATION STRINGS
+
+//
+// NOTE: Exact layout information syntax for logical names has not been
+//       decided/approved yet.
+//
+
+
+// d: Second line of the Inbox list item
+// l: list_double_graphic_pane_t2_cp2
+// w:
+// r: 3.0
+//
+#define qtn_drm_mgr_inb_title			"Usage rights"
+
+//d: Second line of the Inbox list item
+//d: Shown when device is joining to account or leaving from account.
+//l: list_double_graphic_pane_t2_cp2
+//w:
+//r: 3.0
+//
+#define qtn_drm_roap_trigger_msg_domain "Account configuration"
+
+// End of File
+
+

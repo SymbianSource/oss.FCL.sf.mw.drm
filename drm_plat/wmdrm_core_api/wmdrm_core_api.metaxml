@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<api id="bd89e8a1cb6e1eab770e11ea45f6ff9a" dataversion="1.0">
+<name>wmdrm core api</name>
+<description>WMDRM Core functionality</description>
+<type>c++</type>
+<subsystem>WMDRM</subsystem>
+<libs><lib name="wmdrmagent.lib"/>
+<lib name="wmdrmpkclient.lib"/>
+<lib name="wmdrmota.lib"/>
+<lib name="wmdrmpd.lib"/>
+</libs>
+<release category="domain" sinceversion="5.1"/>
+<attributes>
+<htmldocprovided>no</htmldocprovided>
+<adaptation>no</adaptation>
+</attributes>
+</api>

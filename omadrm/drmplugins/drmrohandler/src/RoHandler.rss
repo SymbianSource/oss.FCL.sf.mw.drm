@@ -1,0 +1,45 @@
+/*
+* Copyright (c) 2005 - 2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Resources for RO Handler
+*
+*/
+
+
+#include <eikon.rh>
+#include <rohandler.loc>
+
+
+NAME ROHL
+
+//  RESOURCE DEFINITIONS
+// -----------------------------------------------------------------------------
+//
+//    RSS_SIGNATURE
+//
+//    Signature.
+//
+// -----------------------------------------------------------------------------
+//
+
+RESOURCE RSS_SIGNATURE { }
+
+RESOURCE TBUF r_rohl_inbox_description
+    {
+    buf=qtn_drm_mgr_inb_title;
+    }
+
+RESOURCE TBUF r_rohl_inbox_description_roa
+    {
+    buf=qtn_drm_roap_trigger_msg_domain;
+    }

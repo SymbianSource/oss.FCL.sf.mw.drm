@@ -1,0 +1,12 @@
+EXPORTS
+	??1CCameseUtility@@UAE@XZ @ 1 NONAME ; CCameseUtility::~CCameseUtility(void)
+	?AcquireLicense@CCameseUtility@@QAEXABVRFile@@AAPAVHBufC8@@AAVTRequestStatus@@@Z @ 2 NONAME ; void CCameseUtility::AcquireLicense(class RFile const &, class HBufC8 * &, class TRequestStatus &)
+	?AcquireLicense@CCameseUtility@@QAEXABVRFile@@ABVTDesC8@@AAVTRequestStatus@@@Z @ 3 NONAME ; void CCameseUtility::AcquireLicense(class RFile const &, class TDesC8 const &, class TRequestStatus &)
+	?AcquireLicense@CCameseUtility@@QAEXABVTDesC8@@AAPAVHBufC8@@AAVTRequestStatus@@@Z @ 4 NONAME ; void CCameseUtility::AcquireLicense(class TDesC8 const &, class HBufC8 * &, class TRequestStatus &)
+	?Cancel@CCameseUtility@@QAEXXZ @ 5 NONAME ; void CCameseUtility::Cancel(void)
+	?NewL@CCameseUtility@@SAPAV1@HPAVMCameseObserver@@@Z @ 6 NONAME ; class CCameseUtility * CCameseUtility::NewL(int, class MCameseObserver *)
+	?NewL@CCameseUtility@@SAPAV1@PAVMCameseObserver@@@Z @ 7 NONAME ; class CCameseUtility * CCameseUtility::NewL(class MCameseObserver *)
+	?SendDownloadResult@CCameseUtility@@QAEXABVTDesC8@@HAAVTRequestStatus@@@Z @ 8 NONAME ; void CCameseUtility::SendDownloadResult(class TDesC8 const &, int, class TRequestStatus &)
+	?NewL@CCameseUtility@@SAPAV1@HPAVRConnection@@PAVMCameseObserver@@@Z @ 9 NONAME ; class CCameseUtility * CCameseUtility::NewL(int, class RConnection *, class MCameseObserver *)
+	?SetIapId@CCameseUtility@@QAEXH@Z @ 10 NONAME ; void CCameseUtility::SetIapId(int)
+

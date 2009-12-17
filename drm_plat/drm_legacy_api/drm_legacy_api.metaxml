@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<api id="63f0f2e5bef1fed147e4108b91daa4cf" dataversion="1.0">
+  <name>DRM Legacy API</name>
+  <description>Collection of deprecated DRM interfaces that should not be exported</description>
+  <type>c++</type>
+  <subsystem>omadrm</subsystem>
+  <libs>
+    <lib name="DrmDcf.lib" />
+    <lib name="DrmParsers.lib" />
+    <lib name="DrmServerInterfaces.lib" />
+  </libs>
+  <release category="domain" deprecatedsince="3.2"/>
+  <attributes>
+     <!-- This indicates wether the api provedes separate html documentation -->
+     <!-- or is the additional documentation generated from headers. -->
+     <!-- If you are unsuere then the value is "no" -->
+     <htmldocprovided>yes</htmldocprovided>
+     <adaptation>no</adaptation>
+  </attributes>
+</api>

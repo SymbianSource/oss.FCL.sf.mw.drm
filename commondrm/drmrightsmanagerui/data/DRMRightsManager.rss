@@ -1,0 +1,268 @@
+/*
+* Copyright (c) 2003 - 2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  This file contains all the resources for the DRMRightsManager.
+*
+*/
+
+
+//  RESOURCE IDENTIFIER
+NAME  DRMR // 4 letter ID
+
+
+//  INCLUDES
+
+#include <eikon.rh>
+#include <drmrightsmanager.loc>
+#include <avkon.rsg>
+#include <avkon.rh>
+#include <avkon.loc>
+#include <appinfo.rh>
+
+#include <avkon.mbg>
+
+#include <data_caging_paths_strings.hrh>
+
+#include <drmrightsmanager.mbg>
+
+#include "DRMRightsManager.hrh"
+
+// CONSTANTS
+
+#ifdef __SCALABLE_ICONS
+
+#define KDRMBitmap "Z:"APP_BITMAP_DIR"\\DRMRightsManager.mif"
+
+#else
+
+#define KDRMBitmap "Z:"APP_BITMAP_DIR"\\DRMRightsManager.mbm"
+
+#endif //__SCALABLE_ICONS
+
+
+//  RESOURCE DEFINITIONS
+
+RESOURCE RSS_SIGNATURE { }
+
+RESOURCE TBUF { buf="DRMRightsManager"; }
+
+RESOURCE EIK_APP_INFO
+    {
+    }
+
+
+//----------------------------------------------------
+//
+//    r_drmui_localisable_app_info
+//    Localisable application info
+//
+//----------------------------------------------------
+//
+RESOURCE LOCALISABLE_APP_INFO r_drmui_localisable_app_info
+    {
+    short_caption = qtn_drm_mgr;
+    caption_and_icon =
+    CAPTION_AND_ICON_INFO
+        {
+        caption = qtn_drm_mgr;
+
+#ifdef __SCALABLE_ICONS
+        number_of_icons = 1;
+
+        icon_file = "Z:"APP_BITMAP_DIR"\\DRMRightsManager_aif.mif";
+
+#else
+        number_of_icons = 2;
+
+        icon_file = "Z:"APP_BITMAP_DIR"\\DRMRightsManager_aif.mbm";
+
+#endif  // __SCALABLE_ICONS
+        };
+    }
+
+//----------------------------------------------------
+//
+//    r_drmrightsmanager_detailsview
+//    Definition of DetailsView
+//
+//----------------------------------------------------
+//
+RESOURCE AVKON_VIEW r_drmrightsmanager_detailsview
+    {
+    cba=R_AVKON_SOFTKEYS_OK_EMPTY__OK;
+    }
+
+//----------------------------------------------------
+//
+//    r_waitnote
+//    WaitNote used during opening and refreshing of the RightsObjects
+//
+//----------------------------------------------------
+//
+RESOURCE DIALOG r_waitnote
+    {
+    flags = EEikDialogFlagWait | EAknWaitNoteFlags;
+    buttons = R_AVKON_SOFTKEYS_CANCEL;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtNote;
+            id = EDRMRightsMgrCtrlIdWaitNote;
+            control= AVKON_NOTE
+                {
+                layout = EWaitLayout;
+                singular_label = qtn_gen_note_opening;
+                animation = R_QGN_GRAF_WAIT_BAR_ANIM;
+                };
+          }
+        };
+    }
+
+//----------------------------------------------------
+//
+//    r_drm_confirmation_query
+//    ConfirmationQuery dialog
+//
+//----------------------------------------------------
+//
+RESOURCE DIALOG r_drm_confirmation_query
+    {
+    flags = EGeneralQueryFlags;
+    buttons = R_AVKON_SOFTKEYS_YES_NO__YES;
+    items =
+        {
+        DLG_LINE
+            {
+            type = EAknCtQuery;
+            id = EGeneralQuery;
+            control = AVKON_CONFIRMATION_QUERY
+                {
+                layout = EConfirmationQueryLayout;
+                };
+            }
+        };
+    }
+
+//  Localized strings definitions
+
+RESOURCE TBUF r_qtn_drm_mgr_query_restart   { buf = qtn_drm_mgr_query_restart; }
+RESOURCE TBUF r_qtn_drm_mgr_note_ro_removed { buf = qtn_drm_mgr_note_ro_removed; }
+
+RESOURCE TBUF r_qtn_drm_mgr_det_stat        { buf = qtn_drm_mgr_det_stat;    }
+RESOURCE TBUF r_qtn_drm_mgr_det_valid       { buf = qtn_drm_mgr_det_valid;   }
+RESOURCE TBUF r_qtn_drm_mgr_det_exp         { buf = qtn_drm_mgr_det_exp;     }
+RESOURCE TBUF r_qtn_drm_mgr_det_cip         { buf = qtn_drm_mgr_det_cip;     }
+RESOURCE TBUF r_qtn_drm_mgr_det_yes         { buf = qtn_drm_mgr_det_yes;     }
+RESOURCE TBUF r_qtn_drm_mgr_det_no          { buf = qtn_drm_mgr_det_no;      }
+RESOURCE TBUF r_qtn_drm_mgr_det_cs          { buf = qtn_drm_mgr_det_cs;      }
+RESOURCE TBUF r_qtn_drm_mgr_det_allowed     { buf = qtn_drm_mgr_det_allowed; }
+RESOURCE TBUF r_qtn_drm_mgr_det_forbid      { buf = qtn_drm_mgr_det_forbid;  }
+
+RESOURCE TBUF r_qtn_drm_mgr_det_unlimited   { buf = qtn_drm_mgr_det_unlimited; }
+RESOURCE TBUF r_qtn_drm_mgr_det_1_count     { buf = qtn_drm_mgr_det_1_count; }
+RESOURCE TBUF r_qtn_drm_mgr_det_n_counts    { buf = qtn_drm_mgr_det_n_counts; }
+RESOURCE TBUF r_qtn_drm_mgr_det_not_act     { buf = qtn_drm_mgr_det_not_act; }
+RESOURCE TBUF r_qtn_drm_mgr_det_inter       { buf = qtn_drm_mgr_det_inter; }
+RESOURCE TBUF r_qtn_drm_mgr_det_inter_two   { buf = qtn_drm_mgr_det_inter_two; }
+
+RESOURCE TBUF r_qtn_drm_mgr_det_full_x      { buf = qtn_drm_mgr_det_full_x; }
+RESOURCE TBUF r_qtn_drm_mgr_det_utl_x       { buf = qtn_drm_mgr_det_utl_x; }
+RESOURCE TBUF r_qtn_drm_mgr_det_uts_x       { buf = qtn_drm_mgr_det_uts_x; }
+RESOURCE TBUF r_qtn_drm_mgr_det_udl_x       { buf = qtn_drm_mgr_det_udl_x; }
+RESOURCE TBUF r_qtn_drm_mgr_det_rvf_x       { buf = qtn_drm_mgr_det_rvf_x; }
+RESOURCE TBUF r_qtn_drm_mgr_det_rvt_x       { buf = qtn_drm_mgr_det_rvt_x; }
+
+RESOURCE TBUF r_qtn_drm_mgr_det2_play       { buf = qtn_drm_mgr_det2_play; }
+RESOURCE TBUF r_qtn_drm_mgr_det2_display    { buf = qtn_drm_mgr_det2_display; }
+RESOURCE TBUF r_qtn_drm_mgr_det2_execute    { buf = qtn_drm_mgr_det2_execute; }
+RESOURCE TBUF r_qtn_drm_mgr_det2_print      { buf = qtn_drm_mgr_det2_print; }
+
+RESOURCE TBUF r_qtn_drm_nbr_of_years_one        { buf = qtn_drm_nbr_of_years_one; }
+RESOURCE TBUF r_qtn_drm_nbr_of_years_one_final  { buf = qtn_drm_nbr_of_years_one_final; }
+RESOURCE TBUF r_qtn_drm_nbr_of_years_two_four   { buf = qtn_drm_nbr_of_years_two_four; }
+RESOURCE TBUF r_qtn_drm_nbr_of_years_five_zero  { buf = qtn_drm_nbr_of_years_five_zero; }
+RESOURCE TBUF r_qtn_drm_nbr_of_months_one       { buf = qtn_drm_nbr_of_months_one; }
+RESOURCE TBUF r_qtn_drm_nbr_of_months_two_four  { buf = qtn_drm_nbr_of_months_two_four; }
+RESOURCE TBUF r_qtn_drm_nbr_of_months_five_zero { buf = qtn_drm_nbr_of_months_five_zero; }
+RESOURCE TBUF r_qtn_drm_nbr_of_days_one         { buf = qtn_drm_nbr_of_days_one; }
+RESOURCE TBUF r_qtn_drm_nbr_of_days_one_final   { buf = qtn_drm_nbr_of_days_one_final; }
+RESOURCE TBUF r_qtn_drm_nbr_of_days_two_four    { buf = qtn_drm_nbr_of_days_two_four; }
+RESOURCE TBUF r_qtn_drm_nbr_of_days_five_zero   { buf = qtn_drm_nbr_of_days_five_zero; }
+RESOURCE TBUF r_qtn_drm_nbr_of_hours_one        { buf = qtn_drm_nbr_of_hours_one; }
+RESOURCE TBUF r_qtn_drm_nbr_of_hours_one_final  { buf = qtn_drm_nbr_of_hours_one_final; }
+RESOURCE TBUF r_qtn_drm_nbr_of_hours_two_four   { buf = qtn_drm_nbr_of_hours_two_four; }
+RESOURCE TBUF r_qtn_drm_nbr_of_hours_five_zero  { buf = qtn_drm_nbr_of_hours_five_zero; }
+RESOURCE TBUF r_qtn_drm_nbr_of_mins_one         { buf = qtn_drm_nbr_of_mins_one; }
+RESOURCE TBUF r_qtn_drm_nbr_of_mins_one_final   { buf = qtn_drm_nbr_of_mins_one_final; }
+RESOURCE TBUF r_qtn_drm_nbr_of_mins_two_four    { buf = qtn_drm_nbr_of_mins_two_four; }
+RESOURCE TBUF r_qtn_drm_nbr_of_mins_five_zero   { buf = qtn_drm_nbr_of_mins_five_zero; }
+RESOURCE TBUF r_qtn_drm_nbr_of_secs_one         { buf = qtn_drm_nbr_of_secs_one; }
+RESOURCE TBUF r_qtn_drm_nbr_of_secs_one_final   { buf = qtn_drm_nbr_of_secs_one_final; }
+RESOURCE TBUF r_qtn_drm_nbr_of_secs_two_four    { buf = qtn_drm_nbr_of_secs_two_four; }
+RESOURCE TBUF r_qtn_drm_nbr_of_secs_five_zero   { buf = qtn_drm_nbr_of_secs_five_zero; }
+
+RESOURCE TBUF r_qtn_drm_mgr_det_several_files   { buf = qtn_drm_mgr_det_several_files; }
+RESOURCE TBUF r_qtn_drm_mgr_det_subscription    { buf = qtn_drm_mgr_det_subscription; }
+RESOURCE TBUF r_qtn_drm_mgr_det_belongs_to      { buf = qtn_drm_mgr_det_belongs_to; }
+RESOURCE TBUF r_qtn_drm_det_ro_number           { buf = qtn_drm_det_ro_number; }
+RESOURCE TBUF r_qtn_drm_mgr_det_invalid         { buf = qtn_drm_mgr_det_invalid; }
+RESOURCE TBUF r_qtn_drm_mgr_det_not_valid_yet   { buf = qtn_drm_mgr_det_not_valid_yet; }
+
+RESOURCE TBUF r_qtn_drm_mgr_det_accum_time_left { buf = qtn_drm_mgr_det_accum_time_left; }
+
+RESOURCE TBUF r_qtn_drm_det_content_use         { buf = qtn_drm_det_content_use; }
+RESOURCE TBUF r_qtn_drm_det_sim_allowed         { buf = qtn_drm_det_sim_allowed; }
+RESOURCE TBUF r_qtn_drm_det_sim_not_allowed     { buf = qtn_drm_det_sim_not_allowed; }
+
+RESOURCE TBUF r_qtn_drm_mgr_det_phone_memory    { buf = qtn_drm_mgr_det_phone_memory; }
+RESOURCE TBUF r_qtn_drm_mgr_det_memory_card     { buf = qtn_drm_mgr_det_memory_card; }
+RESOURCE TBUF r_qtn_drm_mgr_det_location        { buf = qtn_drm_mgr_det_location; }
+
+RESOURCE TBUF r_qtn_drm_key_details             { buf = qtn_msk_drm_key_details; }
+
+// New string definitions
+RESOURCE TBUF r_qtn_drm_details_status                    { buf = qtn_drm_details_status; }
+RESOURCE TBUF r_qtn_drm_details_no_licence_available      { buf = qtn_drm_details_no_licence_available; }
+RESOURCE TBUF r_qtn_drm_details_valid                     { buf = qtn_drm_details_valid; }
+RESOURCE TBUF r_qtn_drm_details_not_valid_yet             { buf = qtn_drm_details_not_valid_yet; }
+RESOURCE TBUF r_qtn_drm_details_sending                   { buf = qtn_drm_details_sending; }
+RESOURCE TBUF r_qtn_drm_details_content_use               { buf = qtn_drm_details_content_use; }
+RESOURCE TBUF r_qtn_drm_details_allowed_with_this_sim     { buf = qtn_drm_details_allowed_with_this_sim; }
+RESOURCE TBUF r_qtn_drm_details_not_allowed_with_this_sim { buf = qtn_drm_details_not_allowed_with_this_sim; }
+RESOURCE TBUF r_qtn_drm_details_plays_left                { buf = qtn_drm_details_plays_left; }
+RESOURCE TBUF r_qtn_drm_details_views_left                { buf = qtn_drm_details_views_left; }
+RESOURCE TBUF r_qtn_drm_details_prints_left               { buf = qtn_drm_details_prints_left; }
+RESOURCE TBUF r_qtn_drm_details_exec_times                { buf = qtn_drm_details_exec_times; }
+RESOURCE TBUF r_qtn_drm_details_1_time                    { buf = qtn_drm_details_1_time; }
+RESOURCE TBUF r_qtn_drm_details_n_times                   { buf = qtn_drm_details_n_times; }
+RESOURCE TBUF r_qtn_drm_details_playing_time_left         { buf = qtn_drm_details_playing_time_left; }
+RESOURCE TBUF r_qtn_drm_details_validity_period           { buf = qtn_drm_details_validity_period; }
+RESOURCE TBUF r_qtn_drm_details_viewing_rights            { buf = qtn_drm_details_viewing_rights; }
+RESOURCE TBUF r_qtn_drm_details_printing_rights           { buf = qtn_drm_details_printing_rights; }
+RESOURCE TBUF r_qtn_drm_details_valid_from                { buf = qtn_drm_details_valid_from; }
+RESOURCE TBUF r_qtn_drm_details_view_rights_from          { buf = qtn_drm_details_view_rights_from; }
+RESOURCE TBUF r_qtn_drm_details_print_rights_from         { buf = qtn_drm_details_print_rights_from; }
+RESOURCE TBUF r_qtn_drm_details_valid_until               { buf = qtn_drm_details_valid_until; }
+RESOURCE TBUF r_qtn_drm_details_view_rights_until         { buf = qtn_drm_details_view_rights_until; }
+RESOURCE TBUF r_qtn_drm_details_print_rights_until        { buf = qtn_drm_details_print_rights_until; }
+
+RESOURCE TBUF r_qtn_drm_mgr_det_pl_unlimited              { buf = qtn_drm_mgr_det_pl_unlimited; }
+RESOURCE TBUF r_qtn_drm_mgr_det_vi_unlimited              { buf = qtn_drm_mgr_det_vi_unlimited; }
+RESOURCE TBUF r_qtn_drm_mgr_det_pr_unlimited              { buf = qtn_drm_mgr_det_pr_unlimited; }
+RESOURCE TBUF r_qtn_drm_mgr_det_ex_unlimited              { buf = qtn_drm_mgr_det_ex_unlimited; }
+
+
+
+
+// End of File

@@ -1,0 +1,75 @@
+/*
+* Copyright (c) 2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for DrmUtilityDmgrWrapper
+*
+*/
+
+
+#include <data_caging_paths.hrh>
+#include <platform_paths.hrh>
+
+TARGET         DrmUtilityDmgrWrapper.dll
+TARGETTYPE     dll
+UID            0x1000008D 0x102830FE
+
+CAPABILITY     CAP_GENERAL_DLL
+VENDORID       VID_DEFAULT
+
+#ifdef __DRM
+SOURCE         ../src/DrmUtilityDmgrWrapper.cpp
+#endif
+
+START RESOURCE ../data/DrmUtilityDmgrWrapper.rss
+HEADER
+TARGETPATH RESOURCE_FILES_DIR
+LANGUAGE_IDS
+END
+
+USERINCLUDE    ../inc
+USERINCLUDE    ../../../omadrm/drmengine/roap/inc
+USERINCLUDE    ../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+APP_LAYER_SYSTEMINCLUDE
+
+LIBRARY        euser.lib
+LIBRARY        centralrepository.lib
+LIBRARY        cmmanager.lib
+LIBRARY        downloadmgr.lib
+LIBRARY        roaphandler.lib
+LIBRARY        efsrv.lib
+LIBRARY        avkon.lib
+LIBRARY        commonengine.lib
+LIBRARY        eikctl.lib
+LIBRARY        platformenv.lib
+
+DEBUGLIBRARY   flogger.lib
+
+START WINS
+END
+
+START MARM
+END
+
+#if defined(ARMCC)
+deffile ../eabi/
+#elif defined( WINSCW )
+deffile ../bwinscw/
+#elif defined( WINS )
+deffile ../bwins/
+#else
+deffile ../bmarm/
+#endif
+
+SMPSAFE

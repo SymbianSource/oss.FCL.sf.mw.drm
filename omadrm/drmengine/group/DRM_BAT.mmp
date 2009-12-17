@@ -1,0 +1,58 @@
+/*
+* Copyright (c) 2003-2006 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Client side API Basic Acceptance Test tool
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+TARGET        DRM_BAT.exe
+TARGETTYPE    exe
+MACRO         CLIENT_STARTS_SERVER
+CAPABILITY    CAP_APPLICATION DRM
+VENDORID      VID_DEFAULT
+
+
+USERINCLUDE     ../agentv2/inc
+USERINCLUDE     ../dcf/inc
+USERINCLUDE     ../dm/inc
+USERINCLUDE     ../server/inc
+USERINCLUDE     ../roap/inc
+USERINCLUDE     ../ro/inc
+USERINCLUDE     ../legacy/inc
+USERINCLUDE     ../tsrc
+USERINCLUDE     ../utils/inc
+USERINCLUDE	    ../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE /epoc32/include/libc
+SYSTEMINCLUDE /epoc32/include/ecom
+SYSTEMINCLUDE /epoc32/include/caf
+ 
+SOURCEPATH    ../tsrc
+SOURCE        DRM_BAT.cpp
+SOURCE        RTest.cpp
+
+LIBRARY         DrmParsers.lib
+LIBRARY         DrmDcf.lib
+LIBRARY         DrmRights.lib
+LIBRARY         DrmServerInterfaces.lib
+LIBRARY         DRMCommon.lib
+LIBRARY       efsrv.lib euser.lib apmime.lib XmlFramework.lib
+LIBRARY       estor.lib bafl.lib
+LIBRARY       caf.lib cafutils.lib
+
+SMPSAFE

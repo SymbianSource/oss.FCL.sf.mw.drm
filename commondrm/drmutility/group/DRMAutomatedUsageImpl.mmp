@@ -1,0 +1,66 @@
+/*
+* Copyright (c) 2006 - 2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for DRM Utility
+*
+*/
+
+#include <data_caging_paths.hrh>
+#include <platform_paths.hrh>
+
+TARGET          DRMAutomatedUsageImpl.dll
+TARGETTYPE      dll
+UID             0x1000008D 0x10205CBC
+
+CAPABILITY      CAP_GENERAL_DLL DRM
+VENDORID        VID_DEFAULT
+
+#ifdef __DRM
+SOURCE          ../src/DrmAutomatedUsageImpl.cpp
+SOURCE          ../src/drmautomatedusagedata.cpp
+SOURCE          ../src/rdrmhelperclient.cpp
+#endif
+
+
+USERINCLUDE     ../inc
+USERINCLUDE     ../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+
+LIBRARY         euser.lib
+LIBRARY         flogger.lib
+LIBRARY         efsrv.lib
+LIBRARY         drmutility.lib
+LIBRARY         drmutilitycommon.lib
+LIBRARY         caf.lib
+LIBRARY         cafutils.lib
+LIBRARY         charconv.lib
+LIBRARY         drmrights.lib
+LIBRARY         drmserverinterfaces.lib
+LIBRARY         commonengine.lib
+
+
+DOCUMENT    bld.inf
+
+#if defined(ARMCC)
+deffile ../eabi/
+#elif defined( WINSCW )
+deffile ../bwinscw/
+#elif defined( WINS )
+deffile ../bwins/
+#else
+deffile ../bmarm/
+#endif
+
+SMPSAFE

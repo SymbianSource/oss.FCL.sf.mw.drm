@@ -1,0 +1,130 @@
+/*
+* Copyright (c) 2002 - 2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Resources for the Mtm Ui Data
+*
+*/
+
+
+
+
+
+//  INCLUDES
+
+#include <romtmui.loc>
+#include <eikon.rh>
+#include <uikon.rh>
+#include <uikon.hrh>
+#include <avkon.rh>
+#include <avkon.rsg>
+#include <avkon.loc>
+#include <mtud.rh>
+#include <MTMExtendedCapabilities.hrh>
+#include <Muiu.mbg>
+#include <data_caging_paths_strings.hrh>
+
+#include "RoMtmCommands.hrh"
+#include "RoMtmUi.hrh"
+//  RESOURCE DEFINITIONS
+
+NAME ROUI
+
+RESOURCE RSS_SIGNATURE { }
+
+//=============================================================================
+//
+// MTM UI Data framework related resources
+//
+//=============================================================================
+
+
+
+// User information strings
+RESOURCE TBUF80 r_roud_can_not_edit_folders  {buf="Can not edit folders";}
+RESOURCE TBUF80 r_roud_only_messages  {buf="This can only be done on local messages";}
+RESOURCE TBUF80 r_roud_not_supported  {buf="This action is not supported";}
+
+
+RESOURCE AKN_ICON_ARRAY r_ronsm_icons
+    {
+    bmpfile = APP_BITMAP_DIR"\\Muiu.mbm";
+
+    icons =
+        {
+        AKN_ICON { iconId = EMbmMuiuQgn_prop_mce_push_unread;
+                   maskId = EMbmMuiuQgn_prop_mce_push_unread_mask; }
+        };
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_romtmui_trigger_confirmation_query
+// Confirmation query dialog
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE DIALOG r_romtmui_trigger_confirmation_query
+    {
+    flags=EGeneralQueryFlags;
+    buttons=R_AVKON_SOFTKEYS_YES_NO__YES;
+    items=
+        {
+        DLG_LINE
+            {
+            type=EAknCtQuery;
+            id=EGeneralQuery;
+            control= AVKON_CONFIRMATION_QUERY
+                {
+                layout = EConfirmationQueryLayout;
+                label = " ";
+                };
+            }
+        };
+    }
+
+
+// -----------------------------------------------------------------------------
+//
+// r_romtmui_query_rights_acq_msg
+// Confirmation query text used when triggering rights acquisition
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_romtmui_query_rights_acq_msg
+    {
+    buf = qtn_drm_query_rights_acq_msg;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_romtmui_query_join_domain_msg
+// Confirmation query text used when triggering registration to a domain
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_romtmui_query_join_domain_msg
+    {
+    buf = qtn_drm_query_join_domain_msg;
+    }
+
+// -----------------------------------------------------------------------------
+//
+// r_romtmui_query_leave_domain_msg
+// Confirmation query text used when triggering unregistration to a domain
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE TBUF r_romtmui_query_leave_domain_msg
+    {
+    buf =  qtn_drm_query_leave_domain_msg;
+    }

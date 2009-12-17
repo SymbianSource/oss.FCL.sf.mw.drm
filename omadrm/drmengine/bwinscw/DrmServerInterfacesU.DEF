@@ -1,0 +1,202 @@
+EXPORTS
+	??0CDRMDomainContext@@IAE@ABVTTime@@H@Z @ 1 NONAME ; CDRMDomainContext::CDRMDomainContext(class TTime const &, int)
+	??0MDRMEvent@@QAE@ABK@Z @ 2 NONAME ; MDRMEvent::MDRMEvent(unsigned long const &)
+	??0RDRMClockClient@@QAE@XZ @ 3 NONAME ; RDRMClockClient::RDRMClockClient(void)
+	??0RDRMRightsClient@@QAE@XZ @ 4 NONAME ; RDRMRightsClient::RDRMRightsClient(void)
+	??0RRoapStorageClient@Roap@@QAE@XZ @ 5 NONAME ; Roap::RRoapStorageClient::RRoapStorageClient(void)
+	??1CDRMDomainContext@@UAE@XZ @ 6 NONAME ; CDRMDomainContext::~CDRMDomainContext(void)
+	??1CDRMEventAddRemove@@UAE@XZ @ 7 NONAME ; CDRMEventAddRemove::~CDRMEventAddRemove(void)
+	??1CDRMEventModify@@UAE@XZ @ 8 NONAME ; CDRMEventModify::~CDRMEventModify(void)
+	??1CDRMEventTimeChange@@UAE@XZ @ 9 NONAME ; CDRMEventTimeChange::~CDRMEventTimeChange(void)
+	??1CDRMNotifier@@UAE@XZ @ 10 NONAME ; CDRMNotifier::~CDRMNotifier(void)
+	??1CDRMRIContext@@UAE@XZ @ 11 NONAME ; CDRMRIContext::~CDRMRIContext(void)
+	??1MDRMEvent@@UAE@XZ @ 12 NONAME ; MDRMEvent::~MDRMEvent(void)
+	??1RDRMClockClient@@UAE@XZ @ 13 NONAME ; RDRMClockClient::~RDRMClockClient(void)
+	??1RDRMRightsClient@@UAE@XZ @ 14 NONAME ; RDRMRightsClient::~RDRMRightsClient(void)
+	??1RRoapStorageClient@Roap@@UAE@XZ @ 15 NONAME ; Roap::RRoapStorageClient::~RRoapStorageClient(void)
+	?AddDomainContextL@RRoapStorageClient@Roap@@QAEXABVCDRMDomainContext@@ABV?$RPointerArray@VHBufC8@@@@1AAW4TKeyTransportScheme@@@Z @ 16 NONAME ; void Roap::RRoapStorageClient::AddDomainContextL(class CDRMDomainContext const &, class RPointerArray<class HBufC8> const &, class RPointerArray<class HBufC8> const &, enum TKeyTransportScheme &)
+	?AddDomainRO@RDRMRightsClient@@QAEHABVTDesC8@@0@Z @ 17 NONAME ; int RDRMRightsClient::AddDomainRO(class TDesC8 const &, class TDesC8 const &)
+	?AddProtectedRecord@RDRMRightsClient@@QAEHABVTDesC8@@HABVCDRMPermission@@0AAK@Z @ 18 NONAME ; int RDRMRightsClient::AddProtectedRecord(class TDesC8 const &, int, class CDRMPermission const &, class TDesC8 const &, unsigned long &)
+	?AddRIContextL@RRoapStorageClient@Roap@@QAEXABVCDRMRIContext@@@Z @ 19 NONAME ; void Roap::RRoapStorageClient::AddRIContextL(class CDRMRIContext const &)
+	?AddRecord@RDRMRightsClient@@QAEHABVTDesC8@@ABVCDRMPermission@@0AAK@Z @ 20 NONAME ; int RDRMRightsClient::AddRecord(class TDesC8 const &, class CDRMPermission const &, class TDesC8 const &, unsigned long &)
+	?AddToCache@RDRMRightsClient@@QAEHABVTDesC8@@@Z @ 21 NONAME ; int RDRMRightsClient::AddToCache(class TDesC8 const &)
+	?AddToCache@RDRMRightsClient@@QAEHABVTDesC8@@ABVTTime@@@Z @ 22 NONAME ; int RDRMRightsClient::AddToCache(class TDesC8 const &, class TTime const &)
+	?Algorithms@CDRMRIContext@@QBEABV?$RPointerArray@VHBufC8@@@@XZ @ 23 NONAME ; class RPointerArray<class HBufC8> const & CDRMRIContext::Algorithms(void) const
+	?CalculatePadding@RDRMRightsClient@@QAEHABVTDesC8@@@Z @ 24 NONAME ; int RDRMRightsClient::CalculatePadding(class TDesC8 const &)
+	?Cancel@RDRMRightsClient@@QAEXXZ @ 25 NONAME ; void RDRMRightsClient::Cancel(void)
+	?CertificateChain@CDRMRIContext@@QBEABV?$RPointerArray@VHBufC8@@@@XZ @ 26 NONAME ; class RPointerArray<class HBufC8> const & CDRMRIContext::CertificateChain(void) const
+	?CheckConsume@RDRMRightsClient@@QAEHHABVTDesC8@@@Z @ 27 NONAME ; int RDRMRightsClient::CheckConsume(int, class TDesC8 const &)
+	?CheckRights@RDRMRightsClient@@QAEHHABVTDesC8@@AAK@Z @ 28 NONAME ; int RDRMRightsClient::CheckRights(int, class TDesC8 const &, unsigned long &)
+	?Close@RDRMClockClient@@QAEXXZ @ 29 NONAME ; void RDRMClockClient::Close(void)
+	?Close@RDRMRightsClient@@QAEXXZ @ 30 NONAME ; void RDRMRightsClient::Close(void)
+	?Connect@RDRMClockClient@@QAEHXZ @ 31 NONAME ; int RDRMClockClient::Connect(void)
+	?Connect@RDRMRightsClient@@QAEHXZ @ 32 NONAME ; int RDRMRightsClient::Connect(void)
+	?Connect@RRoapStorageClient@Roap@@QAEHXZ @ 33 NONAME ; int Roap::RRoapStorageClient::Connect(void)
+	?Consume@RDRMRightsClient@@QAEHHABVTDesC8@@@Z @ 34 NONAME ; int RDRMRightsClient::Consume(int, class TDesC8 const &)
+	?Count@RDRMRightsClient@@QAEHXZ @ 35 NONAME ; int RDRMRightsClient::Count(void)
+	?DecodeRightsIssuerField@RDRMRightsClient@@QAEHABVTDesC8@@AAPAVHBufC8@@@Z @ 36 NONAME ; int RDRMRightsClient::DecodeRightsIssuerField(class TDesC8 const &, class HBufC8 * &)
+	?Decrypt@RDRMRightsClient@@QAEHABVTDesC8@@AAVTPtr8@@H@Z @ 37 NONAME ; int RDRMRightsClient::Decrypt(class TDesC8 const &, class TPtr8 &, int)
+	?DeleteAll@RDRMRightsClient@@QAEHXZ @ 38 NONAME ; int RDRMRightsClient::DeleteAll(void)
+	?DeleteAllL@RRoapStorageClient@Roap@@QAEXXZ @ 39 NONAME ; void Roap::RRoapStorageClient::DeleteAllL(void)
+	?DeleteDbEntry@RDRMRightsClient@@QAEHABVTDesC8@@@Z @ 40 NONAME ; int RDRMRightsClient::DeleteDbEntry(class TDesC8 const &)
+	?DeleteDbEntry@RDRMRightsClient@@QAEHABVTDesC8@@ABK@Z @ 41 NONAME ; int RDRMRightsClient::DeleteDbEntry(class TDesC8 const &, unsigned long const &)
+	?DeleteDomainContextL@RRoapStorageClient@Roap@@QAEXABVTDesC8@@@Z @ 42 NONAME ; void Roap::RRoapStorageClient::DeleteDomainContextL(class TDesC8 const &)
+	?DeleteDomainRO@RDRMRightsClient@@QAEHABVTDesC8@@@Z @ 43 NONAME ; int RDRMRightsClient::DeleteDomainRO(class TDesC8 const &)
+	?DeleteExpiredContextsL@RRoapStorageClient@Roap@@QAEXABVTTime@@@Z @ 44 NONAME ; void Roap::RRoapStorageClient::DeleteExpiredContextsL(class TTime const &)
+	?DeleteExpiredDomainsL@RRoapStorageClient@Roap@@QAEXABVTTime@@@Z @ 45 NONAME ; void Roap::RRoapStorageClient::DeleteExpiredDomainsL(class TTime const &)
+	?DeleteExpiredPermissions@RDRMRightsClient@@QAEXAAVTRequestStatus@@@Z @ 46 NONAME ; void RDRMRightsClient::DeleteExpiredPermissions(class TRequestStatus &)
+	?DeleteExpiredRIsL@RRoapStorageClient@Roap@@QAEXABVTTime@@@Z @ 47 NONAME ; void Roap::RRoapStorageClient::DeleteExpiredRIsL(class TTime const &)
+	?DeleteRiContextL@RRoapStorageClient@Roap@@QAEXABVTDesC8@@@Z @ 48 NONAME ; void Roap::RRoapStorageClient::DeleteRiContextL(class TDesC8 const &)
+	?DeviceCertCached@CDRMRIContext@@QBEEXZ @ 49 NONAME ; unsigned char CDRMRIContext::DeviceCertCached(void) const
+	?DomainGeneration@CDRMDomainContext@@QBEHXZ @ 50 NONAME ; int CDRMDomainContext::DomainGeneration(void) const
+	?DomainID@CDRMDomainContext@@QBE?BVTPtrC8@@XZ @ 51 NONAME ; class TPtrC8 const CDRMDomainContext::DomainID(void) const
+	?DomainKeyL@CDRMDomainContext@@QBEPAVHBufC8@@H@Z @ 52 NONAME ; class HBufC8 * CDRMDomainContext::DomainKeyL(int) const
+	?DomainKeys@CDRMDomainContext@@QBEABV?$RPointerArray@VHBufC8@@@@XZ @ 53 NONAME ; class RPointerArray<class HBufC8> const & CDRMDomainContext::DomainKeys(void) const
+	?EncodeRightsIssuerField@RDRMRightsClient@@QAEHABVTDesC8@@AAPAVHBufC8@@@Z @ 54 NONAME ; int RDRMRightsClient::EncodeRightsIssuerField(class TDesC8 const &, class HBufC8 * &)
+	?Encrypt@RDRMRightsClient@@QAEHABVTDesC8@@AAVTPtr8@@H@Z @ 55 NONAME ; int RDRMRightsClient::Encrypt(class TDesC8 const &, class TPtr8 &, int)
+	?ExpiryTime@CDRMDomainContext@@QBE?BVTTime@@XZ @ 56 NONAME ; class TTime const CDRMDomainContext::ExpiryTime(void) const
+	?ExpiryTime@CDRMRIContext@@QBE?BVTTime@@XZ @ 57 NONAME ; class TTime const CDRMRIContext::ExpiryTime(void) const
+	?ExportContentIDList@RDRMRightsClient@@QAEHAAV?$RPointerArray@VHBufC8@@@@@Z @ 58 NONAME ; int RDRMRightsClient::ExportContentIDList(class RPointerArray<class HBufC8> &)
+	?ExportContentIDList@RDRMRightsClient@@QAEHAAVTDes16@@@Z @ 59 NONAME ; int RDRMRightsClient::ExportContentIDList(class TDes16 &)
+	?ExportL@CDRMDomainContext@@QBEPAVHBufC8@@XZ @ 60 NONAME ; class HBufC8 * CDRMDomainContext::ExportL(void) const
+	?ExportL@CDRMRIContext@@QBEPAVHBufC8@@XZ @ 61 NONAME ; class HBufC8 * CDRMRIContext::ExportL(void) const
+	?ExportOrphanedContentIdList@RDRMRightsClient@@QAEHAAV?$RPointerArray@VHBufC8@@@@@Z @ 62 NONAME ; int RDRMRightsClient::ExportOrphanedContentIdList(class RPointerArray<class HBufC8> &)
+	?ExportOrphanedContentIdList@RDRMRightsClient@@QAEHAAVTDes16@@@Z @ 63 NONAME ; int RDRMRightsClient::ExportOrphanedContentIdList(class TDes16 &)
+	?ExternalizeL@CDRMDomainContext@@QBEXAAVRWriteStream@@@Z @ 64 NONAME ; void CDRMDomainContext::ExternalizeL(class RWriteStream &) const
+	?ExternalizeL@CDRMEventAddRemove@@UAEXAAVRWriteStream@@@Z @ 65 NONAME ; void CDRMEventAddRemove::ExternalizeL(class RWriteStream &)
+	?ExternalizeL@CDRMEventModify@@UAEXAAVRWriteStream@@@Z @ 66 NONAME ; void CDRMEventModify::ExternalizeL(class RWriteStream &)
+	?ExternalizeL@CDRMEventTimeChange@@UAEXAAVRWriteStream@@@Z @ 67 NONAME ; void CDRMEventTimeChange::ExternalizeL(class RWriteStream &)
+	?ExternalizeL@CDRMRIContext@@QBEXAAVRWriteStream@@@Z @ 68 NONAME ; void CDRMRIContext::ExternalizeL(class RWriteStream &) const
+	?ExternalizeL@MDRMEvent@@UAEXAAVRWriteStream@@@Z @ 69 NONAME ; void MDRMEvent::ExternalizeL(class RWriteStream &)
+	?ForwardLockURI@RDRMRightsClient@@QAEHAAPAVHBufC8@@@Z @ 70 NONAME ; int RDRMRightsClient::ForwardLockURI(class HBufC8 * &)
+	?GetActiveRightsL@RDRMRightsClient@@QAEPAVCDRMPermission@@HABVTDesC8@@AAK@Z @ 71 NONAME ; class CDRMPermission * RDRMRightsClient::GetActiveRightsL(int, class TDesC8 const &, unsigned long &)
+	?GetAuthenticationSeed@RDRMRightsClient@@QAEHABVTDesC8@@AAVTDes8@@@Z @ 72 NONAME ; int RDRMRightsClient::GetAuthenticationSeed(class TDesC8 const &, class TDes8 &)
+	?GetContentIDL@CDRMEventAddRemove@@UBEPAVHBufC8@@XZ @ 73 NONAME ; class HBufC8 * CDRMEventAddRemove::GetContentIDL(void) const
+	?GetContentIDL@CDRMEventModify@@UBEPAVHBufC8@@XZ @ 74 NONAME ; class HBufC8 * CDRMEventModify::GetContentIDL(void) const
+	?GetDBEntriesL@RDRMRightsClient@@QAEXABVTDesC8@@AAV?$RPointerArray@VCDRMPermission@@@@@Z @ 75 NONAME ; void RDRMRightsClient::GetDBEntriesL(class TDesC8 const &, class RPointerArray<class CDRMPermission> &)
+	?GetDbEntryL@RDRMRightsClient@@QAEPAVCDRMPermission@@ABVTDesC8@@ABK@Z @ 76 NONAME ; class CDRMPermission * RDRMRightsClient::GetDbEntryL(class TDesC8 const &, unsigned long const &)
+	?GetDecryptionKey@RDRMRightsClient@@QAEHHABVTDesC8@@AAVTDes8@@@Z @ 77 NONAME ; int RDRMRightsClient::GetDecryptionKey(int, class TDesC8 const &, class TDes8 &)
+	?GetDeviceCertificateChainL@RRoapStorageClient@Roap@@QAEHAAV?$RPointerArray@VHBufC8@@@@@Z @ 78 NONAME ; int Roap::RRoapStorageClient::GetDeviceCertificateChainL(class RPointerArray<class HBufC8> &)
+	?GetDevicePublicKeyDerL@RRoapStorageClient@Roap@@QAEHAAPAVHBufC8@@@Z @ 79 NONAME ; int Roap::RRoapStorageClient::GetDevicePublicKeyDerL(class HBufC8 * &)
+	?GetDevicePublicKeyHashL@RRoapStorageClient@Roap@@QAEHAAVTDes8@@@Z @ 80 NONAME ; int Roap::RRoapStorageClient::GetDevicePublicKeyHashL(class TDes8 &)
+	?GetDevicePublicKeyL@RRoapStorageClient@Roap@@QAEHAAPAVCRSAPublicKey@@@Z @ 81 NONAME ; int Roap::RRoapStorageClient::GetDevicePublicKeyL(class CRSAPublicKey * &)
+	?GetDomainContextL@RRoapStorageClient@Roap@@QAEPAVCDRMDomainContext@@ABVTDesC8@@@Z @ 82 NONAME ; class CDRMDomainContext * Roap::RRoapStorageClient::GetDomainContextL(class TDesC8 const &)
+	?GetDomainROL@RDRMRightsClient@@QAEPAVHBufC8@@ABVTDesC8@@@Z @ 83 NONAME ; class HBufC8 * RDRMRightsClient::GetDomainROL(class TDesC8 const &)
+	?GetDomainRosForCidL@RDRMRightsClient@@QAEXABVTDesC8@@AAV?$RPointerArray@VHBufC8@@@@@Z @ 84 NONAME ; void RDRMRightsClient::GetDomainRosForCidL(class TDesC8 const &, class RPointerArray<class HBufC8> &)
+	?GetEstimatedArrival@RDRMRightsClient@@QAEHABVTDesC8@@AAVTTimeIntervalSeconds@@@Z @ 85 NONAME ; int RDRMRightsClient::GetEstimatedArrival(class TDesC8 const &, class TTimeIntervalSeconds &)
+	?GetEventType@MDRMEvent@@QBEXAAK@Z @ 86 NONAME ; void MDRMEvent::GetEventType(unsigned long &) const
+	?GetName@RDRMRightsClient@@QAEHABVTDesC8@@AAPAVHBufC16@@@Z @ 87 NONAME ; int RDRMRightsClient::GetName(class TDesC8 const &, class HBufC16 * &)
+	?GetNewSecurityLevel@CDRMEventTimeChange@@QBE?AW4ESecurityLevel@DRMClock@@XZ @ 88 NONAME ; enum DRMClock::ESecurityLevel CDRMEventTimeChange::GetNewSecurityLevel(void) const
+	?GetNewTime@CDRMEventTimeChange@@QBEABVTTime@@XZ @ 89 NONAME ; class TTime const & CDRMEventTimeChange::GetNewTime(void) const
+	?GetNewTimeZone@CDRMEventTimeChange@@QBEHXZ @ 90 NONAME ; int CDRMEventTimeChange::GetNewTimeZone(void) const
+	?GetOldSecurityLevel@CDRMEventTimeChange@@QBE?AW4ESecurityLevel@DRMClock@@XZ @ 91 NONAME ; enum DRMClock::ESecurityLevel CDRMEventTimeChange::GetOldSecurityLevel(void) const
+	?GetOldTime@CDRMEventTimeChange@@QBEABVTTime@@XZ @ 92 NONAME ; class TTime const & CDRMEventTimeChange::GetOldTime(void) const
+	?GetOldTimeZone@CDRMEventTimeChange@@QBEHXZ @ 93 NONAME ; int CDRMEventTimeChange::GetOldTimeZone(void) const
+	?GetRIContextL@RRoapStorageClient@Roap@@QAEPAVCDRMRIContext@@ABVTDesC8@@@Z @ 94 NONAME ; class CDRMRIContext * Roap::RRoapStorageClient::GetRIContextL(class TDesC8 const &)
+	?GetRandomDataL@RDRMRightsClient@@QBEXAAVTDes8@@@Z @ 95 NONAME ; void RDRMRightsClient::GetRandomDataL(class TDes8 &) const
+	?GetRootCertificateL@RRoapStorageClient@Roap@@QBEPAVHBufC8@@ABVTDesC16@@@Z @ 96 NONAME ; class HBufC8 * Roap::RRoapStorageClient::GetRootCertificateL(class TDesC16 const &) const
+	?GetSecureTime@RDRMClockClient@@QBEHAAVTTime@@AAHAAW4ESecurityLevel@DRMClock@@@Z @ 97 NONAME ; int RDRMClockClient::GetSecureTime(class TTime &, int &, enum DRMClock::ESecurityLevel &) const
+	?GetSupportedIndividualsL@RDRMRightsClient@@QBEHAAV?$RPointerArray@VHBufC8@@@@@Z @ 98 NONAME ; int RDRMRightsClient::GetSupportedIndividualsL(class RPointerArray<class HBufC8> &) const
+	?GetTrustedRootsL@RRoapStorageClient@Roap@@QBEXAAV?$RPointerArray@VHBufC8@@@@@Z @ 99 NONAME ; void Roap::RRoapStorageClient::GetTrustedRootsL(class RPointerArray<class HBufC8> &) const
+	?GetUdtData@RDRMRightsClient@@QAEHAAVTDes8@@@Z @ 100 NONAME ; int RDRMRightsClient::GetUdtData(class TDes8 &)
+	?HashChained@CDRMDomainContext@@QBEHXZ @ 101 NONAME ; int CDRMDomainContext::HashChained(void) const
+	?ImportL@CDRMDomainContext@@QAEXABVTDesC8@@@Z @ 102 NONAME ; void CDRMDomainContext::ImportL(class TDesC8 const &)
+	?ImportL@CDRMRIContext@@QAEXABVTDesC8@@@Z @ 103 NONAME ; void CDRMRIContext::ImportL(class TDesC8 const &)
+	?InitOrphanedContentIdList@RDRMRightsClient@@QAEXHAAVTRequestStatus@@@Z @ 104 NONAME ; void RDRMRightsClient::InitOrphanedContentIdList(int, class TRequestStatus &)
+	?InitializeGroupKey@RDRMRightsClient@@QAEHABVTDesC8@@0W4TEncryptionMethod@ContentAccess@@@Z @ 105 NONAME ; int RDRMRightsClient::InitializeGroupKey(class TDesC8 const &, class TDesC8 const &, enum ContentAccess::TEncryptionMethod)
+	?InitializeKey@RDRMRightsClient@@QAEHABVTDesC8@@@Z @ 106 NONAME ; int RDRMRightsClient::InitializeKey(class TDesC8 const &)
+	?InitiateUdt@RDRMRightsClient@@QAEHABVTDesC8@@@Z @ 107 NONAME ; int RDRMRightsClient::InitiateUdt(class TDesC8 const &)
+	?InternalizeL@CDRMDomainContext@@QAEXAAVRReadStream@@@Z @ 108 NONAME ; void CDRMDomainContext::InternalizeL(class RReadStream &)
+	?InternalizeL@CDRMEventAddRemove@@UAEXAAVRReadStream@@@Z @ 109 NONAME ; void CDRMEventAddRemove::InternalizeL(class RReadStream &)
+	?InternalizeL@CDRMEventModify@@UAEXAAVRReadStream@@@Z @ 110 NONAME ; void CDRMEventModify::InternalizeL(class RReadStream &)
+	?InternalizeL@CDRMEventTimeChange@@UAEXAAVRReadStream@@@Z @ 111 NONAME ; void CDRMEventTimeChange::InternalizeL(class RReadStream &)
+	?InternalizeL@CDRMRIContext@@QAEXAAVRReadStream@@@Z @ 112 NONAME ; void CDRMRIContext::InternalizeL(class RReadStream &)
+	?InternalizeL@MDRMEvent@@UAEXAAVRReadStream@@@Z @ 113 NONAME ; void MDRMEvent::InternalizeL(class RReadStream &)
+	?IsInCache@RDRMRightsClient@@QAEHABVTDesC8@@AAH@Z @ 114 NONAME ; int RDRMRightsClient::IsInCache(class TDesC8 const &, int &)
+	?IsInCache@RDRMRightsClient@@QAEHABVTDesC8@@ABVTTime@@AAH@Z @ 115 NONAME ; int RDRMRightsClient::IsInCache(class TDesC8 const &, class TTime const &, int &)
+	?NewL@CDRMDomainContext@@SAPAV1@ABVTDesC8@@ABVTTime@@HABV?$RPointerArray@VHBufC8@@@@00@Z @ 116 NONAME ; class CDRMDomainContext * CDRMDomainContext::NewL(class TDesC8 const &, class TTime const &, int, class RPointerArray<class HBufC8> const &, class TDesC8 const &, class TDesC8 const &)
+	?NewL@CDRMDomainContext@@SAPAV1@XZ @ 117 NONAME ; class CDRMDomainContext * CDRMDomainContext::NewL(void)
+	?NewL@CDRMEventAddRemove@@SAPAV1@W4TAddRemoveEventStatus@@@Z @ 118 NONAME ; class CDRMEventAddRemove * CDRMEventAddRemove::NewL(enum TAddRemoveEventStatus)
+	?NewL@CDRMEventModify@@SAPAV1@XZ @ 119 NONAME ; class CDRMEventModify * CDRMEventModify::NewL(void)
+	?NewL@CDRMEventTimeChange@@SAPAV1@XZ @ 120 NONAME ; class CDRMEventTimeChange * CDRMEventTimeChange::NewL(void)
+	?NewL@CDRMNotifier@@SAPAV1@XZ @ 121 NONAME ; class CDRMNotifier * CDRMNotifier::NewL(void)
+	?NewL@CDRMRIContext@@SAPAV1@ABVTDesC8@@00ABV?$RPointerArray@VHBufC8@@@@10ABVTTime@@11E0E@Z @ 122 NONAME ; class CDRMRIContext * CDRMRIContext::NewL(class TDesC8 const &, class TDesC8 const &, class TDesC8 const &, class RPointerArray<class HBufC8> const &, class RPointerArray<class HBufC8> const &, class TDesC8 const &, class TTime const &, class RPointerArray<class HBufC8> const &, class RPointerArray<class HBufC8> const &, unsigned char, class TDesC8 const &, unsigned char)
+	?NewL@CDRMRIContext@@SAPAV1@XZ @ 123 NONAME ; class CDRMRIContext * CDRMRIContext::NewL(void)
+	?NewLC@CDRMDomainContext@@SAPAV1@ABVTDesC8@@ABVTTime@@HABV?$RPointerArray@VHBufC8@@@@00@Z @ 124 NONAME ; class CDRMDomainContext * CDRMDomainContext::NewLC(class TDesC8 const &, class TTime const &, int, class RPointerArray<class HBufC8> const &, class TDesC8 const &, class TDesC8 const &)
+	?NewLC@CDRMDomainContext@@SAPAV1@XZ @ 125 NONAME ; class CDRMDomainContext * CDRMDomainContext::NewLC(void)
+	?NewLC@CDRMEventAddRemove@@SAPAV1@W4TAddRemoveEventStatus@@@Z @ 126 NONAME ; class CDRMEventAddRemove * CDRMEventAddRemove::NewLC(enum TAddRemoveEventStatus)
+	?NewLC@CDRMEventModify@@SAPAV1@XZ @ 127 NONAME ; class CDRMEventModify * CDRMEventModify::NewLC(void)
+	?NewLC@CDRMEventTimeChange@@SAPAV1@XZ @ 128 NONAME ; class CDRMEventTimeChange * CDRMEventTimeChange::NewLC(void)
+	?NewLC@CDRMNotifier@@SAPAV1@XZ @ 129 NONAME ; class CDRMNotifier * CDRMNotifier::NewLC(void)
+	?NewLC@CDRMRIContext@@SAPAV1@ABVTDesC8@@00ABV?$RPointerArray@VHBufC8@@@@10ABVTTime@@11E0E@Z @ 130 NONAME ; class CDRMRIContext * CDRMRIContext::NewLC(class TDesC8 const &, class TDesC8 const &, class TDesC8 const &, class RPointerArray<class HBufC8> const &, class RPointerArray<class HBufC8> const &, class TDesC8 const &, class TTime const &, class RPointerArray<class HBufC8> const &, class RPointerArray<class HBufC8> const &, unsigned char, class TDesC8 const &, unsigned char)
+	?NewLC@CDRMRIContext@@SAPAV1@XZ @ 131 NONAME ; class CDRMRIContext * CDRMRIContext::NewLC(void)
+	?OCSPResponse@CDRMRIContext@@QBEABV?$RPointerArray@VHBufC8@@@@XZ @ 132 NONAME ; class RPointerArray<class HBufC8> const & CDRMRIContext::OCSPResponse(void) const
+	?RIID@CDRMRIContext@@QBEABVTDesC8@@XZ @ 133 NONAME ; class TDesC8 const & CDRMRIContext::RIID(void) const
+	?RIURLs@CDRMRIContext@@QBEABV?$RPointerArray@VHBufC8@@@@XZ @ 134 NONAME ; class RPointerArray<class HBufC8> const & CDRMRIContext::RIURLs(void) const
+	?RegisterEventObserverL@CDRMNotifier@@QAEXAAVMDRMEventObserver@@ABK@Z @ 135 NONAME ; void CDRMNotifier::RegisterEventObserverL(class MDRMEventObserver &, unsigned long const &)
+	?RegisterEventObserverL@CDRMNotifier@@QAEXAAVMDRMEventObserver@@ABKABVTDesC8@@@Z @ 136 NONAME ; void CDRMNotifier::RegisterEventObserverL(class MDRMEventObserver &, unsigned long const &, class TDesC8 const &)
+	?RightsIssuerID@CDRMDomainContext@@QBEABVTDesC8@@XZ @ 137 NONAME ; class TDesC8 const & CDRMDomainContext::RightsIssuerID(void) const
+	?RightsIssuerURL@CDRMDomainContext@@QBEABVTDesC8@@XZ @ 138 NONAME ; class TDesC8 const & CDRMDomainContext::RightsIssuerURL(void) const
+	?RightsIssuerURL@CDRMRIContext@@QBEABVTDesC8@@XZ @ 139 NONAME ; class TDesC8 const & CDRMRIContext::RightsIssuerURL(void) const
+	?RsaSignL@RRoapStorageClient@Roap@@QAEHABVTDesC8@@AAPAVHBufC8@@@Z @ 140 NONAME ; int Roap::RRoapStorageClient::RsaSignL(class TDesC8 const &, class HBufC8 * &)
+	?SelectTrustedRootL@RRoapStorageClient@Roap@@QBEHABV?$RPointerArray@VHBufC8@@@@AAVTDes8@@@Z @ 141 NONAME ; int Roap::RRoapStorageClient::SelectTrustedRootL(class RPointerArray<class HBufC8> const &, class TDes8 &) const
+	?SelectTrustedRootL@RRoapStorageClient@Roap@@QBEHABVTDesC8@@@Z @ 142 NONAME ; int Roap::RRoapStorageClient::SelectTrustedRootL(class TDesC8 const &) const
+	?SelectedDeviceRoot@CDRMRIContext@@QBEABVTDesC8@@XZ @ 143 NONAME ; class TDesC8 const & CDRMRIContext::SelectedDeviceRoot(void) const
+	?SendEventL@CDRMNotifier@@QAEXAAVMDRMEvent@@AAVTRequestStatus@@@Z @ 144 NONAME ; void CDRMNotifier::SendEventL(class MDRMEvent &, class TRequestStatus &)
+	?SetAlgorithmsL@CDRMRIContext@@QAEXABV?$RPointerArray@VHBufC8@@@@@Z @ 145 NONAME ; void CDRMRIContext::SetAlgorithmsL(class RPointerArray<class HBufC8> const &)
+	?SetAuthenticationSeed@RDRMRightsClient@@QAEHABVTDesC8@@0@Z @ 146 NONAME ; int RDRMRightsClient::SetAuthenticationSeed(class TDesC8 const &, class TDesC8 const &)
+	?SetCertificateChainL@CDRMRIContext@@QAEXABV?$RPointerArray@VHBufC8@@@@@Z @ 147 NONAME ; void CDRMRIContext::SetCertificateChainL(class RPointerArray<class HBufC8> const &)
+	?SetContentIDL@CDRMEventAddRemove@@UAEXABVTDesC8@@@Z @ 148 NONAME ; void CDRMEventAddRemove::SetContentIDL(class TDesC8 const &)
+	?SetContentIDL@CDRMEventModify@@QAEXABVTDesC8@@@Z @ 149 NONAME ; void CDRMEventModify::SetContentIDL(class TDesC8 const &)
+	?SetDeviceCertCached@CDRMRIContext@@QAEXAAE@Z @ 150 NONAME ; void CDRMRIContext::SetDeviceCertCached(unsigned char &)
+	?SetDomainIDL@CDRMDomainContext@@QAEXABVTDesC8@@@Z @ 151 NONAME ; void CDRMDomainContext::SetDomainIDL(class TDesC8 const &)
+	?SetDomainKeysL@CDRMDomainContext@@QAEXABV?$RPointerArray@VHBufC8@@@@@Z @ 152 NONAME ; void CDRMDomainContext::SetDomainKeysL(class RPointerArray<class HBufC8> const &)
+	?SetEstimatedArrival@RDRMRightsClient@@QAEHABVTDesC8@@VTTimeIntervalSeconds@@@Z @ 153 NONAME ; int RDRMRightsClient::SetEstimatedArrival(class TDesC8 const &, class TTimeIntervalSeconds)
+	?SetExpiryTimeL@CDRMDomainContext@@QAEXABVTTime@@@Z @ 154 NONAME ; void CDRMDomainContext::SetExpiryTimeL(class TTime const &)
+	?SetExpiryTimeL@CDRMRIContext@@QAEXABVTTime@@@Z @ 155 NONAME ; void CDRMRIContext::SetExpiryTimeL(class TTime const &)
+	?SetHashChainedL@CDRMDomainContext@@QAEXABH@Z @ 156 NONAME ; void CDRMDomainContext::SetHashChainedL(int const &)
+	?SetName@RDRMRightsClient@@QAEHABVTDesC8@@ABVTDesC16@@@Z @ 157 NONAME ; int RDRMRightsClient::SetName(class TDesC8 const &, class TDesC16 const &)
+	?SetNewSecurityLevel@CDRMEventTimeChange@@QAEXW4ESecurityLevel@DRMClock@@@Z @ 158 NONAME ; void CDRMEventTimeChange::SetNewSecurityLevel(enum DRMClock::ESecurityLevel)
+	?SetNewTime@CDRMEventTimeChange@@QAEXABVTTime@@@Z @ 159 NONAME ; void CDRMEventTimeChange::SetNewTime(class TTime const &)
+	?SetNewTimeZone@CDRMEventTimeChange@@QAEXH@Z @ 160 NONAME ; void CDRMEventTimeChange::SetNewTimeZone(int)
+	?SetOCSPResponseL@CDRMRIContext@@QAEXABV?$RPointerArray@VHBufC8@@@@@Z @ 161 NONAME ; void CDRMRIContext::SetOCSPResponseL(class RPointerArray<class HBufC8> const &)
+	?SetOldSecurityLevel@CDRMEventTimeChange@@QAEXW4ESecurityLevel@DRMClock@@@Z @ 162 NONAME ; void CDRMEventTimeChange::SetOldSecurityLevel(enum DRMClock::ESecurityLevel)
+	?SetOldTime@CDRMEventTimeChange@@QAEXABVTTime@@@Z @ 163 NONAME ; void CDRMEventTimeChange::SetOldTime(class TTime const &)
+	?SetOldTimeZone@CDRMEventTimeChange@@QAEXH@Z @ 164 NONAME ; void CDRMEventTimeChange::SetOldTimeZone(int)
+	?SetRIIDL@CDRMRIContext@@QAEXABVTDesC8@@@Z @ 165 NONAME ; void CDRMRIContext::SetRIIDL(class TDesC8 const &)
+	?SetRIURLsL@CDRMRIContext@@QAEXABV?$RPointerArray@VHBufC8@@@@@Z @ 166 NONAME ; void CDRMRIContext::SetRIURLsL(class RPointerArray<class HBufC8> const &)
+	?SetRightsIssuerIDL@CDRMDomainContext@@QAEXABVTDesC8@@@Z @ 167 NONAME ; void CDRMDomainContext::SetRightsIssuerIDL(class TDesC8 const &)
+	?SetRightsIssuerURLL@CDRMDomainContext@@QAEXABVTDesC8@@@Z @ 168 NONAME ; void CDRMDomainContext::SetRightsIssuerURLL(class TDesC8 const &)
+	?SetRightsIssuerURLL@CDRMRIContext@@QAEXABVTDesC8@@@Z @ 169 NONAME ; void CDRMRIContext::SetRightsIssuerURLL(class TDesC8 const &)
+	?SetSelectedDeviceRoot@CDRMRIContext@@QAEXABVTDesC8@@@Z @ 170 NONAME ; void CDRMRIContext::SetSelectedDeviceRoot(class TDesC8 const &)
+	?SetUniqueID@CDRMEventModify@@QAEXK@Z @ 171 NONAME ; void CDRMEventModify::SetUniqueID(unsigned long)
+	?SetVersionL@CDRMRIContext@@QAEXABVTDesC8@@@Z @ 172 NONAME ; void CDRMRIContext::SetVersionL(class TDesC8 const &)
+	?SignL@RRoapStorageClient@Roap@@QAEHABVTDesC8@@AAPAVHBufC8@@@Z @ 173 NONAME ; int Roap::RRoapStorageClient::SignL(class TDesC8 const &, class HBufC8 * &)
+	?Size@CDRMDomainContext@@QBEHXZ @ 174 NONAME ; int CDRMDomainContext::Size(void) const
+	?Size@CDRMRIContext@@QBEHXZ @ 175 NONAME ; int CDRMRIContext::Size(void) const
+	?StartServer@RDRMRightsClient@@SAHXZ @ 176 NONAME ; int RDRMRightsClient::StartServer(void)
+	?Status@CDRMEventAddRemove@@UBE?AW4TAddRemoveEventStatus@@XZ @ 177 NONAME ; enum TAddRemoveEventStatus CDRMEventAddRemove::Status(void) const
+	?StopWatching@RDRMRightsClient@@QBEXXZ @ 178 NONAME ; void RDRMRightsClient::StopWatching(void) const
+	?UnRegisterEventObserverL@CDRMNotifier@@QAEXAAVMDRMEventObserver@@ABK@Z @ 179 NONAME ; void CDRMNotifier::UnRegisterEventObserverL(class MDRMEventObserver &, unsigned long const &)
+	?UnRegisterEventObserverL@CDRMNotifier@@QAEXAAVMDRMEventObserver@@ABKABVTDesC8@@@Z @ 180 NONAME ; void CDRMNotifier::UnRegisterEventObserverL(class MDRMEventObserver &, unsigned long const &, class TDesC8 const &)
+	?UniqueID@CDRMEventModify@@QBEKXZ @ 181 NONAME ; unsigned long CDRMEventModify::UniqueID(void) const
+	?UnwrapMacAndRek@RDRMRightsClient@@QBEHABVTDesC8@@W4TKeyTransportScheme@@00@Z @ 182 NONAME ; int RDRMRightsClient::UnwrapMacAndRek(class TDesC8 const &, enum TKeyTransportScheme, class TDesC8 const &, class TDesC8 const &) const
+	?UpdateSecureTime@RDRMClockClient@@QAEHABVTTime@@ABH@Z @ 183 NONAME ; int RDRMClockClient::UpdateSecureTime(class TTime const &, int const &)
+	?VerifyL@RRoapStorageClient@Roap@@QAEHABVTDesC8@@0ABV?$RPointerArray@VHBufC8@@@@@Z @ 184 NONAME ; int Roap::RRoapStorageClient::VerifyL(class TDesC8 const &, class TDesC8 const &, class RPointerArray<class HBufC8> const &)
+	?VerifyMacL@RDRMRightsClient@@QBEHABVTDesC8@@0@Z @ 185 NONAME ; int RDRMRightsClient::VerifyMacL(class TDesC8 const &, class TDesC8 const &) const
+	?Version@CDRMRIContext@@QBEABVTDesC8@@XZ @ 186 NONAME ; class TDesC8 const & CDRMRIContext::Version(void) const
+	?WhiteListURLExistsL@CDRMRIContext@@QBEHABVTDesC8@@@Z @ 187 NONAME ; int CDRMRIContext::WhiteListURLExistsL(class TDesC8 const &) const
+	?WhiteListURLExistsL@RRoapStorageClient@Roap@@QAEHABVTDesC8@@AAH@Z @ 188  NONAME ; int Roap::RRoapStorageClient::WhiteListURLExistsL(class TDesC8 const &, int &)
+	?DeleteMeteringDataL@RDRMRightsClient@@QAEHABVTDesC8@@@Z @ 189 NONAME ; int RDRMRightsClient::DeleteMeteringDataL(class TDesC8 const &)
+	?DeleteMeteringDataL@RRoapStorageClient@Roap@@QAEXABVTDesC8@@@Z @ 190 NONAME ; void Roap::RRoapStorageClient::DeleteMeteringDataL(class TDesC8 const &)
+	?GetMeteringDataL@RDRMRightsClient@@QAEPAVHBufC8@@ABVTDesC8@@@Z @ 191 NONAME ; class HBufC8 * RDRMRightsClient::GetMeteringDataL(class TDesC8 const &)
+	?GetMeteringDataL@RRoapStorageClient@Roap@@QAEPAVHBufC8@@AAVTDesC8@@AAVTDes8@@1AAPAV3@@Z @ 192 NONAME ; class HBufC8 * Roap::RRoapStorageClient::GetMeteringDataL(class TDesC8 &, class TDes8 &, class TDes8 &, class HBufC8 * &)
+	?IsMeteringAllowed@CDRMRIContext@@QBEEXZ @ 193 NONAME ; unsigned char CDRMRIContext::IsMeteringAllowed(void) const
+	?SetMeteringStatus@CDRMRIContext@@QAEXH@Z @ 194 NONAME ; void CDRMRIContext::SetMeteringStatus(int)
+	?GetAllRIContextsL@RRoapStorageClient@Roap@@QAEXAAV?$RPointerArray@VCDRMRIContext@@@@@Z @ 195 NONAME ; void Roap::RRoapStorageClient::GetAllRIContextsL(class RPointerArray<class CDRMRIContext> &)
+	?UpdateRIContextL@RRoapStorageClient@Roap@@QAEXABVCDRMRIContext@@@Z @ 196 NONAME ; void Roap::RRoapStorageClient::UpdateRIContextL(class CDRMRIContext const &)
+	?RIAlias@CDRMRIContext@@QBEABVTDesC8@@XZ @ 197 NONAME ; class TDesC8 const & CDRMRIContext::RIAlias(void) const
+	?GetOcspResponderIdL@RRoapStorageClient@Roap@@QAEPAVHBufC8@@ABVTDesC8@@@Z @ 198 NONAME ; class HBufC8 * Roap::RRoapStorageClient::GetOcspResponderIdL(class TDesC8 const &)
+	?UpdateDrmTimeL@RRoapStorageClient@Roap@@QAEHABV?$RPointerArray@VHBufC8@@@@0ABVTDesC8@@@Z @ 199 NONAME ; int Roap::RRoapStorageClient::UpdateDrmTimeL(class RPointerArray<class HBufC8> const &, class RPointerArray<class HBufC8> const &, class TDesC8 const &)
+	?VerifyOcspResponsesL@RRoapStorageClient@Roap@@QAEHABV?$RPointerArray@VHBufC8@@@@ABVTDesC8@@0@Z @ 200 NONAME ; int Roap::RRoapStorageClient::VerifyOcspResponsesL(class RPointerArray<class HBufC8> const &, class TDesC8 const &, class RPointerArray<class HBufC8> const &)
+

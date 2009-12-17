@@ -1,0 +1,6 @@
+EXPORTS
+	??1CAsf@@UAE@XZ @ 1 NONAME ; CAsf::~CAsf(void)
+	?IsProtected@CAsf@@SAHABVTDesC8@@@Z @ 2 NONAME ; int CAsf::IsProtected(class TDesC8 const &)
+	?NewL@CAsf@@SAPAV1@ABVRFile@@@Z @ 3 NONAME ; class CAsf * CAsf::NewL(class RFile const &)
+	?NewL@CAsf@@SAPAV1@ABVTDesC16@@@Z @ 4 NONAME ; class CAsf * CAsf::NewL(class TDesC16 const &)
+

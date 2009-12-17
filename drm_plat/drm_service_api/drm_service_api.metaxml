@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<api id="c5208bdf54baf55f196d3d159cef17e0" dataversion="1.0">
+  <name>DRM Service API</name>
+  <description>An API for accessing DRM time and some cryptographic operations</description>
+  <type>c++</type>
+  <subsystem>omadrm</subsystem>
+  <libs>
+    <lib name="drmserviceapi.lib" />
+  </libs>
+  <release category="domain"/>
+  <attributes>
+     <!-- This indicates wether the api provedes separate html documentation -->
+     <!-- or is the additional documentation generated from headers. -->
+     <!-- If you are unsuere then the value is "no" -->
+     <htmldocprovided>yes</htmldocprovided>
+     <adaptation>no</adaptation>
+  </attributes>
+</api>

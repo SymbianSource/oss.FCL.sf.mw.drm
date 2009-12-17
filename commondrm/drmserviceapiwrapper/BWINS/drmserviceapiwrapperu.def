@@ -1,0 +1,3 @@
+EXPORTS
+	?GateFunctionDrmServiceApiWrapper@@YAPAXXZ @ 1 NONAME ; void * GateFunctionDrmServiceApiWrapper(void)
+

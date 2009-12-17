@@ -1,0 +1,116 @@
+EXPORTS
+	_ZN10CDRMRights10ConstructLEv @ 1 NONAME
+	_ZN10CDRMRights10GetAddTimeER5TTime @ 2 NONAME
+	_ZN10CDRMRights10GetLocalIDEv @ 3 NONAME
+	_ZN10CDRMRights10SetAddTimeE5TTime @ 4 NONAME
+	_ZN10CDRMRights10SetLocalIDEm @ 5 NONAME
+	_ZN10CDRMRights12GetPlayRightERP21CDRMRightsConstraints @ 6 NONAME
+	_ZN10CDRMRights12InternalizeLER11RReadStream @ 7 NONAME
+	_ZN10CDRMRights12SetPlayRightEP21CDRMRightsConstraints @ 8 NONAME
+	_ZN10CDRMRights13GetContentURIERP6HBufC8 @ 9 NONAME
+	_ZN10CDRMRights13GetPermissionEv @ 10 NONAME
+	_ZN10CDRMRights13GetPrintRightERP21CDRMRightsConstraints @ 11 NONAME
+	_ZN10CDRMRights13GetRightsInfoEmRNS_12TRestrictionERNS_11TExpirationERm @ 12 NONAME
+	_ZN10CDRMRights13SetContentURIEP6HBufC8 @ 13 NONAME
+	_ZN10CDRMRights13SetPrintRightEP21CDRMRightsConstraints @ 14 NONAME
+	_ZN10CDRMRights14SetPermissionLER14CDRMPermission @ 15 NONAME
+	_ZN10CDRMRights15GetDisplayRightERP21CDRMRightsConstraints @ 16 NONAME
+	_ZN10CDRMRights15GetExecuteRightERP21CDRMRightsConstraints @ 17 NONAME
+	_ZN10CDRMRights15SetDisplayRightEP21CDRMRightsConstraints @ 18 NONAME
+	_ZN10CDRMRights15SetExecuteRightEP21CDRMRightsConstraints @ 19 NONAME
+	_ZN10CDRMRights20GetExpirationDetailsEmR5TTimeRi @ 20 NONAME
+	_ZN10CDRMRights23SetContentURIAndLocalIDEP6HBufC8m @ 21 NONAME
+	_ZN10CDRMRights4NewLEv @ 22 NONAME
+	_ZN10CDRMRights8GetAssetEv @ 23 NONAME
+	_ZN10CDRMRights9SetAssetLER9CDRMAsset @ 24 NONAME
+	_ZN10CDRMRightsC1Ev @ 25 NONAME
+	_ZN10CDRMRightsC2Ev @ 26 NONAME
+	_ZN10CDRMRightsD0Ev @ 27 NONAME
+	_ZN10CDRMRightsD1Ev @ 28 NONAME
+	_ZN10CDRMRightsD2Ev @ 29 NONAME
+	_ZN10CDRMRightsaSERS_ @ 30 NONAME
+	_ZN14CDRMConstraint10DuplicateLERKS_ @ 31 NONAME
+	_ZN14CDRMConstraint12InternalizeLER11RReadStream @ 32 NONAME
+	_ZN14CDRMConstraint4NewLEv @ 33 NONAME
+	_ZN14CDRMConstraint5MergeERKS_ @ 34 NONAME
+	_ZN14CDRMConstraint5NewLCEv @ 35 NONAME
+	_ZN14CDRMConstraint7ConsumeERK5TTime @ 36 NONAME
+	_ZN14CDRMConstraintC1Ev @ 37 NONAME
+	_ZN14CDRMConstraintC2Ev @ 38 NONAME
+	_ZN14CDRMConstraintD0Ev @ 39 NONAME
+	_ZN14CDRMConstraintD1Ev @ 40 NONAME
+	_ZN14CDRMConstraintD2Ev @ 41 NONAME
+	_ZN14CDRMPermission10DuplicateLERKS_ @ 42 NONAME
+	_ZN14CDRMPermission12InternalizeLER11RReadStream @ 43 NONAME
+	_ZN14CDRMPermission13ConsumeRightsEN13ContentAccess7TIntentERK5TTime @ 44 NONAME
+	_ZN14CDRMPermission18TopLevelConstraintEv @ 45 NONAME
+	_ZN14CDRMPermission19ConstraintForIntentEN13ContentAccess7TIntentE @ 46 NONAME
+	_ZN14CDRMPermission4NewLEv @ 47 NONAME
+	_ZN14CDRMPermission5NewLCEv @ 48 NONAME
+	_ZN14CDRMPermission7ImportLERK6TDesC8 @ 49 NONAME
+	_ZN14CDRMPermissionD0Ev @ 50 NONAME
+	_ZN14CDRMPermissionD1Ev @ 51 NONAME
+	_ZN14CDRMPermissionD2Ev @ 52 NONAME
+	_ZN21CDRMRightsConstraints10ConstructLEv @ 53 NONAME
+	_ZN21CDRMRightsConstraints10FullRightsEv @ 54 NONAME
+	_ZN21CDRMRightsConstraints10GetEndTimeER5TTime @ 55 NONAME
+	_ZN21CDRMRightsConstraints10SetEndTimeE5TTime @ 56 NONAME
+	_ZN21CDRMRightsConstraints11GetCountersERmS0_ @ 57 NONAME
+	_ZN21CDRMRightsConstraints11GetIntervalER20TTimeIntervalSeconds @ 58 NONAME
+	_ZN21CDRMRightsConstraints11SetCountersEmm @ 59 NONAME
+	_ZN21CDRMRightsConstraints11SetIntervalE20TTimeIntervalSeconds @ 60 NONAME
+	_ZN21CDRMRightsConstraints12GetStartTimeER5TTime @ 61 NONAME
+	_ZN21CDRMRightsConstraints12SetStartTimeE5TTime @ 62 NONAME
+	_ZN21CDRMRightsConstraints13GetConstraintEv @ 63 NONAME
+	_ZN21CDRMRightsConstraints13SetConstraintER14CDRMConstraint @ 64 NONAME
+	_ZN21CDRMRightsConstraints16GetIntervalStartER5TTime @ 65 NONAME
+	_ZN21CDRMRightsConstraints16SetIntervalStartE5TTime @ 66 NONAME
+	_ZN21CDRMRightsConstraints17GetConstraintInfoERmS0_ @ 67 NONAME
+	_ZN21CDRMRightsConstraints20GetExpirationDetailsER5TTimeRi @ 68 NONAME
+	_ZN21CDRMRightsConstraints4NewLEv @ 69 NONAME
+	_ZN21CDRMRightsConstraints9IsPreviewEv @ 70 NONAME
+	_ZN21CDRMRightsConstraintsC1Ev @ 71 NONAME
+	_ZN21CDRMRightsConstraintsC2Ev @ 72 NONAME
+	_ZN21CDRMRightsConstraintsD0Ev @ 73 NONAME
+	_ZN21CDRMRightsConstraintsD1Ev @ 74 NONAME
+	_ZN21CDRMRightsConstraintsD2Ev @ 75 NONAME
+	_ZN21CDRMRightsConstraintsaSERS_ @ 76 NONAME
+	_ZN9CDRMAsset10DuplicateLERS_ @ 77 NONAME
+	_ZN9CDRMAsset12ExternalizeLER12RWriteStream @ 78 NONAME
+	_ZN9CDRMAsset12InternalizeLER11RReadStream @ 79 NONAME
+	_ZN9CDRMAsset4NewLEv @ 80 NONAME
+	_ZN9CDRMAsset5NewLCEv @ 81 NONAME
+	_ZN9CDRMAssetD0Ev @ 82 NONAME
+	_ZN9CDRMAssetD1Ev @ 83 NONAME
+	_ZN9CDRMAssetD2Ev @ 84 NONAME
+	_ZNK10CDRMRights12ExternalizeLER12RWriteStream @ 85 NONAME
+	_ZNK14CDRMConstraint12ExternalizeLER12RWriteStream @ 86 NONAME
+	_ZNK14CDRMConstraint4SizeEv @ 87 NONAME
+	_ZNK14CDRMConstraint7ExpiredERK5TTime @ 88 NONAME
+	_ZNK14CDRMConstraint8StatefulEv @ 89 NONAME
+	_ZNK14CDRMPermission12ExternalizeLER12RWriteStream @ 90 NONAME
+	_ZNK14CDRMPermission4SizeEv @ 91 NONAME
+	_ZNK14CDRMPermission5ChildEv @ 92 NONAME
+	_ZNK14CDRMPermission7ExportLEv @ 93 NONAME
+	_ZNK14CDRMPermission8StatefulEv @ 94 NONAME
+	_ZTI10CDRMRights @ 95 NONAME ; #<TI>#
+	_ZTI14CDRMConstraint @ 96 NONAME ; #<TI>#
+	_ZTI14CDRMPermission @ 97 NONAME ; #<TI>#
+	_ZTI21CDRMRightsConstraints @ 98 NONAME ; #<TI>#
+	_ZTI9CDRMAsset @ 99 NONAME ; #<TI>#
+	_ZTV10CDRMRights @ 100 NONAME ; #<VT>#
+	_ZTV14CDRMConstraint @ 101 NONAME ; #<VT>#
+	_ZTV14CDRMPermission @ 102 NONAME ; #<VT>#
+	_ZTV21CDRMRightsConstraints @ 103 NONAME ; #<VT>#
+	_ZTV9CDRMAsset @ 104 NONAME ; #<VT>#
+	_ZThn4_N10CDRMRights12InternalizeLER11RReadStream @ 105 NONAME ; #<thunk>#
+	_ZThn4_NK10CDRMRights12ExternalizeLER12RWriteStream @ 106 NONAME ; #<thunk>#
+	_ZN14CDRMPermission7ExpiredERK5TTime @ 107 NONAME
+	_ZNK14CDRMConstraint5ValidERK5TTimeRK13RPointerArrayI6HBufC8ERm @ 108 NONAME
+	_ZNK14CDRMPermission5ValidERK5TTimeRK13RPointerArrayI6HBufC8ERm11TRightsType @ 109 NONAME
+	_ZN21CDRMRightsConstraints14GetAccumulatedER20TTimeIntervalSeconds @ 110 NONAME
+	_ZN21CDRMRightsConstraints16GetTimedCountersERmS0_ @ 111 NONAME
+	_ZN10CDRMRights5MergeERKS_ @ 112 NONAME
+	_ZN14CDRMPermission5MergeERKS_ @ 113 NONAME
+	_ZNK14CDRMPermission19SoftwareConstrainedEv @ 114 NONAME
+

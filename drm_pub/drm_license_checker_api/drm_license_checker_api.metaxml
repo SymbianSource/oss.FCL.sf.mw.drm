@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<api id="6f41993c2f8e19ec01b85b9c479f4caf" dataversion="1.0">
+  <name>DRM License Checker API</name>
+  <description>Protection of native applications and skins. License Checker is ment to be used by the protected applications themselves</description>
+  <type>c++</type>
+  <subsystem>omadrm</subsystem>
+  <libs>
+    <lib name="DRMLicenseChecker.lib" />
+  </libs>
+  <release category="sdk" sinceversion="2.6"/>
+  <attributes>
+     <!-- This indicates wether the api provedes separate html documentation -->
+     <!-- or is the additional documentation generated from headers. -->
+     <!-- If you are unsuere then the value is "no" -->
+     <htmldocprovided>yes</htmldocprovided>
+     <adaptation>no</adaptation>
+  </attributes>
+</api>

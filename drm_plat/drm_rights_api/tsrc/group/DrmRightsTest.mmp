@@ -1,0 +1,52 @@
+/*
+* Copyright (c) 2007 - 2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+TARGET          DrmRightsTest.dll
+TARGETTYPE      dll
+UID             0x1000008D 0x101FB3E7
+
+CAPABILITY      ALL -TCB
+
+DEFFILE         DrmRightsTest.def
+
+SOURCEPATH      ../src
+SOURCE          DrmRightsTest.cpp
+SOURCE          DrmRightsTestCases.cpp
+
+USERINCLUDE     ../inc
+USERINCLUDE     ../../../../inc
+USERINCLUDE     ../../../../omadrm/drmengine/ro/inc
+USERINCLUDE     ../../../../omadrm/drmengine/server/inc
+
+MW_LAYER_SYSTEMINCLUDE
+
+LIBRARY         drmcommon.lib
+LIBRARY         drmdcf.lib
+LIBRARY         drmparsers.lib
+LIBRARY         drmrights.lib
+LIBRARY         drmserverinterfaces.lib
+LIBRARY         apmime.lib
+LIBRARY         efsrv.lib
+LIBRARY         estor.lib
+LIBRARY         euser.lib
+LIBRARY         stiftestinterface.lib
+
+SMPSAFE
+// End of File

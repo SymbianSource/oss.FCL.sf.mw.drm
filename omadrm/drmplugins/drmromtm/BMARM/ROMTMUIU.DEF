@@ -1,0 +1,3 @@
+EXPORTS
+	NewMtmUiL__FR8CBaseMtmR17CRegisteredMtmDll @ 1 NONAME R3UNUSED ; NewMtmUiL(CBaseMtm &, CRegisteredMtmDll &)
+

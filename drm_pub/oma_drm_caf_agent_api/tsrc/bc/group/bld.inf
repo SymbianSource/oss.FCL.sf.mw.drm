@@ -1,0 +1,50 @@
+/*
+* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies). 
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:       
+*
+*/
+
+/*
+-----------------------------------------------------------------------------
+
+    DESCRIPTION
+
+    bld.inf Toplevel build information for STIF Test Framework
+
+-----------------------------------------------------------------------------
+*/
+
+#if defined(__S60_)
+    // To get the MW_LAYER_PLATFORM_EXPORT_PATH macro definition
+    #include <platform_paths.hrh>
+#endif // __S60_
+
+PRJ_PLATFORMS
+DEFAULT
+
+
+PRJ_EXPORTS	
+	
+PRJ_TESTEXPORTS
+	
+PRJ_MMPFILES
+	
+// DRM_CAF
+#include "../DRM_CAF/group/bld.inf"
+	
+// BCDRMCAFCAPS_exe
+#include "../BCDRMCAFCAPS_exe/group/bld.inf"
+	
+	
+// End of File

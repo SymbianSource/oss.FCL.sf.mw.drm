@@ -1,0 +1,48 @@
+/*
+* Copyright (c) 2006-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  IBY file
+*
+*/
+
+
+#ifndef __WMDRM_IBY__
+#define __WMDRM_IBY__
+
+#include <bldvariant.hrh>
+
+file=ABI_DIR\BUILD_DIR\wmdrmfileserverclient.dll          SHARED_LIB_DIR\wmdrmfileserverclient.dll
+file=ABI_DIR\BUILD_DIR\wmdrmfileserver.exe      PROGRAMS_DIR\wmdrmfileserver.exe
+
+#ifdef __WINDOWS_MEDIA_DRM
+
+file=ABI_DIR\BUILD_DIR\drmasf.dll               SHARED_LIB_DIR\drmasf.dll
+file=ABI_DIR\BUILD_DIR\wmdrmclient.dll          SHARED_LIB_DIR\wmdrmclient.dll
+file=ABI_DIR\BUILD_DIR\wmdrmserver.exe          PROGRAMS_DIR\wmdrmserver.exe
+file=ABI_DIR\BUILD_DIR\wmdrmclientwrapper.dll   SHARED_LIB_DIR\wmdrmclientwrapper.dll
+
+data=ZSYSTEM\install\wmdrm_stub.sis             \system\install\wmdrm_stub.sis
+data=DATAZ_\private\102073ea\excludes\10282F1B.exc	\private\102073ea\excludes\10282F1B.exc
+
+S60_APP_EXE(wmdrmdlaapp)
+data=DATAZ_\private\10003a3f\apps\wmdrmdlaapp_reg.rsc	\private\10003a3f\import\apps\wmdrmdlaapp_reg.rsc
+file=ABI_DIR\BUILD_DIR\wmdrmdlautils.dll        SHARED_LIB_DIR\wmdrmdlautils.dll
+SCALABLE_IMAGE(APP_BITMAP_DIR,APP_BITMAP_DIR,wmdrmdla)
+file=ABI_DIR\BUILD_DIR\wmdrmdlawrapper.dll      SHARED_LIB_DIR\wmdrmdlawrapper.dll
+ECOM_PLUGIN( wmdrmdladefaulthttpplugin.dll, 20019574.rsc )
+ECOM_PLUGIN( wmdrmdladefaultuiplugin.dll, 20019575.rsc )
+ECOM_PLUGIN( httpfiltercamese.dll, 10282936.rsc )
+
+#endif // __WINDOWS_MEDIA_DRM
+
+#endif // __WMDRM_IBY__

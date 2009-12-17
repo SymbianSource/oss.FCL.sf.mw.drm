@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<api id="8a97bbf60f3cdcfecfa8cddef25281ac" dataversion="1.0">
+    <name>Camese Utility API</name>
+    <description>WMDRM DLA API</description>
+    <type>c++</type>
+    <subsystem>WMDRM</subsystem>
+    <libs>
+        <lib name="cameseutility.lib"/>
+    </libs>
+    <release category="domain" sinceversion="5.0"/>
+    <attributes>
+        <htmldocprovided>no</htmldocprovided>
+        <adaptation>no</adaptation>
+    </attributes>
+</api>

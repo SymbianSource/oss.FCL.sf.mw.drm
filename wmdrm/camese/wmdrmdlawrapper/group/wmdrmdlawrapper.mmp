@@ -1,0 +1,39 @@
+/*
+* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Project definition file for project WMDRM DLA Wrapper
+*
+*/
+
+
+#include <data_caging_paths.hrh>
+#include <platform_paths.hrh>
+
+TARGET          wmdrmdlawrapper.dll
+TARGETTYPE      dll
+UID             0x1000008D 0x2001E2C6
+
+CAPABILITY      CAP_GENERAL_DLL
+
+SOURCEPATH      ../src
+SOURCE          wmdrmdlawrapper.cpp
+
+USERINCLUDE     ../../../../inc
+USERINCLUDE     ../../wmdrmdla/inc
+MW_LAYER_SYSTEMINCLUDE
+
+LIBRARY         euser.lib
+LIBRARY         efsrv.lib
+LIBRARY         wmdrmdla.lib
+
+SMPSAFE

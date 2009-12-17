@@ -1,0 +1,64 @@
+/*
+* Copyright (c) 2002-2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Client side implementation
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+TARGET          DcfRep.dll
+TARGETTYPE      DLL
+UID             0x1000008D 0x10205CA9
+CAPABILITY      CAP_GENERAL_DLL
+VENDORID        VID_DEFAULT
+
+//macro _DRM_TESTING
+
+SOURCEPATH      ../DcfRepository/client/src
+SOURCE          DcfRepCli.cpp
+SOURCE          DcfRep.cpp
+SOURCE          DcfEntry.cpp
+
+
+USERINCLUDE     ../DcfRepository/client/inc
+USERINCLUDE     ../DcfRepository/common
+USERINCLUDE     ../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+
+LIBRARY         euser.lib
+LIBRARY         efsrv.lib //RFile
+LIBRARY         estor.lib // for RDbColReadStream
+LIBRARY         edbms.lib //database
+LIBRARY         DrmServerInterfaces.lib // RDRMRightsClient
+
+#ifdef RD_MULTIPLE_DRIVE
+LIBRARY       platformenv.lib
+#endif
+
+
+
+#if defined(ARMCC)
+deffile ../eabi/ 
+#elif defined( WINSCW )
+deffile ../bwinscw/ 
+#elif defined( WINS )
+deffile ../bwins/ 
+#else
+deffile ../bmarm/ 
+#endif
+
+SMPSAFE

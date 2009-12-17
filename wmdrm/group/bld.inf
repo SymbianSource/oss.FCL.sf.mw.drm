@@ -1,0 +1,71 @@
+/*
+* Copyright (c) 2006-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Build file for WM DRM agent and plugins
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+PRJ_EXPORTS
+#if (defined __WINDOWS_MEDIA_DRM)
+../rom/wmdrm_stub.sis                                       /epoc32/data/z/system/install/wmdrm_stub.sis
+#endif // __WINDOWS_MEDIA_DRM
+
+// IBY files
+../rom/wmdrm.iby            CORE_MW_LAYER_IBY_EXPORT_PATH( wmdrm.iby )
+../rom/wmdrmresources.iby   LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( wmdrmresources.iby )
+
+// Configuration files
+../conf/wmdrm.confml            MW_LAYER_CONFML(wmdrm.confml)
+../conf/wmdrm_20011118.crml     MW_LAYER_CRML(wmdrm_20011118.crml)
+../conf/wmdrm_2001FE55.crml     MW_LAYER_CRML(wmdrm_2001FE55.crml)
+
+// RFS exclude list
+../wmdrmengine/wmdrmserver/server/data/10282F1B.exc	/epoc32/data/Z/private/102073ea/excludes/10282F1B.exc
+
+PRJ_PLATFORMS
+DEFAULT
+
+PRJ_MMPFILES
+#if (defined __WINDOWS_MEDIA_DRM)
+../wmdrmengine/asf/group/drmasf.mmp
+../wmdrmengine/wmdrmpkserver/serverresources/group/wmdrmpkserverresources.mmp
+../wmdrmengine/wmdrmserver/client/group/wmdrmclient.mmp
+../wmdrmengine/wmdrmserver/server/group/wmdrmserver.mmp
+../wmdrmengine/wmdrmserver/clientwrapper/group/wmdrmclientwrapper.mmp
+#endif // __WINDOWS_MEDIA_DRM
+
+../wmdrmengine/wmdrmfileserver/client/group/wmdrmfileserverclient.mmp
+../wmdrmengine/wmdrmfileserver/server/group/wmdrmfileserver.mmp
+
+#if (defined __WINDOWS_MEDIA_DRM)
+../camese/wmdrmdlaapp/group/wmdrmdlaapp.mmp
+../camese/wmdrmdlautils/group/wmdrmdlautils.mmp
+../camese/wmdrmdlawrapper/group/wmdrmdlawrapper.mmp
+../camese/wmdrmdladefaulthttpplugin/group/wmdrmdladefaulthttpplugin.mmp
+../camese/wmdrmdladefaultuiplugin/group/wmdrmdladefaultuiplugin.mmp
+../camese/httpfiltercamese/group/httpfiltercamese.mmp
+#endif // __WINDOWS_MEDIA_DRM
+
+PRJ_EXTENSIONS
+#if (defined __WINDOWS_MEDIA_DRM)
+START EXTENSION s60/mifconv
+OPTION TARGETFILE wmdrmdla.mif
+OPTION HEADERFILE wmdrmdla.mbg
+OPTION SOURCES -c8,8 qgn_prop_drm_valid_large /*qgn_prop_drm_server*/ //Todo: Take the correct icon into use when available
+END
+#endif // __WINDOWS_MEDIA_DRM
+
+#include "../wmdrmengine/wmdrmaccess/group/bld.inf"

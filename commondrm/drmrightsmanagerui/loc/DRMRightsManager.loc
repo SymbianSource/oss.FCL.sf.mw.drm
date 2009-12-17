@@ -1,0 +1,1263 @@
+/*
+* Copyright (c) 2003 - 2008 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  This is a localisation file for DRMRightsManager
+*
+*/
+
+
+
+//d:Command in options menu.
+//l:list_single_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_view_det        "Licence details"
+
+//d:Command in options menu.
+//l:list_single_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_refresh         "Reload"
+
+//d:Command in options menu.
+//l:list_single_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_del             "Delete"
+
+// Menu item text on main menu
+//d:Command in options menu.
+//l:list_single_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_restore         "Restore licences"
+
+//d:Caption and short caption. "Activ." stands for "Activation"
+//l:cell_app_pane_t1
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr                 "Licences"
+
+//d:Title pane text in main view
+//l:title_pane_t2/opt9
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_title_pane      "Licences"
+
+//d:Error message
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_query_restart   "Unable to access licences. Phone will restart. Continue?"
+
+//d:Error message
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_note_backup     "Unable to access licences. Licence list should be restored."
+
+//d:Empty text in listbox
+//l:main_list_empty_pane
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_no_files        "no licences"
+
+//d:Text to be used when related Media Object is not found in device
+//d:%N is a progressive number
+//l:list_single_graphic_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_no_name         "Unknown %N"
+
+//d:First line of first entry of Details View listbox
+//d:It indicates the current status of the selected Right Object
+//d:Second line is qtn_drm_mgr_det_valid or qtn_drm_mgr_det_exp
+//l:list_double_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_stat        "Status"
+
+//d:Possible second line for first entry of Details View listbox
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_det_valid       "Licence is valid"
+
+//d:Possible second line for first entry of Details View listbox
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_det_exp         "Licence expired"
+
+//d:First line of 'Content in phone' entry in Details View listbox.
+//d:It says if related Media Object is in device or not. If Media object is in device and not in a private
+//directory, it is told whether it is stored in phone memory or memory card.
+//d:Second line is qtn_drm_mgr_det_yes, qtn_drm_mgr_det_no, qtn_drm_mgr_det_phone_memory or qtn_drm_mgr_det_memory_card.
+//l:list_double_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_cip         "Content in phone"
+
+//d:Possible second line of 'Content in phone' entry in Details View listbox.
+//d:It means that related Media object is present in phone, but stored in private directory that cannot be shown.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_yes         "Yes"
+
+//d:Possible second line of 'Content in phone' entry in Details View listbox.
+//d:It means that related Media object is not present in phone.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_no          "No"
+
+//d:First line of third entry of Details View listbox
+//d:It reports if it is possible to send Media Object or not.
+//d:Second line is qtn_drm_mgr_det_allowed or qtn_drm_mgr_det_forbid
+//l:list_double_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_cs          "Content sending"
+
+//d:Possible second line for third entry of Details View listbox
+//d:Sending of the content is allowed
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_allowed     "Allowed"
+
+//d:Possible second line for third entry of Details View listbox
+//d:Sending of the content is forbidden
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_det_forbid      "Not allowed"
+
+//d:Possible first line for fourth entry of Details View listbox
+//d:%U is the type of rigths (qtn_drm_mgr_det2_play, qtn_drm_mgr_det2_display,
+//d:qtn_drm_mgr_det2_execute or qtn_drm_mgr_det2_print)
+//d:Second line is qtn_drm_mgr_det_unlimited, meaning that there are no
+//d:constraints for this type of rights
+//l:list_double_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_full_x      "Rights (%U)"
+
+//d:Possible first line for fourth entry of Details View listbox
+//d:%U is the type of rigths (qtn_drm_mgr_det2_play, qtn_drm_mgr_det2_display,
+//d:qtn_drm_mgr_det2_execute or qtn_drm_mgr_det2_print)
+//d:Second line is qtn_drm_mgr_det_1_count or qtn_drm_mgr_det_n_counts,
+//d:meaning the number of times that this object can be used.
+//l:list_double_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_utl_x       "Times left (%U)"
+
+//d:Possible first line for fourth entry of Details View listbox
+//d:%U is the type of rigths (qtn_drm_mgr_det2_play, qtn_drm_mgr_det2_display,
+//d:qtn_drm_mgr_det2_execute or qtn_drm_mgr_det2_print)
+//d:Second line is qtn_drm_mgr_det_not_act, meaning that this object has not
+//d:been activated yet.
+//l:list_double_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_uts_x       "Times status (%U)"
+
+//d:Possible first line for fourth entry of Details View listbox
+//d:%U is the type of rigths (qtn_drm_mgr_det2_play, qtn_drm_mgr_det2_display,
+//d:qtn_drm_mgr_det2_execute or qtn_drm_mgr_det2_print)
+//d:Second line is qtn_drm_mgr_det_inter or qtn_drm_mgr_det_inter_two, meaning
+//d:a quantity of time that specifies how long this object can be used.
+//l:list_double_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_udl_x       "Time left (%U)"
+
+//d:Possible first line for fourth entry of Details View listbox
+//d:%U is the type of rigths (qtn_drm_mgr_det2_play, qtn_drm_mgr_det2_display,
+//d:qtn_drm_mgr_det2_execute or qtn_drm_mgr_det2_print)
+//d:Second line is a date, meaning when the object started to be valid.
+//l:list_double_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_rvf_x       "Valid from (%U)"
+
+//d:Possible first line for fourth entry of Details View listbox
+//d:%U is the type of rigths (qtn_drm_mgr_det2_play, qtn_drm_mgr_det2_display,
+//d:qtn_drm_mgr_det2_execute or qtn_drm_mgr_det2_print)
+//d:Second line is a date, meaning until when the object is valid.
+//l:list_double_pane_t1_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_rvt_x       "Valid until (%U)"
+
+//d:Second part of the first line of the fourth entry of Details View listbox
+//d:Related Media Object can be played (for example a video)
+//l:list_double_large_graphic_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det2_play       "Play"
+
+//d:Second part of the first line of the fourth entry of Details View listbox
+//d:Related Media Object can be displayed (for example an image)
+//l:list_double_large_graphic_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det2_display    "Display"
+
+//d:Second part of the first line of the fourth entry of Details View listbox
+//d:Related Media Object can be executed (for example an application)
+//l:list_double_large_graphic_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det2_execute    "Execute"
+
+//d:Second part of the first line of the fourth entry of Details View listbox
+//d:Related Media Object can be printed (for example an image or a text)
+//l:list_double_large_graphic_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det2_print      "Print"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:No constraints for this type of Right.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_unlimited   "Unlimited"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:Usage times left is 1: it means that this object can be played, displayed,
+//d:executed or printed (according to the examined type of right) only once
+//d:more.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_1_count     "1 count"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N is the number of counts
+//d:Usage times left is %n: it means that this object can be played, displayed,
+//d:executed or printed (according to the examined type of right) only %N times
+//d:more.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_n_counts    "%N counts"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:Rights not activated
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_not_act     "Not activated"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:There is only one entry for an interval: e.g. "1 year"
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_inter       "%U"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:There are two entries for an interval: e.g. "1 year, 2 months"
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_mgr_det_inter_two   "%0U, %1U"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:It reports that the time constraint for this type of object is 1 year.
+//d:Other quantities of time may follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_years_one        "1 year"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of years of an interval
+//d:It is used for period of years ending with 1 from 21 (21, 31, 41, etc.)
+//d:It reports that the time constraint for this type of object is %N years.
+//d:Other quantities of time may follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_years_one_final  "%N years"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of years of an interval
+//d:It is used for period of years ending from 2 to 4, excluded 12-14 (2-4,
+//d:22-24, 32-34, etc.)
+//d:It reports that the time constraint for this type of object is %N years.
+//d:Other quantities of time may follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_years_two_four   "%N years"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of years of an interval
+//d:It is used for period of years ending from 5 to 0 plus range between 11 and
+//d:14 (5-20, 25-30, 35-40, etc.)
+//d:It reports that the time constraint for this type of object is %N years.
+//d:Other quantities of time may follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_years_five_zero  "%N years"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:It reports that the time constraint for this type of object is 1 month.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_months_one       "1 month"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of months of an interval
+//d:It is used for period from two to four months
+//d:It reports that the time constraint for this type of object is %N months.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_months_two_four  "%N months"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of months of an interval
+//d:It is used for period greater than four months
+//d:It reports that the time constraint for this type of object is %N months.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_months_five_zero "%N months"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:It reports that the time constraint for this type of object is 1 day.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_days_one         "1 day"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of days of an interval
+//d:It is used for a period of 21 days
+//d:It reports that the time constraint for this type of object is %N days.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_days_one_final   "%N days"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of days of an interval
+//d:It is used for period of days ending from 2 to 4, excluded 12-14 (2-4,
+//d:22-24)
+//d:It reports that the time constraint for this type of object is %N days.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_days_two_four    "%N days"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of days of an interval
+//d:It is used for period of days ending from 5 to 0 plus range between 11 and
+//d:14 (5-20, 25-30)
+//d:It reports that the time constraint for this type of object is %N days.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_days_five_zero   "%N days"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:It reports that the time constraint for this type of object is 1 hour.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_hours_one        "1 hour"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of hours of an interval
+//d:It is used for a period of 21 hours
+//d:It reports that the time constraint for this type of object is %N hours.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_hours_one_final  "%N hours"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of hours of an interval
+//d:It is used for period of hours ending from 2 to 4, excluded 12-14 (2-4,
+//d:22-23)
+//d:It reports that the time constraint for this type of object is %N hours.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_hours_two_four   "%N hours"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of hours of an interval
+//d:It is used for a period included from 5 to 20 hours
+//d:It reports that the time constraint for this type of object is %N hours.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_hours_five_zero  "%N hours"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:It reports that the time constraint for this type of object is 1 minute.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_mins_one         "1 minute"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of minutes of an interval
+//d:It is used for period of minutes ending with 1 from 21 (21, 31, 41, 51)
+//d:It reports that the time constraint for this type of object is %N minutes.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_mins_one_final   "%N minutes"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of minutes of an interval
+//d:It is used for period of minutes ending from 2 to 4, excluded 12-14 (2-4,
+//d:22-24, 32-34, 42-44, 52-54)
+//d:It reports that the time constraint for this type of object is %N minutes.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_mins_two_four    "%N minutes"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of minutes of an interval
+//d:It is used for period of minutes ending from 5 to 0 plus range between 11
+//d:and 14 (5-20, 25-30, 35-40, 45-50, 53-59)
+//d:It reports that the time constraint for this type of object is %N minutes.
+//d:Other quantities of time may precede or follow.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_mins_five_zero   "%N minutes"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:It reports that the time constraint for this type of object is 1 second.
+//d:Other quantities of time may precede.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_secs_one         "1 second"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of seconds of an interval
+//d:It is used for period of seconds ending with 1 from 21 (21, 31, 41, 51)
+//d:It reports that the time constraint for this type of object is %N seconds.
+//d:Other quantities of time may precede.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_secs_one_final   "%N seconds"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of seconds of an interval
+//d:It is used for period of seconds ending from 2 to 4, excluded 12-14 (2-4,
+//d:22-24, 32-34, 42-44, 52-54)
+//d:It reports that the time constraint for this type of object is %N seconds.
+//d:Other quantities of time may precede.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_secs_two_four    "%N seconds"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:%N number of seconds of an interval
+//d:It is used for period of minutes ending from 5 to 0 plus range between 11
+//d:and 14 (5-20, 25-30, 35-40, 45-50, 53-59)
+//d:It reports that the time constraint for this type of object is %N seconds.
+//d:Other quantities of time may precede.
+//l:list_double_pane_t2_cp2
+//w:
+//r:2.6
+//
+#define qtn_drm_nbr_of_secs_five_zero   "%N seconds"
+
+//d:Text showed during refreshing
+//l:popup_note_wait_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_wait_refreshing "Reloading"
+
+//d:Confirmation query text used when deleting a Right Object
+//d:%U name of the file
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_auto_del_romo   "If you delete licence, %U will also be deleted. Continue?"
+
+//d:Confirmation query text used when deleting a Right Object
+//d:%U name of the file
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_del_single_ro   "If you delete licence, file %U cannot be used. Continue?"
+
+//d:Confirmation query text proposed to ask if also related file should be deleted
+//d:%U name of the file
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_del_single_cont "Delete file %U also?"
+
+//d:Text during deletion
+//d:%U name of the file
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_wait_del_one_ro "Deleting licence for %U"
+
+//d:Text during deletion
+//d:%U name of the file
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_wait_del_roco   "Deleting %U and licence"
+
+//d:Notification after deletion
+//d:%U name of the file
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_deleted_one_ro  "Licence for %U deleted"
+
+//d:Notification after deletion
+//d:%U name of the file
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_deleted_roco    "Licence and %U deleted"
+
+//d:Confirmation query text
+//d:%U name of the file
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_no_mo_found     "Unable to delete %U. Continue?"
+
+//d:Notification to the user that it is impossible to show the details of the
+//d:selected Rights Object, as the object cannot be found in the database
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_note_ro_removed "Unable to access licence"
+
+
+// NEW STRINGS
+
+//d:First item data text of Main View
+//l:list_single_large_graphic_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_list_valid_keys     "Valid licences"
+
+//d:Second item data text of Main View
+//l:list_single_large_graphic_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_list_invalid_keys   "Invalid licences"
+
+//d:Third item data text of Main View
+//l:list_single_large_graphic_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_list_keys_not_used  "Licenses not in use"
+
+//d:Message query of a list query
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_del_group_ro_descr  "After deleting the licence, several files may not be used"
+
+//d:Title of the list query
+//l:heading_pane_t1
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_del_group_ro_warn   "Warning"
+
+//d:First selectable line of the list query
+//l:list_single_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_view_files_group_ro "View files"
+
+//d:Second selectable line of the list query
+//l:list_single_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_delete_group_ro     "Delete licence to the files"
+
+//d:Notification after deletion
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_deleted_ro          "Licence deleted"
+
+//d:Data query prompt text When renaming an item
+//l:popup_query_data_window
+//w:
+//r:3.0
+//
+#define qtn_album_prmpt_new_name        "New name:"
+
+
+//d:Title pane text for Valid keys View
+//l:title_pane_t2/opt9
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_title_valid_keys    "Valid licences"
+
+//d:Title pane text for Invalid keys View
+//l:title_pane_t2/opt9
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_title_invalid_keys  "Invalid licences"
+
+//d:Title pane text for Keys not in use View
+//l:title_pane_t2/opt9
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_title_keys_not_used "Licences not in use"
+
+//d:Empty text in listbox
+//l:main_list_empty_pane
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_no_related_files    "No related files in device"
+
+
+
+//d:Text to be used when a Group Activation key is found in device. %N is a
+//d:progressive number
+//l:list_single_graphic_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_name_group_key      "Group licence %N"
+
+//d:Menu item used in Group view to see the details of a Media Object.
+//l:list_single_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_group_mo_view_det   "View details"
+
+//d:Possible second line for second entry of Details View listbox
+//d:(qtn_drm_mgr_det_cip), when more than one file is related to the same
+//d:Activation key.
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_det_several_files   "Several files"
+
+//d:First line of an entry of Details View listbox, for a child Activation key.
+//d:Second line is qtn_drm_mgr_det_subscription.
+//l:list_double_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_det_belongs_to      "Belongs to"
+
+//d:Second line of an entry of Details View listbox, for a child Activation key.
+//d:First line is qtn_drm_mgr_det_belongs_to.
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_det_subscription    "Subscription"
+
+//d:First line of an entry of Details View listbox, displayed for the items,
+//d:which are related to multiple valid and/or future ROs. %0N is the number of
+//d:the activation key and %1N is the amount of activation keys.
+//d:Second line is qtn_drm_mgr_det_valid or qtn_drm_mgr_det_not_valid_yet.
+//l:list_double_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_det_ro_number           "Licence %0N/%1N"
+
+//d:Possible second line for first entry (qtn_drm_mgr_det_stat) of Details View
+//d:listbox, when the activation key is missing.
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_det_invalid         "Licence is invalid"
+
+//d:Possible second line for first entry (qtn_drm_det_ro_number) of Details
+//d:View listbox, when the activation key is not yet valid.
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_det_not_valid_yet   "Licence not valid yet"
+
+//d:Command in options menu, used to rename a Group key.
+//l:list_single_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_options_rename      "Rename"
+
+//d:Info note to inform the user that scanning is still running in background
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_info_not_updated    "Lists may not be up-to-date. Scanning still running on the background."
+
+//d:Confirmation note to inform the user that lists are updated.
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_conf_lists_updated  "Scanning is complete. Lists are up-to-date."
+
+//d:Confirmation query to ask if the user really wants to reload the activation
+//d:keys
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_query_reload        "Reloading activation query may take some time. Continue?"
+
+//d:Info note to inform the user that deletion cannot be performed
+//l:popup_note_window
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_info_unable_delete  "Licence lists are updated. Unable to delete during updating."
+
+//d:Info popup for an activation key with future rights. %U is the date when
+//d:the activation key will start to be valid
+//l:popup_preview_text_window/opt6
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_info_popup_future   "Licence is valid from %U"
+
+//d:Possible first line for fourth entry of Details View listbox
+//d:Second line is qtn_drm_mgr_det_inter or qtn_drm_mgr_det_inter_two, meaning
+//d:a quantity of time that specifies how long this object can be used.
+//l:list_double_pane_t1_cp2
+//w:
+//r:3.0
+//
+#define qtn_drm_mgr_det_accum_time_left "Usage time left"
+
+//d:Confirmation query text
+//d:Confirmation query text for UDT process confirmation
+//l:popup_note_window
+//r:3.0
+//
+#define qtn_drm_mgr_query_enable_keys "Restore licences and enable on this phone?"
+
+//d:Progress dialog text
+//d:Label for UDT progress note until HTTP connection has been estabilished
+//l:popup_note_wait_window
+//r:3.0
+//
+#define qtn_drm_udt_wait_note_text "Connecting..."
+
+//d:Progress dialog text
+//d:Info notification after successfull UDT process
+//l:popup_note_window
+//r:3.0
+//
+#define qtn_drm_mgr_conf_restore_ready "Restoration complete"
+
+//d:Progress dialog text
+//d:Info message shown during UDT restore process
+//l:popup_note_wait_window
+//r:3.0
+//
+#define qtn_drm_mgr_prgr_restoring_keys "Restoring licences"
+
+
+//d:Text for password editor in multiline query
+//d:Title for connection query password field
+//l:popup_query_data_code_window/opt2
+//r:3.0
+//
+#define qtn_drm_mgr_prompt_txt_password "Password"
+
+//d:Text for http address editor in multiline query
+//d:Title for connection query web address field
+//l:popup_query_data_code_window/opt2
+//r:3.0
+//
+#define qtn_drm_mgr_prompt_txt_web_addr "Web address"
+
+//d:Information note layout
+//d:UDT server address is invalid
+//l:popup_note_window
+//r:3.0
+//
+#define qtn_drm_err_invalid_server_addr "Incorrect web address"
+
+//d:Information note layout
+//d:Incorrect authentication information
+//l:popup_note_window
+//r:3.0
+//
+#define qtn_drm_info_psswrd_request_err "Password is incorrect or request is not authorized"
+
+//d:Information note layout
+//d:No activation keys found from backup file
+//l:popup_note_window
+//r:3.0
+//
+#define qtn_drm_mgr_info_no_backup_ros "No licences to restore"
+
+//d:Information note layout
+//d:Server unavailable
+//l:popup_note_window
+//r:3.0
+//
+#define qtn_drm_mgr_info_server_error "Server is not able to complete the process. Try again later."
+
+//d:Command in options menu.
+//l:list_single_pane_t1_cp2
+//w:
+//r:3.1
+//
+#define qtn_drm_mgr_options_get_new_key "Get new licence"
+
+//d:Confirmation query text
+//d:Shown when user has selected option Get new key, but valid, unlimited rights exist
+//l:popup_note_window
+//w:
+//r:3.1
+//
+#define qtn_drm_mgr_query_unlimited_ro "Licence is valid for unlimited time. Get still new licence?"
+
+//d:First line of an entry of Details View listbox, for an individual constraint.
+//d:Second line is qtn_drm_det_sim_allowed or qtn_drm_det_sim_not_allowed.
+//l:list_double_pane_t1_cp2
+//w:
+//r:3.1
+//
+#define qtn_drm_det_content_use "Content use"
+
+//d:Second line of an entry of Details View listbox, for an individual constraint.
+//d:First line is qtn_drm_det_content_use.
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.1
+//
+#define qtn_drm_det_sim_allowed "Allowed with this SIM"
+
+//d:Second line of an entry of Details View listbox, for an individual constraint.
+//d:First line is qtn_drm_det_content_use.
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.1
+//
+#define qtn_drm_det_sim_not_allowed "Not allowed with this SIM"
+
+//d:Possible second line of 'Content in phone' entry in Details View listbox.
+//d:It means that related Media object is present in phone, and stored in phone memory.
+//This term should be the same which is used when selecting storage place when downloading content.
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.1
+//
+#define qtn_drm_mgr_det_phone_memory         "Phone memory"
+
+//d:Possible second line of 'Content in phone' entry in Details View listbox.
+//d:It means that related Media object is present in phone, and stored in memory card.
+//This term should be the same which is used when selecting storage place when downloading content.
+//l:list_double_pane_t2_cp2
+//w:
+//r:3.1
+//
+#define qtn_drm_mgr_det_memory_card         "Memory card"
+
+//d:First line of 'File location' entry in Details View listbox.
+//d:Second line shows the path of related Media Object in phone.
+//l:list_double_pane_t1_cp2
+//w:
+//r:3.1
+//
+#define qtn_drm_mgr_det_location         "File location"
+
+//d:Middle soft key text in Valid/Invalid/Not in use keys view
+//l:control_pane_t3/opt7
+//w:
+//r:3.1
+//
+#define qtn_msk_drm_key_details         "Details"
+
+//d:Middle soft key text in Group key view
+//l:control_pane_t3/opt7
+//w:
+//r:3.1
+//
+#define qtn_msk_drm_view_details         "Details"
+
+// NEW LOCALIZED STRINGS
+
+//d:First line of first entry of Details View listbox
+//d:It indicates the current status of the selected Right Object
+//d:Second line is qtn_drm_details_valid or qtn_drm_details_not_valid
+//d:or qtn_drm_details_no_licence_available
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+#define qtn_drm_details_status          "License status"
+
+//d:Possible second line for first entry of Details View listbox
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_valid       "Licence is valid"
+
+//d:Possible second line for first entry of Details View listbox
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_not_valid_yet       "Not valid yet"
+
+//d:Possible second line for first entry of Details View listbox
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_no_licence_available       "No licence available"
+
+//d:First line of third entry of Details View listbox
+//d:It reports if it is possible to send Media Object or not.
+//d:Second line is qtn_drm_mgr_det_allowed or qtn_drm_mgr_det_forbid
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_sending          "Sending"
+
+//d:First line of fourth entry of Details View listbox, for an individual constraint.
+//d:Second line is qtn_drm_details_allowed_with_this_sim or
+//d:qtn_drm_details_not_allowed_with_this_sim.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_content_use         "Content use"
+
+//d:Second line of fourth entry of Details View listbox, for an individual constraint.
+//d:First line is qtn_drm_details_content_use.
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_allowed_with_this_sim "Allowed with this SIM"
+
+//d:Second line of fourth entry of Details View listbox, for an individual constraint.
+//d:First line is qtn_drm_details_content_use.
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_not_allowed_with_this_sim "Not allowed with this SIM"
+
+//d:Possible first line for second entry of Details View listbox, for
+//d:constraints when the intent is to play the file. Second line is
+//d:qtn_drm_mgr_det_unlimited, meaning that there is no constraint for playing
+//d:the file, or qtn_drm_details_1_time or qtn_drm_details_n_times
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_plays_left      "Plays left"
+
+//d:Possible first line for second entry of Details View listbox, for
+//d:constraints when the intent is to view the file. Second line is
+//d:qtn_drm_mgr_det_unlimited, meaning that there is no constraint for viewing
+//d:the file, or qtn_drm_details_1_time or qtn_drm_details_n_times
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_views_left      "Views left"
+
+//d:Possible first line for second entry of Details View listbox, for
+//d:constraints when the intent is to print the file. Second line is
+//d:qtn_drm_mgr_det_unlimited, meaning that there is no constraint for printing
+//d:the file, or qtn_drm_details_1_time or qtn_drm_details_n_times
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_prints_left      "Prints left"
+
+//d:Possible first line for second entry of Details View listbox, for
+//d:constraints when the intent is to execute the file. Second line is
+//d:qtn_drm_mgr_det_unlimited, meaning that there are is no constraint for
+//d:executing the file, or qtn_drm_details_1_time or qtn_drm_details_n_times
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_exec_times      "Exec times"
+
+//d:Possible second line for second entry of Details View listbox
+//d:Usage times left is 1: it means that this object can be played, displayed,
+//d:executed or printed (according to the examined type of right) only once
+//d:more.
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_1_time     "1 time"
+
+//d:Possible second line for second entry of Details View listbox
+//d:%N is the number of counts. Usage times left is %n: it means that this object
+//d:can be played, displayed, executed or printed (according to the examined
+//d:type of right) only %N times more.
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_n_times    "%N times"
+
+//d:Possible first line for second entry of Details View listbox, for accumulated
+//d:time constraint. Second line is qtn_drm_mgr_det_inter or
+//d:qtn_drm_mgr_det_inter_two, meaning a quantity of time that specifies how
+//d:long this object can be used.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_playing_time_left       "Playing time left"
+
+//d:Possible first line for second entry of Details View listbox
+//d:Means validity period of the interval constraint for play and execute intents
+//d:of the file. Only used when the interval has not been activated.
+//d:Second line is qtn_drm_mgr_det_inter or qtn_drm_mgr_det_inter_two, meaning
+//d:a quantity of time that specifies how long this object can be used.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_validity_period       "Validity period"
+
+//d:Possible first line for second entry of Details View listbox
+//d:Means viewing rights for display/view intent of the file. Only used when
+//d:the interval constraint has not been activated.
+//d:Second line is qtn_drm_mgr_det_inter or qtn_drm_mgr_det_inter_two, meaning
+//d:a quantity of time that specifies how long this object can be used.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_viewing_rights       "Viewing rights"
+
+//d:Possible first line for second entry of Details View listbox
+//d:Means printing rights for print intent of the file. Only used when
+//d:the interval constraint has not been activated.
+//d:Second line is qtn_drm_mgr_det_inter or qtn_drm_mgr_det_inter_two, meaning
+//d:a quantity of time that specifies how long this object can be used.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_printing_rights       "Printing rights"
+
+//d:Possible first line for second entry of Details View listbox. Means start time
+//d:constraint for play and execute intents of the file.
+//d:Second line is a date, meaning when the object will be valid.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_valid_from       "Valid from"
+
+//d:Possible first line for second entry of Details View listbox. Means start time
+//d:constraint for view intent of the file.
+//d:Second line is a date, meaning when the object will be valid.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_view_rights_from       "View rights from"
+
+//d:Possible first line for second entry of Details View listbox. Means start time
+//d:constraint for print intent of the file.
+//d:Second line is a date, meaning when the object will be valid.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_print_rights_from       "Print rights from"
+
+//d:Possible first line for second entry of Details View listbox. Means end time
+//d:constraint for play and execute intents of the file. Second line is a date,
+//d:meaning until when the object will be valid.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_valid_until       "Valid until"
+
+//d:Possible first line for second entry of Details View listbox. Means end time
+//d:constraint for view intent of the file. Second line is a date, meaning until when
+//d:the object will be valid.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_view_rights_until       "View rights until"
+
+//d:Possible first line for second entry of Details View listbox. Means end time
+//d:constraint for print intent of the file. Second line is a date, meaning until when
+//d:the object will be valid.
+//l:list_double_pane_t1_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_details_print_rights_until       "Print rights until"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:No constraints for Play rights.
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_mgr_det_pl_unlimited   "Unlimited"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:No constraints for View rights.
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_mgr_det_vi_unlimited   "Unlimited"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:No constraints for Print rights.
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_mgr_det_pr_unlimited   "Unlimited"
+
+//d:Possible second line for fourth entry of Details View listbox
+//d:No constraints for Execution rights.
+//l:list_double_pane_t2_cp2
+//w:
+//r:9.1
+//
+#define qtn_drm_mgr_det_ex_unlimited   "Unlimited"

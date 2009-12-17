@@ -1,0 +1,3 @@
+EXPORTS
+	?NewL@CRightsObjectMtmClient@@SAPAV1@AAVCRegisteredMtmDll@@AAVCMsvSession@@@Z @ 1 NONAME ; public: static class CRightsObjectMtmClient * __cdecl CRightsObjectMtmClient::NewL(class CRegisteredMtmDll &,class CMsvSession &)
+

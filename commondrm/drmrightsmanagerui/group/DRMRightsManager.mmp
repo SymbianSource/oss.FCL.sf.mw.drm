@@ -1,0 +1,84 @@
+/*
+* Copyright (c) 2003-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  This is the project specification file for DRMRightsManager.
+*
+*/
+
+
+#include <data_caging_paths.hrh>
+#include <platform_paths.hrh>
+
+TARGET  drmrightsmanager.exe
+EPOCSTACKSIZE 0x5000
+TARGETTYPE  exe
+
+UID  0x100039CE 0x101F85C7
+
+CAPABILITY CAP_APPLICATION PowerMgmt DRM
+VENDORID VID_DEFAULT
+
+SOURCEPATH ../src
+SOURCE  DRMRightsMgrApp.cpp
+SOURCE  DRMRightsMgrAppUi.cpp
+SOURCE  DRMRightsMgrDocument.cpp
+SOURCE  DRMRightsMgrDetailsContainer.cpp
+SOURCE  DRMRightsMgrDetailsView.cpp
+SOURCE  DRMViewItems.cpp
+SOURCE  DRMCommonUtilities.cpp
+
+START RESOURCE ../data/DRMRightsManager.rss
+HEADER
+
+TARGETPATH APP_RESOURCE_DIR
+
+LANGUAGE_IDS
+END  // RESOURCE
+
+
+USERINCLUDE     .
+USERINCLUDE     ../inc
+USERINCLUDE     ../../../inc
+
+// Default system include paths for middleware layer modules.
+APP_LAYER_SYSTEMINCLUDE
+
+
+LIBRARY euser.lib apparc.lib cone.lib eikcore.lib eikcoctl.lib eikctl.lib
+LIBRARY avkon.lib bafl.lib commonengine.lib efsrv.lib
+LIBRARY aknskins.lib commonui.lib servicehandler.lib
+LIBRARY dcfrep.lib caf.lib cafutils.lib
+LIBRARY ecom.lib
+LIBRARY commondialogs.lib
+LIBRARY directorylocalizer.lib
+
+LIBRARY drmparsers.lib
+LIBRARY drmdcf.lib
+LIBRARY drmrights.lib
+LIBRARY drmserverinterfaces.lib
+LIBRARY drmcommon.lib
+LIBRARY drmutilitywmdrmwrapper.lib
+
+LIBRARY starterclient.lib
+LIBRARY charconv.lib
+
+DEBUGLIBRARY flogger.lib
+
+
+START RESOURCE ../data/DRMRightsManager_reg.rss
+DEPENDS drmrightsmanager.rsg
+// Do not change the UID below.
+TARGETPATH /private/10003a3f/apps
+END
+
+SMPSAFE

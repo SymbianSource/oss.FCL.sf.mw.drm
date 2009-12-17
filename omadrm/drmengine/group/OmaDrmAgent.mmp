@@ -1,0 +1,81 @@
+/*
+* Copyright (c) 2005-2009 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  OMA DRM agent build configuration
+*
+*/
+
+
+#include <platform_paths.hrh>
+
+TARGET          OmaDrmAgent.dll
+TARGETTYPE      PLUGIN
+UID             0x10009D8D 0x101F6DB4
+CAPABILITY      CAP_ECOM_PLUGIN DRM
+VENDORID        VID_DEFAULT
+
+USERINCLUDE     ../DCF/inc
+USERINCLUDE     ../RO/inc
+USERINCLUDE     ../DM/inc
+USERINCLUDE     ../AgentV2/inc
+USERINCLUDE     ../Server/inc
+USERINCLUDE     ../Utils/inc
+USERINCLUDE     ../Notifier/inc
+USERINCLUDE     ../DcfRepository/client/inc
+USERINCLUDE	    ../../../inc   // ADo level inc dir
+
+// Default system include paths for middleware layer modules.
+MW_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE  	/epoc32/include/ecom
+
+SOURCEPATH      ../AgentV2/src
+SOURCE          Oma2Agent.cpp
+SOURCE          Oma2AgentFactory.cpp
+SOURCE          Oma2AgentContent.cpp
+SOURCE          Oma2AgentData.cpp
+SOURCE          Oma2AgentManager.cpp
+SOURCE          Oma2AgentAttributes.cpp
+SOURCE          Oma2AgentImportFile.cpp
+SOURCE          Oma2AgentRightsManager.cpp
+SOURCE          DcfCache.cpp
+
+START RESOURCE 101F6DB4.RSS
+TARGET         OmaDrmAgent
+END
+
+LIBRARY	        euser.lib 
+LIBRARY         drmparsers.lib
+LIBRARY         drmdcf.lib
+LIBRARY         drmrights.lib
+LIBRARY         drmserverinterfaces.lib
+LIBRARY         caf.lib
+LIBRARY         cafutils.lib
+LIBRARY         efsrv.lib
+LIBRARY         estor.lib
+LIBRARY         apmime.lib
+LIBRARY         cryptography.lib
+LIBRARY         random.lib
+LIBRARY         bafl.lib
+LIBRARY         charconv.lib
+LIBRARY         http.lib
+LIBRARY         ecom.lib
+LIBRARY         dcfrep.lib
+LIBRARY         avkon.lib
+LIBRARY			apparc.lib
+LIBRARY         aknnotify.lib
+LIBRARY         apgrfx.lib
+LIBRARY			ws32.lib
+LIBRARY			sysutil.lib
+LIBRARY         centralrepository.lib
+
+SMPSAFE
