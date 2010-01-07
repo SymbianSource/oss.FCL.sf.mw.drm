@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2008-2009 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -27,9 +27,9 @@
 
 /**
  *  HTTP_STRING macro
- *  To use HTTP_STRING macro you need a variable 'pool' defined (of 
+ *  To use HTTP_STRING macro you need a variable 'pool' defined (of
  *  RStringPool type).
- *  @param  aStringId  - an ID for string from HTTP Client's string table 
+ *  @param  aStringId  - an ID for string from HTTP Client's string table
  *  (e.g. 'HTTP::EAccept')
  */
 #define HTTP_STRING(aStringId)pool.StringF(aStringId, RHTTPSession::GetTable())
@@ -51,11 +51,11 @@
 // ----------------------------------------------------------------------------
 // CWmDrmDlaDefaultHttpManager::NewL
 // ----------------------------------------------------------------------------
-CWmDrmDlaDefaultHttpManager* CWmDrmDlaDefaultHttpManager::NewL( 
+CWmDrmDlaDefaultHttpManager* CWmDrmDlaDefaultHttpManager::NewL(
     MWmDrmDlaDefaltHttpManagerObserver& aObserver )
     {
     LOGFN( "CWmDrmDlaDefaultHttpManager::NewL(1)" );
-    CWmDrmDlaDefaultHttpManager* self = 
+    CWmDrmDlaDefaultHttpManager* self =
         new(ELeave) CWmDrmDlaDefaultHttpManager( aObserver, 0 );
     CleanupStack::PushL( self );
     self->ConstructL();
@@ -66,12 +66,12 @@ CWmDrmDlaDefaultHttpManager* CWmDrmDlaDefaultHttpManager::NewL(
 // ----------------------------------------------------------------------------
 // CWmDrmDlaDefaultHttpManager::NewL
 // ----------------------------------------------------------------------------
-CWmDrmDlaDefaultHttpManager* CWmDrmDlaDefaultHttpManager::NewL( 
+CWmDrmDlaDefaultHttpManager* CWmDrmDlaDefaultHttpManager::NewL(
     MWmDrmDlaDefaltHttpManagerObserver& aObserver,
     TUint32 aIapNumber )
     {
     LOGFN( "CWmDrmDlaDefaultHttpManager::NewL(2)" );
-    CWmDrmDlaDefaultHttpManager* self = 
+    CWmDrmDlaDefaultHttpManager* self =
         new(ELeave) CWmDrmDlaDefaultHttpManager( aObserver, aIapNumber );
     CleanupStack::PushL( self );
     self->ConstructL();
@@ -201,7 +201,7 @@ TBool CWmDrmDlaDefaultHttpManager::KeepAlive() const
 // const but aConnectionInfo is being changed after it has been put into a
 // package and GetConnectionInfo is called on the connection
 // ----------------------------------------------------------------------------
-void CWmDrmDlaDefaultHttpManager::GetConnectionInfoL( 
+void CWmDrmDlaDefaultHttpManager::GetConnectionInfoL(
     TConnectionInfo& aConnectionInfo )
     {
     LOGFN( "CWmDrmDlaDefaultHttpManager::GetConnectionInfoL" );
@@ -244,42 +244,42 @@ TInt CWmDrmDlaDefaultHttpManager::IapId()
 // ----------------------------------------------------------------------------
 // CWmDrmDlaDefaultHttpManager::MHFRunL
 // ----------------------------------------------------------------------------
-void CWmDrmDlaDefaultHttpManager::MHFRunL( 
-    RHTTPTransaction aTransaction, 
+void CWmDrmDlaDefaultHttpManager::MHFRunL(
+    RHTTPTransaction aTransaction,
     const THTTPEvent& aEvent )
     {
     LOGFN( "CWmDrmDlaDefaultHttpManager::MHFRunL" );
     RHTTPResponse response;
     TPtrC8 dataChunk;
-    
+
     // Either ESucceeded or EFailed will eventually occur
     switch ( aEvent.iStatus )
         {
         case THTTPEvent::EGotResponseHeaders:
             response = aTransaction.Response();
-    
+
             iInCallback = ETrue;
             iObserver.OnResponseHeadersL(
                 response,
                 response.GetHeaderCollection(),
                 iHttpSession.StringPool(),
                 response.StatusCode() );
-    
+
             break;
-    
+
         case THTTPEvent::EGotResponseBodyData:
-            // A member variable is used to store the body to avoid two 
+            // A member variable is used to store the body to avoid two
             // potential problems:
             // - OnResponseBodyDataL leaves
             // - Stop is called from within OnResponseBodyDataL
             iBody = aTransaction.Response().Body();
             User::LeaveIfNull( iBody );
-    
+
             iBody->GetNextDataPart( dataChunk );
-    
+
             iInCallback = ETrue;
             iObserver.OnResponseBodyDataL( dataChunk );
-    
+
             // Verify that iBody wasn't already released
             // for example by calling Stop within ResponseBodyDataL
             if ( iBody )
@@ -287,18 +287,18 @@ void CWmDrmDlaDefaultHttpManager::MHFRunL(
                 iBody->ReleaseData();
                 iBody = NULL;
                 }
-                
+
             break;
-    
+
         case THTTPEvent::ESucceeded:
         case THTTPEvent::EFailed:
-            // Deal with both the same as iError will either be negative or 
+            // Deal with both the same as iError will either be negative or
             // KErrNone
-            // If the user cancelled the credentials dialog then make sure we 
+            // If the user cancelled the credentials dialog then make sure we
             // return KErrCancel
             HandleDownloadComplete( iCredentialsOk ? iError : KErrCancel );
             break;
-    
+
         default:
             // This will capture system and HTTP lib errors
             // For positive codes iError will remain to KErrNone
@@ -346,13 +346,13 @@ TBool CWmDrmDlaDefaultHttpManager::GetCredentialsL(
 
         // Get the username/password
         iInCallback = ETrue;
-        iCredentialsOk = 
+        iCredentialsOk =
             iObserver.OnGetUsernamePasswordL( iUsername, iPassword );
         iInCallback = EFalse;
 
         // authentication = iCredentialsOk && iUsername && iPassword
         // no authentication = !iCredentialsOk && !iUsername && !iPassword
-        ASSERT( (iCredentialsOk && iUsername && iPassword) || 
+        ASSERT( (iCredentialsOk && iUsername && iPassword) ||
             (!iCredentialsOk && !iUsername && !iPassword ) );
 
         if (iCredentialsOk)
@@ -373,7 +373,17 @@ TBool CWmDrmDlaDefaultHttpManager::GetCredentialsL(
 void CWmDrmDlaDefaultHttpManager::RunL()
     {
     LOGFN( "CWmDrmDlaDefaultHttpManager::RunL" );
-    User::LeaveIfError( iStatus.Int() );
+    TInt error( iStatus.Int() );
+    LOG3( "CWmDrmDlaDefaultHttpManager State: %d Status: %d", iState, error );
+
+    if ( iState == EOpen && error == KErrNotFound )
+        {
+        iState=EOpenFailed;
+        }
+    else
+        {
+        User::LeaveIfError( error );
+        }
 
     switch (iState)
         {
@@ -381,8 +391,15 @@ void CWmDrmDlaDefaultHttpManager::RunL()
             InitializeL();
             break;
         case EInitialize:
-            Open();
+            OpenL();
             break;
+        case EOpenFailed: // Called only if open fails
+            ReconnectL();
+            break;
+        case EReconnect:
+            iState=EOpen;
+            // Note: intentionally no break
+            // Successfully completed EReconnect is same as EOpen.
         case EOpen:
             SubmitL();
             break;
@@ -393,7 +410,7 @@ void CWmDrmDlaDefaultHttpManager::RunL()
         }
 
     // Do not advance the state if the transaction was submitted
-    // MHFRunL will be called by the HTTP stack while the transaction 
+    // MHFRunL will be called by the HTTP stack while the transaction
     // progresses
     if ( iState != ESubmit )
         {
@@ -428,7 +445,7 @@ void CWmDrmDlaDefaultHttpManager::DoCancel()
 TInt CWmDrmDlaDefaultHttpManager::RunError( TInt aError )
     {
     LOGFN( "CWmDrmDlaDefaultHttpManager::RunError" );
-    LOG2( "aError: %d", aError ); 
+    LOG2( "aError: %d", aError );
     // Cleanup and generate the callback
     HandleDownloadComplete( aError );
     return KErrNone;
@@ -472,50 +489,91 @@ void CWmDrmDlaDefaultHttpManager::InitializeL()
 
 // ----------------------------------------------------------------------------
 // CWmDrmDlaDefaultHttpManager::OpenL
-// Handler for the EInitialize state. 
+// Handler for the EInitialize state.
 // ----------------------------------------------------------------------------
-void CWmDrmDlaDefaultHttpManager::Open()
+void CWmDrmDlaDefaultHttpManager::OpenL()
     {
-    LOGFN( "CWmDrmDlaDefaultHttpManager::Open" );
+    LOGFN( "CWmDrmDlaDefaultHttpManager::OpenL" );
     // Override dialog preferences
     // Use if IAP is provided, override the default one
     if ( iIapNumber )
         {
-        iCommDbPrefs.SetDialogPreference( ECommDbDialogPrefDoNotPrompt );
-        iCommDbPrefs.SetIapId( iIapNumber );
+        iExtPrefs.SetNoteBehaviour(
+            TExtendedConnPref::ENoteBehaviourConnSilent );
+        iExtPrefs.SetIapId( iIapNumber );
         }
+    else
+        {
+        iExtPrefs.SetSnapPurpose( CMManager::ESnapPurposeInternet );
+        iExtPrefs.SetNoteBehaviour(
+            TExtendedConnPref::ENoteBehaviourDefault );
+        }
+    iPrefList.AppendL( &iExtPrefs );
 
-    // Start RConnection using specified CommDb preferences overrides
-    // This is async call, thus - signal CWmDrmDlaDefaultHttpManager is active
-    // (SetActive())
-    iCommDbPrefs.SetDirection( ECommDbConnectionDirectionOutgoing );
-    iConnection.Start( iCommDbPrefs, iStatus );
+    iConnection.Start( iPrefList, iStatus );
 
     SetActive();
+    LOG1( "CWmDrmDlaDefaultHttpManager::OpenL - Socket connection started" );
+
     iState = EOpen;
     }
 
 // ----------------------------------------------------------------------------
+// CHttpManager::ReconnectL
+// Handler for the EOpenFailed state.
+// ----------------------------------------------------------------------------
+void CWmDrmDlaDefaultHttpManager::ReconnectL()
+    {
+    LOGFN( "CWmDrmDlaDefaultHttpManager::ReconnectL" );
+
+    // Clear values set by OpenL
+    for ( TInt i( 0 ); i<iPrefList.Count(); ++i )
+        {
+        iPrefList.Remove(i);
+        }
+
+    // Set as dialog based connection opening Any connection will do.
+    iExtPrefs.SetIapId( 0 );
+    iExtPrefs.SetSnapId( 0 );
+    iExtPrefs.SetSnapPurpose( CMManager::ESnapPurposeUnknown );
+    iExtPrefs.SetConnSelectionDialog( ETrue );
+    iExtPrefs.SetNoteBehaviour(
+        TExtendedConnPref::ENoteBehaviourDefault );
+    iExtPrefs.SetForcedRoaming( EFalse );
+    iExtPrefs.SetBearerSet( TExtendedConnPref::EExtendedConnBearerUnknown );
+
+
+    iPrefList.AppendL( &iExtPrefs );
+    iConnection.Start( iPrefList, iStatus );
+
+    SetActive();
+    LOG1( "CHttpManager::ReconnectL - Socket connection started" );
+
+    iState = EReconnect;
+
+    }
+
+// ----------------------------------------------------------------------------
 // CWmDrmDlaDefaultHttpManager::SubmitL
-// Handler for the EOpen state.
+// Handler for the states EOpen and EReconnect.
 // ----------------------------------------------------------------------------
 void CWmDrmDlaDefaultHttpManager::SubmitL()
     {
     LOGFN( "CWmDrmDlaDefaultHttpManager::SubmitL" );
-    
+
     TConnectionInfo info;
     GetConnectionInfoL( info );
     iIapNumber = info.iIapId;
-    
+
     // Open session
     iHttpSession.OpenL();
     RStringPool pool = iHttpSession.StringPool();
-    
+
     // Associate HTTP session with connection
     RHTTPConnectionInfo connInfo = iHttpSession.ConnectionInfo();
-    
+
     // Specify socket server
-    SET_HTTP_PROPERTY( connInfo, pool, HTTP::EHttpSocketServ, 
+    SET_HTTP_PROPERTY( connInfo, pool, HTTP::EHttpSocketServ,
         iSocketServer.Handle() );
     // Specify connectionn to use
     TInt connPtr = reinterpret_cast<TInt>(&iConnection);
@@ -525,14 +583,14 @@ void CWmDrmDlaDefaultHttpManager::SubmitL()
     InstallAuthenticationL( iHttpSession );
 
     CHttpCookieFilter::InstallFilterL( iHttpSession );
-    
+
     RHTTPFilterCollection filterColl = iHttpSession.FilterCollection();
-    filterColl.RemoveFilter( 
-        iHttpSession.StringPool().StringF( 
+    filterColl.RemoveFilter(
+        iHttpSession.StringPool().StringF(
             HTTP::ERedirect, RHTTPSession::GetTable() ) );
-    
+
     CHttpUAProfFilterInterface::InstallFilterL( iHttpSession );
-    
+
     // Parse URI
     TUriParser8 srcAddress;
     User::LeaveIfError( srcAddress.Parse( *iSrcAddress ) );
@@ -541,20 +599,20 @@ void CWmDrmDlaDefaultHttpManager::SubmitL()
     iHttpTransaction = iHttpSession.OpenTransactionL( srcAddress, *this,
         HTTP_STRING( (EGet == iOperation) ? HTTP::EGET : HTTP::EPOST ) );
     iTransactionOpen = ETrue;
-    
+
     // Set the data supplier if a POST operation
     if ( EPost == iOperation )
         {
         iHttpTransaction.Request().SetBody( *iDataSupplier );
         }
 
-    
+
     TInt pos = iSrcAddress->Locate( '?' );
 
     // If no query ('?') pos is rightmost character
     pos = (pos != KErrNotFound) ? pos : iSrcAddress->Length();
     TPtrC8 ptrUrl = iSrcAddress->Left( pos );
-    
+
     // Only print if there is a ('?') and something to print after it
     if ( pos < iSrcAddress->Length() )
       {
@@ -603,7 +661,7 @@ void CWmDrmDlaDefaultHttpManager::DoStartL(
         {
         TConnectionInfo connectionInfo;
         GetConnectionInfoL(connectionInfo);
-        if ( connectionInfo.iIapId != iIapNumber && 
+        if ( connectionInfo.iIapId != iIapNumber &&
              iIapNumber != 0 && connectionInfo.iIapId != 0 )
             {
             CleanupConnection();
@@ -625,13 +683,13 @@ void CWmDrmDlaDefaultHttpManager::DoStartL(
 // CWmDrmDlaDefaultHttpManager::HandleDownloadComplete
 // Close HTTP connection and clean up instance variables.
 //
-// Must be called to complete client's request and cleanup, either on 
+// Must be called to complete client's request and cleanup, either on
 // successful download, or some error condition
 // ----------------------------------------------------------------------------
 void CWmDrmDlaDefaultHttpManager::HandleDownloadComplete( TInt aError )
     {
     LOGFN( "CWmDrmDlaDefaultHttpManager::HandleDownloadComplete" );
-    LOG2( "aError: %d", aError ); 
+    LOG2( "aError: %d", aError );
     CleanupTransaction();
 
     iInCallback = ETrue;
@@ -688,7 +746,7 @@ void CWmDrmDlaDefaultHttpManager::CleanupTransaction()
         {
         // do nothing. This is to get rid of a PC-Lint warning
         }
-            
+
     iTransactionOpen = EFalse;
     }
 

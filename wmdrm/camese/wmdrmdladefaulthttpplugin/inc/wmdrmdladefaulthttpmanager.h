@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2008-2009 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -30,7 +30,7 @@
 #include <http/mhttptransactioncallback.h>
 #include <http/mhttpdatasupplier.h>
 
-#include <commdbconnpref.h>     // TCommDbConnPref (since 7.0s)
+#include <extendedconnpref.h> // TExtendedConnPref, TConnPrefList, TConnectionInfo
 
 #include "wmdrmdladefaulthttpmanagerobserver.h"
 
@@ -50,7 +50,7 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
         struct THeader
             {
         public:
-            inline THeader( TInt aField, const TDesC8& aDesC ) : 
+            inline THeader( TInt aField, const TDesC8& aDesC ) :
                 iField(aField), iVal(aDesC) {};
         public:
             TInt iField;            // e.g. 'HTTP::EAccept'
@@ -63,7 +63,7 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
          * @param aObserver - reference to observer
          * @return address of an instance of this class
          */
-        static CWmDrmDlaDefaultHttpManager* NewL( 
+        static CWmDrmDlaDefaultHttpManager* NewL(
                     MWmDrmDlaDefaltHttpManagerObserver& aObserver );
 
         /**
@@ -72,7 +72,7 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
          * @param aIapNumber - Internet Access Point to be used
          * @return address of an instance of this class
          */
-        static CWmDrmDlaDefaultHttpManager* NewL( 
+        static CWmDrmDlaDefaultHttpManager* NewL(
                     MWmDrmDlaDefaltHttpManagerObserver& aObserver,
                     TUint32 aIapNumber );
 
@@ -84,7 +84,7 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
         /**
          * Called to start the GET transaction using the configured IAP.
          * @param aUrl - URL to be used for the transaction
-         * @param aHeaders - a list of headers and their values to be 
+         * @param aHeaders - a list of headers and their values to be
          *                   included with the HTTP request
          */
         void Get( const TDesC8& aUrl, const RArray<THeader>& aHeaders );
@@ -92,11 +92,11 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
         /**
          * Called to start the POST transaction using the configured IAP.
          * @param aUrl - URL to be used for the transaction
-         * @param aHeaders - a list of headers and their values to be 
+         * @param aHeaders - a list of headers and their values to be
          *                   included with the HTTP request
          * @param aDataSupplier - interface to be used to get the POST data
          */
-        void Post( const TDesC8& aUrl, const RArray<THeader>& aHeaders, 
+        void Post( const TDesC8& aUrl, const RArray<THeader>& aHeaders,
                    MHTTPDataSupplier* aDataSupplier );
 
         /**
@@ -139,41 +139,41 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
          * @param aIapId The IAP connection that will be used
          */
         void SetIapId( TInt aIapId );
-        
+
         /**
          * Get the IAP Connection ID
          */
         TInt IapId();
 
     private: // From MHTTPTransactionCallback
-        
-        virtual void MHFRunL( RHTTPTransaction aTransaction, 
+
+        virtual void MHFRunL( RHTTPTransaction aTransaction,
                               const THTTPEvent& aEvent );
-        virtual TInt MHFRunError( TInt aError, RHTTPTransaction aTransaction, 
+        virtual TInt MHFRunError( TInt aError, RHTTPTransaction aTransaction,
                                   const THTTPEvent& aEvent );
 
     private: // From MHTTPAuthenticationCallback
-        
-        virtual TBool GetCredentialsL( const TUriC8& aURI, RString aRealm, 
+
+        virtual TBool GetCredentialsL( const TUriC8& aURI, RString aRealm,
                                        RStringF aAuthenticationType,
-                                       RString& aUsername, 
+                                       RString& aUsername,
                                        RString& aPassword );
 
     private:    // From CActive
-        
+
         void DoCancel();
         void RunL();
         TInt RunError(TInt aError);
 
     private:
-        
+
         /**
          * Contructor
          * @param aObserver An observer to monitor the HTTP communications
          * @param aIap An IAP connection to use for HTTP communication
          */
-        CWmDrmDlaDefaultHttpManager( 
-                MWmDrmDlaDefaltHttpManagerObserver& aObserver, 
+        CWmDrmDlaDefaultHttpManager(
+                MWmDrmDlaDefaltHttpManagerObserver& aObserver,
                 TUint32 aIapNumber );
 
         /**
@@ -182,7 +182,7 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
         void ConstructL();
 
     private:
-        
+
         // State transition handlers
         /**
          * Handler for the EStart state.
@@ -191,9 +191,13 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
         /**
          * Handler for the EInitialize state.
          */
-        void Open();
+        void OpenL();
         /**
-         * Handler for the EOpen state.
+         * Handler for the EOpenFailed state.
+         */
+        void ReconnectL();
+        /**
+         * Handler for the states EOpen and EReconnect.
          */
         void SubmitL();
 
@@ -218,7 +222,7 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
         /**
          * Set the HTTP header to send
          */
-        void SetHeaderL( RHTTPHeaders& aHeaders, TInt aHdrField, 
+        void SetHeaderL( RHTTPHeaders& aHeaders, TInt aHdrField,
                          const TDesC8& aHdrValue ) const;
         /**
          * Delete the username and password used in authentication
@@ -226,7 +230,7 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
         void DeleteUsernamePassword();
 
     private:    // Private types
-        
+
         // Asynchronous connection states
         enum TState
             {
@@ -234,6 +238,8 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
             EStart,
             EInitialize,
             EOpen,
+            EOpenFailed,
+            EReconnect,
             ESubmit
             };
 
@@ -245,7 +251,7 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
             };
 
     private: // Data
-        
+
         MWmDrmDlaDefaltHttpManagerObserver& iObserver;
 
         TState iState; // State of the asynch connection
@@ -254,7 +260,9 @@ NONSHARABLE_CLASS( CWmDrmDlaDefaultHttpManager ) :
 
         RSocketServ  iSocketServer;
         RConnection  iConnection;
-        TCommDbConnPref iCommDbPrefs;
+
+        TConnPrefList iPrefList;
+        TExtendedConnPref iExtPrefs;
 
         TUint32 iIapNumber;
 

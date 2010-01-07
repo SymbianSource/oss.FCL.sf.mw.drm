@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2008-2009 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -29,15 +29,15 @@ VENDORID                VID_DEFAULT
 SOURCEPATH              ../src
 SOURCE                  wmdrmdladefaulthttppluginproxy.cpp
 SOURCE                  wmdrmdladefaulthttpplugin.cpp
-SOURCE					wmdrmdladefaultlicacq.cpp
-SOURCE					wmdrmdladefaultmetering.cpp
-SOURCE					wmdrmdladefaultplayready.cpp
-SOURCE                  wmdrmdladefaulthttpmanager.cpp 
+SOURCE                  wmdrmdladefaultlicacq.cpp
+SOURCE                  wmdrmdladefaultmetering.cpp
+SOURCE                  wmdrmdladefaultplayready.cpp
+SOURCE                  wmdrmdladefaulthttpmanager.cpp
 
 USERINCLUDE             ../inc
-USERINCLUDE				../../wmdrmdlautils/inc
-USERINCLUDE			    ../../../inc
-USERINCLUDE				../../../wmdrmengine/asf/inc
+USERINCLUDE             ../../wmdrmdlautils/inc
+USERINCLUDE             ../../../inc
+USERINCLUDE             ../../../wmdrmengine/asf/inc
 
 MW_LAYER_SYSTEMINCLUDE
 SYSTEMINCLUDE           /epoc32/include/ecom
@@ -47,17 +47,18 @@ TARGET                  wmdrmdladefaulthttpplugin.rsc
 END
 
 LIBRARY                 euser.lib
-LIBRARY         		flogger.lib
-LIBRARY		            ecom.lib
-LIBRARY                 bafl.lib 
-LIBRARY					http.lib
+LIBRARY                 flogger.lib
+LIBRARY                 ecom.lib
+LIBRARY                 bafl.lib
+LIBRARY                 http.lib
 LIBRARY                 inetprotutil.lib
-LIBRARY                 commdb.lib
+LIBRARY                 extendedconnpref.lib
+LIBRARY                 netmeta.lib
 LIBRARY                 esock.lib
-LIBRARY                 estor.lib 
-LIBRARY         		charconv.lib
-LIBRARY                 wmdrmdla.lib 
-LIBRARY					wmdrmdlautils.lib
-LIBRARY					drmasf.lib
+LIBRARY                 estor.lib
+LIBRARY                 charconv.lib
+LIBRARY                 wmdrmdla.lib
+LIBRARY                 wmdrmdlautils.lib
+LIBRARY                 drmasf.lib
 
 SMPSAFE
