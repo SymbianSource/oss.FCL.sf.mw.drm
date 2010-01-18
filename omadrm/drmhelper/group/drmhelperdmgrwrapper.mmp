@@ -26,7 +26,7 @@ UID            0x1000008D 0x102823D9
 CAPABILITY     CAP_GENERAL_DLL
 VENDORID       VID_DEFAULT
 
-SOURCE         ../src/drmhelperdmgrwrapper.cpp
+SOURCE         ../src/DRMHelperDMgrWrapper.cpp
 
 START RESOURCE drmhelperdmgrwrapper.rss
 HEADER
@@ -35,7 +35,7 @@ LANGUAGE_IDS
 END
 
 USERINCLUDE    ../inc
-USERINCLUDE    ../../DRMEngine/Roap/inc
+USERINCLUDE    ../../drmengine/roap/inc
 USERINCLUDE    ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
@@ -67,7 +67,7 @@ START MARM
 END
 
 #if defined(ARMCC)
-deffile ../eabi/
+deffile ../EABI/
 #elif defined( WINSCW )
 deffile ../bwinscw/
 #elif defined( WINS )

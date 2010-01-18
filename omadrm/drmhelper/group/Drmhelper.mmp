@@ -26,7 +26,7 @@ CAPABILITY      CAP_GENERAL_DLL DRM
 VENDORID        VID_DEFAULT
 
 #ifdef __DRM
-SOURCE          ../src/DRMHelper.cpp
+SOURCE          ../src/drmhelper.cpp
 SOURCE          ../src/ConsumeData.cpp
 SOURCE          ../src/RDRMHelper.cpp
 SOURCE          ../src/DRMHelperGlobalNoteWrapper.cpp
@@ -39,16 +39,16 @@ SOURCE          ../src/DRMHelperGlobalNoteWrapper.cpp
 #endif
 SOURCE          ../src/DRMHelperDll.cpp
 
-START RESOURCE DRMHelper.rss
+START RESOURCE Drmhelper.rss
 HEADER
 TARGETPATH RESOURCE_FILES_DIR
 LANGUAGE_IDS
 END
 
 USERINCLUDE     ../inc
-USERINCLUDE     ../../DRMEngine/Server/inc
-USERINCLUDE     ../../DRMEngine/Roap/inc
-USERINCLUDE     ../../DRMEngine/RoapStorage/inc
+USERINCLUDE     ../../drmengine/server/inc
+USERINCLUDE     ../../drmengine/roap/inc
+USERINCLUDE     ../../drmengine/roapstorage/inc
 USERINCLUDE        ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
@@ -100,7 +100,7 @@ LIBRARY         platformenv.lib
 
 
 #if defined(ARMCC)
-deffile ../eabi/ 
+deffile ../EABI/ 
 #elif defined( WINSCW )
 deffile ../bwinscw/ 
 #elif defined( WINS )

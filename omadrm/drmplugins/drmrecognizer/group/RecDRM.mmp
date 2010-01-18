@@ -26,15 +26,15 @@ UID		0x10009D8D 0x101F51F4
 
 capability	CAP_ECOM_PLUGIN TrustedUI ProtServ
 
-SOURCEPATH	    ../SRC
-USERINCLUDE     ../INC
+SOURCEPATH	    ../src
+USERINCLUDE     ../inc
 USERINCLUDE	    ../../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
-systeminclude	/epoc32/INCLUDE/Ecom
+systeminclude	/epoc32/include/ecom
 
-source		RECDRM.CPP
+source		RecDRM.CPP
 
 START RESOURCE 101F51F4.RSS
 TARGET         RECDRM

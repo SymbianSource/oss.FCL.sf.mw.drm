@@ -622,9 +622,9 @@ void DRM::CDrmUtilityWMDrmWrapper::LaunchRightsManagerUiL(
                                     CAknLaunchAppService::NewL( KUidDRMUI,
                                                                 this,
                                                                 paramList ) );
+        CleanupStack::PushL( launchAppService );
         iWait.Start();
-        delete launchAppService;
-        CleanupStack::PopAndDestroy( paramList );
+        CleanupStack::PopAndDestroy( 2, paramList );
         }
     else
         {

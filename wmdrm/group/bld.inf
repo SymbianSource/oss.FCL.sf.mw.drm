@@ -24,8 +24,8 @@ PRJ_EXPORTS
 #endif // __WINDOWS_MEDIA_DRM
 
 // IBY files
-../rom/wmdrm.iby            CORE_MW_LAYER_IBY_EXPORT_PATH( wmdrm.iby )
-../rom/wmdrmresources.iby   LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( wmdrmresources.iby )
+../rom/WMDRM.iby            CORE_MW_LAYER_IBY_EXPORT_PATH( wmdrm.iby )
+../rom/WMDRMResources.iby   LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( wmdrmresources.iby )
 
 // Configuration files
 ../conf/wmdrm.confml            MW_LAYER_CONFML(wmdrm.confml)

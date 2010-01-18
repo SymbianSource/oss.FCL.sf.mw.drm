@@ -30,20 +30,20 @@ MW_LAYER_SYSTEMINCLUDE
 SYSTEMINCLUDE   /epoc32/include/libc
 SYSTEMINCLUDE   /epoc32/include/connect
 
-USERINCLUDE     ../Server/inc
-USERINCLUDE     ../AgentV2/inc
-USERINCLUDE     ../RO/inc
-USERINCLUDE     ../DCF/inc
-USERINCLUDE     ../Notifier/inc
-USERINCLUDE     ../Utils/inc
-USERINCLUDE     ../ROAP/inc
-USERINCLUDE     ../RoapStorage/inc
-USERINCLUDE     ../DRMClock/inc
-USERINCLUDE     ../KeyStorage/inc
-USERINCLUDE     ../DRMBackup/inc
+USERINCLUDE     ../server/inc
+USERINCLUDE     ../agentv2/inc
+USERINCLUDE     ../ro/inc
+USERINCLUDE     ../dcf/inc
+USERINCLUDE     ../notifier/inc
+USERINCLUDE     ../utils/inc
+USERINCLUDE     ../roap/inc
+USERINCLUDE     ../roapstorage/inc
+USERINCLUDE     ../drmclock/inc
+USERINCLUDE     ../keystorage/inc
+USERINCLUDE     ../drmbackup/inc
 USERINCLUDE     ../../../inc   // ADo level inc dir
 
-SOURCEPATH      ../Server/src
+SOURCEPATH      ../server/src
 
 // DRM Engine (server side)
 SOURCE          DRMRightsServer.cpp
@@ -51,14 +51,14 @@ SOURCE          DRMDbSession.cpp
 // SOURCE       drmpermissionlist.cpp
 SOURCE          drmparentstorage.cpp
 // SOURCE       drmpermissionitem.cpp
-SOURCE          drmreplaycache.cpp
-SOURCE          drmxoma.cpp
+SOURCE          DRMReplayCache.cpp
+SOURCE          DRMXOma.cpp
 SOURCE          DRMActiveOperation.cpp
 SOURCE          DRMObsoleteFinder.cpp
 SOURCE          drmconsume.cpp
 
 // DRM Rights Database
-SOURCE          DRMRightsDB.cpp
+SOURCE          drmrightsdb.cpp
 SOURCE          DRMRightsData.cpp
 SOURCE          DRMCommonData.cpp
 SOURCE          DRMRightsCleaner.cpp
@@ -70,19 +70,19 @@ SOURCE          drmmeteringdbdata.cpp
 SOURCE          drmmeteringdb.cpp
 
 // DRM Backup implementation
-SOURCEPATH      ../DRMBackup/src
+SOURCEPATH      ../drmbackup/src
 SOURCE          DRMBackup.cpp
 SOURCE          DRMBackupObserver.cpp
 
 // DRM Notifier
-SOURCEPATH      ../Notifier/src
+SOURCEPATH      ../notifier/src
 
 SOURCE          DRMMessageStorage.cpp
 SOURCE          DRMNotifierServer.cpp
 SOURCE          DRMNotifierSession.cpp
 
 // RoapStorage
-SOURCEPATH      ../RoapStorage/src
+SOURCEPATH      ../roapstorage/src
 
 SOURCE          RoapStorageClient.cpp
 SOURCE          RoapStorageServer.cpp
@@ -97,7 +97,7 @@ SOURCE          certid.cpp
 
 // DRM Clock
 #ifdef __DRM_CLOCK
-SOURCEPATH      ../DRMClock/src
+SOURCEPATH      ../drmclock/src
 SOURCE          DRMClock.cpp
 SOURCE          DRMClockServer.cpp
 SOURCE          DRMClockSession.cpp

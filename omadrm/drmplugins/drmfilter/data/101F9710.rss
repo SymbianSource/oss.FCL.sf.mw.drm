@@ -19,7 +19,7 @@
 // application/vnd.oma.drm.message
 // OMA-Download-DRM-v1_0-20020905-a, Version 05-September-2002
 
-#include "Ecom/RegistryInfoV2.rh"
+#include "ecom/registryinfov2.rh"
 
 RESOURCE REGISTRY_INFO theInfo
 	{

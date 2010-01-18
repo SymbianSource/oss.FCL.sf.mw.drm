@@ -26,11 +26,11 @@ VENDORID        VID_DEFAULT
 
 MACRO           CLIENT_STARTS_SERVER
 
-USERINCLUDE     ../AgentV2/inc
-USERINCLUDE     ../RO/inc
-USERINCLUDE     ../DCF/inc
-USERINCLUDE     ../Server/inc
-USERINCLUDE     ../Utils/inc
+USERINCLUDE     ../agentv2/inc
+USERINCLUDE     ../ro/inc
+USERINCLUDE     ../dcf/inc
+USERINCLUDE     ../server/inc
+USERINCLUDE     ../utils/inc
 USERINCLUDE     ../legacy/inc
 USERINCLUDE     ../legacy/src
 USERINCLUDE	    ../../../inc   // ADo level inc dir
@@ -43,7 +43,7 @@ SYSTEMINCLUDE   /epoc32/include/libc
 SOURCEPATH      ../legacy/src
 SOURCE          DRMCommon.cpp
 
-START RESOURCE DRMCommon.rss
+START RESOURCE drmcommon.rss
 HEADER
 TARGET          DRMCommon.rsc
 TARGETPATH      resource 

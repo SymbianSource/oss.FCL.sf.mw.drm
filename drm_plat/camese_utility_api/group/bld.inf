@@ -23,5 +23,5 @@ DEFAULT
 
 PRJ_EXPORTS
 
-../inc/cameseutility.h      MW_LAYER_PLATFORM_EXPORT_PATH(cameseutility.h)
-../inc/cameseobserver.h     MW_LAYER_PLATFORM_EXPORT_PATH(cameseobserver.h)
+../inc/CameseUtility.h      MW_LAYER_PLATFORM_EXPORT_PATH(cameseutility.h)
+../inc/CameseObserver.h     MW_LAYER_PLATFORM_EXPORT_PATH(cameseobserver.h)

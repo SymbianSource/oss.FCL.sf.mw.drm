@@ -24,8 +24,8 @@ UID             0x1000008D 0x10205CAA
 CAPABILITY      CAP_GENERAL_DLL DRM CommDD
 VENDORID        VID_DEFAULT
 
-USERINCLUDE     ../KeyStorage/inc
-USERINCLUDE     ../Utils/inc
+USERINCLUDE     ../keystorage/inc
+USERINCLUDE     ../utils/inc
 USERINCLUDE	    ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
@@ -33,7 +33,7 @@ MW_LAYER_SYSTEMINCLUDE
 SYSTEMINCLUDE   /epoc32/include/libc
 SYSTEMINCLUDE   /epoc32/include/ecom
 
-SOURCEPATH      ../KeyStorage/src
+SOURCEPATH      ../keystorage/src
 SOURCE          DrmKeyStorage.cpp
 
 LIBRARY         euser.lib

@@ -28,9 +28,9 @@ VENDORID      VID_DEFAULT
 
 SOURCEPATH    ../utils/src           
 SOURCE        DrmRel2_1StringDict00.cpp
-SOURCE        DrmRel2_1StringDict00TagTable.cpp
-SOURCE        DrmRel2_1StringDict00AttributeTable.cpp
-SOURCE        DrmRel2_1StringDict00AttributeValueTable.cpp
+SOURCE        drmrel2_1stringdict00tagtable.cpp
+SOURCE        drmrel2_1stringdict00attributetable.cpp
+SOURCE        drmrel2_1stringdict00attributevaluetable.cpp
 
 MW_LAYER_SYSTEMINCLUDE
 USERINCLUDE      ../utils/inc

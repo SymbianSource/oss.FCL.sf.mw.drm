@@ -24,19 +24,19 @@ UID             0x1000008D 0x101F6DB5
 CAPABILITY      CAP_GENERAL_DLL DRM CommDD
 VENDORID        VID_DEFAULT
 
-USERINCLUDE     ../DCF/inc
-USERINCLUDE     ../RO/inc
-USERINCLUDE     ../ROAP/inc
-USERINCLUDE     ../Utils/inc
-USERINCLUDE     ../DM/inc
-USERINCLUDE     ../Legacy/inc
-USERINCLUDE     ../AgentV2/inc
-USERINCLUDE     ../Server/inc
-USERINCLUDE     ../Notifier/inc
-USERINCLUDE     ../RoapStorage/inc
-USERINCLUDE     ../DrmClock/inc
+USERINCLUDE     ../dcf/inc
+USERINCLUDE     ../ro/inc
+USERINCLUDE     ../roap/inc
+USERINCLUDE     ../utils/inc
+USERINCLUDE     ../dm/inc
+USERINCLUDE     ../legacy/inc
+USERINCLUDE     ../agentv2/inc
+USERINCLUDE     ../server/inc
+USERINCLUDE     ../notifier/inc
+USERINCLUDE     ../roapstorage/inc
+USERINCLUDE     ../drmclock/inc
 #ifdef __DRM_FULL
-USERINCLUDE		../../DRMHelper/inc
+USERINCLUDE		../../drmhelper/inc
 #endif
 USERINCLUDE	    ../../../inc   // ADo level inc dir
 
@@ -46,10 +46,10 @@ SYSTEMINCLUDE   /epoc32/include/libc
 SYSTEMINCLUDE   /epoc32/include/ecom
 SYSTEMINCLUDE   /epoc32/include/caf
 
-SOURCEPATH      ../Server/src
+SOURCEPATH      ../server/src
 SOURCE          DRMRightsClient.cpp
 
-SOURCEPATH      ../Notifier/src
+SOURCEPATH      ../notifier/src
 SOURCE          DRMEvent.cpp
 SOURCE          DRMEventAddRemove.cpp
 SOURCE          DRMEventModify.cpp
@@ -58,16 +58,16 @@ SOURCE          DRMNotifier.cpp
 SOURCE          DRMEventHandler.cpp
 SOURCE          DRMNotifierClient.cpp
 
-SOURCEPATH      ../RoapStorage/src
-SOURCE          DrmDomainContext.cpp
-SOURCE          DrmRiContext.cpp
+SOURCEPATH      ../roapstorage/src
+SOURCE          DRMDomainContext.cpp
+SOURCE          DRMRIContext.cpp
 SOURCE          RoapStorageClient.cpp
 
-SOURCEPATH      ../DRMClock/src
+SOURCEPATH      ../drmclock/src
 SOURCE          DRMClockClient2.cpp
 
 #ifdef __DRM_FULL
-SOURCEPATH			../../DRMHelper/src
+SOURCEPATH			../../drmhelper/src
 SOURCE					RDRMHelper.cpp
 #endif
 

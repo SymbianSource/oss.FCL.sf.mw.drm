@@ -27,7 +27,7 @@ CAPABILITY      CAP_GENERAL_DLL
 VENDORID        VID_DEFAULT
 
 SOURCEPATH      ../ui/src
-SOURCE          RoMtmui.cpp
+SOURCE          RoMtmUi.cpp
 
 USERINCLUDE     ../inc
 USERINCLUDE     ../ui/inc

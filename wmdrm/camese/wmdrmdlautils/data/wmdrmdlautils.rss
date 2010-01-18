@@ -29,7 +29,7 @@ NAME WDLA // 4 letter ID
 #include <eikon.rsg>
 #include <appinfo.rh>
 #include <avkon.loc>
-#include <avkonicons.hrh>
+#include <AvkonIcons.hrh>
 #include <data_caging_paths_strings.hrh>
 #include <drmcommon.loc>
 

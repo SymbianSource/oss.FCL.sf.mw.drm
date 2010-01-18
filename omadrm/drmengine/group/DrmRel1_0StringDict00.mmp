@@ -31,10 +31,10 @@ UID             0x10009D8D 0x101F6DB6
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
 
-USERINCLUDE     ../RO/inc
+USERINCLUDE     ../ro/inc
 USERINCLUDE	    ../../../inc   // ADo level inc dir
 
-SOURCEPATH     ../RO/src
+SOURCEPATH     ../ro/src
 SOURCE         DrmRel1_0StringDict00TagTable.cpp 
 SOURCE         DrmRel1_0StringDict00AttributeTable.cpp 
 SOURCE         DrmRel1_0StringDict00AttributeValueTable.cpp 

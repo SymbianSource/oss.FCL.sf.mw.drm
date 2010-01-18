@@ -22,7 +22,7 @@
 
 // INCLUDE FILES
 
-#include <MTMExtendedCapabilities.hrh>
+#include <MtmExtendedCapabilities.hrh>
 
 /**
 * The following enum constants define those Ro MTM specific commands that 

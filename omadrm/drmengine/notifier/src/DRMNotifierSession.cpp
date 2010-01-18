@@ -101,7 +101,10 @@ CDRMNotifierSession::~CDRMNotifierSession()
 
     for( i = 0; i < iMessageQueue.Count(); i++ )
         {
-        iStorage->UpdateMessage(iMessageQueue[i]);
+        if( this->iStorage ) // coverity check
+            {    
+            iStorage->UpdateMessage(iMessageQueue[i]);
+            }
         }
 
     iMessageQueue.Reset();

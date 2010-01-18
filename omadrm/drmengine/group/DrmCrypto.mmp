@@ -24,9 +24,9 @@ UID             0x1000008D 0x101F6DB9
 CAPABILITY      CAP_GENERAL_DLL DRM CommDD
 VENDORID        VID_DEFAULT
 
-USERINCLUDE     ../Utils/inc
-USERINCLUDE     ../DrmCrypto/inc
-USERINCLUDE     ../KeyStorage/inc
+USERINCLUDE     ../utils/inc
+USERINCLUDE     ../drmcrypto/inc
+USERINCLUDE     ../keystorage/inc
 USERINCLUDE     ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
@@ -34,14 +34,14 @@ MW_LAYER_SYSTEMINCLUDE
 SYSTEMINCLUDE   /epoc32/include/libc
 SYSTEMINCLUDE   /epoc32/include/ecom
 
-SOURCEPATH      ../Utils/src
+SOURCEPATH      ../utils/src
 SOURCE          Base64.cpp
 
-SOURCE          DrmAesCrypto.cpp
+SOURCE          drmaescrypto.cpp
 
-SOURCEPATH      ../DrmCrypto/build
-SOURCE          OmaCrypto.cpp
-SOURCE          CmlaCrypto.cpp
+SOURCEPATH      ../drmcrypto/build
+SOURCE          omacrypto.cpp
+SOURCE          cmlacrypto.cpp
 
 LIBRARY         euser.lib
 LIBRARY         efsrv.lib

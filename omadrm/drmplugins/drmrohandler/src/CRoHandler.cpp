@@ -758,7 +758,7 @@ void CRoHandler::HandleRightsMessageL()
         User::LeaveIfError( ret );
         }
 
-    if ( iPutRightsToInbox )
+    if ( iPutRightsToInbox && contentURI ) // coverity check
         {
         buffer = HBufC16::NewL( contentURI->Length() );
         TPtr uri16( buffer->Des() );

@@ -29,8 +29,8 @@
 #include <avkon.rsg>
 #include <avkon.loc>
 #include <mtud.rh>
-#include <MTMExtendedCapabilities.hrh>
-#include <Muiu.mbg>
+#include <MtmExtendedCapabilities.hrh>
+#include <muiu.mbg>
 #include <data_caging_paths_strings.hrh>
 
 #include "RoMtmCommands.hrh"

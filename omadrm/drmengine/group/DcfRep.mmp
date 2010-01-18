@@ -26,14 +26,14 @@ VENDORID        VID_DEFAULT
 
 //macro _DRM_TESTING
 
-SOURCEPATH      ../DcfRepository/client/src
+SOURCEPATH      ../dcfrepository/client/src
 SOURCE          DcfRepCli.cpp
 SOURCE          DcfRep.cpp
 SOURCE          DcfEntry.cpp
 
 
-USERINCLUDE     ../DcfRepository/client/inc
-USERINCLUDE     ../DcfRepository/common
+USERINCLUDE     ../dcfrepository/client/inc
+USERINCLUDE     ../dcfrepository/common
 USERINCLUDE     ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.

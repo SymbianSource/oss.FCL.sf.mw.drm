@@ -18,7 +18,7 @@
 
 //  INCLUDES
 #include <ecom/registryinfo.rh>
-#include "../inc/httpfiltercamese.hrh"
+#include "../Inc/httpfiltercamese.hrh"
 
 //  RESOURCE DEFINITIONS 
 // -----------------------------------------------------------------------------

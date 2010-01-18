@@ -26,7 +26,7 @@ PRJ_EXPORTS
 ../conf/drm5_10205CBF.crml              MW_LAYER_CRML(drm5_10205CBF.crml)
 ../conf/drmsettings.confml              MW_LAYER_CONFML(drmsettings.confml)
 ../conf/drmsettings_102823B4.crml       MW_LAYER_CRML(drmsettings_102823B4.crml)
-../conf/drm5_200195AD.crml              MW_LAYER_CRML(drm5_200195AD.crml)
+../conf/drm5_200195ad.crml              MW_LAYER_CRML(drm5_200195AD.crml)
 ../conf/drmutility.confml               MW_LAYER_CONFML(drmutility.confml)
 ../conf/drmutility_20022D51.crml        MW_LAYER_CRML(drmutility_20022D51.crml)
 ../drmengine/group/CryptoPrep.flm       /epoc32/tools/makefile_templates/s60/CryptoPrep.flm
@@ -36,31 +36,31 @@ PRJ_EXPORTS
 //Loc files
 // Ro Handler (only used if OMA DRM 1.0 Full is enabled)
 #ifdef __DRM_FULL
-../drmplugins/drmrohandler/loc/rohandler.loc MW_LAYER_LOC_EXPORT_PATH( rohandler.loc )
+../drmplugins/drmrohandler/loc/RoHandler.loc MW_LAYER_LOC_EXPORT_PATH( rohandler.loc )
 #endif
-../drmplugins/drmromtm/loc/romtmui.loc MW_LAYER_LOC_EXPORT_PATH( romtmui.loc )
+../drmplugins/drmromtm/loc/RoMtmUi.loc MW_LAYER_LOC_EXPORT_PATH( romtmui.loc )
 
 
 // CMLA RnD keys
-../drmengine/keystorage/data/cmla/DevicePrivateKey.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/cmla/DeviceCert.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/cmla/SigningCert00.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/cmla/SigningCert01.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
+../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
+../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
+../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
+../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
 
-../drmengine/keystorage/data/cmla/DevicePrivateKey.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/cmla/DeviceCert.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/cmla/SigningCert00.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/cmla/SigningCert01.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
+../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
+../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
+../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
+../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
 
-../drmengine/keystorage/data/cmla/DevicePrivateKey.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/cmla/DeviceCert.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/cmla/SigningCert00.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/cmla/SigningCert01.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
+../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
+../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
+../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
+../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
 
-../drmengine/keystorage/data/cmla/DevicePrivateKey.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/cmla/DeviceCert.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/cmla/SigningCert00.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/cmla/SigningCert01.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
+../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
+../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
+../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
+../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
 
 // Default UDT Key
 #ifdef __DRM_USER_DATA_TRANSFER
@@ -83,15 +83,15 @@ PRJ_EXPORTS
 ../data/OmaDrm_Stub.SIS /epoc32/data/z/system/install/OmaDrm_Stub.SIS
 
 // IBY files
-../rom/drm5.iby                     CORE_MW_LAYER_IBY_EXPORT_PATH( drm5.iby )
-../rom/drmhelper.iby                CORE_MW_LAYER_IBY_EXPORT_PATH( drmhelper.iby)
-../rom/drmhelperresources.iby       LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmhelperresources.iby )
-../rom/drmlicensemanager.iby        CORE_MW_LAYER_IBY_EXPORT_PATH( drmlicensemanager.iby )
+../rom/DRM5.iby                     CORE_MW_LAYER_IBY_EXPORT_PATH( drm5.iby )
+../rom/DRMHelper.iby                CORE_MW_LAYER_IBY_EXPORT_PATH( drmhelper.iby)
+../rom/DRMHelperResources.iby       LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmhelperresources.iby )
+../rom/DRMLicenseManager.iby        CORE_MW_LAYER_IBY_EXPORT_PATH( drmlicensemanager.iby )
 ../rom/drmroapwbxmlparser.iby       CORE_MW_LAYER_IBY_EXPORT_PATH( drmroapwbxmlparser.iby )
-../rom/drmrohandlerresources.iby    LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmrohandlerresources.iby )
-../rom/drmromtmresources.iby        LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmromtmresources.iby )
-../rom/httpfilterdrm.iby            CORE_MW_LAYER_IBY_EXPORT_PATH( httpfilterdrm.iby )
-../rom/romtm.iby                    CORE_MW_LAYER_IBY_EXPORT_PATH( romtm.iby )
+../rom/DRMRoHandlerResources.iby    LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmrohandlerresources.iby )
+../rom/DRMRoMtmResources.iby        LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmromtmresources.iby )
+../rom/HTTPFilterDRM.iby            CORE_MW_LAYER_IBY_EXPORT_PATH( httpfilterdrm.iby )
+../rom/RoMTM.iby                    CORE_MW_LAYER_IBY_EXPORT_PATH( romtm.iby )
 
 PRJ_MMPFILES
 
@@ -144,18 +144,18 @@ gnumakefile ../drmengine/group/CryptoPrep.mak // Copy the appropriate DRM crypto
 ../drmlicensemanager/group/DRMLicenseChecker.mmp
 
 // Recognizer
-../drmplugins/drmrecognizer/group/recdrm.mmp
+../drmplugins/drmrecognizer/group/RecDRM.mmp
 
 // Ro Handler (only used if OMA DRM 1.0 Full is enabled)
 #ifdef __DRM_FULL
-../drmplugins/drmrohandler/group/CRohandler.mmp
+../drmplugins/drmrohandler/group/crohandler.mmp
 #endif
 
 // DRMFilter
 ../drmplugins/drmfilter/group/HTTPFilterDRM.mmp
 
 // DRMHelper
-../drmhelper/group/DRMHelper.mmp
+../drmhelper/group/Drmhelper.mmp
 ../drmhelper/group/drmhelperdmgrwrapper.mmp
 
 #ifdef SBSV2

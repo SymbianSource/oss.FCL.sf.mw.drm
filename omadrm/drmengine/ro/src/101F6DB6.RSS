@@ -17,7 +17,7 @@
 
 
 
-#include "Ecom/RegistryInfo.rh"
+#include "ecom/registryinfo.rh"
 
 RESOURCE REGISTRY_INFO DrmRel1_0StringDict00Info
 	{

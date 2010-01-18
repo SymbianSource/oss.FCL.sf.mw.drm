@@ -24,21 +24,21 @@ UID             0x10009D8D 0x101F6DB4
 CAPABILITY      CAP_ECOM_PLUGIN DRM
 VENDORID        VID_DEFAULT
 
-USERINCLUDE     ../DCF/inc
-USERINCLUDE     ../RO/inc
-USERINCLUDE     ../DM/inc
-USERINCLUDE     ../AgentV2/inc
-USERINCLUDE     ../Server/inc
-USERINCLUDE     ../Utils/inc
-USERINCLUDE     ../Notifier/inc
-USERINCLUDE     ../DcfRepository/client/inc
+USERINCLUDE     ../dcf/inc
+USERINCLUDE     ../ro/inc
+USERINCLUDE     ../dm/inc
+USERINCLUDE     ../agentv2/inc
+USERINCLUDE     ../server/inc
+USERINCLUDE     ../utils/inc
+USERINCLUDE     ../notifier/inc
+USERINCLUDE     ../dcfrepository/client/inc
 USERINCLUDE	    ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
 SYSTEMINCLUDE  	/epoc32/include/ecom
 
-SOURCEPATH      ../AgentV2/src
+SOURCEPATH      ../agentv2/src
 SOURCE          Oma2Agent.cpp
 SOURCE          Oma2AgentFactory.cpp
 SOURCE          Oma2AgentContent.cpp
@@ -49,7 +49,7 @@ SOURCE          Oma2AgentImportFile.cpp
 SOURCE          Oma2AgentRightsManager.cpp
 SOURCE          DcfCache.cpp
 
-START RESOURCE 101F6DB4.RSS
+START RESOURCE 101F6DB4.rss
 TARGET         OmaDrmAgent
 END
 

@@ -31,7 +31,7 @@ SOURCE          CRoHandler.cpp
 SOURCE          StringResourceReader.cpp
 SOURCE          rohandlerdmgrwrapper.cpp
 
-START RESOURCE  101F7B92.RSS
+START RESOURCE  101F7B92.rss
 TARGET          RoHandler
 
 END
@@ -46,7 +46,7 @@ END
 
 
 USERINCLUDE     ../inc
-USERINCLUDE     ../../../DRMEngine/Roap/inc
+USERINCLUDE     ../../../drmengine/roap/inc
 USERINCLUDE     ../../drmromtm/client/inc
 USERINCLUDE     ../../../../inc   // ADo level inc dir
 

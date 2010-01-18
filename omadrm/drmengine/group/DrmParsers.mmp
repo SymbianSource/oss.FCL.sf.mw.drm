@@ -24,18 +24,18 @@ UID             0x1000008D 0x10205CAD
 CAPABILITY      CAP_GENERAL_DLL DRM
 VENDORID        VID_DEFAULT
 
-USERINCLUDE     ../DCF/inc
-USERINCLUDE     ../RO/inc
-USERINCLUDE     ../ROAP/inc
-USERINCLUDE     ../Utils/inc
-USERINCLUDE     ../DM/inc
-USERINCLUDE     ../Legacy/inc
-USERINCLUDE     ../AgentV2/inc
-USERINCLUDE     ../Server/inc
-USERINCLUDE     ../Notifier/inc
-USERINCLUDE     ../RoapStorage/inc
-USERINCLUDE     ../DcfRepository/client/inc
-USERINCLUDE     ../KeyStorage/inc
+USERINCLUDE     ../dcf/inc
+USERINCLUDE     ../ro/inc
+USERINCLUDE     ../roap/inc
+USERINCLUDE     ../utils/inc
+USERINCLUDE     ../dm/inc
+USERINCLUDE     ../legacy/inc
+USERINCLUDE     ../agentv2/inc
+USERINCLUDE     ../server/inc
+USERINCLUDE     ../notifier/inc
+USERINCLUDE     ../roapstorage/inc
+USERINCLUDE     ../dcfrepository/client/inc
+USERINCLUDE     ../keystorage/inc
 USERINCLUDE     ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
@@ -44,12 +44,12 @@ SYSTEMINCLUDE   /epoc32/include/libc
 SYSTEMINCLUDE   /epoc32/include/ecom
 SYSTEMINCLUDE   /epoc32/include/caf
 
-SOURCEPATH      ../DM/src
+SOURCEPATH      ../dm/src
 SOURCE          Oma1DcfCreator.cpp
 SOURCE          DRMMessageParser.cpp
 SOURCE          b64.cpp
 
-SOURCEPATH      ../RO/src
+SOURCEPATH      ../ro/src
 SOURCE          DrmRightsParser.cpp
 SOURCE          DrmProtectedRoParser.cpp
 

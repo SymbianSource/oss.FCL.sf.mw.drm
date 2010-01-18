@@ -27,18 +27,18 @@ UID                     0x10009D8D 0x10282936
 VENDORID                VID_DEFAULT
 CAPABILITY              CAP_ECOM_PLUGIN
 
-USERINCLUDE             ../inc
+USERINCLUDE             ../Inc
 USERINCLUDE             ../../inc 
 USERINCLUDE				../../wmdrmdla/inc
 
 MW_LAYER_SYSTEMINCLUDE
 
-SOURCEPATH              ../src
+SOURCEPATH              ../Src
 SOURCE                  httpfiltercamesedrmheader.cpp
 SOURCE                  httpfiltercamesemain.cpp
 SOURCE                  httpfiltercamesedatasupplier.cpp
 
-START RESOURCE          ../data/10282936.rss
+START RESOURCE          ../Data/10282936.rss
 HEADER
 TARGET                  httpfiltercamese.rsc
 // *** Uncomment LANGUAGE_IDS below if and only if the resource file needs localisation

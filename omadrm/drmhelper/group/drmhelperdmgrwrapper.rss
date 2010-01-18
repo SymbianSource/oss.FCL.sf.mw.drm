@@ -27,7 +27,7 @@ NAME    DRMD
 #include <avkon.loc>
 #include <avkon.mbg>
 #ifdef __DRM
-#include <DRMCommon.loc>
+#include <drmcommon.loc>
 #endif
 
 //  CONSTANTS  

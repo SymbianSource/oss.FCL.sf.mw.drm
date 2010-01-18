@@ -5604,10 +5604,11 @@ void CDRMHelper::LaunchRightsManagerUiL( const TDesC& aParam16 )
 
         CAknLaunchAppService* launchAppService =
             CAknLaunchAppService::NewL( KUidDRMUI, this, paramList );
+        
+        CleanupStack::PushL( launchAppService );
         iWait.Start();
-        delete launchAppService;
 
-        CleanupStack::PopAndDestroy( paramList ); // paramList
+        CleanupStack::PopAndDestroy( 2, paramList ); // paramList, launchAppService
         }
     else
         {

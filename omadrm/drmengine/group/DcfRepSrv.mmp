@@ -27,7 +27,7 @@ VENDORID        VID_DEFAULT
 
 //macro _DRM_TESTING
 
-SOURCEPATH      ../DcfRepository/server/src
+SOURCEPATH      ../dcfrepository/server/src
 SOURCE          DcfRepSrv.cpp
 SOURCE          DcfRepSrvSes.cpp
 SOURCE          FileScan.cpp
@@ -38,8 +38,8 @@ SOURCEPATH      ../utils/src
 SOURCE          procwatcher.cpp
 
 
-USERINCLUDE     ../DcfRepository/server/inc
-USERINCLUDE     ../DcfRepository/common
+USERINCLUDE     ../dcfrepository/server/inc
+USERINCLUDE     ../dcfrepository/common
 USERINCLUDE     ../utils/inc
 USERINCLUDE     ../../../inc   // ADo level inc dir
 

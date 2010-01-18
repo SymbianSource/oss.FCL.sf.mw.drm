@@ -1612,6 +1612,12 @@ void DRM::CDrmUiHandlingImpl::DoCheckOmaRightsAmountL(
         {
         permission = iOmaClient.GetActiveRightsL( aIntent, *aContentUri,
             reason );
+            
+        if( !permission )
+            {
+            User::Leave( KErrCANoPermission); //coverity check
+            }
+            
         CleanupStack::PushL( permission );
 
         toplevel = permission->TopLevelConstraint();
@@ -3772,9 +3778,9 @@ void DRM::CDrmUiHandlingImpl::LaunchRightsManagerUiL( const TDesC& aParam16 )
 
         CAknLaunchAppService* launchAppService( CAknLaunchAppService::NewL(
             KUidDRMUI, this, paramList ) );
+        CleanupStack::PushL( launchAppService );
         iWait.Start();
-        delete launchAppService;
-        CleanupStack::PopAndDestroy( paramList );
+        CleanupStack::PopAndDestroy( 2, paramList );
         }
     else
         {

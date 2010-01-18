@@ -235,13 +235,22 @@ void CDRMEventHandler::RegisterEventObserverL(
     switch( aEvent )
         {
         case KEventAddRemove:
-            iAddRemoveObservers->AppendL( observer );
+            if( this->iAddRemoveObservers ) // coverity check
+                {
+                iAddRemoveObservers->AppendL( observer );
+                }
             break;
         case KEventModify:
-            iModifyObservers->AppendL( observer );
+            if( this->iModifyObservers ) // coverity check
+                {
+                iModifyObservers->AppendL( observer );
+                }
             break;
         case KEventTimeChange:
-            iTimeChangeObservers->AppendL( observer );
+            if( this->iTimeChangeObservers ) // coverity check
+                {
+                iTimeChangeObservers->AppendL( observer );
+                }
             break;
         default:
             User::Leave(KErrArgument);
@@ -521,10 +530,16 @@ void CDRMEventHandler::RegisterEventObserverL(
     switch( aEvent )
         {
         case KEventAddRemove:
-            iAddRemoveObservers->AppendL( observer );
+            if( this->iAddRemoveObservers ) // coverity check
+                {
+                iAddRemoveObservers->AppendL( observer );
+                }
             break;
         case KEventModify:
-            iModifyObservers->AppendL( observer );
+            if( this->iModifyObservers ) // coverity check
+                {
+                iModifyObservers->AppendL( observer );
+                }
             break;
         default:
             User::Leave(KErrArgument);
