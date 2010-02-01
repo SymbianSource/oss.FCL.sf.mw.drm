@@ -34,7 +34,7 @@ USERINCLUDE	    ../../../../inc   // ADo level inc dir
 MW_LAYER_SYSTEMINCLUDE
 systeminclude	/epoc32/include/ecom
 
-source		RecDRM.CPP
+source		RecDRM.cpp
 
 START RESOURCE 101F51F4.RSS
 TARGET         RECDRM

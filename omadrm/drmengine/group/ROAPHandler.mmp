@@ -33,7 +33,7 @@ USERINCLUDE     ../roap/inc
 USERINCLUDE     ../utils/inc
 USERINCLUDE     ../server/inc
 USERINCLUDE     ../roapstorage/inc
-USERINCLUDE     ../drmclock/inc
+USERINCLUDE     ../drmclock/Inc
 USERINCLUDE     ../dcfrepository/client/inc
 USERINCLUDE     ../../../inc   // ADo level inc dir
 

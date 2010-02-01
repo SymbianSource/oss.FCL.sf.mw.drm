@@ -38,7 +38,7 @@ USERINCLUDE     ../notifier/inc
 USERINCLUDE     ../utils/inc
 USERINCLUDE     ../roap/inc
 USERINCLUDE     ../roapstorage/inc
-USERINCLUDE     ../drmclock/inc
+USERINCLUDE     ../drmclock/Inc
 USERINCLUDE     ../keystorage/inc
 USERINCLUDE     ../drmbackup/inc
 USERINCLUDE     ../../../inc   // ADo level inc dir
@@ -97,7 +97,7 @@ SOURCE          certid.cpp
 
 // DRM Clock
 #ifdef __DRM_CLOCK
-SOURCEPATH      ../drmclock/src
+SOURCEPATH      ../drmclock/Src
 SOURCE          DRMClock.cpp
 SOURCE          DRMClockServer.cpp
 SOURCE          DRMClockSession.cpp
