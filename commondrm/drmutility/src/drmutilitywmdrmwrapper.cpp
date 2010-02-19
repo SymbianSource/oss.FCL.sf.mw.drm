@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -672,13 +672,13 @@ void DRM::CDrmUtilityWMDrmWrapper::CreateLaunchParamL(
                                  KWmDrmWrapperDebugPanicCode ) );
 
     _LIT( KZero, "0" );
-    _LIT( KSpace, " " );
+    _LIT( KMarker, "\x00" );
 
     TPtr ptr( NULL, 0 );
 
     // length of startparam and drm protection type indicator and zero local id
-    // are always 1 and total of 3 spaces are needed
-    TInt length( 1 + aUrl->Length() + 1 + 3 + 1 );
+    // are always 1 and total of 4 markers are needed
+    TInt length( 1 + aUrl->Length() + 1 + 4 + 1 );
 
     aLaunchParam = HBufC::NewLC( length );
     ptr.Set( aLaunchParam->Des() );
@@ -694,14 +694,15 @@ void DRM::CDrmUtilityWMDrmWrapper::CreateLaunchParamL(
         {
         ptr.AppendNum( EDrmLaunchParamStandAloneUtility );
         }
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     // Default value 0 for localId in case of WM DRM file
     ptr.Append( KZero );
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     ptr.Append( *aUrl );
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     // WM DRM protection scheme
     ptr.AppendNum( EDrmSchemeWmDrm );
+	ptr.Append( KMarker );
 
     CleanupStack::Pop( aLaunchParam );
     }

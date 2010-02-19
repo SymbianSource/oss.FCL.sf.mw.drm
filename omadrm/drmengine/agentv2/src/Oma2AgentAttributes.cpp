@@ -682,7 +682,7 @@ TInt TOma2AgentAttributes::GetAttribute(
                      }
                 break;
             case DRM::EDrmAllowedOutputs:
-                value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision;
+                value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
                 break;
             case ERightsNone:
                 if (aRightsClient == NULL)

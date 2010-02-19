@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2003-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -308,10 +308,18 @@ void DRMCommonUtilities::ParseParametersAndStartL( TLex aLex,
     TUint32 drmScheme( EDrmSchemeUnknownDrm );
     params = new( ELeave )CArrayFixFlat<TPtrC>( sizeof( TPtrC ) );
     CleanupStack::PushL( params );
-
+	TChar ch;
+		
+	aLex.Mark();
     while ( !aLex.Eos() )                // Extract the parameters
         {
-        params->AppendL( aLex.NextToken() );
+        ch = aLex.Get();
+        if ( ch == '\x00' ) {
+        	aLex.UnGet();
+            params->AppendL( aLex.MarkedToken() );
+        	aLex.Get();
+            aLex.Mark();
+        	}
         }
 
     TInt startParam = KMaxTInt;

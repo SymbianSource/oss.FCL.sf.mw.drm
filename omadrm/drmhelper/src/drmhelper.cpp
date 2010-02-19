@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2003-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -3587,16 +3587,16 @@ void CDRMHelper::CreateLaunchParamL(
     {
     TInt index;
 
-    // MaxInt will fit into 10 characters
-    HBufC* b( HBufC::NewLC( 10 ) );
+    // MaxInt will fit into 11 characters
+    HBufC* b( HBufC::NewLC( 11 ) );
     b->Des().NumUC( aLocalId );
     HBufC* localIDBuf( b->ReAllocL( b->Des().Length() ) );
     CleanupStack::Pop( b );
     b = NULL;
     CleanupStack::PushL( localIDBuf );
 
-    // length of startparam is always 1 and 2 spaces are needed
-    TInt length = 1 + aUrl->Length() + localIDBuf->Des().Length() + 2;
+    // length of startparam is always 1 and some markers are needed
+    TInt length = 1 + aUrl->Length() + localIDBuf->Des().Length() + 4;
 
     aLaunchParam = HBufC::NewMaxL( length );
 
@@ -3604,7 +3604,7 @@ void CDRMHelper::CreateLaunchParamL(
     ptr.SetLength( 0 );
     _LIT( KOne, "1" );
     _LIT( KTwo, "2" );
-    _LIT( KSpace, " " );
+    _LIT( KMarker, "\x00" );
 
     // start param is 1 for embedded launch and 2 for launching details view
     // standalone
@@ -3616,9 +3616,9 @@ void CDRMHelper::CreateLaunchParamL(
         {
         ptr.Append( KTwo() );
         }
-    ptr.Append( KSpace() );
+    ptr.Append( KMarker() );
     ptr.Append( localIDBuf->Des() );
-    ptr.Append( KSpace() );
+    ptr.Append( KMarker() );
 
     index = ptr.Length();
     ptr.SetLength( length );
@@ -3627,6 +3627,8 @@ void CDRMHelper::CreateLaunchParamL(
         ptr[index++] = ( unsigned char ) (*aUrl)[i];
         }
 
+    ptr.Append( KMarker() );
+    
     CleanupStack::PopAndDestroy( localIDBuf );
     }
 
