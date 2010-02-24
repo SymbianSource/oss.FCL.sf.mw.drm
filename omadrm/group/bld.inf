@@ -15,8 +15,6 @@
 *
 */
 
-#include <platform_paths.hrh>
-
 PRJ_PLATFORMS
 DEFAULT
 
@@ -40,37 +38,6 @@ PRJ_EXPORTS
 #endif
 ../drmplugins/drmromtm/loc/RoMtmUi.loc MW_LAYER_LOC_EXPORT_PATH( romtmui.loc )
 
-
-// CMLA RnD keys
-../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
-
-../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
-
-../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
-
-../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
-
-// Default UDT Key
-#ifdef __DRM_USER_DATA_TRANSFER
-../drmengine/keystorage/data/UdtCertificate.der /epoc32/winscw/c/private/101F51F2/PKI/UdtCertificate.der
-
-../drmengine/keystorage/data/UdtCertificate.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/UdtCertificate.der
-../drmengine/keystorage/data/UdtCertificate.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/UdtCertificate.der
-
-../drmengine/keystorage/data/UdtCertificate.der /epoc32/data/z/private/101F51F2/PKI/UdtCertificate.der
-#endif
 
 // backup_registration.xml
 ../drmengine/group/backup_registration.xml /epoc32/winscw/c/private/101F51F2/backup_registration.xml
