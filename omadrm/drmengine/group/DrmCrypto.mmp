@@ -39,14 +39,8 @@ SOURCE          Base64.cpp
 
 SOURCE          drmaescrypto.cpp
 
-#if 1
-#warning Workaround for Bug 2121
-SOURCEPATH      ../drmcrypto/stub
-SOURCE          CmlaCryptoStub.cpp
-#else
 SOURCEPATH      ../drmcrypto/build
 SOURCE          cmlacrypto.cpp
-#endif
 
 SOURCEPATH      ../drmcrypto/src
 SOURCE          OmaCrypto.cpp
