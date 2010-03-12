@@ -231,7 +231,7 @@ void CDRMRightsMgrAppUi::StartOnlyForDetailsL( const TDesC8& aContentURI,
         {
         case EDrmSchemeOmaDrm:
             CheckOmaDrmRightsL( aContentURI, aLocalID, rights, status );
-            if ( status ) 
+            if ( status < 0 ) 
                 {
                 rights = NULL;
                 }
@@ -331,6 +331,7 @@ void CDRMRightsMgrAppUi::GetItemNameL( const TDesC& aFullName,
                                        const TBool aIsGroup )
     {
     CDcfCommon* dcf = NULL;
+    HBufC8* buffer( NULL );
     TBool getName = ETrue;
     TParse parse;
 
@@ -356,19 +357,52 @@ void CDRMRightsMgrAppUi::GetItemNameL( const TDesC& aFullName,
 
         if ( err == KErrNotFound || itemNameBuf->Length() == 0 )
             {
-            if ( aIsGroup )
+            // Do not show name if group rights or forward lock
+            if ( !aIsGroup )
                 {
-                aItemName = aFullName;
-                }
-            else
-                {
-                parse.Set( aFullName, NULL, NULL );
-                aItemName = parse.NameAndExt();
+                if ( ( iRightsClient.ForwardLockURI( buffer ) == 
+                        KErrNone ) && buffer )  
+                    {
+                    
+                    // Not forward lock
+                    if ( aID.Compare( *buffer ) != 0 )    
+                        {
+                        parse.Set( aFullName, NULL, NULL );
+                        aItemName = parse.NameAndExt();
+                        }   
+                    delete buffer;
+                    buffer = NULL;
+                    
+                    }       
+                else
+                    {
+                    parse.Set( aFullName, NULL, NULL );
+                    aItemName = parse.NameAndExt();
+                    }
                 }
             }
         else if ( err == KErrNone )
             {
-            aItemName = *itemNameBuf;
+            // Forward lock or combined delivery
+            // If forward lock, do not show name
+            if ( iRightsClient.ForwardLockURI( buffer ) == KErrNone &&
+                    buffer )
+                {
+                if ( aID.Compare( *buffer ) != 0 )
+                    {
+                    // Combined delivery
+                    aItemName = *itemNameBuf;
+                    }
+                delete buffer;
+                }
+            else 
+                {
+                // Do not show name if having group rights
+                if ( !aIsGroup )
+                    {
+                    aItemName = *itemNameBuf;
+                    }
+                }
             }
         else
             {
@@ -720,11 +754,21 @@ void CDRMRightsMgrAppUi::CheckOmaDrmRightsL( const TDesC8& aContentURI,
             if ( entry )
                 {
                 fullName = entry->FileName();
-                delete entry;
                 SetSelectedItemFullName( fullName );
 
                 TFileName itemName;
-                GetItemNameL( fullName, itemName, aContentURI, EFalse );
+                
+                if ( entry->GroupId().Length() > 0 )
+                    {
+                    GetItemNameL( fullName, itemName, aContentURI, ETrue );
+                    }    
+                else 
+                    {
+                    GetItemNameL( fullName, itemName, aContentURI, EFalse );
+                    }
+                
+                delete entry;
+                
                 SetSelectedItemName( itemName );
 
                 if ( GetItemDataL( fullName, aContentURI, listable,
@@ -738,6 +782,7 @@ void CDRMRightsMgrAppUi::CheckOmaDrmRightsL( const TDesC8& aContentURI,
             {
             SetSelectedItemFullName( KNullDesC );
             TFileName itemName;
+            // Treat in GetItemNameL as if having group rights
             GetItemNameL( KNullDesC, itemName, aContentURI, ETrue );
             SetSelectedItemName( itemName );
 
@@ -753,14 +798,14 @@ void CDRMRightsMgrAppUi::CheckOmaDrmRightsL( const TDesC8& aContentURI,
         {
         aStatus = iDRMCommon->GetSingleRightsObject( aContentURI,
             aLocalID, aRights );
+        if ( aStatus )
+            {
+            aRights = NULL;
+            }
         }
-        else
+    else
         {
         aStatus = iDRMCommon->GetActiveRights( aContentURI, 0, aRights );
-        }
-    if ( aStatus )
-        {
-        aRights = NULL;
         }
 
     CheckIndividualConstraint( aContentURI, individualConstraint, usageAllowed );

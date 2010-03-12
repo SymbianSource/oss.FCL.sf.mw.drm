@@ -164,6 +164,7 @@ private:
     TPtr8 iBufPtr;
     MHTTPDataSupplier *iPHData; // data supplier from protocol handler
     TBool iSendReady; // ready for sending?
+    TBool iLastPart; // should last part info be sent
 
     CDRMMessageParser* iDRMMessageParser;
     TInt iPrevPos;

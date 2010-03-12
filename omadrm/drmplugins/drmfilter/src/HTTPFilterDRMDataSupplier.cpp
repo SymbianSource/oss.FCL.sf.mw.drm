@@ -79,7 +79,7 @@ CHTTPFilterDRMDataSupplier* CHTTPFilterDRMDataSupplier::NewL( TInt aTransId,
 CHTTPFilterDRMDataSupplier::CHTTPFilterDRMDataSupplier( TInt aTransId,
     MHTTPDataSupplier* iDataBody, CHTTPFilterDRM* aOwner ) :
     iTransId( aTransId ), iBufPtr( 0, 0 ), iPHData( iDataBody ), iSendReady(
-        EFalse ), iOwner( aOwner )
+        EFalse ), iLastPart( EFalse ), iOwner( aOwner )
     {
     iDRMMessageParser = 0;
     iPrevPos = 0;
@@ -350,17 +350,29 @@ void CHTTPFilterDRMDataSupplier::ProcessDataPartL()
 TBool CHTTPFilterDRMDataSupplier::GetNextDataPart( TPtrC8& aDataPart )
     {
 
+    // First call after releasedata
     if ( iDataPartSize == KWholeDataPart )
         {
         aDataPart.Set( iMemBuf->iBuf->GetPtr() );
         iDataPartSize = aDataPart.Length();
+        if( iSendReady )
+            {
+            iLastPart = ETrue;
+            }
         }
-    else
+    else // Consecutive calls so that we always return the same part
+         // and same amount of data
         {
         aDataPart.Set( iMemBuf->iBuf->GetPtr().Left( iDataPartSize ) );
         }
 
-    return ( iDataPartSize == KWholeDataPart ) ? iSendReady : EFalse;
+    // this check did not work, as in this phase the iDataPartSize is never 
+    // KWholeDataPart
+    //return ( iDataPartSize == KWholeDataPart ) ? iSendReady : EFalse;
+    
+    // Always return info if this is the last part, this is only true
+    // if iSendReady has been true when ReleaseData() has been called
+    return iLastPart;
     }
 
 // -----------------------------------------------------------------------------
@@ -370,7 +382,8 @@ TBool CHTTPFilterDRMDataSupplier::GetNextDataPart( TPtrC8& aDataPart )
 //
 void CHTTPFilterDRMDataSupplier::ReleaseData()
     {
-    if ( iDataPartSize == KWholeDataPart )
+    if ( iDataPartSize == KWholeDataPart || 
+         ( iLastPart && iSendReady ) )
         {
         TRAP_IGNORE( Sink()->SeekL( MStreamBuf::EWrite, TStreamPos(0) ) );
         if ( iSendReady )
@@ -388,6 +401,13 @@ void CHTTPFilterDRMDataSupplier::ReleaseData()
         CleanupStack::PopAndDestroy( b );
         // Update data part size to available data.
         iDataPartSize = KWholeDataPart;
+
+        // if we are ready processing, make sure the client knows this
+        // is the last part
+        if( iSendReady )
+            {
+            iLastPart = ETrue;
+            }
         }
     }
 

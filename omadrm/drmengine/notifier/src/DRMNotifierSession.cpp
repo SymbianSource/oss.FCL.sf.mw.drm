@@ -203,7 +203,10 @@ void CDRMNotifierSession::ConstructL()
 //
 void CDRMNotifierSession::DispatchL( const RMessage2& aMessage ) 
     {
-		RDebug::Printf(">>> [%s] %d", _S8(__PRETTY_FUNCTION__), aMessage.Function());
+    #ifdef _DEBUG
+	RDebug::Printf(">>> [%s] %d", _S8(__PRETTY_FUNCTION__), aMessage.Function());
+    #endif
+    	
     switch ( aMessage.Function() )
         {
         case ENotifyClients:

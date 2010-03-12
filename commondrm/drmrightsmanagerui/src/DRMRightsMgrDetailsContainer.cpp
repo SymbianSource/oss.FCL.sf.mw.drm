@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2003-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -841,10 +841,10 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                                     TInt aIntYrs, TInt aIntMon, TInt aIntDay,
                                     TInt aIntHrs, TInt aIntMin, TInt aIntSec )
     {
-    // Only the two most meaningful data will be showed
+    // Only the first meaningful data will be shown
     TInt numOfData = 0;
 
-    CDesCArrayFlat* strings = new ( ELeave ) CDesCArrayFlat( 2 );
+    CDesCArrayFlat* strings = new ( ELeave ) CDesCArrayFlat( 1 );
     CleanupStack::PushL( strings );
 
     if ( aIntYrs > 0 )
@@ -855,10 +855,8 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_YEARS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_YEARS_FIVE_ZERO,
                               strings );
-        numOfData++;
         }
-
-    if ( aIntMon > 0 )
+    else if ( aIntMon > 0 )
         {
         //  Second type not provided because 11 is the maximum
         AddSinglePartOfTimeL( aIntMon,
@@ -867,11 +865,8 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_MONTHS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_MONTHS_FIVE_ZERO,
                               strings );
-        numOfData++;
         }
-
-    // Only if years or months were missing
-    if ( aIntDay > 0 && numOfData < 2 )
+    else if ( aIntDay > 0 )
         {
         AddSinglePartOfTimeL( aIntDay,
                               R_QTN_DRM_NBR_OF_DAYS_ONE,
@@ -879,10 +874,8 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_DAYS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_DAYS_FIVE_ZERO,
                               strings );
-        numOfData++;
         }
-
-    if ( aIntHrs > 0 && numOfData < 2 )
+    else if ( aIntHrs > 0 )
         {
         AddSinglePartOfTimeL( aIntHrs,
                               R_QTN_DRM_NBR_OF_HOURS_ONE,
@@ -890,10 +883,8 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_HOURS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_HOURS_FIVE_ZERO,
                               strings );
-        numOfData++;
         }
-
-    if ( aIntMin > 0 && numOfData < 2 )
+    else if ( aIntMin > 0 )
         {
         AddSinglePartOfTimeL( aIntMin,
                               R_QTN_DRM_NBR_OF_MINS_ONE,
@@ -901,11 +892,9 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_MINS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_MINS_FIVE_ZERO,
                               strings );
-        numOfData++;
         }
-
     // If interval is 0, then it shows "0 seconds" anyway
-    if ( ( aIntSec > 0 && numOfData < 2 ) || numOfData == 0 )
+    else
         {
         AddSinglePartOfTimeL( aIntSec,
                               R_QTN_DRM_NBR_OF_SECS_ONE,
@@ -913,21 +902,10 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_SECS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_SECS_FIVE_ZERO,
                               strings );
-        numOfData++;
         }
 
-    HBufC* stringHolder;
-    if ( numOfData == 1 )
-        {
-        stringHolder = StringLoader::LoadL( R_QTN_DRM_MGR_DET_INTER,
+    HBufC* stringHolder = StringLoader::LoadL( R_QTN_DRM_MGR_DET_INTER,
                                             strings->MdcaPoint(0), iEikonEnv );
-        }
-    else
-        {
-        stringHolder = StringLoader::LoadL( R_QTN_DRM_MGR_DET_INTER_TWO,
-                                            *strings, iEikonEnv );
-        }
-
     CleanupStack::PopAndDestroy( strings );
 
     return stringHolder;
