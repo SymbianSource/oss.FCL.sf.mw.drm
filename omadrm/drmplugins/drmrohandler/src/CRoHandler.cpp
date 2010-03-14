@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2004-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2004-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -715,6 +715,7 @@ void CRoHandler::HandleRightsMessageL()
     HBufC16 *number( NULL );
     HBufC16 *messageContent( NULL );
     HBufC16* buffer( NULL );
+    _LIT( KMarker, "\x00" );
 
     TInt ret( 0 );
     if ( iMessageBodyPtr.Size() == 0 )
@@ -771,13 +772,15 @@ void CRoHandler::HandleRightsMessageL()
         TPtr ptr( number->Des() );
         ptr.AppendNum( localId, EDecimal );
 
-        messageContent = HBufC16::NewL( ptr.Length() + uri16.Length() + 4 );
+        messageContent = HBufC16::NewL( ptr.Length() + uri16.Length() + 5 );
         TPtr ptrToMz( messageContent->Des() );
-        ptrToMz.Append( _L( "1 " ) );
+        ptrToMz.Append( _L( "1" ) );
+        ptrToMz.Append( KMarker );
         ptrToMz.Append( ptr ); // add localID
-        ptrToMz.Append( _L( " " ) ); // add space
+        ptrToMz.Append( KMarker );
         ptrToMz.Append( uri16 ); //add uri16
-
+        ptrToMz.Append( KMarker );
+        
         CleanupStack::PopAndDestroy( number );
         CleanupStack::PopAndDestroy( buffer );
         CleanupStack::PushL( messageContent );

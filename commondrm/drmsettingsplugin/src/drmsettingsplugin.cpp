@@ -651,9 +651,10 @@ void CDRMSettingsPlugin::UpdateUsageReportingSettingL()
             new (ELeave) CDrmSettingUsageCheckBox(
                 R_DRM_SETTINGS_METERING_CHECKBOX_PAGE,
                 usageList,
-                model ) );
-
-        isValueUpdated =
+                model,
+                this ) );
+                                            
+        isValueUpdated = 
             usageCheckBox->ExecuteLD( CAknSettingPage::EUpdateWhenAccepted );
 
         CleanupStack::PopAndDestroy( usageList );

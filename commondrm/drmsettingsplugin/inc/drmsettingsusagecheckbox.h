@@ -27,6 +27,7 @@
 class CDRMSettingUsageList;
 class CDRMSettingsModel;
 class CAknInfoPopupNoteController;
+class CDRMSettingsPlugin;
 
 /**
  * CDrmSettingUsageCheckBox class
@@ -41,7 +42,8 @@ NONSHARABLE_CLASS( CDrmSettingUsageCheckBox ) : public CAknCheckBoxSettingPage
 		*/
 		CDrmSettingUsageCheckBox( TInt aResourceId,
 		                          CDRMSettingUsageList* aList,
-		                          CDRMSettingsModel* aModel );
+		                          CDRMSettingsModel* aModel,
+		                          CDRMSettingsPlugin* aPlugin );
 		                          
 		/**
 		* Destructor.
@@ -73,6 +75,9 @@ NONSHARABLE_CLASS( CDrmSettingUsageCheckBox ) : public CAknCheckBoxSettingPage
         
         // Owned
         CAknInfoPopupNoteController* iPopupController;
+        
+        // Pointer to CDrmSettingsPlugin instance
+        CDRMSettingsPlugin* iDrmSettingsPlugin;
 
     };
 

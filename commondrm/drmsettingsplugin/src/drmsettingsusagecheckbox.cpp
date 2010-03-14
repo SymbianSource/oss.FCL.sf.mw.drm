@@ -25,6 +25,7 @@
 #include "drmsettingsusagecheckbox.h"
 #include "drmsettingsusagelist.h"
 #include "drmsettingsmodel.h"
+#include "drmsettingsplugin.h"
 
 // ================= MEMBER FUNCTIONS =======================
 
@@ -36,9 +37,11 @@
 CDrmSettingUsageCheckBox::CDrmSettingUsageCheckBox( 
     TInt aResourceId,
     CDRMSettingUsageList* aList,
-    CDRMSettingsModel* aModel ) : CAknCheckBoxSettingPage( aResourceId, aList ),
+    CDRMSettingsModel* aModel,
+    CDRMSettingsPlugin* aPlugin ) : CAknCheckBoxSettingPage( aResourceId, aList ),
                                   iList( aList ),
-                                  iModel( aModel )
+                                  iModel( aModel ),
+                                  iDrmSettingsPlugin( aPlugin )
     {
 	}
 
@@ -70,6 +73,11 @@ TKeyResponse CDrmSettingUsageCheckBox::OfferKeyEventL(
     if ( aType == EEventKeyUp )
         {
         ShowInfoPopupL();
+        }
+    
+    if ( ( aType == EEventKey ) && ( aKeyEvent.iCode == EKeyEscape ) )
+        {
+        iDrmSettingsPlugin->HandleCommandL( EEikCmdExit );
         }
     
     return response;
