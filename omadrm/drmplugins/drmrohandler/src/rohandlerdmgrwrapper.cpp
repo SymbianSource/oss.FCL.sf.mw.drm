@@ -40,10 +40,10 @@
 
 #include <es_enum.h> // tconnectioninfo
 #include <es_sock.h> // rconnection rsocket
-#include <roapeng.h>
-#include <roapdef.h>
-#include <roapobserver.h>
-#include "roapsyncwrapper.h"
+#include <RoapEng.h>
+#include <RoapDef.h>
+#include <RoapObserver.h>
+#include "RoapSyncWrapper.h"
 
 #include "rohandlerdmgrwrapper.h"
 

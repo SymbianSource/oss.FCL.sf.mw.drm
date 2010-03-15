@@ -24,14 +24,14 @@
 #include <utf.h>
 #include <stringpool.h>
 #include <xml/parserfeature.h>
-#include "DrmRights.h"
+#include "DRMRights.h"
 #include "DcfCommon.h"
 #include "DrmRightsParser.h"
-#include "DrmRightsClient.h"
+#include "DRMRightsClient.h"
 #include "hash.h"
-#include "base64.h"
-#include "DRMPermission.h"
-#include "DRMConstraint.h"
+#include "Base64.h"
+#include "DrmPermission.h"
+#include "DrmConstraint.h"
 #include "DRMClockClient.h"
 
 // MODULE DATA STRUCTURES
@@ -1216,7 +1216,7 @@ void CDrmRightsParser::OnStartElementL(
                     iRights->iCurrentConstraint->iDrmMeteringInfo->iGraceTime = n;
 
                     CleanupStack::PopAndDestroy( b );
-                    b = NULL; 
+                    b = NULL;
                     }
                 b = GetAttributeValueL( aAttributes, KContentAccessGrantedAttribute );
                 // put value to content access granted without metering

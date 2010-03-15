@@ -17,8 +17,8 @@
 
 
 // INCLUDE FILES
-#include <DrmRights.h>
-#include <DrmRightsClient.h>
+#include <DRMRights.h>
+#include <DRMRightsClient.h>
 // #include <GenericParam.h> // from S60
 #include "RoapEngBase.h"
 #include "RoapHttpHandler.h"
@@ -27,7 +27,7 @@
 #include "RoapMessage.h"
 #include "RoapLog.h"
 #include "RoapObserver.h"
-#include "DrmRiContext.h"
+#include "DRMRIContext.h"
 #include "RoapStorageClient.h"
 
 using namespace Roap;

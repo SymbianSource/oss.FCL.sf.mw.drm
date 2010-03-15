@@ -19,13 +19,13 @@
 
 // INCLUDE FILES
 #include <caf/caftypes.h>
-#include <oma2agent.h>
+#include <Oma2Agent.h>
 #include <utf.h>
 #include <drmutilitytypes.h>
 #include <drmasyncobserver.h>
 
-#include "drmrightsinfoimpl.h"
-#include "drmrightsinfodata.h"
+#include "DrmRightsInfoImpl.h"
+#include "DrmRightsInfoData.h"
 #include "drmutilitycommon.h"
 
 // CONSTANTS

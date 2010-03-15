@@ -18,7 +18,7 @@
 
 
 #include "drmuierrorhandling.h"
-#include "drmuihandlingimpl.h"
+#include "DrmUiHandlingImpl.h"
 
 // ---------------------------------------------------------------------------
 // Constructor
@@ -78,33 +78,33 @@ DRM::CDrmUiErrorHandling::~CDrmUiErrorHandling()
 // RFile based method
 // ---------------------------------------------------------------------------
 //
-EXPORT_C TInt DRM::CDrmUiErrorHandling::HandleErrorAsyncL( 
+EXPORT_C TInt DRM::CDrmUiErrorHandling::HandleErrorAsyncL(
     RFile& aFile,
-    ContentAccess::TIntent aIntent, 
-    TInt aError, 
+    ContentAccess::TIntent aIntent,
+    TInt aError,
     DRM::MDrmHandleErrorObserver& aObserver )
     {
-    TInt operation = iImplementation->HandleErrorAsyncL( aFile, 
-                                                         aIntent, 
-                                                         aError, 
+    TInt operation = iImplementation->HandleErrorAsyncL( aFile,
+                                                         aIntent,
+                                                         aError,
                                                          aObserver);
-    return operation;                                           
+    return operation;
     }
-        
+
 // ---------------------------------------------------------------------------
 // CDrmUiErrorHandling::HandleErrorL
 // RFile based method
 // ---------------------------------------------------------------------------
 //
-EXPORT_C void DRM::CDrmUiErrorHandling::HandleErrorL( 
+EXPORT_C void DRM::CDrmUiErrorHandling::HandleErrorL(
     RFile& aFile,
-    ContentAccess::TIntent aIntent,              
-    TInt aError, 
+    ContentAccess::TIntent aIntent,
+    TInt aError,
     DRM::MDrmHandleErrorObserver* aObserver )
     {
-    iImplementation->HandleErrorL( aFile, 
-                                   aIntent, 
-                                   aError, 
+    iImplementation->HandleErrorL( aFile,
+                                   aIntent,
+                                   aError,
                                    aObserver);
     }
 
@@ -113,34 +113,34 @@ EXPORT_C void DRM::CDrmUiErrorHandling::HandleErrorL(
 // ContentAccess::CData based method
 // ---------------------------------------------------------------------------
 //
-EXPORT_C TInt DRM::CDrmUiErrorHandling::HandleErrorAsyncL( 
+EXPORT_C TInt DRM::CDrmUiErrorHandling::HandleErrorAsyncL(
     ContentAccess::CData& aFile,
     ContentAccess::TIntent aIntent,
-    TInt aError, 
+    TInt aError,
     DRM::MDrmHandleErrorObserver& aObserver )
     {
-    TInt operation = iImplementation->HandleErrorAsyncL( aFile, 
-                                                         aIntent, 
-                                                         aError, 
+    TInt operation = iImplementation->HandleErrorAsyncL( aFile,
+                                                         aIntent,
+                                                         aError,
                                                          aObserver);
-    return operation;     
+    return operation;
     }
-    
+
 // ---------------------------------------------------------------------------
 // CDrmUiErrorHandling::HandleErrorL
 // ContentAccess::CData based method
 // ---------------------------------------------------------------------------
 //
-EXPORT_C void DRM::CDrmUiErrorHandling::HandleErrorL( 
+EXPORT_C void DRM::CDrmUiErrorHandling::HandleErrorL(
     ContentAccess::CData& aFile,
     ContentAccess::TIntent aIntent,
-    TInt aError, 
+    TInt aError,
     DRM::MDrmHandleErrorObserver* aObserver )
     {
-    iImplementation->HandleErrorL( aFile, 
-                                   aIntent, 
-                                   aError, 
-                                   aObserver);    
+    iImplementation->HandleErrorL( aFile,
+                                   aIntent,
+                                   aError,
+                                   aObserver);
     }
 
 

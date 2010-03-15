@@ -20,9 +20,9 @@
 #define DRMRIGHTSPARSER_H
 
 //  INCLUDES
-#include <Xml/Parser.h>
-#include <Xml/ContentHandler.h>
-#include <Xml/XmlParserErrors.h>
+#include <xml/parser.h>
+#include <xml/contenthandler.h>
+#include <xml/xmlparsererrors.h>
 
 using namespace Xml;
 
@@ -50,7 +50,7 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
             EXmlParser,
             EWbxmlParser
             };
-            
+
         enum TSoftwareSchemaType
             {
             ESymbianSid,
@@ -61,7 +61,7 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
         static const TInt KMaxElementNesting = 16;
 
     public:  // Constructors and destructor
-        
+
         /**
         * Create a parser object
         * @since Series 60 3.0
@@ -70,14 +70,14 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
         */
         IMPORT_C static CDrmRightsParser* NewL(
             TParserType aType = EXmlParser);
-        
+
         /**
         * Destructor.
         */
         IMPORT_C ~CDrmRightsParser();
 
     public: // New functions
-        
+
         /**
         * Parse one rights object
         * @since Series 60 3.0
@@ -104,7 +104,7 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
         * From MContentHandler
         * @param aDocParam Specifies the various parameters of the document.
         * @arg   aDocParam.iCharacterSetName The character encoding of the document.
-        * @param aErrorCode is the error code. 
+        * @param aErrorCode is the error code.
         *        If this is not KErrNone then special action may be required.
         */
         void OnStartDocumentL(
@@ -113,7 +113,7 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
 
         /**
         * From MContentHandler
-        * @param aErrorCode is the error code. 
+        * @param aErrorCode is the error code.
         *        If this is not KErrNone then special action may be required.
         */
         void OnEndDocumentL(
@@ -128,8 +128,8 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
         */
         void OnStartElementL(
             const RTagInfo& aElement,
-            const RAttributeArray& aAttributes, 
-			TInt aErrorCode);
+            const RAttributeArray& aAttributes,
+            TInt aErrorCode);
 
         /**
         * From MContentHandler
@@ -143,8 +143,8 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
 
         /**
         * From MContentHandler
-        * @param aBytes is the raw content data for the element. 
-        *        The client is responsible for converting the data to the 
+        * @param aBytes is the raw content data for the element.
+        *        The client is responsible for converting the data to the
         *        required character set if necessary.
         *        In some instances the content may be binary and must not be converted.
         * @param aErrorCode is the error code.
@@ -163,8 +163,8 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
         */
         void OnStartPrefixMappingL(
             const RString& aPrefix,
-            const RString& aUri, 
-			TInt aErrorCode);
+            const RString& aUri,
+            TInt aErrorCode);
 
         /**
         * From MContentHandler
@@ -205,8 +205,8 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
         */
         void OnProcessingInstructionL(
             const TDesC8& aTarget,
-            const TDesC8& aData, 
-			TInt aErrorCode);
+            const TDesC8& aData,
+            TInt aErrorCode);
 
         /**
         * From MContentHandler
@@ -232,7 +232,7 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
             const TInt32 aUid);
 
     protected:  // New functions
-        
+
         /**
         * Match the state of the current stack to the predefined states
         * @since Series 60 3.0
@@ -248,7 +248,7 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
         */
         void TransformRightsObjectL(
             RPointerArray<CDRMRights>& aResult);
-            
+
         /**
         * Return the value of an attribute as a buffer
         * @since Series 60 3.0
@@ -275,10 +275,10 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
         * Parse the time string and return the TTime
         */
         TTime ParseRelTimeL(TDesC8& aRelTimeString);
-        
+
         /**
         * Parse the interval string and return the interval
-        */        
+        */
         TTimeIntervalSeconds ParseRelInterval(TDesC8& aRelTimeString);
 
 
@@ -298,25 +298,25 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
     protected:  // Data
         // XML Parser
         CParser* iParser;
-        
+
         // Parsed rigths object
         CParsedRightsObject* iRights;
-        
+
         // Predefined XML element names
         RString iElements[KMaxElementCount];
-        
+
         // Current parsing stack
         TInt iElementStack[KMaxElementNesting];
-        
+
         // Depth of the current parsing stack
         TInt iElementStackDepth;
-        
+
         // Content between elements
         HBufC8* iContent;
-        
+
         // Determines if the input is XML or WBXML
         TParserType iParserType;
-        
+
         // Determines what kind of software constraint the RO contains
         TSoftwareSchemaType iSoftwareSchemeType;
 
@@ -327,6 +327,6 @@ NONSHARABLE_CLASS(CDrmRightsParser): public CBase, public MContentHandler
         HBufC8* iUnknownTag;
     };
 
-#endif      // DRMRIGHTSPARSER_H   
-            
+#endif      // DRMRIGHTSPARSER_H
+
 // End of File

@@ -30,18 +30,18 @@
 
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
-#include <DrmRights.h>
+#include <DRMRights.h>
 #include <DcfCommon.h>
 #include <DRMMessageParser.h>
 #include <Oma1DcfCreator.h>
-#include <DrmRightsClient.h>
+#include <DRMRightsClient.h>
 #include "DRMClockClient.h"
 
-#include <dcfrep.h>
-#include <dcfentry.h>
+#include <DcfRep.h>
+#include <DcfEntry.h>
 
 #include <DRMEncryptor.rsg>
 
@@ -371,14 +371,14 @@ TUint EncryptL(TUint& aEncryptedCount, TUint& aRightsCount, TUint& aMessagesProc
         }
 
     fs.Close();
-    
+
     TRequestStatus status;
     CDcfRep* rep = CDcfRep::NewL();
     CleanupStack::PushL(rep);
     rep->RefreshDcf(status);
     User::WaitForRequest( status );
     CleanupStack::PopAndDestroy( rep );
-    
+
     delete files;
 
     return (aEncryptedCount*aMultiplier + aRightsCount + aMessagesProcessed);

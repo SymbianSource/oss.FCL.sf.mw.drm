@@ -25,51 +25,52 @@
 #include "DcfCommon.h"
 #include "DRMHelperDownloadManager.h"
 
-#include <SaCls.h>
-#include <DRMHelper.rsg>
+#include <sacls.h>
+#include <Drmhelper.rsg>
 #include <AknQueryDialog.h>
 #include <DRMCommon.h>
 
-#include <StarterClient.h>
+#include <starterclient.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include <StringLoader.h>
 #include <eikproc.h> //CEikProcess
 #include <eikdoc.h> //CEikDocument
-#include <documenthandler.h> // KDRMErr*
+#include <DocumentHandler.h> // KDRMErr*
 #include <aknnotewrappers.h> // information note
-#include <aknglobalnote.h> // global info note
+#include <AknGlobalNote.h> // global info note
 
-#include <drmconstraint.h>
+#include <DrmConstraint.h>
 
 #include <stringresourcereader.h>
 #include <apgcli.h>
 #include <data_caging_path_literals.hrh>
 
 #include <AiwGenericParam.h>
-#include <dcfrep.h>
+#include <DcfRep.h>
 #include <DcfEntry.h>
 
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 
 #include <AknLaunchAppService.h> // for launching RMUI embedded
 
 #include <utf.h>
 
 #include <schemehandler.h> // for handling URLs
-#include "drmhelperserver.h"
-#include "consumedata.h"
-#include "drmtypes.h"
-#include "drmclockclient.h"
+#include "DRMHelperServer.h"
+#include "ConsumeData.h"
+#include "DRMTypes.h"
+#include "DRMClockClient.h"
 #include "DRMPointerArray.h"
 
 #include <SecondaryDisplay/DRMHelperSecondaryDisplay.h> // for secondary display support
-#include <aknmediatorfacade.h>
-#include <mediatoreventprovider.h>
-#include <mediatordomainuids.h>
+#include <AknMediatorFacade.h>
+#include <MediatorEventProvider.h>
+#include <MediatorDomainUIDs.h>
 #include <featmgr.h>
 
 #include "RoapStorageClient.h"
@@ -88,8 +89,8 @@
 #include <cmmanager.h>
 
 // publish & subrscibe
-#include <E32Property.h>
-#include <PsVariables.h>
+#include <e32property.h>
+#include <PSVariables.h>
 
 #ifdef __SERIES60_NATIVE_BROWSER
 #include <browseruisdkcrkeys.h>
@@ -3596,7 +3597,7 @@ void CDRMHelper::CreateLaunchParamL(
     CleanupStack::PushL( localIDBuf );
 
     // length of startparam is always 1 and some markers are needed
-    TInt length = 1 + aUrl->Length() + localIDBuf->Des().Length() + 4;
+    TInt length = 1 + aUrl->Length() + localIDBuf->Des().Length() + 3;
 
     aLaunchParam = HBufC::NewMaxL( length );
 
@@ -3626,8 +3627,8 @@ void CDRMHelper::CreateLaunchParamL(
         {
         ptr[index++] = ( unsigned char ) (*aUrl)[i];
         }
-
-    ptr.Append( KMarker() );
+    
+    ptr[index] = ( unsigned char ) KMarker()[0];
     
     CleanupStack::PopAndDestroy( localIDBuf );
     }

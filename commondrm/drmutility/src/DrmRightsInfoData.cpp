@@ -17,7 +17,7 @@
 
 
 // INCLUDE FILES
-#include "drmrightsinfodata.h"
+#include "DrmRightsInfoData.h"
 
 // ============================= LOCAL FUNCTIONS ===============================
 
@@ -27,7 +27,7 @@
 // CDrmRightsInfoData::NewLC
 // Two-Phase constructor
 // -----------------------------------------------------------------------------
-//     
+//
 DRM::CDrmRightsInfoData* DRM::CDrmRightsInfoData::NewL()
     {
     DRM::CDrmRightsInfoData* self( NewLC() );
@@ -40,41 +40,41 @@ DRM::CDrmRightsInfoData* DRM::CDrmRightsInfoData::NewL()
 // CDrmRightsInfoData::NewLC
 // Two-Phase constructor
 // -----------------------------------------------------------------------------
-//     
+//
 DRM::CDrmRightsInfoData* DRM::CDrmRightsInfoData::NewLC()
     {
     DRM::CDrmRightsInfoData* self( new (ELeave) CDrmRightsInfoData );
     CleanupStack::PushL( self );
     self->ConstructL();
-    return self;    
+    return self;
     }
 
 // -----------------------------------------------------------------------------
 // Constructor
 // -----------------------------------------------------------------------------
-//  
+//
 DRM::CDrmRightsInfoData::CDrmRightsInfoData()
-	{
-	}
-	
+    {
+    }
+
 // -----------------------------------------------------------------------------
 // Destructor
 // -----------------------------------------------------------------------------
-//  
+//
 DRM::CDrmRightsInfoData::~CDrmRightsInfoData()
-	{
-	delete iUniqueId;
-	delete iUniqueId8;
-	}
-	
+    {
+    delete iUniqueId;
+    delete iUniqueId8;
+    }
+
 // -----------------------------------------------------------------------------
 // CDrmRightsInfoData::ConstructL
 // Second phase constructor
 // -----------------------------------------------------------------------------
-//  
+//
 void DRM::CDrmRightsInfoData::ConstructL()
     {
     }
-    
-    
+
+
 //  End of File

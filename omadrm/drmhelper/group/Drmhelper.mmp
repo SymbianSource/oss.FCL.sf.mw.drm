@@ -100,13 +100,13 @@ LIBRARY         platformenv.lib
 
 
 #if defined(ARMCC)
-deffile ../EABI/ 
+deffile ../EABI/
 #elif defined( WINSCW )
-deffile ../bwinscw/ 
+deffile ../BWINSCW/
 #elif defined( WINS )
-deffile ../bwins/ 
+deffile ../bwins/
 #else
-deffile ../bmarm/ 
+deffile ../bmarm/
 #endif
 
 SMPSAFE

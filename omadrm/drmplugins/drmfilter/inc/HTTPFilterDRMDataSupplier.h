@@ -21,7 +21,7 @@
 
 #include <s32mem.h>
 #include <http/mhttpdatasupplier.h>
-#include <oma1dcfcreator.h>
+#include <Oma1DcfCreator.h>
 //-----------------------------------------------------------------------------
 
 class CDRMMessageParser;
@@ -46,7 +46,7 @@ enum TProcessedContentType
  * HeapArray8 - the helper class for memory re-allocation
  *
  * @lib DRMFilter.lib
- * @since 2.6 
+ * @since 2.6
  */
 class HeapArray8
     {
@@ -77,7 +77,7 @@ private:
  * TDRMMemBuf - the helper class for memory re-allocation
  *
  * @lib DRMFilter.lib
- * @since 2.6 
+ * @since 2.6
  */
 class TDRMMemBuf : public TMemBuf
     {
@@ -102,7 +102,7 @@ private:
  * a data supplier used for replace the default supplier in response data
  *
  * @lib DRMFilter.lib
- * @since 2.6 
+ * @since 2.6
  */
 class CHTTPFilterDRMDataSupplier : public CBase,
     public MHTTPDataSupplier,
@@ -113,7 +113,7 @@ public:
     static CHTTPFilterDRMDataSupplier* NewL( TInt,
         MHTTPDataSupplier* iDataBody, CHTTPFilterDRM* aOwner );
     /** Support for Hutchinson's content protection scheme, CFM
-     *  
+     *
      */
     static CHTTPFilterDRMDataSupplier* NewL( TInt,
         MHTTPDataSupplier* iDataBody, TProcessedContentType aType,
@@ -150,7 +150,7 @@ private:
 
     void ConstructL( TInt aSize );
     /** Support for Hutchinson's content protection scheme, CFM
-     *  
+     *
      */
     void ConstructL( TInt aSize, TProcessedContentType /*aType*/);
     /**
@@ -188,4 +188,4 @@ public:
     //-------------------------------------------------------------------------
     };
 //-----------------------------------------------------------------------------
-#endif // !_HTTPFILTERDRMDATASUPPLIER_H_ 
+#endif // !_HTTPFILTERDRMDATASUPPLIER_H_

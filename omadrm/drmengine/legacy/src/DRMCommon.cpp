@@ -19,30 +19,30 @@
 // INCLUDE FILES
 
 #include <f32file.h>
-#include <s32file.h> 
+#include <s32file.h>
 #include <apmstd.h>
-#include <WSPDecoder.h>
-#include <WSPEncoder.h>
+#include <wspdecoder.h>
+#include <wspencoder.h>
 
 #include <barsc.h>
-#include <barsread.h> 
+#include <barsread.h>
 
 #include <DRMCommon.rsg>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "DRMCommon.h"
 #include "DRMRightsClient.h"
 #include "DcfCommon.h"
 #include "Oma1Dcf.h"
-#include "Oma2Dcf.h"
-#include "DRMPermission.h"
+#include "oma2dcf.h"
+#include "DrmPermission.h"
 
 // EXTERNAL DATA STRUCTURES
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 
@@ -90,25 +90,25 @@ const TUint16 KServerVersionBuild = 1;
 
 /*
 LOCAL_C TInt CheckContentRightsL(
-    const TDesC8& aContentURI, 
+    const TDesC8& aContentURI,
     TUint32 aRightsSpec);
 
 LOCAL_C TInt IsProtectedContentL(
-    const TDesC8& aContent, 
+    const TDesC8& aContent,
     TBool& aProtection);
 
 LOCAL_C TInt GetNewHeaderBuffer(
-    HBufC8*& aOldHeaderBuf, 
-    const TDesC8& aHeaderName, 
-    const TDesC8& aHeaderValue, 
+    HBufC8*& aOldHeaderBuf,
+    const TDesC8& aHeaderName,
+    const TDesC8& aHeaderValue,
     HBufC8*& aNewHeaderBuf
     );
 
 LOCAL_C TInt WriteNewFile(
-    TFileName aFileName, 
-    HBufC8*& aHeaderBuf, 
-    TUint32& aFirstPartLength, 
-    TUint32& aDataLength, 
+    TFileName aFileName,
+    HBufC8*& aHeaderBuf,
+    TUint32& aFirstPartLength,
+    TUint32& aDataLength,
     TUint32& aDataPartPos
     );
 
@@ -133,92 +133,92 @@ LOCAL_C TInt UnRegisterDataTypeL(
 */
 
 LOCAL_C void GetActiveRightsL(
-    const TDesC8& aContentURI, 
-    TUint32 aRightsSpec, 
+    const TDesC8& aContentURI,
+    TUint32 aRightsSpec,
     CDRMRights*& aRightsObject);
 
 LOCAL_C TInt CheckFileRightsL(
-    const TDesC& aFileName, 
+    const TDesC& aFileName,
     TUint32 aRightsSpec);
 
 LOCAL_C TInt CheckFileRightsL(
-    RFile& aFileHandle, 
+    RFile& aFileHandle,
     TUint32 aRightsSpec);
 
 LOCAL_C TInt IsProtectedFileL(
-    const TDesC& aFileName, 
+    const TDesC& aFileName,
     TBool& aProtection);
 
 LOCAL_C TInt IsProtectedFileL(
-    RFile& aFileHandle, 
+    RFile& aFileHandle,
     TBool& aProtection);
 
 LOCAL_C TInt GetContentInfoL(
-    const TDesC8& aContent, 
-    DRMCommon::TContentProtection& aProtection, 
-    HBufC8*& aMIMEType, 
-    HBufC8*& aContentURI, 
+    const TDesC8& aContent,
+    DRMCommon::TContentProtection& aProtection,
+    HBufC8*& aMIMEType,
+    HBufC8*& aContentURI,
     TUint& aDataLength);
 
 LOCAL_C TInt GetFileInfoL(
-    const TDesC& aFileName, 
-    DRMCommon::TContentProtection& aProtection, 
-    HBufC8*& aMIMEType, 
-    HBufC8*& aContentURI, 
+    const TDesC& aFileName,
+    DRMCommon::TContentProtection& aProtection,
+    HBufC8*& aMIMEType,
+    HBufC8*& aContentURI,
     TUint& aDataLength);
 
 LOCAL_C TInt GetFileInfoL(
-    RFile& aFileHandle, 
-    DRMCommon::TContentProtection& aProtection, 
-    HBufC8*& aMIMEType, 
-    HBufC8*& aContentURI, 
+    RFile& aFileHandle,
+    DRMCommon::TContentProtection& aProtection,
+    HBufC8*& aMIMEType,
+    HBufC8*& aContentURI,
     TUint& aDataLength);
 
 LOCAL_C void GetContentHeaderL(
-    const TDesC8& aContent, 
-    const TDesC8& aHeaderName, 
+    const TDesC8& aContent,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue);
 
 LOCAL_C void GetFileHeaderL(
-    const TFileName& aFileName, 
-    const TDesC8& aHeaderName, 
+    const TFileName& aFileName,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue);
 
 LOCAL_C void GetFileHeaderL(
-    RFile& aFileHandle, 
-    const TDesC8& aHeaderName, 
+    RFile& aFileHandle,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue);
 
 LOCAL_C void SetContentHeaderL(
-    HBufC8*& aContent, 
-    const TDesC8& aHeaderName, 
+    HBufC8*& aContent,
+    const TDesC8& aHeaderName,
     const TDesC8& aHeaderValue);
 
 LOCAL_C void SetFileHeaderL(
-    const TDesC16& aFileName, 
-    const TDesC8& aHeaderName, 
+    const TDesC16& aFileName,
+    const TDesC8& aHeaderName,
     const TDesC8& aHeaderValue);
 
 LOCAL_C void SetFileHeaderL(
-    RFile& aFileHandle, 
-    const TDesC8& aHeaderName, 
+    RFile& aFileHandle,
+    const TDesC8& aHeaderName,
     const TDesC8& aHeaderValue);
 
 LOCAL_C void GetSingleRightsObjectL(
-    const TDesC8& aContentURI, 
-    TUint32 aLocalID, 
+    const TDesC8& aContentURI,
+    TUint32 aLocalID,
     CDRMRights*& aRightsObject);
 
 LOCAL_C void GetDetailedContentRightsL(
-    const TDesC8& aContentURI, 
+    const TDesC8& aContentURI,
     RPointerArray<CDRMRights>*& aRightsList);
 
 LOCAL_C void GetDetailedFileRightsL(
-    const TDesC& aFileName, 
+    const TDesC& aFileName,
     RPointerArray<CDRMRights>*& aRightsList);
 
 LOCAL_C void GetDetailedFileRightsL(
-    RFile& aFileHandle, 
+    RFile& aFileHandle,
     RPointerArray<CDRMRights>*& aRightsList);
 
 LOCAL_C TInt RegisterDynamicDataTypeL(
@@ -230,18 +230,18 @@ LOCAL_C TInt UnRegisterDynamicDataTypeL(
 LOCAL_C TInt CalculatePaddingL(
     COma1Dcf* dcf);
 
-LOCAL_C void DoResetAndDestroy( TAny* aPtr );  
+LOCAL_C void DoResetAndDestroy( TAny* aPtr );
 
 
 LOCAL_C TInt GetFileHandleRead(
-    RFs& aFileServer, 
-    RFile& aFile, 
+    RFs& aFileServer,
+    RFile& aFile,
     const TDesC& aFileName );
 
-LOCAL_C void AddParents( 
-    DRMCommon* aDrmCommon, 
+LOCAL_C void AddParents(
+    DRMCommon* aDrmCommon,
     RPointerArray<CDRMRights>& aRights );
-	
+
 // FORWARD DECLARATIONS
 
 using namespace ContentAccess;
@@ -258,13 +258,13 @@ LOCAL_C void DoResetAndDestroy( TAny* aPtr )
     ( reinterpret_cast< RPointerArray< CDRMPermission >* >( aPtr ) )->
         ResetAndDestroy();
     }
-    
-    
+
+
 // -----------------------------------------------------------------------------
 // GetPermission
 // -----------------------------------------------------------------------------
 LOCAL_C void GetPermission(
-    RDRMRightsClient& aClient, 
+    RDRMRightsClient& aClient,
     const TDesC8& aUri,
     TIntent aIntent,
     CDRMPermission*& aPermission )
@@ -272,19 +272,19 @@ LOCAL_C void GetPermission(
     TInt r = KErrNone;
     CDRMPermission* permission = NULL;
     TUint32 reason = 0;
-    
+
     TRAP( r, permission = aClient.GetActiveRightsL( aIntent, aUri, reason ) );
     if ( permission != NULL )
         {
         if ( aPermission == NULL )
             {
-            TRAP_IGNORE( aPermission = CDRMPermission::NewL() ); 
+            TRAP_IGNORE( aPermission = CDRMPermission::NewL() );
             }
         aPermission->Merge( *permission );
         delete permission;
         }
     }
-    
+
 // -----------------------------------------------------------------------------
 // GetActiveRightsL
 // Returns a possible active rights object. Adopts to broken callers who still
@@ -298,7 +298,7 @@ void GetActiveRightsL(
     CDRMPermission* permission = NULL;
     RDRMRightsClient client;
     HBufC8* uri = NULL;
-        
+
     User::LeaveIfError( client.Connect() );
     CleanupClosePushL( client );
 
@@ -336,14 +336,14 @@ void GetActiveRightsL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 LOCAL_C TInt IsProtectedFileL(
-    const TDesC& aFileName, 
+    const TDesC& aFileName,
     TBool& aProtection)
     {
     RFs fs;
@@ -353,11 +353,11 @@ LOCAL_C TInt IsProtectedFileL(
 
     User::LeaveIfError(fs.Connect());
     CleanupClosePushL(fs);
-    
-    
+
+
     r = GetFileHandleRead( fs, file, aFileName );
     User::LeaveIfError(r);
-    
+
     CleanupClosePushL(file);
     dcf = CDcfCommon::NewL(file);
     if (dcf != NULL)
@@ -374,14 +374,14 @@ LOCAL_C TInt IsProtectedFileL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 LOCAL_C TInt IsProtectedFileL(
-    RFile& aFileHandle, 
+    RFile& aFileHandle,
     TBool& aProtection)
     {
     TInt r = KErrNone;
@@ -401,17 +401,17 @@ LOCAL_C TInt IsProtectedFileL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 TInt GetContentInfoL(
-    const TDesC8& aContent, 
-    DRMCommon::TContentProtection& aProtection, 
-    HBufC8*& aMIMEType, 
-    HBufC8*& aContentURI, 
+    const TDesC8& aContent,
+    DRMCommon::TContentProtection& aProtection,
+    HBufC8*& aMIMEType,
+    HBufC8*& aContentURI,
     TUint& aDataLength)
     {
     TInt r = KErrNone;
@@ -420,7 +420,7 @@ TInt GetContentInfoL(
     if (dcf != NULL)
         {
         CleanupStack::PushL( dcf );
-            
+
         if (dcf->iContentID->Left(4).Compare(KLDPrefix) == 0 ||
             dcf->iContentID->Left(4).Compare(KFLPrefix) == 0 ||
             dcf->iRightsIssuerURL == NULL)
@@ -466,17 +466,17 @@ TInt GetContentInfoL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 TInt GetFileInfoL(
-    const TDesC& aFileName, 
-    DRMCommon::TContentProtection& aProtection, 
-    HBufC8*& aMIMEType, 
-    HBufC8*& aContentURI, 
+    const TDesC& aFileName,
+    DRMCommon::TContentProtection& aProtection,
+    HBufC8*& aMIMEType,
+    HBufC8*& aContentURI,
     TUint& aDataLength)
     {
     RFs fs;
@@ -489,11 +489,11 @@ TInt GetFileInfoL(
     aProtection = DRMCommon::ENoDCFFile;
     User::LeaveIfError(fs.Connect());
     CleanupClosePushL(fs);
-    
+
     r = GetFileHandleRead( fs, file, aFileName );
     User::LeaveIfError(r);
     CleanupClosePushL(file);
-    
+
     dcf = CDcfCommon::NewL(file);
     if (dcf != NULL)
         {
@@ -502,7 +502,7 @@ TInt GetFileInfoL(
             {
             dcf2 = static_cast<COma2Dcf*>(dcf);
             }
-            
+
         if (dcf->iContentID->Left(4).Compare(KLDPrefix) == 0 ||
             dcf->iContentID->Left(4).Compare(KFLPrefix) == 0 ||
             dcf->iRightsIssuerURL == NULL)
@@ -529,7 +529,7 @@ TInt GetFileInfoL(
             {
             aMIMEType = NULL;
             }
-        
+
         // Insert domain RO if it exists
         if (dcf2 != NULL && dcf2->iRightsObjects.Count() > 0)
             {
@@ -537,7 +537,7 @@ TInt GetFileInfoL(
             data = CData::NewL(file, KDefaultContentObject);
             delete data;
             }
-            
+
         if (dcf->iVersion == EOma1Dcf && !dcf->iPlainTextLengthValid)
             {
             CalculatePaddingL(static_cast<COma1Dcf*>(dcf));
@@ -551,17 +551,17 @@ TInt GetFileInfoL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 TInt GetFileInfoL(
-    RFile& aFileHandle, 
-    DRMCommon::TContentProtection& aProtection, 
-    HBufC8*& aMIMEType, 
-    HBufC8*& aContentURI, 
+    RFile& aFileHandle,
+    DRMCommon::TContentProtection& aProtection,
+    HBufC8*& aMIMEType,
+    HBufC8*& aContentURI,
     TUint& aDataLength)
     {
     TInt r = KErrNone;
@@ -571,7 +571,7 @@ TInt GetFileInfoL(
     TInt initialPos = 0;
 
     // Store the initial filePos
-    User::LeaveIfError(aFileHandle.Seek(ESeekCurrent, initialPos)); 
+    User::LeaveIfError(aFileHandle.Seek(ESeekCurrent, initialPos));
 
     aProtection = DRMCommon::ENoDCFFile;
 
@@ -618,7 +618,7 @@ TInt GetFileInfoL(
             data = CData::NewL(aFileHandle, KDefaultContentObject);
             delete data;
             }
-            
+
         if (dcf->iVersion == EOma1Dcf && !dcf->iPlainTextLengthValid)
             {
             CalculatePaddingL(static_cast<COma1Dcf*>(dcf));
@@ -633,14 +633,14 @@ TInt GetFileInfoL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 TInt CheckFileRightsL(
-    const TDesC& aFileName, 
+    const TDesC& aFileName,
     TUint32 aRightsSpec)
     {
     RFs fs;
@@ -649,14 +649,14 @@ TInt CheckFileRightsL(
     TInt r = DRMCommon::ENoRights;
     RDRMRightsClient client;
     TUint32 reason = 0;
-    
+
     User::LeaveIfError(fs.Connect());
     CleanupClosePushL(fs);
-    
+
     r = GetFileHandleRead(fs, file, aFileName);
     User::LeaveIfError(r);
     CleanupClosePushL(file);
-    
+
     dcf = CDcfCommon::NewL(file);
     if ( dcf == NULL )
         {
@@ -671,21 +671,21 @@ TInt CheckFileRightsL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 TInt CheckFileRightsL(
-    RFile& aFileHandle, 
+    RFile& aFileHandle,
     TUint32 aRightsSpec)
     {
     CDcfCommon* dcf = NULL;
     TInt r = DRMCommon::ENoRights;
     RDRMRightsClient client;
     TUint32 reason = 0;
-    
+
     dcf = CDcfCommon::NewL(aFileHandle);
     if ( dcf == NULL )
         {
@@ -700,28 +700,28 @@ TInt CheckFileRightsL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 void GetSingleRightsObjectL(
-    const TDesC8& aContentURI, 
-    TUint32 aLocalID, 
+    const TDesC8& aContentURI,
+    TUint32 aLocalID,
     CDRMRights*& aRightsObject)
     {
     RDRMRightsClient client;
     CDRMPermission* p = NULL;
     CDRMAsset* a = NULL;
-    
+
     aRightsObject = NULL;
     User::LeaveIfError(client.Connect());
     CleanupClosePushL(client);
-    
-    aRightsObject = CDRMRights::NewL(); 
+
+    aRightsObject = CDRMRights::NewL();
     CleanupStack::PushL(aRightsObject);
-    
+
     p = client.GetDbEntryL(aContentURI, aLocalID);
     CleanupStack::PushL(p);
     aRightsObject->SetPermissionL(*p);
@@ -730,21 +730,21 @@ void GetSingleRightsObjectL(
     a = CDRMAsset::NewLC();
     aRightsObject->SetAssetL(*a);
     CleanupStack::PopAndDestroy();
-    
+
     aRightsObject->SetContentURIAndLocalID(aContentURI.AllocL(), aLocalID);
     CleanupStack::Pop(); // aRightsObject
     CleanupStack::PopAndDestroy(); // client
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 void GetDetailedContentRightsL(
-    const TDesC8& aContentURI, 
+    const TDesC8& aContentURI,
     RPointerArray<CDRMRights>*& aRightsList)
     {
     RDRMRightsClient client;
@@ -754,7 +754,7 @@ void GetDetailedContentRightsL(
     TInt i;
     // Need a temporary pointer
     HBufC8* contentId = NULL;
-    
+
     aRightsList = NULL;
     User::LeaveIfError(client.Connect());
     CleanupClosePushL(client);
@@ -809,30 +809,30 @@ void GetDetailedContentRightsL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 void GetDetailedFileRightsL(
-    const TDesC& aFileName, 
+    const TDesC& aFileName,
     RPointerArray<CDRMRights>*& aRightsList)
     {
-    
+
     CDcfCommon* dcf = NULL;
     RFile file;
     RFs fs;
     TInt r = KErrNone;
-    
+
     User::LeaveIfError(fs.Connect());
     CleanupClosePushL(fs);
 
     r = GetFileHandleRead( fs, file, aFileName );
     User::LeaveIfError(r);
     CleanupClosePushL(file);
-    
-    
+
+
     dcf = CDcfCommon::NewL(file);
     if (dcf == NULL)
         {
@@ -841,22 +841,22 @@ void GetDetailedFileRightsL(
     CleanupStack::PushL(dcf);
     GetDetailedContentRightsL(*dcf->iContentID, aRightsList);
     CleanupStack::PopAndDestroy(3); // dcf, file, client
-   
+
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 void GetDetailedFileRightsL(
-    RFile& aFileHandle, 
+    RFile& aFileHandle,
     RPointerArray<CDRMRights>*& aRightsList)
     {
     CDcfCommon* dcf = NULL;
-    
+
     dcf = CDcfCommon::NewL(aFileHandle);
     if (dcf == NULL)
         {
@@ -868,16 +868,16 @@ void GetDetailedFileRightsL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 LOCAL_C void  GetNewHeaderBufferL(
-    HBufC8*& aOldHeaderBuf, 
-    const TDesC8& aHeaderName, 
-    const TDesC8& aHeaderValue, 
+    HBufC8*& aOldHeaderBuf,
+    const TDesC8& aHeaderName,
+    const TDesC8& aHeaderValue,
     HBufC8*& aNewHeaderBuf
     )
     {
@@ -886,7 +886,7 @@ LOCAL_C void  GetNewHeaderBufferL(
     TPtr8 headerPtr(aOldHeaderBuf->Des());
     TPtr8 headerNamePtr(NULL, 0, 0);
     TPtr8 newHeaderPtr(NULL, 0, 0);
-    
+
     HBufC8* headerName = HBufC8::NewL(aHeaderName.Length() + 1);
     // Find the position of the text in the header
     headerNamePtr.Set(headerName->Des());
@@ -909,7 +909,7 @@ LOCAL_C void  GetNewHeaderBufferL(
         newHeaderPtr.Copy(headerPtr.Left(offset + aHeaderName.Length() + 1));
         newHeaderPtr.Append(aHeaderValue);
         newHeaderPtr.Append(headerPtr.Right(headerPtr.Length() -
-            (offset + aHeaderName.Length() + 1 + oldHeaderValueLength)));                        
+            (offset + aHeaderName.Length() + 1 + oldHeaderValueLength)));
         }
     else
         {
@@ -921,11 +921,11 @@ LOCAL_C void  GetNewHeaderBufferL(
         newHeaderPtr.Append(KHeaderNameEnding);
         newHeaderPtr.Append(aHeaderValue);
         newHeaderPtr.Append(KHeaderEnding);
-        }        
+        }
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
@@ -943,14 +943,14 @@ LOCAL_C void WriteNewFileL(
     RFileWriteStream temp;
     TPtr8 ptr(NULL, 0, 0);
     TInt offset = 0;
-    
+
     // Find the path of the file to be modified and put the tempfile
     // into that directory
     tempFilePath.Set(aOriginalFileName.Left(
         aOriginalFileName.LocateReverse('\\') + 1));
     User::LeaveIfError(temp.Temp(aFs, tempFilePath, aTempFileName, EFileWrite));
     CleanupClosePushL( temp );
-    
+
     temp.WriteUint8L(1);
     temp.WriteUint8L(aDcf.iMimeType->Length());
     temp.WriteUint8L(aDcf.iContentID->Length());
@@ -973,20 +973,20 @@ LOCAL_C void WriteNewFileL(
         {
         ptr.Set(buffer->Des());
         ptr.SetLength(0);
-        aOriginalFile.Read(ptr);         
+        aOriginalFile.Read(ptr);
         if (ptr.Length() > 0)
             {
             temp.WriteL(ptr);
             }
         }
     while (ptr.Length() > 0);
-    temp.CommitL();           
+    temp.CommitL();
     CleanupStack::PopAndDestroy(); // temp
     CleanupStack::PopAndDestroy(); //buffer
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
@@ -1006,14 +1006,14 @@ LOCAL_C void WriteNewFileL(
     TPtr8 ptr(NULL, 0, 0);
     TInt offset = 0;
     TInt fileSize = 0;
-    
+
     // Find the path of the file to be modified and put the tempfile
     // into that directory
     tempFilePath.Set(_L("C:\\"));
-    User::LeaveIfError( temp.Temp( aFs, tempFilePath, tempFile, 
+    User::LeaveIfError( temp.Temp( aFs, tempFilePath, tempFile,
                         EFileWrite));
     CleanupClosePushL( temp );
-    
+
     temp.WriteUint8L(1);
     temp.WriteUint8L(aDcf.iMimeType->Length());
     temp.WriteUint8L(aDcf.iContentID->Length());
@@ -1036,7 +1036,7 @@ LOCAL_C void WriteNewFileL(
         {
         ptr.Set(buffer->Des());
         ptr.SetLength(0);
-        aOriginalFile.Read(ptr);         
+        aOriginalFile.Read(ptr);
         if (ptr.Length() > 0)
             {
             temp.WriteL(ptr);
@@ -1044,57 +1044,57 @@ LOCAL_C void WriteNewFileL(
         }
     while (ptr.Length() > 0);
     temp.CommitL();
-    
+
     CleanupStack::PopAndDestroy(2); //buffer, temp
     // Get the size of the temp file
 
 
     User::LeaveIfError( tempFileHandle.Open( aFs, tempFile, EFileRead ));
-    CleanupClosePushL( tempFileHandle );    
-    tempFileHandle.Size( fileSize );               
-    
-    
+    CleanupClosePushL( tempFileHandle );
+    tempFileHandle.Size( fileSize );
+
+
     // Set the fileSize of the original file
     User::LeaveIfError( aOriginalFile.SetSize( fileSize ) );
     offset = 0;
     User::LeaveIfError( tempFileHandle.Seek( ESeekStart, offset ) );
     orig.Attach( aOriginalFile );
     CleanupClosePushL( orig );
-     
-    buffer = HBufC8::NewLC(KBufferSize);    
+
+    buffer = HBufC8::NewLC(KBufferSize);
     // Copy the file over because we can't use other copy things:
     do
         {
         ptr.Set(buffer->Des());
         ptr.SetLength(0);
-        tempFileHandle.Read(ptr);         
+        tempFileHandle.Read(ptr);
         if (ptr.Length() > 0)
             {
             orig.WriteL(ptr);
             }
         }
     while (ptr.Length() > 0);
-    
-    // Write the changes    
+
+    // Write the changes
     orig.CommitL();
-    
+
     // close the tempfile
     CleanupStack::PopAndDestroy(3); // buffer, tempFileHandle, orig
-    
+
     // Delete the temp file
     User::LeaveIfError( aFs.Delete( tempFile ) );
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 LOCAL_C void SetFileHeaderL(
-    const TDesC16& aFileName, 
-    const TDesC8& aHeaderName, 
+    const TDesC16& aFileName,
+    const TDesC8& aHeaderName,
     const TDesC8& aHeaderValue)
     {
     __UHEAP_MARK;
@@ -1110,7 +1110,7 @@ LOCAL_C void SetFileHeaderL(
 
     CleanupClosePushL(file);
     dcf = COma1Dcf::NewL(file);
-    
+
     CleanupStack::PushL(dcf);
     GetNewHeaderBufferL(dcf->iHeaders, aHeaderName, aHeaderValue, newHeaderBuf);
     delete dcf->iHeaders;
@@ -1120,29 +1120,29 @@ LOCAL_C void SetFileHeaderL(
     CleanupStack::PopAndDestroy(2); // file, dcf
     User::LeaveIfError( fs.Replace( tempFileName, aFileName ) );
     CleanupStack::PopAndDestroy(); // fs
-    
+
     __UHEAP_MARKEND;
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 LOCAL_C void SetFileHeaderL(
-    RFile& aFileHandle, 
-    const TDesC8& aHeaderName, 
+    RFile& aFileHandle,
+    const TDesC8& aHeaderName,
     const TDesC8& aHeaderValue)
     {
     HBufC8* newHeaderBuf = NULL;
     COma1Dcf* dcf = NULL;
     RFs fs;
-    
+
     User::LeaveIfError(fs.Connect());
     CleanupClosePushL( fs );
-    
+
     dcf = COma1Dcf::NewL(aFileHandle);
     if (dcf == NULL)
         {
@@ -1158,15 +1158,15 @@ LOCAL_C void SetFileHeaderL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 void SetContentHeaderL(
-    HBufC8*& aContent, 
-    const TDesC8& aHeaderName, 
+    HBufC8*& aContent,
+    const TDesC8& aHeaderName,
     const TDesC8& aHeaderValue)
     {
     HBufC8* newHeaderBuf = NULL;
@@ -1211,33 +1211,33 @@ void SetContentHeaderL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 void GetHeaderL(
-    const TDesC8& aContent, 
-    const TDesC8& aHeaderName, 
+    const TDesC8& aContent,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue)
     {
-    
+
     TInt i;
     TInt j;
     TPtrC8 ptr( aContent );
-    
+
     // Add Room for CRLF and Semicolon:
-    HBufC8* buffer = HBufC8::NewMaxLC( aHeaderName.Length() + 3 );  
-    TPtr8 searchBuf( const_cast<TUint8*>(buffer->Ptr()), 0, buffer->Des().MaxSize() );  
+    HBufC8* buffer = HBufC8::NewMaxLC( aHeaderName.Length() + 3 );
+    TPtr8 searchBuf( const_cast<TUint8*>(buffer->Ptr()), 0, buffer->Des().MaxSize() );
 
     searchBuf.Copy(aHeaderName);
     searchBuf.Append(KHeaderNameEnding);
-    
-    // First see if the     
+
+    // First see if the
     i = ptr.Find(searchBuf);
     User::LeaveIfError( i );
-        
+
     if( i > 0 )
         {
         // if it's not the first one, use the search buffer:
@@ -1245,31 +1245,31 @@ void GetHeaderL(
         searchBuf.Copy(KHeaderEnding);
         searchBuf.Append(aHeaderName);
         searchBuf.Append(KHeaderNameEnding);
-    
-        // First see if the     
+
+        // First see if the
         i = ptr.Find(searchBuf);
-        User::LeaveIfError( i );      
+        User::LeaveIfError( i );
         }
-    // Move search buffer    
-    i += searchBuf.Length();  
-    
+    // Move search buffer
+    i += searchBuf.Length();
+
     j = ptr.Mid(i).Find(KHeaderEnding);
     User::LeaveIfError( j );
-            
-    aHeaderValue = ptr.Mid(i, j).AllocL();  
-    CleanupStack::PopAndDestroy(); // buffer  
+
+    aHeaderValue = ptr.Mid(i, j).AllocL();
+    CleanupStack::PopAndDestroy(); // buffer
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 void GetContentHeaderL(
-    const TDesC8& aContent, 
-    const TDesC8& aHeaderName, 
+    const TDesC8& aContent,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue)
     {
     COma1Dcf* dcf = NULL;
@@ -1280,15 +1280,15 @@ void GetContentHeaderL(
     CleanupStack::PopAndDestroy(); // dcf
     }
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 void GetFileHeaderL(
-    const TFileName& aFileName, 
-    const TDesC8& aHeaderName, 
+    const TFileName& aFileName,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue)
     {
     RFs fs;
@@ -1304,15 +1304,15 @@ void GetFileHeaderL(
     }
 
 // -----------------------------------------------------------------------------
-// 
+//
 //
 // Parameters:
 //
 // Returns:
 // -----------------------------------------------------------------------------
 void GetFileHeaderL(
-    RFile& aFileHandle, 
-    const TDesC8& aHeaderName, 
+    RFile& aFileHandle,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue)
     {
     CDcfCommon* dcf = NULL;
@@ -1355,31 +1355,31 @@ LOCAL_C TInt DynamicDataTypesCount(
     TInt err = 0;
     TDataType type;
     RFs fs;
-    RFileReadStream reader;    
-    
+    RFileReadStream reader;
+
     aCount = 0;
     err = fs.Connect();
-    if (!err) 
+    if (!err)
         {
-        
+
 #ifndef RD_MULTIPLE_DRIVE
-        
+
     err = reader.Open(fs, KDataTypesFile, EFileRead);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
     fs.DriveToChar( driveNumber, driveLetter );
-    
+
     TFileName dataTypesFile;
-	dataTypesFile.Format( KDataTypesFile, (TUint)driveLetter );
-          
+    dataTypesFile.Format( KDataTypesFile, (TUint)driveLetter );
+
     err = reader.Open(fs, dataTypesFile, EFileRead);
-    
+
 #endif
-        
+
         if (err == KErrNotFound)
             {
             err = DRMCommon::EOk;
@@ -1391,19 +1391,19 @@ LOCAL_C TInt DynamicDataTypesCount(
                 TRAP(err, (reader >> type));
                 if (err == KErrNone) aCount++;
                 }
-            
+
             if (err == KErrEof)
                 {
                 err = DRMCommon::EOk;
                 }
-            
+
             reader.Release();
             reader.Close();
             }
         }
-    
+
     fs.Close();
-    
+
     return err;
     }
 
@@ -1419,7 +1419,7 @@ LOCAL_C TInt DynamicDataTypesCount(
 //      KErrEof: Data type not found
 // -----------------------------------------------------------------------------
 LOCAL_C TInt SupportedDynamicDataType(
-    const TInt aIndex, 
+    const TInt aIndex,
     TDataType& aDataType)
     {
     TInt err = KErrNone;
@@ -1427,50 +1427,50 @@ LOCAL_C TInt SupportedDynamicDataType(
     RFs fs;
     TDataType type;
     RFileReadStream reader;
-    
+
     err = fs.Connect();
-    if (!err) 
+    if (!err)
         {
-        
+
 #ifndef RD_MULTIPLE_DRIVE
-        
+
         err = reader.Open(fs, KDataTypesFile, EFileRead);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
         TInt driveNumber( -1 );
         TChar driveLetter;
         DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
-    	fs.DriveToChar( driveNumber, driveLetter );
-        
-    	TFileName dataTypesFile;
-	    dataTypesFile.Format( KDataTypesFile, (TUint)driveLetter );
-        
+        fs.DriveToChar( driveNumber, driveLetter );
+
+        TFileName dataTypesFile;
+        dataTypesFile.Format( KDataTypesFile, (TUint)driveLetter );
+
         err = reader.Open(fs, dataTypesFile, EFileRead);
-    
+
 #endif
-        
-        if (!err) 
+
+        if (!err)
             {
             i = -1;
-            while (err == 0 && i != aIndex) 
+            while (err == 0 && i != aIndex)
                 {
                 TRAP(err, (reader >> type));
                 i++;
                 }
-            
+
             if (!err)
                 {
-                aDataType = type;  
+                aDataType = type;
                 }
-            
+
             reader.Release();
             reader.Close();
             }
         }
-    
+
     fs.Close();
-    
+
     return err;
     }
 
@@ -1486,7 +1486,7 @@ LOCAL_C TInt SupportedDynamicDataType(
 //      KErrEof: Data type not found
 // -----------------------------------------------------------------------------
 LOCAL_C TInt SupportedStaticDataType(
-    const TInt aIndex, 
+    const TInt aIndex,
     TDataType& aDataType)
     {
     TInt err = 0;
@@ -1497,51 +1497,51 @@ LOCAL_C TInt SupportedStaticDataType(
     RResourceFile resourceFile;
     HBufC8* res = NULL;
     TResourceReader theReader;
-    
+
     err = fs.Connect();
     if (err)
         {
         fs.Close();
         return err;
         }
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     TRAP(err, resourceFile.OpenL(fs, KResourceFile));
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
     fs.DriveToChar( driveNumber, driveLetter );
-    
+
     TFileName resFile;
-	resFile.Format( KResourceFile, (TUint)driveLetter );
-    
+    resFile.Format( KResourceFile, (TUint)driveLetter );
+
     TRAP(err, resourceFile.OpenL(fs, resFile));
-    
+
 #endif
     if (err)
         {
         fs.Close();
         return err;
         }
-    
-    TRAP(err, (res = resourceFile.AllocReadL(DATATYPE))); 
+
+    TRAP(err, (res = resourceFile.AllocReadL(DATATYPE)));
     if (err)
         {
         resourceFile.Close();
         fs.Close();
         return err;
         }
-    
+
     theReader.SetBuffer(res);
     index = aIndex + 1;
     TPtrC temp16(theReader.ReadTPtrC(index, res));
     length = temp16.Length();
     HBufC8* temp = NULL;
-    temp = HBufC8::NewMax(length); 
+    temp = HBufC8::NewMax(length);
     if (temp)
         {
         TPtr8 ptr(temp->Des());
@@ -1556,19 +1556,19 @@ LOCAL_C TInt SupportedStaticDataType(
         {
         err = KErrNoMemory;
         }
-    
-    if (temp) 
+
+    if (temp)
         {
         delete temp;
         }
-    
+
     temp = NULL;
     resourceFile.Close();
-    if (res) 
+    if (res)
         {
         delete res;
         }
-    
+
     res = NULL;
     fs.Close();
     return err;
@@ -1593,52 +1593,52 @@ LOCAL_C TInt UnRegisterDynamicDataTypeL(
     RFileWriteStream writer;
     RFileReadStream reader;
     RFs fs;
-    
+
     User::LeaveIfError(fs.Connect());
     CleanupClosePushL(fs);
-    
+
     // Open the data types file
-    
+
 #ifndef RD_MULTIPLE_DRIVE
 
     User::LeaveIfError(reader.Open(fs, KDataTypesFile, EFileRead));
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
     fs.DriveToChar( driveNumber, driveLetter );
-    
+
     TFileName dataTypesFile;
-	dataTypesFile.Format( KDataTypesFile, (TUint)driveLetter );
-    
+    dataTypesFile.Format( KDataTypesFile, (TUint)driveLetter );
+
     User::LeaveIfError(reader.Open(fs, dataTypesFile, EFileRead));
-    
+
 #endif
-    
+
     CleanupReleasePushL(reader);
-    
+
     // Create and open a replacement file
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     User::LeaveIfError(writer.Replace(fs, KTempFile, EFileWrite));
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TFileName tempFile;
     tempFile.Format( KTempFile, (TUint)driveLetter );
-    
+
     User::LeaveIfError(writer.Replace(fs, tempFile, EFileWrite));
-    
+
 #endif
-    
+
     CleanupReleasePushL(writer);
-    
+
     // Write all dynamic types into the replacement file, excluding the
     // data type to be removed
-    
+
     r = KErrNone;
     for (i = 0; r == KErrNone; i++)
         {
@@ -1651,22 +1651,22 @@ LOCAL_C TInt UnRegisterDynamicDataTypeL(
         }
     CleanupStack::PopAndDestroy();
     CleanupStack::PopAndDestroy();
-    
+
     // Replace the data type file with the replacement file
-    
+
 #ifndef RD_MULTIPLE_DRIVE
 
     fs.Replace(KTempFile, KDataTypesFile);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     fs.Replace(tempFile, dataTypesFile);
-    
+
 #endif
-    
-    
+
+
     CleanupStack::PopAndDestroy();
-    
+
     return DRMCommon::EOk;
     }
 
@@ -1686,52 +1686,52 @@ LOCAL_C TInt RegisterDynamicDataTypeL(const TDataType& aDataType)
     RFileWriteStream writer;
     RFileReadStream reader;
     RFs fs;
-    
+
     User::LeaveIfError(fs.Connect());
     CleanupClosePushL(fs);
-    
+
     // Create and open a replacement file
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     User::LeaveIfError(writer.Replace(fs, KTempFile, EFileWrite));
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
     fs.DriveToChar( driveNumber, driveLetter );
-    
+
     TFileName tempFile;
-	tempFile.Format( KTempFile, (TUint)driveLetter );
-    
+    tempFile.Format( KTempFile, (TUint)driveLetter );
+
     User::LeaveIfError(writer.Replace(fs, tempFile, EFileWrite));
-    
+
 #endif
-    
+
     CleanupReleasePushL(writer);
-    
+
     // Write the new data type into the replacement file
-    
+
     writer << aDataType;
     writer.CommitL();
-    
+
     // Write all other dynamic types into the replacement file
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     err = reader.Open(fs, KDataTypesFile, EFileRead);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TFileName dataTypesFile;
     dataTypesFile.Format( KDataTypesFile, (TUint)driveLetter );
-    
+
     err = reader.Open(fs, dataTypesFile, EFileRead);
-    
+
 #endif
-    
+
     if (err == KErrNone)
         {
         CleanupReleasePushL(reader);
@@ -1741,23 +1741,23 @@ LOCAL_C TInt RegisterDynamicDataTypeL(const TDataType& aDataType)
             }
         CleanupStack::PopAndDestroy();
         }
-    
+
     CleanupStack::PopAndDestroy();
-    
+
     // Replace the data type file with the replacement file
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     fs.Replace(KTempFile, KDataTypesFile);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     fs.Replace(tempFile, dataTypesFile);
-    
+
 #endif
-    
+
     CleanupStack::PopAndDestroy();
-    
+
     return DRMCommon::EOk;
     }
 
@@ -1803,7 +1803,7 @@ TInt CalculatePaddingL(COma1Dcf* dcf)
 
     return dcf->iPadding;
     }
-    
+
 // ============================ MEMBER FUNCTIONS ===============================
 
 // -----------------------------------------------------------------------------
@@ -1813,7 +1813,7 @@ TInt CalculatePaddingL(COma1Dcf* dcf)
 // -----------------------------------------------------------------------------
 EXPORT_C DRMCommon::DRMCommon(void)
     {
-    } 
+    }
 
 // -----------------------------------------------------------------------------
 // DRMCommon::ConstructL
@@ -1821,7 +1821,7 @@ EXPORT_C DRMCommon::DRMCommon(void)
 // -----------------------------------------------------------------------------
 EXPORT_C void DRMCommon::ConstructL()
     {
-    } 
+    }
 
 // -----------------------------------------------------------------------------
 // DRMCommon::NewL
@@ -1847,13 +1847,13 @@ EXPORT_C DRMCommon::~DRMCommon()
 // Checks if the give rights for a specific content URI are available.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::CheckContentRights(
-    const TDesC8& aContentID, 
+    const TDesC8& aContentID,
     TUint32 aRightsSpec)
     {
     TInt r = ENoRights;
     RDRMRightsClient client;
     TUint32 reason = 0;
-    
+
     if (client.Connect() == KErrNone)
         {
         r = client.CheckRights(aRightsSpec, aContentID, reason);
@@ -1868,7 +1868,7 @@ EXPORT_C TInt DRMCommon::CheckContentRights(
 // opening a given file and reading the content URI from there.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::CheckFileRights(
-    const TDesC& aFileName, 
+    const TDesC& aFileName,
     TUint32 aRightsSpec)
     {
     TInt r = KErrNone;
@@ -1887,7 +1887,7 @@ EXPORT_C TInt DRMCommon::CheckFileRights(
 // opening a given file and reading the content URI from there.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::CheckFileRights(
-    RFile& aFileHandle, 
+    RFile& aFileHandle,
     TUint32 aRightsSpec)
     {
     TInt r = KErrNone;
@@ -1906,7 +1906,7 @@ EXPORT_C TInt DRMCommon::CheckFileRights(
 // predefined header string.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::IsProtectedContent(
-    const TDesC8& aContent, 
+    const TDesC8& aContent,
     TBool& aProtection)
     {
     if (COma1Dcf::IsValidDcf(aContent) || COma2Dcf::IsValidDcf(aContent))
@@ -1926,7 +1926,7 @@ EXPORT_C TInt DRMCommon::IsProtectedContent(
 // predefined header string.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::IsProtectedFile(
-    const TDesC& aFileName, 
+    const TDesC& aFileName,
     TBool& aProtection)
     {
     TInt r = KErrNone;
@@ -1940,27 +1940,27 @@ EXPORT_C TInt DRMCommon::IsProtectedFile(
 // predefined header string.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::IsProtectedFile(
-    RFile& aFileHandle, 
+    RFile& aFileHandle,
     TBool& aProtection)
     {
     TInt r = KErrNone;
     TRAP(r, IsProtectedFileL(aFileHandle, aProtection));
     return r;
     }
-    
+
 // -----------------------------------------------------------------------------
 // DRMCommon::GetContentInfo
 // Returns DRM information about a memory buffer.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetContentInfo(
-    const TDesC8& aContent, 
-    TContentProtection& aProtection, 
-    HBufC8*& aMIMEType, 
-    HBufC8*& aContentURI, 
+    const TDesC8& aContent,
+    TContentProtection& aProtection,
+    HBufC8*& aMIMEType,
+    HBufC8*& aContentURI,
     TUint& aDataLength)
     {
     TInt r = KErrNone;
-    TRAP(r, GetContentInfoL(aContent, aProtection, aMIMEType, aContentURI, 
+    TRAP(r, GetContentInfoL(aContent, aProtection, aMIMEType, aContentURI,
         aDataLength));
     return r;
     }
@@ -1970,14 +1970,14 @@ EXPORT_C TInt DRMCommon::GetContentInfo(
 // Returns DRM information about a file.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetFileInfo(
-    const TDesC& aFileName, 
-    TContentProtection& aProtection, 
-    HBufC8*& aMIMEType, 
-    HBufC8*& aContentURI, 
+    const TDesC& aFileName,
+    TContentProtection& aProtection,
+    HBufC8*& aMIMEType,
+    HBufC8*& aContentURI,
     TUint& aDataLength)
     {
     TInt r = KErrNone;
-    TRAP(r, GetFileInfoL(aFileName, aProtection, aMIMEType, aContentURI, 
+    TRAP(r, GetFileInfoL(aFileName, aProtection, aMIMEType, aContentURI,
         aDataLength));
     return r;
     }
@@ -1987,14 +1987,14 @@ EXPORT_C TInt DRMCommon::GetFileInfo(
 // Returns DRM information about a file.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetFileInfo(
-    RFile& aFileHandle, 
-    TContentProtection& aProtection, 
-    HBufC8*& aMIMEType, 
-    HBufC8*& aContentURI, 
+    RFile& aFileHandle,
+    TContentProtection& aProtection,
+    HBufC8*& aMIMEType,
+    HBufC8*& aContentURI,
     TUint& aDataLength)
     {
     TInt r = KErrNone;
-    TRAP(r, GetFileInfoL(aFileHandle, aProtection, aMIMEType, aContentURI, 
+    TRAP(r, GetFileInfoL(aFileHandle, aProtection, aMIMEType, aContentURI,
         aDataLength));
     return r;
     }
@@ -2004,8 +2004,8 @@ EXPORT_C TInt DRMCommon::GetFileInfo(
 // Returns an optional header from a memory buffer containing encrypted content.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetContentHeader(
-    const TDesC8& aContent, 
-    const TDesC8& aHeaderName, 
+    const TDesC8& aContent,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue)
     {
     TInt r = KErrNone;
@@ -2019,8 +2019,8 @@ EXPORT_C TInt DRMCommon::GetContentHeader(
 // Returns an optional header from a file containing encrypted content.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetFileHeader(
-    const TFileName& aFileName, 
-    const TDesC8& aHeaderName, 
+    const TFileName& aFileName,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue)
     {
     TInt r = KErrNone;
@@ -2034,8 +2034,8 @@ EXPORT_C TInt DRMCommon::GetFileHeader(
 // Returns an optional header from a file containing encrypted content.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetFileHeader(
-    RFile& aFileHandle, 
-    const TDesC8& aHeaderName, 
+    RFile& aFileHandle,
+    const TDesC8& aHeaderName,
     HBufC8*& aHeaderValue)
     {
     TInt r = KErrNone;
@@ -2049,8 +2049,8 @@ EXPORT_C TInt DRMCommon::GetFileHeader(
 // Sets the specified optional header field of a DCF buffer.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::SetContentHeader(
-    HBufC8*& aContent, 
-    const TDesC8& aHeaderName, 
+    HBufC8*& aContent,
+    const TDesC8& aHeaderName,
     const TDesC8& aHeaderValue)
     {
     TInt r = KErrNone;
@@ -2064,8 +2064,8 @@ EXPORT_C TInt DRMCommon::SetContentHeader(
 // Sets the specified optional header field of a DCF buffer.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::SetFileHeader(
-    const TDesC16& aFileName, 
-    const TDesC8& aHeaderName, 
+    const TDesC16& aFileName,
+    const TDesC8& aHeaderName,
     const TDesC8& aHeaderValue)
     {
     TInt r = KErrNone;
@@ -2079,8 +2079,8 @@ EXPORT_C TInt DRMCommon::SetFileHeader(
 // Sets the specified optional header field of a DCF buffer.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::SetFileHeader(
-    RFile& aFileHandle, 
-    const TDesC8& aHeaderName, 
+    RFile& aFileHandle,
+    const TDesC8& aHeaderName,
     const TDesC8& aHeaderValue)
     {
     TInt r = KErrNone;
@@ -2094,8 +2094,8 @@ EXPORT_C TInt DRMCommon::SetFileHeader(
 // Looks up the rights object using the content URI and the local ID.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetSingleRightsObject(
-    const TDesC8& aContentURI, 
-    TUint32 aLocalID, 
+    const TDesC8& aContentURI,
+    TUint32 aLocalID,
     CDRMRights*& aRightsObject)
     {
     TInt r = KErrNone;
@@ -2108,7 +2108,7 @@ EXPORT_C TInt DRMCommon::GetSingleRightsObject(
 // Returns all rights objects for a content URI
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetDetailedContentRights(
-    const TDesC8& aContentURI, 
+    const TDesC8& aContentURI,
     RPointerArray<CDRMRights>*& aRightsList)
     {
     TInt r = KErrNone;
@@ -2126,7 +2126,7 @@ EXPORT_C TInt DRMCommon::GetDetailedContentRights(
 // Returns all rights objects for a content URI from a given file
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetDetailedFileRights(
-    const TDesC& aFileName, 
+    const TDesC& aFileName,
     RPointerArray<CDRMRights>*& aRightsList)
     {
     TInt r = KErrNone;
@@ -2138,13 +2138,13 @@ EXPORT_C TInt DRMCommon::GetDetailedFileRights(
         }
     return r;
     }
-    
+
 // -----------------------------------------------------------------------------
 // DRMCommon::GetDetailedFileRights
 // Returns all rights objects for a content URI from a given file
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::GetDetailedFileRights(
-    RFile& aFileHandle, 
+    RFile& aFileHandle,
     RPointerArray<CDRMRights>*& aRightsList)
     {
     TInt r = KErrNone;
@@ -2155,7 +2155,7 @@ EXPORT_C TInt DRMCommon::GetDetailedFileRights(
         AddParents( const_cast<DRMCommon*>(this), *aRightsList );
         }
     return r;
-    }    
+    }
 
 // -----------------------------------------------------------------------------
 // DRMCommon::GetActiveRights
@@ -2167,13 +2167,13 @@ EXPORT_C TInt DRMCommon::GetActiveRights(
     CDRMRights*& aRightsObject)
     {
     TInt r = KErrNone;
-    
+
     TRAP( r, GetActiveRightsL( aContentURI, aConstraints, aRightsObject ) );
     if(r != KErrNone)
         {
-        return DRMCommon::ENoRights;    
+        return DRMCommon::ENoRights;
         }
-    else 
+    else
         {
         CDRMRights::TRestriction restriction;
         CDRMRights::TExpiration expiration;
@@ -2192,7 +2192,7 @@ EXPORT_C TInt DRMCommon::GetContentURIList(
     {
     RDRMRightsClient client;
     TInt error = client.Connect();
-    
+
     aURIList = NULL;
     if (!error)
         {
@@ -2214,7 +2214,7 @@ EXPORT_C TInt DRMCommon::GetContentURIList(
             }
         client.Close();
         }
-    
+
     return error;
     }
 
@@ -2225,16 +2225,16 @@ EXPORT_C TInt DRMCommon::GetContentURIList(
 EXPORT_C TInt DRMCommon::Connect()
     {
     RDRMRightsClient client; // Used to start RightsServer in bootup
-    TInt ignore = 0;				 // error will be ignored, if it fails to start the
+    TInt ignore = 0;                 // error will be ignored, if it fails to start the
                              // rights server there is nothing we can really
                              // do about it, and normally this would work and
                              // return AOk, just used because of the SkinSrv
                              // Bootup thing
     ignore = client.Connect();        // Called by SkinSrv during bootup
-		if( ignore ) 
-		    {
-		    // The error shouldn't matter since it will be retried	
-		    }
+        if( ignore )
+            {
+            // The error shouldn't matter since it will be retried
+            }
     client.Close();
     return EOk;
     }
@@ -2274,8 +2274,8 @@ EXPORT_C TInt DRMCommon::SupportedDRMMethods(
 // -----------------------------------------------------------------------------
 EXPORT_C TVersion DRMCommon::Version()
     {
-    return TVersion(KClientVersionMajor, 
-        KClientVersionMinor, 
+    return TVersion(KClientVersionMajor,
+        KClientVersionMinor,
         KClientVersionBuild);
     }
 
@@ -2285,8 +2285,8 @@ EXPORT_C TVersion DRMCommon::Version()
 // -----------------------------------------------------------------------------
 EXPORT_C TVersion DRMCommon::ServerVersion()
     {
-    return TVersion(KServerVersionMajor, 
-        KServerVersionMinor, 
+    return TVersion(KServerVersionMajor,
+        KServerVersionMinor,
         KServerVersionBuild);
     }
 
@@ -2300,19 +2300,19 @@ EXPORT_C TInt DRMCommon::DataTypesCount(
     TInt err = 0;
     TInt staticTotal = 0;
     TInt dynamicTotal = 0;
-    
-    err = StaticDataTypesCount(staticTotal);    
+
+    err = StaticDataTypesCount(staticTotal);
     if (err)
         {
-        return err;  
+        return err;
         }
-    
+
     err = DynamicDataTypesCount(dynamicTotal);
     if (err)
         {
-        return err;  
+        return err;
         }
-    
+
     aCount = staticTotal + dynamicTotal;
     return err;
     }
@@ -2322,13 +2322,13 @@ EXPORT_C TInt DRMCommon::DataTypesCount(
 // Returns a specific DRM enabled MIME type.
 // -----------------------------------------------------------------------------
 EXPORT_C TInt DRMCommon::SupportedDataType(
-    const TInt aIndex, 
+    const TInt aIndex,
     TDataType& aDataType)
     {
     TInt err = KErrNone;
     TInt total = 0;
     TInt stat = 0;
-    
+
     err = DataTypesCount(total);
     if (!err) err = StaticDataTypesCount(stat);
     if (!err)
@@ -2346,7 +2346,7 @@ EXPORT_C TInt DRMCommon::SupportedDataType(
             err = KErrArgument;
             }
         }
-    
+
     return err;
     }
 
@@ -2361,51 +2361,51 @@ EXPORT_C TInt DRMCommon::StaticDataTypesCount(
     RFs fs;
     RResourceFile resourceFile;
     TResourceReader theReader;
-    
+
     err = fs.Connect();
-    
+
     if (err)
         {
         fs.Close();
         return err;
         }
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     TRAP(err, resourceFile.OpenL(fs, KResourceFile));
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
     fs.DriveToChar( driveNumber, driveLetter );
-    
+
     TFileName resFile;
-	resFile.Format( KResourceFile, (TUint)driveLetter );
-    
+    resFile.Format( KResourceFile, (TUint)driveLetter );
+
     TRAP(err, resourceFile.OpenL(fs, resFile));
-    
+
 #endif
     if (err)
         {
         fs.Close();
         return err;
         }
-    
+
     HBufC8* res = NULL;
-    TRAP(err, (res = resourceFile.AllocReadL(DATATYPE))); 
+    TRAP(err, (res = resourceFile.AllocReadL(DATATYPE)));
     if (err)
         {
         resourceFile.Close();
         fs.Close();
         return err;
         }
-    
-    
+
+
     theReader.SetBuffer(res);
     aCount = theReader.ReadInt8();
-    
+
     delete res;
     res = NULL;
     resourceFile.Close();
@@ -2424,7 +2424,7 @@ EXPORT_C TInt DRMCommon::RegisterDataType(
     TInt err = KErrNone;
     TInt i;
     TDataType type;
-    
+
     if (aDataType.Des().Length() > 0)
         {
         err = DataTypesCount(total);
@@ -2433,10 +2433,10 @@ EXPORT_C TInt DRMCommon::RegisterDataType(
             err = SupportedDataType(i, type);
             if (type == aDataType)
                 {
-                err = KErrAlreadyExists;   
+                err = KErrAlreadyExists;
                 }
             }
-        
+
         if (!err)
             {
             TRAP(err, RegisterDynamicDataTypeL(aDataType));
@@ -2444,7 +2444,7 @@ EXPORT_C TInt DRMCommon::RegisterDataType(
         }
     else
         {
-        err = KErrArgument;  
+        err = KErrArgument;
         }
     return err;
     }
@@ -2459,7 +2459,7 @@ EXPORT_C TInt DRMCommon::UnRegisterDataType(
     TInt r;
     TInt count;
     TInt total;
-    
+
     StaticDataTypesCount(count);
     r = DataTypesCount(total);
     if (r == KErrNone && aIndex >= count && aIndex < total)
@@ -2495,7 +2495,7 @@ EXPORT_C void DRMCommon::MergeParentAndChild(CDRMRights* /*aRights*/)
                 CDRMRights::TRestriction restriction;
                 CDRMRights::TExpiration expiration;
                 TUint32 constraints;
-                aRights->GetRightsInfo(EUnknown, restriction, expiration, 
+                aRights->GetRightsInfo(EUnknown, restriction, expiration,
                     constraints);
                 if ( expiration == CDRMRights::EValidRights)
                     {
@@ -2507,11 +2507,11 @@ EXPORT_C void DRMCommon::MergeParentAndChild(CDRMRights* /*aRights*/)
             delete parents;
             }
         }
-    */    
+    */
     }
- 
- 
- 
+
+
+
 
 // -----------------------------------------------------------------------------
 // GetFileHandle
@@ -2521,8 +2521,8 @@ EXPORT_C void DRMCommon::MergeParentAndChild(CDRMRights* /*aRights*/)
 // 3)  EFileShareReadersOnly
 // -----------------------------------------------------------------------------
 LOCAL_C TInt GetFileHandleRead(
-    RFs& aFileServer, 
-    RFile& aFile, 
+    RFs& aFileServer,
+    RFile& aFile,
     const TDesC& aFileName )
     {
     TInt error = KErrNone;
@@ -2536,10 +2536,10 @@ LOCAL_C TInt GetFileHandleRead(
         if( error != KErrNone )
             {
             // 3) Try to open in EFileShareReadersOnly
-            error = aFile.Open( aFileServer, aFileName, EFileRead | EFileShareReadersOnly );            
+            error = aFile.Open( aFileServer, aFileName, EFileRead | EFileShareReadersOnly );
             }
         }
-    return error;   
+    return error;
     };
 
 // -----------------------------------------------------------------------------
@@ -2549,19 +2549,19 @@ LOCAL_C TInt GetFileHandleRead(
 // 2)  EFileShareAny
 // 3)  EFileShareReadersOnly
 // -----------------------------------------------------------------------------
-LOCAL_C void AddParents( DRMCommon* aDrmCommon, 
-                         RPointerArray<CDRMRights>& aRights ) 
+LOCAL_C void AddParents( DRMCommon* aDrmCommon,
+                         RPointerArray<CDRMRights>& aRights )
     {
     HBufC8* parent = NULL;
     RPointerArray<CDRMRights>* parents = NULL;
     TInt error = KErrNone;
     RPointerArray<HBufC8> usedParents;
-    
-    
+
+
     for( TInt i = 0; i < aRights.Count(); i++ )
         {
         parent = aRights[i]->GetPermission().iParentUID;
-        
+
         for(TInt counter = 0; counter < usedParents.Count(); counter++ )
             {
             if( parent && !usedParents[counter]->Compare( *parent ) )
@@ -2569,28 +2569,28 @@ LOCAL_C void AddParents( DRMCommon* aDrmCommon,
                 parent = NULL;
                 }
             }
-        
+
         if( parent != NULL )
             {
             TRAP( error, usedParents.AppendL( parent ) );
-            
+
             if( aDrmCommon->GetDetailedContentRights(parent->Des(), parents) == KErrNone )
                 {
                 for( TInt j = parents->Count()-1; j >= 0;j-- )
-                    { 
+                    {
                     TRAP( error, aRights.AppendL( (*parents)[j] ) );
                     (*parents)[j] = NULL;
                     parents->Remove(j);
                     }
-                parents->ResetAndDestroy();    
+                parents->ResetAndDestroy();
                 delete parents;
-                parents = NULL;    
+                parents = NULL;
                 }
-            
+
             }
         }
     usedParents.Reset();
-    usedParents.Close();        
+    usedParents.Close();
     }
 
 // -----------------------------------------------------------------------------

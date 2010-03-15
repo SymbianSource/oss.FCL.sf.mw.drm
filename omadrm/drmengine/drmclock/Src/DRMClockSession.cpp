@@ -19,11 +19,11 @@
 // INCLUDE FILES
 #include <s32file.h>
 #include <f32file.h>
-#include "drmcommon.h"
+#include "DRMCommon.h"
 #include "DRMClockSession.h"
 #include "drmclockclientserver.h"
 #include "DRMClockServer.h"
-#include <DrmTypes.h>
+#include <DRMTypes.h>
 
 #include <e32test.h>
 
@@ -33,7 +33,7 @@
 using namespace DRMClock;
 
 // EXTERNAL DATA STRUCTURES
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 // CONSTANTS
 
 
@@ -58,7 +58,7 @@ using namespace DRMClock;
 // Two-phased constructor.
 // -----------------------------------------------------------------------------
 //
-CDRMClockSession* CDRMClockSession::NewL( CDRMClock* aClock) 
+CDRMClockSession* CDRMClockSession::NewL( CDRMClock* aClock)
     {
     CDRMClockSession* self = new( ELeave ) CDRMClockSession( aClock );
     CleanupStack::PushL( self );
@@ -88,9 +88,9 @@ void CDRMClockSession::ServiceL( const RMessage2& aMessage )
     {
     DRMLOG(  _L( "CDRMClockSession::ServiceL called" ) );
     // Trap possible errors...
-    
+
     TRAPD( error, DispatchL( aMessage ) );
-    
+
     if ( error )
         {
         DRMLOG2(  _L( "CDRMClockSession::DispatcL threw an exception %d" ), error );
@@ -108,13 +108,13 @@ void CDRMClockSession::ServiceL( const RMessage2& aMessage )
 // Default constructor.
 // -----------------------------------------------------------------------------
 //
-CDRMClockSession::CDRMClockSession( CDRMClock* aClock ) : 
+CDRMClockSession::CDRMClockSession( CDRMClock* aClock ) :
     // Base class' constructor is called first.
     iDRMClock( aClock )
     {
     // Nothing.
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMClockSession::ConstructL
 // Second phase constructor. Initializes the log tool in DRM internal testing.
@@ -126,11 +126,11 @@ void CDRMClockSession::ConstructL()
 
 // -----------------------------------------------------------------------------
 // CDRMClockSession::DispatchL
-// Checks which command the user requested, and forwards the request to 
+// Checks which command the user requested, and forwards the request to
 // appropriate private method. This helps to keep the code more readable.
 // -----------------------------------------------------------------------------
 //
-void CDRMClockSession::DispatchL( const RMessage2& aMessage ) 
+void CDRMClockSession::DispatchL( const RMessage2& aMessage )
     {
     switch ( aMessage.Function() )
         {
@@ -156,13 +156,13 @@ void CDRMClockSession::GetDRMTimeL( const RMessage2& aMessage )
     TTime drmTime;
     TInt timeZone;
     DRMClock::ESecurityLevel level;
-    
+
     iDRMClock->GetSecureTime( drmTime, timeZone, level );
 
     TPckg<TTime> package(drmTime);
-    TPckg<TInt> package2(timeZone);    
+    TPckg<TInt> package2(timeZone);
     TPckg<DRMClock::ESecurityLevel> package3(level);
-    
+
     IPCWRITE0L( package );
     IPCWRITE1L( package2 );
     IPCWRITE2L( package3 );
@@ -178,19 +178,19 @@ void CDRMClockSession::UpdateDRMTimeL( const RMessage2& aMessage )
     {
     DRMLOG(  _L( "CDRMClockSession::UpdateDRMTimeL" ) );
     TInt error = KErrNone;
-    TTime drmTime;    
+    TTime drmTime;
     TInt timeZone;
     TPckg<TTime> package( drmTime );
     TPckg<TInt> package2( timeZone );
     TInt r = KErrAccessDenied;
-    
+
     // Add a check for the vendor id
-	_LIT_SECURITY_POLICY_V0(vidCheck, VID_DEFAULT); // Check Default VID    
-	_LIT_SECURITY_POLICY_C1(drmCheck, ECapabilityDRM);
+    _LIT_SECURITY_POLICY_V0(vidCheck, VID_DEFAULT); // Check Default VID
+    _LIT_SECURITY_POLICY_C1(drmCheck, ECapabilityDRM);
     RThread client;
-    
-    aMessage.ClientL( client );    
-    
+
+    aMessage.ClientL( client );
+
     if( vidCheck.CheckPolicy( client ) || drmCheck().CheckPolicy(client) )
         {
         r = KErrNone;
@@ -198,7 +198,7 @@ void CDRMClockSession::UpdateDRMTimeL( const RMessage2& aMessage )
 
     client.Close();
     User::LeaveIfError( r );
-    
+
     IPCREAD0L( package );
     IPCREAD1L( package2 );
 

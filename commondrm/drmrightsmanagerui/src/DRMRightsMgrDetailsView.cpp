@@ -21,16 +21,16 @@
 #include <avkon.rsg>
 #include <akntitle.h>
 #include <aknview.h>
-#include <aknviewappui.h>
-#include <stringloader.h>
+#include <aknViewAppUi.h>
+#include <StringLoader.h>
 #include <eikbtgpc.h>
 
-#include <drmrightsmanager.rsg>
+#include <DRMRightsManager.rsg>
 
-#include "drmrightsmgrdetailsview.h"
-#include "drmcommonutilities.h"
-#include "drmrightsmgrappui.h"
-#include "drmrightsmanager.hrh"
+#include "DRMRightsMgrDetailsView.h"
+#include "DRMCommonUtilities.h"
+#include "DRMRightsMgrAppUi.h"
+#include "DRMRightsManager.hrh"
 #include "drmutilitywmdrmutilities.h"
 #include "drmutilityinternaltypes.h"
 

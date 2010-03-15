@@ -27,7 +27,7 @@
 
 // publish & subscribe
 #include <e32property.h>
-#include <psvariables.h>
+#include <PSVariables.h>
 #include <centralrepository.h>
 
 // coeenv
@@ -46,8 +46,8 @@
 #include <caf/caftypes.h>
 
 // launching embedded details view
-#include <aknlaunchappservice.h>
-#include <aiwgenericparam.h>
+#include <AknLaunchAppService.h>
+#include <AiwGenericParam.h>
 #include <apgcli.h>
 
 // character conversions
@@ -61,11 +61,11 @@
 #include <drmutility.rsg>
 
 // drm
-#include <oma2agent.h>
+#include <Oma2Agent.h>
 #include <drmagents.h>
-#include <drmpermission.h>
-#include <drmconstraint.h>
-#include <drmrightsclient.h>
+#include <DrmPermission.h>
+#include <DrmConstraint.h>
+#include <DRMRightsClient.h>
 #include <drmutility.h>
 #include <drmutilitytypes.h>
 #include <drmasyncobserver.h>
@@ -77,21 +77,21 @@
 
 #include "drmutilitycommon.h"
 #include "drmutilityui.h"
-#include "drmuihandlingimpl.h"
+#include "DrmUiHandlingImpl.h"
 #include "drmuihandlingdata.h"
-#include "drmutilitydownloadmanager.h"
+#include "DrmUtilityDownloadManager.h"
 #include "drmutilityinternaltypes.h"
 #include "drmuicheckrightsobserver.h"
 #include "drmutilitywmdrm.h"
 #include "drmutilitywmdrmwrapper.h"
 
-#include "roapstorageclient.h"
-#include "drmtypes.h"
+#include "RoapStorageClient.h"
+#include "DRMTypes.h"
 #include "drmsettingsplugininternalcrkeys.h"
-#include "drmricontext.h"
-#include "drmdomaincontext.h"
+#include "DRMRIContext.h"
+#include "DRMDomainContext.h"
 
-#include "drmutilityinternalcrkeys.h"      // Cenrep extension for OmaBased
+#include "DrmUtilityInternalcrkeys.h"      // Cenrep extension for OmaBased
 
 // CONSTANTS
 const TInt KCommandHandleErrorFile( 1 );
@@ -1612,12 +1612,12 @@ void DRM::CDrmUiHandlingImpl::DoCheckOmaRightsAmountL(
         {
         permission = iOmaClient.GetActiveRightsL( aIntent, *aContentUri,
             reason );
-            
+
         if( !permission )
             {
             User::Leave( KErrCANoPermission); //coverity check
             }
-            
+
         CleanupStack::PushL( permission );
 
         toplevel = permission->TopLevelConstraint();

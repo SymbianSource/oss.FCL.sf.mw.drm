@@ -17,15 +17,15 @@
 
 
 // INCLUDE FILES
-#include "drmactiveoperation.h"
+#include "DRMActiveOperation.h"
 #include "drmrightsdb.h"
-#include "drmrightscleaner.h"
-#include "drmobsoletefinder.h"
-#include "drmdbsession.h"
+#include "DRMRightsCleaner.h"
+#include "DRMObsoleteFinder.h"
+#include "DRMDbSession.h"
 
 // EXTERNAL DATA STRUCTURES
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 
@@ -42,7 +42,7 @@
 
 // ============================= LOCAL FUNCTIONS ===============================
 
-    
+
 // ============================ MEMBER FUNCTIONS ===============================
 
 // -----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ CDRMActiveOperation* CDRMActiveOperation::NewLC( const RMessagePtr2& aMessage,
                                                                  aSession,
                                                                  aOperation );
     CleanupStack::PushL( self );
-    
+
     return self;
     }
 
@@ -73,30 +73,30 @@ CDRMActiveOperation::~CDRMActiveOperation()
     {
     // Close the stream
     iFileStream.Close();
-    
+
     if( iFileName )
         {
-        if( iFileServer ) 
-            {	
-            iFileServer->Delete( *iFileName );        
+        if( iFileServer )
+            {
+            iFileServer->Delete( *iFileName );
             }
         delete iFileName;
-        iFileName = NULL;  
+        iFileName = NULL;
         }
-        
+
     if ( iActiveOperation )
         {
-        // Construction was successful, but 
+        // Construction was successful, but
         // something has went wrong.
-        
+
         iActiveOperation->Cancel();
         if( !iMessage.IsNull() )
             {
-            iMessage.Complete( KErrCancel );           
+            iMessage.Complete( KErrCancel );
             }
         }
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMActiveOperation::ActivateL
 //
@@ -107,15 +107,15 @@ void CDRMActiveOperation::ActivateL( CDRMRightsDB& aDb,
                                      const TTime& aTime )
     {
     CActiveScheduler::Add( this );
-    
 
-    CDRMRightsCleaner* cleaner = 
+
+    CDRMRightsCleaner* cleaner =
         aDb.DeleteExpiredPermissionsL( aTime, iStatus );
     CleanupStack::PushL( cleaner );
     cleaner->ExecuteCleanupLD();
     CleanupStack::Pop();
     SetActive();
-    iActiveOperation = cleaner;             
+    iActiveOperation = cleaner;
     }
 
 // -----------------------------------------------------------------------------
@@ -126,31 +126,31 @@ void CDRMActiveOperation::ActivateL( CDRMRightsDB& aDb,
 //
 void CDRMActiveOperation::ActivateL( CDRMRightsDB& aDb,
                                      RFs& aFileServer,
-                                     const TDesC& aTempPath, 
+                                     const TDesC& aTempPath,
                                      const TBool aPerformScan )
     {
     CActiveScheduler::Add( this );
 
     iFileName = new (ELeave) TFileName;
     iFileServer = &aFileServer;
-     
-    User::LeaveIfError( 
-        iFileStream.Temp( aFileServer, 
-                         aTempPath, 
-                         *iFileName, 
+
+    User::LeaveIfError(
+        iFileStream.Temp( aFileServer,
+                         aTempPath,
+                         *iFileName,
                          EFileWrite | EFileStream ) );
-    
+
     CDRMObsoleteFinder* finder = CDRMObsoleteFinder::NewL(aFileServer,
                                                           &aDb,
-                                                          iStatus, 
+                                                          iStatus,
                                                           iFileStream,
                                                           aPerformScan );
     CleanupStack::PushL( finder );
     finder->ExecuteFinderLD();
     CleanupStack::Pop();
     SetActive();
-    iActiveOperation = finder;              
-    }  
+    iActiveOperation = finder;
+    }
 
 // -----------------------------------------------------------------------------
 // CDRMActiveOperation::Remove
@@ -165,12 +165,12 @@ void CDRMActiveOperation::Remove()
         case EOperationExportObsolete:
             {
             static_cast<CDRMObsoleteFinder*>(iActiveOperation)->DoCleanup();
-            } 
-            break;            
-        default: 
+            }
+            break;
+        default:
             {
             static_cast<CDRMRightsCleaner*>(iActiveOperation)->DoCleanup();
-            } 
+            }
             break;
         }
     }
@@ -184,30 +184,30 @@ void CDRMActiveOperation::Remove()
 void CDRMActiveOperation::RunL()
     {
     TFileName* fileName = NULL;
-    
+
     // All done.
     if( !iMessage.IsNull() )
         {
-        iMessage.Complete( iStatus.Int() );           
-        }    
-    
+        iMessage.Complete( iStatus.Int() );
+        }
+
     // iActiveOperation deletes itself.
     iActiveOperation = NULL;
-    
+
     Deque();
-    
+
     if( iOperation == EOperationExportObsolete )
         {
         fileName = iFileName;
         iFileName = NULL;
-        iSession.AsyncOperationDone(fileName);            
+        iSession.AsyncOperationDone(fileName);
         }
-    else 
+    else
         {
-        iSession.AsyncOperationDone();            
+        iSession.AsyncOperationDone();
         }
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMActiveOperation::DoCancel
 //
@@ -217,8 +217,8 @@ void CDRMActiveOperation::RunL()
 void CDRMActiveOperation::DoCancel()
     {
     }
-    
-    
+
+
 
 // -----------------------------------------------------------------------------
 // CDRMActiveOperation::CDRMActiveOperation
@@ -237,5 +237,5 @@ CDRMActiveOperation::CDRMActiveOperation( const RMessagePtr2& aMessage,
     {
     // Nothing
     }
-    
+
 // End of file

@@ -22,7 +22,7 @@
 // INCLUDES
 
 #include <e32base.h>
-#include "drmpointerarray.h"
+#include "DRMPointerArray.h"
 
 // CONSTANTS
 
@@ -35,7 +35,7 @@ class RFs;
 class CDir;
 class CDRMRightsDB;
 class CDcfRep;
-                                                         
+
 
 // FUNCTION PROTOTYPES
 
@@ -52,7 +52,7 @@ class CDcfRep;
 NONSHARABLE_CLASS( CDRMObsoleteFinder ) : public CActive
     {
     public: // Constructors and destructor
-        
+
         /**
         * NewL
         *
@@ -62,7 +62,7 @@ NONSHARABLE_CLASS( CDRMObsoleteFinder ) : public CActive
         * @since    3.0
         * @param    aFs : Open file server session
         * @param    aDatabase : CDRMRightsDB object
-        * @param    aStatus : The request status to complete when the operation is 
+        * @param    aStatus : The request status to complete when the operation is
         *                     fully done
         * @param    aStream : stream to write the result into
         * @param    aPerformScan : if a filesystem scan need to be performed
@@ -75,29 +75,29 @@ NONSHARABLE_CLASS( CDRMObsoleteFinder ) : public CActive
                                         TRequestStatus& aStatus,
                                         RWriteStream& aStream,
                                         TBool aPerformScan );
-          
+
         /**
         * Destructor
         */
         virtual ~CDRMObsoleteFinder();
 
-    public: // New functions    
+    public: // New functions
 
         /**
         * ExecuteCleanupLD
-        * 
+        *
         * Delete expired permissions. The object is deleted when
         * the function completes
         *
         * @since    3.0
         * @return   None
         *
-        */      
+        */
         void ExecuteFinderLD();
-        
-        
+
+
         void DoCleanup();
-         
+
     protected:
         /**
         * From CActive: RunL.
@@ -107,28 +107,28 @@ NONSHARABLE_CLASS( CDRMObsoleteFinder ) : public CActive
 
         /**
         * From CActive: DoCancel performs cancel
-        */        
+        */
         void DoCancel();
-      
+
         /**
         * From CActive: RunError checks the errors from RunL.
         */
-        TInt RunError( TInt aError );                        
-                        
+        TInt RunError( TInt aError );
+
     private:
         /**
         * Default Constructor - First phase. Prevented.
         */
-        CDRMObsoleteFinder(); 
-    
+        CDRMObsoleteFinder();
+
         /**
         * Default Constructor - First phase.
         */
         CDRMObsoleteFinder( RFs& aFs,
                             CDRMRightsDB* aDatabase,
                             TRequestStatus& aStatus,
-                            RWriteStream& aStream ); 
-        
+                            RWriteStream& aStream );
+
         /**
         * ConstructL
         *
@@ -136,18 +136,18 @@ NONSHARABLE_CLASS( CDRMObsoleteFinder ) : public CActive
         *
         * @since  3.0
         * @return Leaves if an error occurs
-        */  
-        void ConstructL( const TBool aPerformScan );  
+        */
+        void ConstructL( const TBool aPerformScan );
 
         /**
         * Assignment operator - Prevented
         */
-        CDRMObsoleteFinder& operator =( const CDRMObsoleteFinder& );    
-    
+        CDRMObsoleteFinder& operator =( const CDRMObsoleteFinder& );
+
         /**
         * Copy constructor - Prevented
         */
-        CDRMObsoleteFinder( const CDRMObsoleteFinder& );                
+        CDRMObsoleteFinder( const CDRMObsoleteFinder& );
 
 
         /**
@@ -171,42 +171,42 @@ NONSHARABLE_CLASS( CDRMObsoleteFinder ) : public CActive
         * @leave    Symbian OS error code
         */
         void ObsoleteToStreamL();
-     
+
     private:
         // Dcf repository client
         CDcfRep* iDcfClient;
-        
+
         // List of content id's
         CDRMPointerArray<HBufC8>* iContents;
-        
+
         // List of content id's
         CDRMPointerArray<HBufC8>* iParents;
-        
+
         // List of content id's
         CDRMPointerArray<HBufC8>* iNoContents;
-                               
+
         // Index we are going at:
         TInt iIndex;
-    
+
         // fileserver session
         RFs& iFileServer;
 
         // output stream
         RWriteStream& iStream;
-    
+
         // rights database file, fileserver subsession
         CDRMRightsDB* iRightsDb;
-    
+
         // request status to be set complete
         TRequestStatus& iOperationStatus;
-        
+
         // State of the active object
         TInt iState;
-        
+
         // Cancelling status
         TInt iCancel;
     };
 
-#endif      // DRMOBSOLETEFINDER_H   
-            
+#endif      // DRMOBSOLETEFINDER_H
+
 // End of File

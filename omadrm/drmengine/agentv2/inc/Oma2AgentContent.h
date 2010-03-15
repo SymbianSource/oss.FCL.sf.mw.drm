@@ -22,10 +22,11 @@
 //  INCLUDES
 #include <f32file.h>
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <caf/agentinterface.h>
-#include <dcfcommon.h>
-#include <drmnotifier.h>
-#include <drmrightsclient.h>
+#include <DcfCommon.h>
+#include <DRMNotifier.h>
+#include <DRMRightsClient.h>
 
 // FORWARD DECLARATIONS
 class CAESDecryptor;
@@ -43,117 +44,117 @@ namespace ContentAccess
 class COma2AgentContent : public CAgentContent, public MDRMEventObserver
 {
 public:
-	static COma2AgentContent* NewL(
-	    const TDesC& aUri, 
-	    TContentShareMode aShareMode);
-	    
-	static COma2AgentContent* NewLC(
-	    const TDesC& aUri, 
-	    TContentShareMode aShareMode);
-		
-	static COma2AgentContent* NewL(
-	    RFile& aFile);
-	
-	static COma2AgentContent* NewLC(
-	    RFile& aFile);
+    static COma2AgentContent* NewL(
+        const TDesC& aUri,
+        TContentShareMode aShareMode);
+
+    static COma2AgentContent* NewLC(
+        const TDesC& aUri,
+        TContentShareMode aShareMode);
+
+    static COma2AgentContent* NewL(
+        RFile& aFile);
+
+    static COma2AgentContent* NewLC(
+        RFile& aFile);
 
     void EmbedDomainRoL();
-    
-	virtual ~COma2AgentContent();
 
-public: 
-	// From CAgentContent
-	virtual TInt OpenContainer(
-	    const TDesC& aUniqueId);
-	    
-	virtual TInt CloseContainer();
-	
-	virtual void GetEmbeddedObjectsL(
-	    RStreamablePtrArray<CEmbeddedObject>& aArray);
-	    
-	virtual void GetEmbeddedObjectsL(
-	    RStreamablePtrArray<CEmbeddedObject>& aArray,
-	    TEmbeddedType aType);
-	    
-	virtual TInt Search(
-	    RStreamablePtrArray<CEmbeddedObject>& aArray,
-	    const TDesC8& aMimeType,
-	    TBool aRecursive);
-	    
-	virtual TInt GetAttribute(
-	    TInt aAttribute, 
-	    TInt& aValue, 
-	    const TDesC& aUniqueId);
-	    
-	virtual TInt GetAttributeSet(
-	    RAttributeSet& aAttributeSet, 
-	    const TDesC& aUniqueId);
-	    
-	virtual TInt GetStringAttribute(
-	    TInt aAttribute, 
-	    TDes& aValue, 
-	    const TDesC& aUniqueId);
-	    
-	virtual TInt GetStringAttributeSet(
-	    RStringAttributeSet& aStringAttributeSet, 
-	    const TDesC& aUniqueId);
-	    
-	virtual TInt AgentSpecificCommand(
-	    TInt aCommand, 
-	    const TDesC8& aInputBuffer, 
-	    TDes8& aOutputBuffer);
-	    
-	virtual void AgentSpecificCommand(
-	    TInt aCommand, 
-	    const TDesC8& aInputBuffer, 
-	    TDes8& aOutputBuffer, 
-	    TRequestStatus& aStatus);
-	    
-	virtual void NotifyStatusChange(
-	    TEventMask aMask, 
-	    TRequestStatus& aStatus, 
-	    const TDesC& aUniqueId);
-	    
-	virtual TInt CancelNotifyStatusChange(
-	    TRequestStatus& aStatus, 
-	    const TDesC& aUniqueId);
-	    
-	virtual void RequestRights(
-	    TRequestStatus& aStatus, 
-	    const TDesC& aUniqueId);
-	    
-	virtual TInt CancelRequestRights(
-	    TRequestStatus& aStatus, 
-	    const TDesC& aUniqueId);
-	    
-	virtual void DisplayInfoL(
-	    TDisplayInfo aInfo, 
-	    const TDesC& aUniqueId);
-	    
-	virtual TInt SetProperty(
-	    TAgentProperty aProperty, 
-	    TInt aValue);
+    virtual ~COma2AgentContent();
+
+public:
+    // From CAgentContent
+    virtual TInt OpenContainer(
+        const TDesC& aUniqueId);
+
+    virtual TInt CloseContainer();
+
+    virtual void GetEmbeddedObjectsL(
+        RStreamablePtrArray<CEmbeddedObject>& aArray);
+
+    virtual void GetEmbeddedObjectsL(
+        RStreamablePtrArray<CEmbeddedObject>& aArray,
+        TEmbeddedType aType);
+
+    virtual TInt Search(
+        RStreamablePtrArray<CEmbeddedObject>& aArray,
+        const TDesC8& aMimeType,
+        TBool aRecursive);
+
+    virtual TInt GetAttribute(
+        TInt aAttribute,
+        TInt& aValue,
+        const TDesC& aUniqueId);
+
+    virtual TInt GetAttributeSet(
+        RAttributeSet& aAttributeSet,
+        const TDesC& aUniqueId);
+
+    virtual TInt GetStringAttribute(
+        TInt aAttribute,
+        TDes& aValue,
+        const TDesC& aUniqueId);
+
+    virtual TInt GetStringAttributeSet(
+        RStringAttributeSet& aStringAttributeSet,
+        const TDesC& aUniqueId);
+
+    virtual TInt AgentSpecificCommand(
+        TInt aCommand,
+        const TDesC8& aInputBuffer,
+        TDes8& aOutputBuffer);
+
+    virtual void AgentSpecificCommand(
+        TInt aCommand,
+        const TDesC8& aInputBuffer,
+        TDes8& aOutputBuffer,
+        TRequestStatus& aStatus);
+
+    virtual void NotifyStatusChange(
+        TEventMask aMask,
+        TRequestStatus& aStatus,
+        const TDesC& aUniqueId);
+
+    virtual TInt CancelNotifyStatusChange(
+        TRequestStatus& aStatus,
+        const TDesC& aUniqueId);
+
+    virtual void RequestRights(
+        TRequestStatus& aStatus,
+        const TDesC& aUniqueId);
+
+    virtual TInt CancelRequestRights(
+        TRequestStatus& aStatus,
+        const TDesC& aUniqueId);
+
+    virtual void DisplayInfoL(
+        TDisplayInfo aInfo,
+        const TDesC& aUniqueId);
+
+    virtual TInt SetProperty(
+        TAgentProperty aProperty,
+        TInt aValue);
 
 public: // From MDRMEventObserver
     virtual void HandleEventL(
         MDRMEvent* aEvent);
-   
+
 private:
-	COma2AgentContent();
+    COma2AgentContent();
 
-	void NotifyStatusChangeL(
-	    TEventMask aMask, 
-	    TRequestStatus& aStatus, 
-	    const TDesC& aUniqueId);
+    void NotifyStatusChangeL(
+        TEventMask aMask,
+        TRequestStatus& aStatus,
+        const TDesC& aUniqueId);
 
-	
-	void ConstructL(
-	    const TDesC& aUri, 
-	    TContentShareMode aShareMode);
-	    
-	void ConstructL(
-	    RFile& aFile);
-		
+
+    void ConstructL(
+        const TDesC& aUri,
+        TContentShareMode aShareMode);
+
+    void ConstructL(
+        RFile& aFile);
+
     protected:  // Data
         CDcfCommon* iDcf;
         RFs iFs;
@@ -161,29 +162,29 @@ private:
         TInt iFilePosition;
         TInt iDataPosition;
         HBufC* iUri;
-        
+
         // Content ID of the currently open container,
         // NULL for the outermost file
         HBufC* iCurrentContainer;
-        
+
         // Request status for change notifications
         TRequestStatus* iStatus;
-        
+
         // Notifier for change notifications
         CDRMNotifier* iNotifier;
-        
+
         // Watched events
         TEventMask iWatchedEvents;
-        
+
         // Watched content ID
         HBufC8* iWatchedId;
-        
+
         // Rights client
         RDRMRightsClient iRdb;
     };
 
 }
 
-#endif      // OMA2AGENTCONTENT_H   
-            
+#endif      // OMA2AGENTCONTENT_H
+
 // End of File

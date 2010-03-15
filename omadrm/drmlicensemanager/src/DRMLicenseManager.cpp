@@ -26,13 +26,13 @@
 #include <s32buf.h>
 #include <s32crypt.h>
 #include <utf.h>
-#include <DrmRights.h>
-#include <DrmCommon.h>
+#include <DRMRights.h>
+#include <DRMCommon.h>
 #include <Oma1DcfCreator.h>
-#include <SysUtil.h>     // Disk space checking
+#include <sysutil.h>     // Disk space checking
 
-#include "ZipFile.h"
-#include "ZipFileMemberIterator.h"
+#include "zipfile.h"
+#include "zipfilememberiterator.h"
 #include "DRMLicenseManager.h"
 
 // LOCAL CONSTANTS AND MACROS
@@ -491,9 +491,9 @@ EXPORT_C CZipFileMember* CDRMLicenseManager::GetSISMemberL(void)
 
     members = iZipFile->GetMembersL();
     CleanupStack::PushL(members);
-    
+
     member = members->NextL();
-    
+
     while (member && !sisFile)
         {
         if (member->Name()->Right(4).CompareF(KSISSuffix) == 0)
@@ -511,14 +511,14 @@ EXPORT_C CZipFileMember* CDRMLicenseManager::GetSISMemberL(void)
             member = members->NextL();
             }
         }
-    
+
     CleanupStack::PopAndDestroy(members);
 
     if(!sisFile)
         {
         User::Leave(KErrNotFound);
         }
-    
+
     return sisFile;
     }
 

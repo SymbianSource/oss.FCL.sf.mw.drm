@@ -22,11 +22,11 @@
 #include <cmconnectionmethoddef.h>
 #include <cmmanager.h>
 #include <centralrepository.h>
-#include <CommDbConnPref.h>
+#include <commdbconnpref.h>
 #include <cdblen.h>
 #include <es_enum.h>
 #ifdef __SERIES60_NATIVE_BROWSER
-#include <BrowserUiSDKCRKeys.h>
+#include <browseruisdkcrkeys.h>
 #endif
 #include "RoapConnection.h"
 #include "RoapDef.h"

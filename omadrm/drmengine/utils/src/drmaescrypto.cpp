@@ -23,7 +23,7 @@
 #include <symmetric.h>
 #include <rijndael.h>
 
-#include <drmtypes.h>
+#include <DRMTypes.h>
 
 #include "drmaescrypto.h"
 

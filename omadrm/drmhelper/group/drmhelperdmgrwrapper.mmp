@@ -69,7 +69,7 @@ END
 #if defined(ARMCC)
 deffile ../EABI/
 #elif defined( WINSCW )
-deffile ../bwinscw/
+deffile ../BWINSCW/
 #elif defined( WINS )
 deffile ../bwins/
 #else

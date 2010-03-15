@@ -11,7 +11,7 @@
 *
 * Contributors:
 *
-* Description: 
+* Description:
 *
 */
 
@@ -25,7 +25,7 @@
 #include <barsread.h>
 #include <eikenv.h>
 #include <aknenv.h>
-#include <aknutils.h>
+#include <AknUtils.h>
 #include <aknconsts.h>
 #include <txtfrmat.h>
 #include <AknBidiTextUtils.h>

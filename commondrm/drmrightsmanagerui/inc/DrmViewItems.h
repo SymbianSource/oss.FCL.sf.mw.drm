@@ -28,11 +28,11 @@
 * Class containing data for the items to be showed in the view
 */
 class TItemData
-	{
+    {
     public:  // Constructor
         /**
         * C++ default constructor.
-        */      
+        */
         TItemData();
 
         /**
@@ -49,14 +49,14 @@ class TItemData
         * @param aUnlimitedRights       Rights unlimited or not
         * @param aIndividualConstraint  Individual constraint exists or not
         * @param aUsageAllowed          Content usage allowed or not with current SIM
-        */      
+        */
         TItemData( const TInt aIndexInArray,
-                   const TDesC& aItemName, 
-                   const TDesC& aItemFullName, 
-                   const TInt aIndexIcon, 
+                   const TDesC& aItemName,
+                   const TDesC& aItemFullName,
+                   const TInt aIndexIcon,
                    const TInt aTypeOfObject,
                    const TBool aContentCanBeSent,
-                   const TDesC8& aContentURI, 
+                   const TDesC8& aContentURI,
                    const TTime& aFutureActivationTime,
                    const TBool aUnlimitedRights,
                    const TBool aIndividualConstraint,
@@ -74,19 +74,19 @@ class TItemData
         * @param aFutureActivationTime  Time in the future when the RO will be
         *                               activated.
         * @param aUnlimitedRights       Rights unlimited or not
-        */      
+        */
         TItemData( const TInt aIndexInArray,
-                   const TDesC& aItemName, 
-                   const TDesC& aItemFullName, 
-                   const TInt aIndexIcon, 
+                   const TDesC& aItemName,
+                   const TDesC& aItemFullName,
+                   const TInt aIndexIcon,
                    const TInt aTypeOfObject,
                    const TUint32 aLocalID,
-                   const TDesC8& aContentURI, 
+                   const TDesC8& aContentURI,
                    const TTime& aFutureActivationTime,
                    const TBool aUnlimitedRights,
                    const TBool aIndividualConstraint,
                    const TBool aUsageAllowed );
-                   
+
 
 
     public:     // New functions
@@ -204,7 +204,7 @@ class TItemData
         * @param aUnlimitedRights ETrue if unlimited rights.
         */
         inline void SetUnlimitedRights( const TBool aUnlimitedRights );
-        
+
         /**
         * Sets the individual constraint attribute.
         * @param aIndividualConstraint ETrue if individual constraint
@@ -243,22 +243,22 @@ class TItemData
         TBuf8<KMaxFileName> iContentURI;
 
         // Time in the future when the RO will be activated
-        TTime iFutureActivationTime;    
-        
+        TTime iFutureActivationTime;
+
         // ETrue if unlimited rights
         TBool iUnlimitedRights;
-        
+
         // ETrue if individual constraint exists
         TBool iIndividualConstraint;
-        
+
         // ETrue if content usage is allowed with current SIM
         TBool iUsageAllowed;
-             
-	};
+
+    };
 
 
 // Include inline functions
-#include "DRMViewItems.inl"
+#include "DrmViewItems.inl"
 
 #endif
 

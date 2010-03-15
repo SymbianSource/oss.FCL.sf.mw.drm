@@ -29,7 +29,7 @@ MW_LAYER_SYSTEMINCLUDE
 SYSTEMINCLUDE   /epoc32/include/libc
 
 USERINCLUDE     ../inc
-USERINCLUDE	    ../../../inc   // ADo level inc dir
+USERINCLUDE         ../../../inc   // ADo level inc dir
 
 SOURCEPATH      ../src
 SOURCE          DRMLicenseChecker.cpp
@@ -46,13 +46,13 @@ LIBRARY         DrmServerInterfaces.lib
 LIBRARY         DRMCommon.lib
 
 #if defined(ARMCC)
-deffile ../eabi/ 
+deffile ../eabi/
 #elif defined( WINSCW )
-deffile ../bwinscw/ 
+deffile ../BWINSCW/
 #elif defined( WINS )
-deffile ../bwins/ 
+deffile ../bwins/
 #else
-deffile ../bmarm/ 
+deffile ../bmarm/
 #endif
 
 SMPSAFE

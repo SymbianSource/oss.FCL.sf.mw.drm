@@ -18,6 +18,7 @@
 
 // INCLUDE FILES
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <http.h>
 #include <http/rhttpheaders.h>
 #include <stringpool.h>
@@ -32,13 +33,13 @@
 #include <sysutil.h>
 #include <centralrepository.h>
 
-#include "oma2agentmanager.h"
-#include "oma2agentattributes.h"
-#include "oma1dcf.h"
+#include "Oma2AgentManager.h"
+#include "Oma2AgentAttributes.h"
+#include "Oma1Dcf.h"
 #include "oma2dcf.h"
-#include "drmrightsclient.h"
+#include "DRMRightsClient.h"
 
-#include "drmutilityinternalcrkeys.h"      // Cenrep extension for OmaBased
+#include "DrmUtilityInternalcrkeys.h"      // Cenrep extension for OmaBased
 
 using namespace ContentAccess;
 
@@ -117,9 +118,9 @@ void COma2AgentManager::ConstructL()
     User::LeaveIfError(iFs.Connect());
     User::LeaveIfError(iFs.ShareAuto());
     iFileManager = CFileMan::NewL(iFs);
-    
+
     TInt err( KErrNone );
-                
+
     TRAP(err, FetchOmaBasedInfoL() );
     if( err)
         {
@@ -129,7 +130,7 @@ void COma2AgentManager::ConstructL()
             }
         iOmaBasedMimeType = NULL;
         }
-    
+
     }
 
 // -----------------------------------------------------------------------------
@@ -141,26 +142,26 @@ void COma2AgentManager::FetchOmaBasedInfoL()
     TInt err = KErrNone;
     CRepository* repository( NULL );
     RBuf bOmaBasedMimeType;
-    
+
     CleanupClosePushL(bOmaBasedMimeType);
     bOmaBasedMimeType.CreateL( KCenRepDataLength );
- 
+
     TRAP( err, repository = CRepository::NewL( KCRUidOmaBased ) );
     if ( !err )
         {
         CleanupStack::PushL( repository );
-        
+
         err = repository->Get( KOmaBasedMimeType, bOmaBasedMimeType );
         if( !err )
             {
-            iOmaBasedMimeType = CnvUtfConverter::ConvertFromUnicodeToUtf8L( bOmaBasedMimeType ); 
+            iOmaBasedMimeType = CnvUtfConverter::ConvertFromUnicodeToUtf8L( bOmaBasedMimeType );
             }
         CleanupStack::PopAndDestroy( repository );
         }
-    
+
     CleanupStack::PopAndDestroy();
-    
-    User::LeaveIfError( err );    
+
+    User::LeaveIfError( err );
     }
 
 // -----------------------------------------------------------------------------
@@ -197,7 +198,7 @@ COma2AgentManager::~COma2AgentManager()
         delete iNotifier;
         }
     delete iWatchedId;
-    
+
     delete iOmaBasedMimeType;
     }
 
@@ -227,34 +228,34 @@ TInt COma2AgentManager::CopyFile(
     TInt err = KErrNone;
     TBool retval = KErrNone;
 
-    
+
     // Check the destination drive letter
-    result = iFs.CharToDrive(drive,driveNumber);      
-    
+    result = iFs.CharToDrive(drive,driveNumber);
+
     if( result )
         {
         return result;
         }
-    
-    // open the file to read the size    
+
+    // open the file to read the size
     result = file.Open(iFs, aSource, EFileShareReadersOrWriters|EFileRead);
-                
+
     if( result )
         {
         return result;
-        }       
-    
+        }
+
     // read the size
     result = file.Size( size );
-    
+
     // close the file
     file.Close();
-    
+
     if( result )
         {
         return result;
         }
-    
+
     // check that the drive has enough space for the copy operation
 
     TRAP( err, retval = SysUtil::DiskSpaceBelowCriticalLevelL( &iFs,
@@ -263,21 +264,21 @@ TInt COma2AgentManager::CopyFile(
     if( retval )
         {
         return KErrDiskFull;
-        }        	
-    	
-        
+        }
+
+
     return iFileManager->Copy( aSource, aDestination);
     }
 
 
 // -----------------------------------------------------------------------------
 // CWmDrmAgentManager::CopyFile
-// 
+//
 // -----------------------------------------------------------------------------
 //
-TInt COma2AgentManager::CopyFile(RFile& aSource, 
+TInt COma2AgentManager::CopyFile(RFile& aSource,
     const TDesC& aDestination)
-	{
+    {
     TInt driveNumber = 0;
     TChar drive( aDestination[0] );
     TInt size = 0;
@@ -288,32 +289,32 @@ TInt COma2AgentManager::CopyFile(RFile& aSource,
     TInt err = KErrNone;
     TBool retval = KErrNone;
 
-    
+
     // Same file, do not even try to copy
-    // And since they are the same don't return an error  
+    // And since they are the same don't return an error
     aSource.FullName( fileName );
-    
+
     if( !aDestination.CompareF( fileName ) )
         {
         return KErrNone;
         }
-    
+
     // Check the destination drive letter
-    result = iFs.CharToDrive(drive,driveNumber);      
-    
+    result = iFs.CharToDrive(drive,driveNumber);
+
     if( result )
         {
         return result;
         }
-                
+
     // read the size
     result = aSource.Size( size );
-    
+
     if( result )
         {
         return result;
         }
-    
+
     // check that the drive has enough space for the copy operation
 
     TRAP( err, retval = SysUtil::DiskSpaceBelowCriticalLevelL( &iFs,
@@ -323,21 +324,21 @@ TInt COma2AgentManager::CopyFile(RFile& aSource,
 
         {
         return KErrDiskFull;
-        }  
+        }
 
     // Perform the copy:
-    
+
     // Rewind just in case:
     size = 0;
     result = aSource.Seek(ESeekStart, size);
-    
+
     if( !result )
         {
-        result = iFileManager->Copy(aSource, aDestination);        
+        result = iFileManager->Copy(aSource, aDestination);
         }
-            	
+
     return result;
-	}
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentManager::RenameFile
@@ -355,39 +356,39 @@ TInt COma2AgentManager::RenameFile(
     TInt err = KErrNone;
     TBool retval = KErrNone;
 
-    
+
     TInt result( iFileManager->Rename(aSource, aDestination) );
     // If the files are on a different drive, Rename will fail
     // Therefore we simulate the Move by doing a Copy, followed by Delete
     if ( result != KErrNone )
         {
         // Check the destination drive letter
-        result = iFs.CharToDrive(drive,driveNumber);      
-     
+        result = iFs.CharToDrive(drive,driveNumber);
+
         if( result )
             {
             return result;
             }
-        
-        // open the file to read the size    
+
+        // open the file to read the size
         result = file.Open(iFs, aSource, EFileShareReadersOrWriters|EFileRead);
-                    
+
         if( result )
             {
             return result;
-            }       
-        
+            }
+
         // read the size
         result = file.Size( size );
-        
+
         // close the file
         file.Close();
-        
+
         if( result )
             {
             return result;
             }
-        
+
         // check that the drive has enough space for the copy operation
 
         TRAP( err, retval = SysUtil::DiskSpaceBelowCriticalLevelL( &iFs,
@@ -397,9 +398,9 @@ TInt COma2AgentManager::RenameFile(
 
             {
             return KErrDiskFull;
-            }        	
-        	
-        	
+            }
+
+
         result = iFileManager->Copy(aSource,aDestination);
         if (result == KErrNone)
             {
@@ -609,7 +610,7 @@ void COma2AgentManager::NotifyStatusChange(
         {
         iStatus = &aStatus;
         iWatchedEvents = aEventMask;
-        TRAP_IGNORE( iWatchedId = dcf->iContentID->AllocL() ); 
+        TRAP_IGNORE( iWatchedId = dcf->iContentID->AllocL() );
         TRAP(r, iNotifier->RegisterEventObserverL(*this, KEventAddRemove, *iWatchedId));
         TRAP(r, iNotifier->RegisterEventObserverL(*this, KEventModify, *iWatchedId));
         *iStatus = KRequestPending;
@@ -760,9 +761,9 @@ TBool COma2AgentManager::RecognizeFileL(
                     aContentMimeType.Copy(*dcf->iMimeType);
                     r = ETrue; // file was recognized as OMA1 DCF
                     }
-                CleanupStack::PopAndDestroy();    
+                CleanupStack::PopAndDestroy();
                 }
-                
+
             }
 #ifdef __DRM_OMA2
         }

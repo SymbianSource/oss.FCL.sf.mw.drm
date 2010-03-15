@@ -20,29 +20,29 @@
 #define C_WMDRMDLAAPPSERVICESESSION_H
 
 // INCLUDES
-#include <aknserverapp.h>
+#include <AknServerApp.h>
 #include "wmdrmdlaappui.h"
 #include "wmdrmdlabrowserview.h"
 
 /**
 * WMDRM DLA Application.
 */
-class CWmDrmDlaAppServiceSession : public CAknAppServiceBase, 
+class CWmDrmDlaAppServiceSession : public CAknAppServiceBase,
                                    public MBrowserViewLicenseReceivedCallback
     {
-    
+
     public:
-    
+
         CWmDrmDlaAppServiceSession();
         virtual ~CWmDrmDlaAppServiceSession();
-    
+
     public: // from MBrowserViewLicenseReceivedCallback
-        
+
         /**
          * Called when license is received
          */
         void LicenseReceived();
-    
+
     protected: // from CSession2
 
         /**
@@ -53,18 +53,18 @@ class CWmDrmDlaAppServiceSession : public CAknAppServiceBase,
         void ServiceL( const RMessage2& aMessage );
 
     private:
-        
+
         void SetIapL( const RMessage2& aMessage );
         void PostL( const RMessage2& aMessage );
         void LicenseResponseSizeL( const RMessage2& aMessage );
         void LicenseResponseL( const RMessage2& aMessage );
         void CompleteMessage( const RMessage2& aMessage, TInt aError );
         CWmDrmDlaBrowserView* BrowserView();
-    
+
     private: //data
-        
+
         CActiveSchedulerWait* iWait;
-        
+
     };
 
 #endif // C_WMDRMDLAAPPSERVICESESSION_H

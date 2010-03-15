@@ -17,15 +17,16 @@
 
 #include <http/rhttptransaction.h>
 #include <barsc.h>
-#include <drmcommon.h>
+#include <DRMCommon.h>
 #include <f32file.h>
 #include <s32buf.h>
-#include <drmmessageparser.h>
+#include <DRMMessageParser.h>
 #include <caf/caf.h>
-#include <oma2agent.h>
+#include <caf/cafplatform.h>
+#include <Oma2Agent.h>
 
-#include "httpfilterdrmdatasupplier.h"
-#include "httpfilterdrm.h"
+#include "HTTPFilterDRMDataSupplier.h"
+#include "HTTPFilterDRM.h"
 
 //------------------------------------------------------------------------
 
@@ -57,7 +58,7 @@ CHTTPFilterDRMDataSupplier* CHTTPFilterDRMDataSupplier::NewL( TInt aTransId,
 // CHTTPFilterDRMDataSupplier::NewL
 // Two-phase constructor, CFM
 // -----------------------------------------------------------------------------
-//	
+//
 CHTTPFilterDRMDataSupplier* CHTTPFilterDRMDataSupplier::NewL( TInt aTransId,
     MHTTPDataSupplier* iDataBody, TProcessedContentType aType,
     CHTTPFilterDRM* aOwner )
@@ -269,9 +270,9 @@ void CHTTPFilterDRMDataSupplier::ProcessDataPartL()
         permission->iAvailableRights = ERightsPlay | ERightsDisplay
             | ERightsExecute | ERightsPrint;
 
-        permission->iRightsObjectVersion.iVersionMain = 1; // major version for Oma 1 Rights Objects		
+        permission->iRightsObjectVersion.iVersionMain = 1; // major version for Oma 1 Rights Objects
 
-        // "ringtone=no" present 
+        // "ringtone=no" present
         permission->iInfoBits = ENoRingingTone;
 
         // Set the permission to the rights class, it will duplicate the permission
@@ -366,10 +367,10 @@ TBool CHTTPFilterDRMDataSupplier::GetNextDataPart( TPtrC8& aDataPart )
         aDataPart.Set( iMemBuf->iBuf->GetPtr().Left( iDataPartSize ) );
         }
 
-    // this check did not work, as in this phase the iDataPartSize is never 
+    // this check did not work, as in this phase the iDataPartSize is never
     // KWholeDataPart
     //return ( iDataPartSize == KWholeDataPart ) ? iSendReady : EFalse;
-    
+
     // Always return info if this is the last part, this is only true
     // if iSendReady has been true when ReleaseData() has been called
     return iLastPart;
@@ -382,7 +383,7 @@ TBool CHTTPFilterDRMDataSupplier::GetNextDataPart( TPtrC8& aDataPart )
 //
 void CHTTPFilterDRMDataSupplier::ReleaseData()
     {
-    if ( iDataPartSize == KWholeDataPart || 
+    if ( iDataPartSize == KWholeDataPart ||
          ( iLastPart && iSendReady ) )
         {
         TRAP_IGNORE( Sink()->SeekL( MStreamBuf::EWrite, TStreamPos(0) ) );
@@ -570,7 +571,7 @@ ContentAccess::CManager* CHTTPFilterDRMDataSupplier::GetCafDataL(
             }
         }
     CleanupStack::Pop( manager );
-    CleanupStack::PopAndDestroy( &agents );        
+    CleanupStack::PopAndDestroy( &agents );
     return manager;
     }
 

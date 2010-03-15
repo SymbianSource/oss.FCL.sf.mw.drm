@@ -18,8 +18,8 @@
 
 // INCLUDE FILES
 #include <e32std.h>
-#include <DRMPermission.h> // CDRMPermission
-#include <DRMConstraint.h> // CDRMConstraint
+#include <DrmPermission.h> // CDRMPermission
+#include <DrmConstraint.h> // CDRMConstraint
 #include <s32file.h>
 #include <DRMNotifier.h>
 #include <DRMEventAddRemove.h>
@@ -28,7 +28,7 @@
 #include <centralrepository.h> // link against centralrepository.lib
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "DRMEventModify.h"

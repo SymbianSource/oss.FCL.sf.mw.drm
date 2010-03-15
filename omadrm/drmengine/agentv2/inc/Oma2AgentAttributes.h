@@ -22,10 +22,10 @@
 
 #include <caf/caftypes.h>
 #include <caf/virtualpathptr.h>
-#include <caf/AttributeSet.h>
-#include <caf/StringAttributeSet.h>
+#include <caf/attributeset.h>
+#include <caf/stringattributeset.h>
 #include "Oma2Agent.h"
-#include "Oma2Dcf.h"
+#include "oma2dcf.h"
 
 using namespace ContentAccess;
 
@@ -38,32 +38,32 @@ implements helper functions for all of the attribute functions
 */
 
 class TOma2AgentAttributes
-	{
+    {
 public:
-	static TInt GetAttribute(
-	    CDcfCommon& aDcfFile,
-	    TInt aAttribute, 
-	    const TVirtualPathPtr& aVirtualPath,
-	    RDRMRightsClient* aRightsClient = NULL);
-	    
-	static TInt GetAttributeSet(
-	    CDcfCommon& aDcfFile,
-	    RAttributeSet& aAttributeSet,
-	    const TVirtualPathPtr& aVirtualPath,
-	    RDRMRightsClient* aRightsClient = NULL);
-	    
-	static TInt GetStringAttribute(
-	    CDcfCommon& aDcfFile,
-	    TInt aAttribute,
-	    TDes& aValue,
-	    const TVirtualPathPtr& aVirtualPath,
-	    RDRMRightsClient* aRightsClient = NULL);
-	    
-	static TInt GetStringAttributeSet(
-	    CDcfCommon& aDcfFile,
-	    RStringAttributeSet& aStringAttributeSet,
-	    const TVirtualPathPtr& aVirtualPath,
-	    RDRMRightsClient* aRightsClient = NULL);
-	};
+    static TInt GetAttribute(
+        CDcfCommon& aDcfFile,
+        TInt aAttribute,
+        const TVirtualPathPtr& aVirtualPath,
+        RDRMRightsClient* aRightsClient = NULL);
+
+    static TInt GetAttributeSet(
+        CDcfCommon& aDcfFile,
+        RAttributeSet& aAttributeSet,
+        const TVirtualPathPtr& aVirtualPath,
+        RDRMRightsClient* aRightsClient = NULL);
+
+    static TInt GetStringAttribute(
+        CDcfCommon& aDcfFile,
+        TInt aAttribute,
+        TDes& aValue,
+        const TVirtualPathPtr& aVirtualPath,
+        RDRMRightsClient* aRightsClient = NULL);
+
+    static TInt GetStringAttributeSet(
+        CDcfCommon& aDcfFile,
+        RStringAttributeSet& aStringAttributeSet,
+        const TVirtualPathPtr& aVirtualPath,
+        RDRMRightsClient* aRightsClient = NULL);
+    };
 
 #endif // __Oma2AGENTATTRIBUTES_H__

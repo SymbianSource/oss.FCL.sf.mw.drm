@@ -20,9 +20,9 @@
 // INCLUDE FILES
 #include    "DRMNotifierClient.h"
 #include "drmnotifierclientserver.h"
-#include "drmrightsclient.h"
+#include "DRMRightsClient.h"
 // EXTERNAL DATA STRUCTURES
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 // CONSTANTS
 // MACROS
 // LOCAL CONSTANTS AND MACROS
@@ -38,7 +38,7 @@
 // might leave.
 // -----------------------------------------------------------------------------
 //
-RDRMNotifierClient::RDRMNotifierClient(TDRMEventType* aEventType, TDRMEventType* aEventTypeWait, 
+RDRMNotifierClient::RDRMNotifierClient(TDRMEventType* aEventType, TDRMEventType* aEventTypeWait,
                                        TPtr8* aPtr, TPtr8* aWaitPtr) :
     iEventType( aEventType ),
     iEventTypeWait( aEventTypeWait ),
@@ -48,7 +48,7 @@ RDRMNotifierClient::RDRMNotifierClient(TDRMEventType* aEventType, TDRMEventType*
     {
    // Nothing
     }
-    
+
 // Destructor
 RDRMNotifierClient::~RDRMNotifierClient()
     {
@@ -64,15 +64,15 @@ RDRMNotifierClient::~RDRMNotifierClient()
 //
 TInt RDRMNotifierClient::Connect( void )
     {
-    const TVersion requiredVersion( 
+    const TVersion requiredVersion(
         DRMNotifier::KServerMajorVersion,
         DRMNotifier::KServerMinorVersion,
         DRMNotifier::KServerBuildVersion );
-    
+
     TInt ret = KErrNotFound;
     TUint8 count( 0 );
     TUint8 cont( 1 );
-    
+
     do
         {
         ret = CreateSession( DRMNotifier::KServerName,
@@ -91,7 +91,7 @@ TInt RDRMNotifierClient::Connect( void )
             }
         }
     while ( cont && ( count < 2 ) );
-    
+
     return ret;
     }
 
@@ -101,7 +101,7 @@ TInt RDRMNotifierClient::Connect( void )
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
 //
-void RDRMNotifierClient::Close() 
+void RDRMNotifierClient::Close()
     {
     RHandleBase::Close();
     }
@@ -113,11 +113,11 @@ void RDRMNotifierClient::Close()
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
 //
-void RDRMNotifierClient::SendEvent(TRequestStatus& aStatus) 
+void RDRMNotifierClient::SendEvent(TRequestStatus& aStatus)
     {
     // Send the message.
     SendReceive( DRMNotifier::ENotifyClients, TIpcArgs(iData, *iEventType),
-		aStatus );
+        aStatus );
     };
 
 // -----------------------------------------------------------------------------
@@ -126,13 +126,13 @@ void RDRMNotifierClient::SendEvent(TRequestStatus& aStatus)
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
 //
-void RDRMNotifierClient::WaitForCompletion(TRequestStatus& aStatus) 
-    {   
+void RDRMNotifierClient::WaitForCompletion(TRequestStatus& aStatus)
+    {
     numdata.Set(reinterpret_cast<TUint8*>(iEventTypeWait),sizeof(TDRMEventType),sizeof(TDRMEventType));
-        
+
     // Send the message.
     SendReceive( DRMNotifier::ERecieveNotification, TIpcArgs(iWaitData, &numdata),
-		aStatus );
+        aStatus );
     };
 
 // -----------------------------------------------------------------------------
@@ -141,7 +141,7 @@ void RDRMNotifierClient::WaitForCompletion(TRequestStatus& aStatus)
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
 //
-void RDRMNotifierClient::RegisterForType( TDRMEventType aEventType, 
+void RDRMNotifierClient::RegisterForType( TDRMEventType aEventType,
                                           HBufC8* aURI )
     {
     TPckg<TInt> eventType(0);
@@ -155,7 +155,7 @@ void RDRMNotifierClient::RegisterForType( TDRMEventType aEventType,
         // Send the message.
         SendReceive( DRMNotifier::ERegisterURI, TIpcArgs(&uriPkg, &eventType));
         }
-    else 
+    else
         {
         // Send the message.
         SendReceive( DRMNotifier::ERegister, TIpcArgs(&eventType));
@@ -168,7 +168,7 @@ void RDRMNotifierClient::RegisterForType( TDRMEventType aEventType,
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
 //
-void RDRMNotifierClient::UnRegisterFromType( TDRMEventType aEventType, 
+void RDRMNotifierClient::UnRegisterFromType( TDRMEventType aEventType,
                                              HBufC8* aURI)
     {
     TPckg<TInt> eventType(0);
@@ -182,7 +182,7 @@ void RDRMNotifierClient::UnRegisterFromType( TDRMEventType aEventType,
         // Send the message.
         SendReceive( DRMNotifier::EUnRegisterURI, TIpcArgs(&uriPkg, &eventType));
         }
-    else 
+    else
         {
         // Send the message.
         SendReceive( DRMNotifier::EUnRegister, TIpcArgs(&eventType));
@@ -202,4 +202,4 @@ void RDRMNotifierClient::CancelRequest()
     SendReceive( DRMNotifier::ECancelNotification);
     };
 
-//  End of File  
+//  End of File

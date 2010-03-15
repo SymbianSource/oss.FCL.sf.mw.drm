@@ -20,7 +20,7 @@
 #define R_WMDRMDLAAPPCLIENT_H
 
 #include <e32base.h>
-#include <aknserverapp.h>
+#include <AknServerApp.h>
 
 /**
  *  WMDRM DLA App Client Interface
@@ -34,7 +34,7 @@ NONSHARABLE_CLASS( RWmDrmDlaAppClient ) : public RAknAppServiceBase
     public:
 
         virtual ~RWmDrmDlaAppClient();
-        
+
         /**
          * Sets IAP to browser view
          *
@@ -42,7 +42,7 @@ NONSHARABLE_CLASS( RWmDrmDlaAppClient ) : public RAknAppServiceBase
          * @return Error code
          */
         TInt SetIAP( TInt aIap );
-        
+
         /**
          * Makes a POST request to browser view
          *
@@ -56,7 +56,7 @@ NONSHARABLE_CLASS( RWmDrmDlaAppClient ) : public RAknAppServiceBase
                    const TDesC8& aPostContentType,
                    const TDesC8& aPostData,
                    const TDesC8& aPostContentBoundary );
-        
+
         /**
          * Gets the license response from the browser view
          *
@@ -65,9 +65,9 @@ NONSHARABLE_CLASS( RWmDrmDlaAppClient ) : public RAknAppServiceBase
          * @return Error code
          */
         TInt LicenseResponse( HBufC8*& aLicenseResponse );
-        
+
     private: // from RApaAppServiceBase
-    
+
         TUid ServiceUid() const;
 
     private: // data

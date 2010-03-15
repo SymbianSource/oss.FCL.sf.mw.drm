@@ -30,19 +30,19 @@
 #include <driveinfo.h>
 #endif
 
-#include <stringloader.h>
+#include <StringLoader.h>
 #include <data_caging_path_literals.hrh>
 
-#include <coneresloader.h>
+#include <ConeResLoader.h>
 #include <apparc.h>
-#include <drmutilitydmgrwrapper.rsg>
+#include <DrmUtilityDmgrWrapper.rsg>
 
-#include "roapeng.h"
-#include "roapsyncwrapper.h"
-#include "roapdef.h"
+#include "RoapEng.h"
+#include "RoapSyncWrapper.h"
+#include "RoapDef.h"
 
-#include "drmutilitydmgrwrapper.h"
-#include "drmutilitydmgrwrapperlogger.h"
+#include "DrmUtilityDmgrWrapper.h"
+#include "DrmUtilityDmgrWrapperLogger.h"
 
 // DEBUG macros
 #ifdef _DEBUG

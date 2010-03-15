@@ -21,16 +21,16 @@
 
 //*** system include files go here:
 #include <e32base.h>
-#include <caf/caftypes.h> 
-#include <drmrightsclient.h>
+#include <caf/caftypes.h>
+#include <DRMRightsClient.h>
 #include <drmutilitytypes.h>
 
 //*** forward declarations go here:
 class CDRMConstraint;
 
-namespace DRM 
+namespace DRM
 {
-    
+
  /**
   *  Utility class for DRM related common functions
   *
@@ -47,7 +47,7 @@ public:
      *
      * @return A functional CDrmUtilityCommon -object
      * @leave System wide error code
-     */	
+     */
     IMPORT_C static CDrmUtilityCommon* NewL();
 
     /**
@@ -56,14 +56,14 @@ public:
      *
      * @return A functional CDrmUtilityCommon -object
      * @leave System wide error code
-     */	
+     */
     IMPORT_C static CDrmUtilityCommon* NewLC();
 
     /**
      * Destructor
      */
     virtual ~CDrmUtilityCommon();
-     
+
     /**
      * Checks the rights and their status for a specific unique id
      * implementation
@@ -72,16 +72,16 @@ public:
      * @param[in]   aIntent     The intent for the rights to check
      * @param[out]  aConstraint A Constraint of the future rights,
      *                          must be initialized
-     * 
+     *
      * @return Rights status
      * @leave System wide error code
      * @see ContentAccess:TIntent
-     */	
-    IMPORT_C TDrmRightsInfo GetOmaRightsStatusL( 
-                                            HBufC8*& aContentUri, 
+     */
+    IMPORT_C TDrmRightsInfo GetOmaRightsStatusL(
+                                            HBufC8*& aContentUri,
                                             ContentAccess::TIntent aIntent,
                                             CDRMConstraint* aConstraint );
-                                        
+
 
 protected:
 
@@ -90,9 +90,9 @@ private:
     CDrmUtilityCommon();
 
     void ConstructL();
-    
+
 private: // Data members
-    
+
     // Oma Drm client
     RDRMRightsClient iOmaClient;
 

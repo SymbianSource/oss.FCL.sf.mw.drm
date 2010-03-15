@@ -17,7 +17,7 @@
 
 
 #include <appinfo.rh>
-#include <drmrightsmanager.rsg>
+#include <DRMRightsManager.rsg>
 #include <data_caging_paths_strings.hrh>
 
 
@@ -32,13 +32,13 @@ RESOURCE APP_REGISTRATION_INFO
     localisable_resource_file = APP_RESOURCE_DIR"\\DRMRightsManager";
 
     localisable_resource_id = R_DRMUI_LOCALISABLE_APP_INFO;
-    
+
 #ifdef RD_DRM_RIGHTS_MANAGER_REMOVAL
 
     hidden = KAppIsHidden;
-    
+
 #endif //RD_DRM_RIGHTS_MANAGER_REMOVAL
-    
+
     embeddability = KAppEmbeddableUiNotStandAlone;
     newfile = KAppDoesNotSupportNewFile;
     }

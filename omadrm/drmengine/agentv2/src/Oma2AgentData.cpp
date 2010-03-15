@@ -17,18 +17,19 @@
 
 // INCLUDE FILES
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <caf/bitset.h>
 #include <caf/attribute.h>
 #include <e32test.h>
-#include "drmcommon.h"
-#include "oma2agentdata.h"
-#include "oma2agentattributes.h"
-#include "oma1dcf.h"
+#include "DRMCommon.h"
+#include "Oma2AgentData.h"
+#include "Oma2AgentAttributes.h"
+#include "Oma1Dcf.h"
 #include "oma2dcf.h"
 #include "symmetric.h"
-#include "drmrightsclient.h"
-#include "drmprotectedroparser.h"
-#include "dcfcache.h"
+#include "DRMRightsClient.h"
+#include "DRMProtectedRoParser.h"
+#include "DcfCache.h"
 #include "cleanupresetanddestroy.h"
 
 using namespace ContentAccess;

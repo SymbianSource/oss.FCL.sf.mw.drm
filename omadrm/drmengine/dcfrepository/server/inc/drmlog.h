@@ -22,7 +22,7 @@
 
 //  INCLUDES
 #if (defined _DEBUG || defined _LOGGING)
-#include <E32SVR.H>
+#include <e32svr.h>
 #include <flogger.h>
 
 // CONSTANTS
@@ -35,18 +35,18 @@
 #define DRMLOG( a ) \
     RFileLogger::Write(_L("drm"), DRMFLOGFILE, EFileLoggingModeAppend, a); \
     RDebug::Print( a );
-    
+
 #define DRMLOG2( a, b ) \
     RFileLogger::WriteFormat(_L("drm"), DRMFLOGFILE, EFileLoggingModeAppend, a, b); \
     RDebug::Print( a, b );
-     
+
 #define DRMLOGHEX( a ) \
     RFileLogger::HexDump(_L("drm"), DRMFLOGFILE, EFileLoggingModeAppend, _S(""), _S(""), (a).Ptr(), (a).Size());
 
 #else
 
-#define DRMLOG( a ) 
-#define DRMLOG2( a, b ) 
+#define DRMLOG( a )
+#define DRMLOG2( a, b )
 #define DRMLOGHEX( a )
 
 #endif // _DEBUG
@@ -56,8 +56,8 @@
 // FORWARD DECLARATIONS
 // CLASS DECLARATION
 
-#endif      // DRMLOG_H   
-            
+#endif      // DRMLOG_H
+
 // End of File
 
 

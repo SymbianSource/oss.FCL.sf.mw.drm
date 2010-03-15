@@ -21,7 +21,7 @@
 #include <mmtsy_names.h>
 
 #include "DRMClock.h"
-#include "DRMLog.h"
+#include "drmlog.h"
 #include "DRMEventTimeChange.h"
 #include "wmdrmfileserverclient.h"
 
@@ -32,10 +32,11 @@
 #include <e32keys.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "DRMNitzObserver.h"
+#include "GPSWatcher.h"
 
 // EXTERNAL DATA STRUCTURES
 
@@ -85,6 +86,7 @@ CDRMClock::CDRMClock()
 void CDRMClock::ConstructL()
     {
     DRMLOG( _L( "DRM Clock Starting: " ) );
+    TInt error = KErrNone;
 
     // Create a notifier instance
     iNotifier = CDRMNotifier::NewL();
@@ -95,8 +97,10 @@ void CDRMClock::ConstructL()
     iObserver = CDRMNitzObserver::NewL( iPhone, const_cast<CDRMClock*>(this));
 
     iObserver->Start();
+    
+    TRAP( error, iGpsWatcher = CGPSWatcher::NewL( const_cast<CDRMClock*>(this) ));
+    DRMLOG2( _L("DRMClock: GPS watcher started: %d"), error );    
 #endif
-
 
     DRMLOG( _L( "DRM Clock started" ) );		    
     };
@@ -158,6 +162,13 @@ CDRMClock::~CDRMClock()
         delete iObserver;
         iObserver = 0;
         }  
+        
+    if( iGpsWatcher )
+        {
+        iGpsWatcher->Cancel();
+        delete iGpsWatcher;
+        iGpsWatcher = 0;
+        }   
 #endif // __WINS__        
     };
 
@@ -189,7 +200,7 @@ void CDRMClock::GetSecureTime(TTime& aTime, TInt& aTimeZone,
         
         aTime.UniversalTime();
 
-        aSecurityLevel = DRMClock::KInsecure;
+        aSecurityLevel = DRMClock::KInsecure; 
        
         DRMLOG( _L( "CDRMClock::GetSecureTime: DRMClock is Insecure" ) );        
         }
@@ -307,6 +318,31 @@ void CDRMClock::ResetSecureTimeL( const TTime& aTime, const TInt& aTimeZone )
     
     DRMLOG( _L( "CDRMClock::ResetSecureTimeL ok" ) );
     };
+
+// ---------------------------------------------------------
+// CDRMClock::Notify
+// Notify DRM clock about an event
+// ---------------------------------------------------------
+//
+void CDRMClock::Notify( TInt aNotify )
+    {
+    switch( aNotify )
+        {
+        case ENotifyGPSTimeReceived:
+            // GPS time received, listen again after the next boot, destroy GPS watcher:
+            DRMLOG(_L("Notify: ENotifyGPSTimeReceived, Deleting GPS watcher"));
+            delete iGpsWatcher;
+            iGpsWatcher = NULL;
+            DRMLOG(_L("Notify: GPS Watcher deleted"));
+            break;    
+        case ENotifyNone:
+        default:
+            break;  // Do nothing    
+        }    
+    }
+
+
+
 
 
 // ---------------------------------------------------------

@@ -42,22 +42,22 @@
 #include <RoMtmUi.rsg>
 #include <muiu.mbg>
 #include <mtmuids.h>
-#include <MTMUIDEF.HRH>
-#include <StringResourceReader.h>
+#include <mtmuidef.hrh>
+#include <stringresourcereader.h>
 #include <avkon.rsg>
 #include <data_caging_path_literals.hrh>
 
-#include <stringloader.h>
-#include <aknsutils.h>
-#include <aknsconstants.h>//skinned icon ids
+#include <StringLoader.h>
+#include <AknsUtils.h>
+#include <AknsConstants.h>//skinned icon ids
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "RoMtmDat.h"
-#include "RoMtmDaC.h"
-#include "RoMtmCommon.h"
+#include "RoMTMDaC.h"
+#include "RoMTMCommon.h"
 
 // EXTERNAL DATA STRUCTURES
 // EXTERNAL FUNCTION PROTOTYPES  

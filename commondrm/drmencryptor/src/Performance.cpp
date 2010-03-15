@@ -18,19 +18,20 @@
 
 // INCLUDE FILES
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <f32file.h>
 #include <s32strm.h>
 #include <s32file.h>
-#include <oma1dcfcreator.h>
-#include <drmmessageparser.h>
+#include <Oma1DcfCreator.h>
+#include <DRMMessageParser.h>
 #include <e32math.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
-#include "base64.h"
-#include "performance.h"
+#include "Base64.h"
+#include "Performance.h"
 #include "DRMEncryptor.hrh"
 
 _LIT(KLogDir, "DRM");

@@ -23,11 +23,11 @@
 #include <e32base.h>
 #include <caf/caf.h>
 #include "DRMTypes.h"
-#include "DRMConstraint.h"
+#include "DrmConstraint.h"
 #include "DRMEngineClientServer.h"
 #include "drmcommonclientserver.h"
 #include "drmenginetypedefs.h"
-#include "roapstorageclient.h"
+#include "RoapStorageClient.h"
 
 // CONSTANTS
 // MACROS

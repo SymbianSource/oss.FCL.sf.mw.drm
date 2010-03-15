@@ -21,7 +21,7 @@
 
 // INCLUDES
 #include <aknsettingpage.h>
-#include <coneresloader.h>
+#include <ConeResLoader.h>
 #include <gsplugininterface.h>
 #include <gsfwviewuids.h>
 #include <gsbaseview.h>
@@ -54,7 +54,7 @@ class CDRMSettingsModel;
 */
 class CDRMSettingsPlugin : public CGSBaseView
     {
-    
+
     public: // Constructors and destructor
 
         /**
@@ -71,7 +71,7 @@ class CDRMSettingsPlugin : public CGSBaseView
     private:
         /**
         * Symbian OS default constructor.
-        * 
+        *
         */
         void ConstructL();
 
@@ -81,19 +81,19 @@ class CDRMSettingsPlugin : public CGSBaseView
         CDRMSettingsPlugin();
 
     public: // from CAknView
-        
+
         /**
         * Returns view id.
         * @return An unsigned integer (view id).
         */
         TUid Id() const;
 
-    public: // from MEikCommandObserver 
+    public: // from MEikCommandObserver
 
         /**
         * Handles commands.
         * @param aCommand Command to be handled.
-        * 
+        *
         */
         void HandleCommandL( TInt aCommand );
 
@@ -102,7 +102,7 @@ class CDRMSettingsPlugin : public CGSBaseView
         /**
         * Updates listbox's item's value.
         * @param aItemId An item which is updated.
-        * 
+        *
         */
         void UpdateListBoxL( TInt aItemId );
 
@@ -112,7 +112,7 @@ class CDRMSettingsPlugin : public CGSBaseView
         * @see CGSPluginInterface header file.
         */
         void GetCaptionL( TDes& aCaption ) const;
-        
+
         /**
         * @see CGSPluginInterface header file.
         */
@@ -130,7 +130,7 @@ class CDRMSettingsPlugin : public CGSBaseView
         void HandleListBoxSelectionL();
 
     private: // new
-        
+
         /**
         * Update transaction tracking setting
         */
@@ -175,11 +175,11 @@ class CDRMSettingsPlugin : public CGSBaseView
     protected: // From MEikMenuObserver
 
         void DynInitMenuPaneL( TInt aResourceId, CEikMenuPane* aMenuPane );
-        
+
     private: // data
         //resource loader
         RConeResourceLoader iResourceLoader;
-        
+
         TBool iWmdrmSupported;
     };
 

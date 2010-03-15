@@ -19,29 +19,29 @@
 // INCLUDE FILES
 #include <ecom/ecom.h>
 #include <ecom/implementationproxy.h>
-#include "oma2agentfactory.h"
+#include "Oma2AgentFactory.h"
 
 // EXTERNAL DATA STRUCTURES
 //extern  ?external_data;
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 //extern ?external_function( ?arg_type,?arg_type );
 
 // CONSTANTS
 
 /** Implementation table is required by ECom. Allows alternative
-	New methods to be specified.
+    New methods to be specified.
 */
 
 const TImplementationProxy ImplementationTable[] =
-	{
+    {
 #ifdef __EABI__
-		IMPLEMENTATION_PROXY_ENTRY(0x101F6DB4,
+        IMPLEMENTATION_PROXY_ENTRY(0x101F6DB4,
             ContentAccess::COma2AgentFactory::NewL)
 #else
-		{ {0x101F6DB4}, ContentAccess::COma2AgentFactory::NewL}
+        { {0x101F6DB4}, ContentAccess::COma2AgentFactory::NewL}
 #endif
-	}; 
+    };
 
 
 // MACROS
@@ -69,10 +69,10 @@ const TImplementationProxy ImplementationTable[] =
 // -----------------------------------------------------------------------------
 //
 EXPORT_C const TImplementationProxy* ImplementationGroupProxy(TInt& aTableCount)
-	{
-	aTableCount = sizeof(ImplementationTable) / sizeof(TImplementationProxy);
-	return ImplementationTable;
-	}
+    {
+    aTableCount = sizeof(ImplementationTable) / sizeof(TImplementationProxy);
+    return ImplementationTable;
+    }
 
 
-//  End of File  
+//  End of File

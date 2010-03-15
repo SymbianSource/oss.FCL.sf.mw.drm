@@ -22,65 +22,65 @@
 #ifndef STRINGTABLE_DrmRel1_0StringDict00TagTable
 #define STRINGTABLE_DrmRel1_0StringDict00TagTable
 
-#include "StringPool.h"
+#include "stringpool.h"
 
 struct TStringTable;
 
 /** A String table */
-class DrmRel1_0StringDict00TagTable 
-	{
+class DrmRel1_0StringDict00TagTable
+    {
 public:
-	enum TStrings
-		{
-		// Element names
-		// CodePage 00
-		/** rights */
-		ERights,
-		/** context */
-		EContext,
-		/** version */
-		EVersion,
-		/** uid */
-		EUid,
-		/** agreement */
-		EAgreement,
-		/** asset */
-		EAsset,
-		/** KeyInfo */
-		EKeyInfo,
-		/** KeyValue */
-		EKeyValue,
-		/** permission */
-		EPermission,
-		/** play */
-		EPlay,
-		/** display */
-		EDisplay,
-		/** execute */
-		EExecute,
-		/** print */
-		EPrint,
-		/** constraint */
-		EConstraint,
-		/** count */
-		ECount,
-		/** datetime */
-		EDateTime,
-		/** start */
-		EStart,
-		/** end */
-		EEnd,
-		/** interval */
-		EInterval,
-		/** -//OMA//DTD DRMREL 1.0//EN */
-		EUri,
-		/** 14~0 */
-		EPublicId,
-		/** -//OMA//DTD DRMREL 1.0//EN~0 */
-		EFormalPublicId
-		};
-	static const TStringTable Table;	
-	};
+    enum TStrings
+        {
+        // Element names
+        // CodePage 00
+        /** rights */
+        ERights,
+        /** context */
+        EContext,
+        /** version */
+        EVersion,
+        /** uid */
+        EUid,
+        /** agreement */
+        EAgreement,
+        /** asset */
+        EAsset,
+        /** KeyInfo */
+        EKeyInfo,
+        /** KeyValue */
+        EKeyValue,
+        /** permission */
+        EPermission,
+        /** play */
+        EPlay,
+        /** display */
+        EDisplay,
+        /** execute */
+        EExecute,
+        /** print */
+        EPrint,
+        /** constraint */
+        EConstraint,
+        /** count */
+        ECount,
+        /** datetime */
+        EDateTime,
+        /** start */
+        EStart,
+        /** end */
+        EEnd,
+        /** interval */
+        EInterval,
+        /** -//OMA//DTD DRMREL 1.0//EN */
+        EUri,
+        /** 14~0 */
+        EPublicId,
+        /** -//OMA//DTD DRMREL 1.0//EN~0 */
+        EFormalPublicId
+        };
+    static const TStringTable Table;
+    };
 
 #endif // STRINGTABLE_DrmRel1_0StringDict00TagTable
 

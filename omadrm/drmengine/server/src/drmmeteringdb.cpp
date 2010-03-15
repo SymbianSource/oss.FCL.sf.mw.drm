@@ -19,8 +19,8 @@
 // INCLUDE FILES
 
 #include <f32file.h>
-#include <S32FILE.H>
-#include <BAUTILS.H>
+#include <s32file.h>
+#include <bautils.h>
 #include "drmlog.h"
 #include "drmmeteringdb.h"
 #ifdef RD_DRM_METERING
@@ -651,5 +651,5 @@ void RDrmMeteringDb::Pop()
     }
 
 #endif
-  
+
 // End of File

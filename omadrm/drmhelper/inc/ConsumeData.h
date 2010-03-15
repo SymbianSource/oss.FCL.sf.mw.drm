@@ -22,7 +22,7 @@
 // INCLUDES
 #include <e32base.h>
 #include <caf/caf.h>
-#include <drmrightsclient.h>
+#include <DRMRightsClient.h>
 
 // DATA TYPES
 
@@ -40,56 +40,56 @@
 NONSHARABLE_CLASS( CConsumeData )  : public CBase
     {
     public:  // Constructors and destructor
-    
-		/**
+
+        /**
         * NewLC
         *
-		* Created a new instance of the CConsumeData class and leaves
-		* it into the cleanup stack
-		*
+        * Created a new instance of the CConsumeData class and leaves
+        * it into the cleanup stack
+        *
         * @param aUri: Content identifier of the content in question
-		* @return Functional CConsumeData -object
+        * @return Functional CConsumeData -object
         */
         static CConsumeData* NewLC( const TDesC8& aUri );
 
-    
-		/**
+
+        /**
         * NewL
         *
-		* Created a new instance of the CConsumeData class
-		*
+        * Created a new instance of the CConsumeData class
+        *
         * @param aUri: Content identifier of the content in question
-		* @return Functional CConsumeData -object
+        * @return Functional CConsumeData -object
         */
         static CConsumeData* NewL( const TDesC8& aUri );
-        
+
         /**
         * Destructor
         */
         ~CConsumeData();
-        
+
     public:  // New functions
-    
- 		/**
+
+        /**
         * Consume
         *
-		* Calls client consumption, if you call this with stop, the session
-		* is deleted
-		*
+        * Calls client consumption, if you call this with stop, the session
+        * is deleted
+        *
         * @param aIntent: Intent to be used for consumption
-		* @return Symbian OS error code
-        */         
+        * @return Symbian OS error code
+        */
         TInt Consume( const ContentAccess::TIntent& aIntent );
 
- 		/**
+        /**
         * CompateUri();
         *
-		* Compares the uri as if compared with string compare
-		*
+        * Compares the uri as if compared with string compare
+        *
         * @param aIntent: Intent to be used for consumption
-		* @return Symbian OS error code
-        */         
-        TInt CompareUri( const TDesC8& aUri ) const;        
+        * @return Symbian OS error code
+        */
+        TInt CompareUri( const TDesC8& aUri ) const;
 
     private:
         /**
@@ -104,16 +104,16 @@ NONSHARABLE_CLASS( CConsumeData )  : public CBase
 
         // Content uri of the content being used
         HBufC8* iContentURI8;
-        
+
         // Rights Client instance
-       	RDRMRightsClient iRdb;
-       	
-       	// Connection status
-       	TBool iConnectionStatus;
+        RDRMRightsClient iRdb;
+
+        // Connection status
+        TBool iConnectionStatus;
     };
 
 
 
-#endif      // CONSUMEDATA_H   
-            
+#endif      // CONSUMEDATA_H
+
 // End of File

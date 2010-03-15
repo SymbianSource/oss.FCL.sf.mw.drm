@@ -17,7 +17,7 @@
 
 
 // INCLUDE FILES
-#include <akndef.h>
+#include <AknDef.h>
 #include <aknview.h>
 #include <brctlinterface.h>
 #include "wmdrmdlabrowserview.h"
@@ -35,7 +35,7 @@ void CWmDrmDlaBrowserContainer::ConstructL(
     CreateWindowL();
     SetRect( iView->ClientRect() );
     ActivateL();
-    
+
     iBrCtlInterface = CreateBrowserControlL(
             this,                                      // parent control
             iView->ClientRect(),                       // client rect
@@ -53,11 +53,11 @@ void CWmDrmDlaBrowserContainer::ConstructL(
             NULL                                       // Download observer
             );
 
-    iBrCtlInterface->SetBrowserSettingL( TBrCtlDefs::ESettingsAutoLoadImages, 
-                                         ETrue );    
-    iBrCtlInterface->SetBrowserSettingL( TBrCtlDefs::ESettingsCookiesEnabled, 
+    iBrCtlInterface->SetBrowserSettingL( TBrCtlDefs::ESettingsAutoLoadImages,
                                          ETrue );
-    iBrCtlInterface->SetBrowserSettingL( TBrCtlDefs::ESettingsEmbedded, 
+    iBrCtlInterface->SetBrowserSettingL( TBrCtlDefs::ESettingsCookiesEnabled,
+                                         ETrue );
+    iBrCtlInterface->SetBrowserSettingL( TBrCtlDefs::ESettingsEmbedded,
                                          ETrue );
     }
 
@@ -78,7 +78,7 @@ CWmDrmDlaBrowserContainer* CWmDrmDlaBrowserContainer::NewL(
     CAknView* aView,
     MBrCtlSpecialLoadObserver* aObserver )
     {
-    CWmDrmDlaBrowserContainer* self 
+    CWmDrmDlaBrowserContainer* self
         = CWmDrmDlaBrowserContainer::NewLC( aView, aObserver );
     CleanupStack::Pop( self );
     return self;
@@ -89,11 +89,11 @@ CWmDrmDlaBrowserContainer* CWmDrmDlaBrowserContainer::NewL(
 // CWmDrmDlaBrowserContainer::NewLC
 // ---------------------------------------------------------------------------
 //
-CWmDrmDlaBrowserContainer* CWmDrmDlaBrowserContainer::NewLC( 
+CWmDrmDlaBrowserContainer* CWmDrmDlaBrowserContainer::NewLC(
     CAknView* aView,
     MBrCtlSpecialLoadObserver* aObserver )
     {
-    CWmDrmDlaBrowserContainer* self 
+    CWmDrmDlaBrowserContainer* self
         = new( ELeave ) CWmDrmDlaBrowserContainer( aView );
     CleanupStack::PushL( self );
     self->ConstructL( aObserver );
@@ -139,7 +139,7 @@ TInt CWmDrmDlaBrowserContainer::CountComponentControls() const
 void CWmDrmDlaBrowserContainer::SizeChanged()
     {
     if ( iBrCtlInterface )
-        {            
+        {
         iBrCtlInterface->SetRect( Rect() );
         }
     }
@@ -152,20 +152,20 @@ CCoeControl* CWmDrmDlaBrowserContainer::ComponentControl(
     TInt aIndex ) const
     {
     switch ( aIndex )
-        {            
+        {
         case 0:
             return iBrCtlInterface;
-        
+
         default:
             return NULL;
         }
     }
-    
+
 // ---------------------------------------------------------------------------
 // CWmDrmDlaBrowserContainer::OfferKeyEventL
 // ---------------------------------------------------------------------------
 //
-TKeyResponse CWmDrmDlaBrowserContainer::OfferKeyEventL( 
+TKeyResponse CWmDrmDlaBrowserContainer::OfferKeyEventL(
     const TKeyEvent& aKeyEvent,
     TEventCode aType )
     {
@@ -180,7 +180,7 @@ TKeyResponse CWmDrmDlaBrowserContainer::OfferKeyEventL(
 // CWmDrmDlaBrowserContainer::FocusChanged
 // ---------------------------------------------------------------------------
 //
-void CWmDrmDlaBrowserContainer::FocusChanged( 
+void CWmDrmDlaBrowserContainer::FocusChanged(
     TDrawNow aDrawNow )
     {
     iBrCtlInterface->SetFocus( IsFocused() );

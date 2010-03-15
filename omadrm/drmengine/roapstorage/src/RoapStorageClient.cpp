@@ -31,7 +31,7 @@
 #include "DRMRIContext.h"
 #include "DRMDomainContext.h"
 #include "drmroapclientserver.h"
-#include "drmrightsclient.h"
+#include "DRMRightsClient.h"
 #include "cleanupresetanddestroy.h" // CleanupResetAndDestroyPushL
 // LOCAL CONSTANTS AND MACROS
 

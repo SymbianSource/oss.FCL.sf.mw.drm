@@ -21,16 +21,17 @@
 #include <s32mem.h>
 #include <f32file.h>
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <caf/caferr.h>
-#include <caf/SupplierOutputFile.h>
+#include <caf/supplieroutputfile.h>
 #include "Oma2Agent.h"
-#include "Oma2AgentImportfile.h"
+#include "Oma2AgentImportFile.h"
 #include "DcfCommon.h"
-#include "DrmRights.h"
-#include "DrmMessageParser.h"
+#include "DRMRights.h"
+#include "DRMMessageParser.h"
 #include "Oma1DcfCreator.h"
 #include "DrmRightsParser.h"
-#include "DrmProtectedRoParser.h"
+#include "DRMProtectedRoParser.h"
 
 using namespace ContentAccess;
 
@@ -59,7 +60,7 @@ void PointerArrayResetDestroyAndClose(TAny* aPtr)
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 COma2AgentImportFile* COma2AgentImportFile::NewL(
@@ -67,34 +68,34 @@ COma2AgentImportFile* COma2AgentImportFile::NewL(
     const CMetaDataArray& aMetaDataArray,
     const TDesC& aOutputDirectory,
     const TDesC& aSuggestedFileName)
-	{
-	COma2AgentImportFile* self=new(ELeave) COma2AgentImportFile(EFalse);
-	CleanupStack::PushL(self);
-	self->ConstructL(aMimeType, aMetaDataArray, aOutputDirectory,
-	    aSuggestedFileName);
-	CleanupStack::Pop(self);
-	return self;
-	}
+    {
+    COma2AgentImportFile* self=new(ELeave) COma2AgentImportFile(EFalse);
+    CleanupStack::PushL(self);
+    self->ConstructL(aMimeType, aMetaDataArray, aOutputDirectory,
+        aSuggestedFileName);
+    CleanupStack::Pop(self);
+    return self;
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 COma2AgentImportFile* COma2AgentImportFile::NewL(
     const TDesC8& aMimeType,
     const CMetaDataArray& aMetaDataArray)
-	{
-	COma2AgentImportFile* self=new(ELeave) COma2AgentImportFile(EFalse);
-	CleanupStack::PushL(self);
-	self->ConstructL(aMimeType, aMetaDataArray, KNullDesC(), KNullDesC());
-	CleanupStack::Pop(self);
-	return self;
-	}
-	
+    {
+    COma2AgentImportFile* self=new(ELeave) COma2AgentImportFile(EFalse);
+    CleanupStack::PushL(self);
+    self->ConstructL(aMimeType, aMetaDataArray, KNullDesC(), KNullDesC());
+    CleanupStack::Pop(self);
+    return self;
+    }
+
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 COma2AgentImportFile::COma2AgentImportFile(
@@ -108,38 +109,38 @@ COma2AgentImportFile::COma2AgentImportFile(
     iDcfCreator(NULL),
     iDcfRights(NULL),
     iDcfMimeType(NULL)
-	{
-	iImportStatus = EInProgress;
-	}
+    {
+    iImportStatus = EInProgress;
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 COma2AgentImportFile::~COma2AgentImportFile()
-	{
-	if (iFileOpen)
-		{
-		iFile.Close();
-		iFileOpen = EFalse;
-		}
-	iFs.Close();
-	delete iOutputDirectory;
-	delete iSuggestedFileName;
+    {
+    if (iFileOpen)
+        {
+        iFile.Close();
+        iFileOpen = EFalse;
+        }
+    iFs.Close();
+    delete iOutputDirectory;
+    delete iSuggestedFileName;
     delete iOutputFileName;
-	delete iLastWriteData;
-	iOutputFiles.ResetAndDestroy();
-	iOutputFiles.Close();
-	delete iMessageParser;
-	delete iDcfCreator;
-	delete iDcfRights;
-	delete iDcfMimeType;
-	}
-  
+    delete iLastWriteData;
+    iOutputFiles.ResetAndDestroy();
+    iOutputFiles.Close();
+    delete iMessageParser;
+    delete iDcfCreator;
+    delete iDcfRights;
+    delete iDcfMimeType;
+    }
+
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void COma2AgentImportFile::ConstructL(
@@ -147,129 +148,129 @@ void COma2AgentImportFile::ConstructL(
     const CMetaDataArray& aMetaDataArray,
     const TDesC& aOutputDirectory,
     const TDesC& aSuggestedFileName)
-	{
-	RMemReadStream rights;
-	
-	if (aMimeType.CompareF(KOma1DrmMessageContentType) == 0 ||
-	    aMimeType.CompareF(KOmaImportContentType) == 0)
-	    {
-	    if (aMimeType.CompareF(KOma1DrmMessageContentType) == 0)
-	        {
+    {
+    RMemReadStream rights;
+
+    if (aMimeType.CompareF(KOma1DrmMessageContentType) == 0 ||
+        aMimeType.CompareF(KOmaImportContentType) == 0)
+        {
+        if (aMimeType.CompareF(KOma1DrmMessageContentType) == 0)
+            {
             iMessageParser = CDRMMessageParser::NewL();
-	        iImportType = EOma1DrmMessage;
-	        }
-	    else
-	        {
-	        iDcfCreator = COma1DcfCreator::NewL();
-    	    iImportType = EPlainContent;
+            iImportType = EOma1DrmMessage;
+            }
+        else
+            {
+            iDcfCreator = COma1DcfCreator::NewL();
+            iImportType = EPlainContent;
             const TDesC8& mimeDes = aMetaDataArray.SearchL(
                 KOmaImportMimeTypeField);
             if (mimeDes.Length() == 0)
                 {
                 User::Leave(KErrArgument);
                 }
-    	    iDcfMimeType = mimeDes.AllocL();
-    	    const TDesC8& rightsDes = aMetaDataArray.SearchL(
-    	        KOmaImportRightsField);
+            iDcfMimeType = mimeDes.AllocL();
+            const TDesC8& rightsDes = aMetaDataArray.SearchL(
+                KOmaImportRightsField);
             if (rightsDes.Length() > 0)
-    	        {
-    	        rights.Open(rightsDes.Ptr(), rightsDes.Length());
-    	        CleanupClosePushL(rights);
-        	    iDcfRights = CDRMRights::NewL();
-    	        iDcfRights->InternalizeL(rights);
-    	        CleanupStack::PopAndDestroy(); // rights
-    	        }
-	        }
-    	iOutputDirectory = aOutputDirectory.AllocL();
-    	iSuggestedFileName = aSuggestedFileName.AllocL();
-    	iOutputFileName = HBufC::NewL(iOutputDirectory->Des().Length() +
+                {
+                rights.Open(rightsDes.Ptr(), rightsDes.Length());
+                CleanupClosePushL(rights);
+                iDcfRights = CDRMRights::NewL();
+                iDcfRights->InternalizeL(rights);
+                CleanupStack::PopAndDestroy(); // rights
+                }
+            }
+        iOutputDirectory = aOutputDirectory.AllocL();
+        iSuggestedFileName = aSuggestedFileName.AllocL();
+        iOutputFileName = HBufC::NewL(iOutputDirectory->Des().Length() +
             iSuggestedFileName->Des().Length());
-	    iAgentCreatesOutputFiles = ETrue;
-	    }
+        iAgentCreatesOutputFiles = ETrue;
+        }
     else if (aMimeType.CompareF(KOma1XmlRoContentType) == 0)
-	    {
-	    iImportType = EOma1XmlRo;
-	    }
+        {
+        iImportType = EOma1XmlRo;
+        }
     else if (aMimeType.CompareF(KOma1WbxmlRoContentType) == 0)
-	    {
-	    iImportType = EOma1WbxmlRo;
-	    }
+        {
+        iImportType = EOma1WbxmlRo;
+        }
     else if (aMimeType.CompareF(KOma2RoContentType) == 0)
-	    {
-	    iImportType = EOma2Ro;
-	    }
+        {
+        iImportType = EOma2Ro;
+        }
     else
         {
-		User::Leave(KErrCANotSupported);
-		}
-	User::LeaveIfError(iFs.Connect());
-    User::LeaveIfError(iFs.ShareAuto());	
-	}
+        User::Leave(KErrCANotSupported);
+        }
+    User::LeaveIfError(iFs.Connect());
+    User::LeaveIfError(iFs.ShareAuto());
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma2AgentImportFile::OpenOutputFile()
-	{
-	TInt r = KErrNone;
-	TPtr fileNamePtr = iOutputFileName->Des();
-	
-	fileNamePtr.Copy(*iOutputDirectory);
-	fileNamePtr.Append(*iSuggestedFileName);
+    {
+    TInt r = KErrNone;
+    TPtr fileNamePtr = iOutputFileName->Des();
 
-	r = iFile.Create(iFs, fileNamePtr, EFileShareAny  | EFileStream |
-	    EFileWrite);
-	if (r == KErrNone)
-		{
-		iFileOpen = ETrue;
-		if (iImportType == EOma1DrmMessage)
-		    {
-		    TRAP(r, iMessageParser->InitializeMessageParserL(iFile));
-		    }
-		else
-		    {
-		    TRAP(r, iDcfCreator->EncryptInitializeL(iFile, *iDcfMimeType,
-		        iDcfRights));
-		    }
-		}
+    fileNamePtr.Copy(*iOutputDirectory);
+    fileNamePtr.Append(*iSuggestedFileName);
+
+    r = iFile.Create(iFs, fileNamePtr, EFileShareAny  | EFileStream |
+        EFileWrite);
+    if (r == KErrNone)
+        {
+        iFileOpen = ETrue;
+        if (iImportType == EOma1DrmMessage)
+            {
+            TRAP(r, iMessageParser->InitializeMessageParserL(iFile));
+            }
+        else
+            {
+            TRAP(r, iDcfCreator->EncryptInitializeL(iFile, *iDcfMimeType,
+                iDcfRights));
+            }
+        }
     else
         {
         r = KErrCANewFileHandleRequired;
         }
     return r;
-	}
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void COma2AgentImportFile::WriteDataL(const TDesC8& aData)
     {
-	CDrmRightsParser* oma1Parser = NULL;
-	CDrmProtectedRoParser* oma2Parser = NULL;
-	RPointerArray<CDRMRights> rights;
+    CDrmRightsParser* oma1Parser = NULL;
+    CDrmProtectedRoParser* oma2Parser = NULL;
+    RPointerArray<CDRMRights> rights;
     TCleanupItem listCleanup(PointerArrayResetDestroyAndClose<CDRMRights>,
         &rights);
-	TInt r;
-	
+    TInt r;
+
     switch (iImportType)
         {
         case EOma1DrmMessage:
-        	if (!iFileOpen)
-        		{
-        		r = OpenOutputFile();
-        		if (r == KErrNone)
-        		    {
+            if (!iFileOpen)
+                {
+                r = OpenOutputFile();
+                if (r == KErrNone)
+                    {
                     iMessageParser->ProcessMessageDataL(aData);
-        		    }
-        		else
-        		    {
+                    }
+                else
+                    {
                     iLastWriteData = aData.AllocL();
                     User::Leave(r);
-        		    }
+                    }
                 }
             else
                 {
@@ -277,18 +278,18 @@ void COma2AgentImportFile::WriteDataL(const TDesC8& aData)
                 }
             break;
         case EPlainContent:
-        	if (!iFileOpen)
-        		{
-        		r = OpenOutputFile();
-        		if (r == KErrNone)
-        		    {
+            if (!iFileOpen)
+                {
+                r = OpenOutputFile();
+                if (r == KErrNone)
+                    {
                     iDcfCreator->EncryptUpdateL(aData);
-        		    }
-        		else
-        		    {
+                    }
+                else
+                    {
                     iLastWriteData = aData.AllocL();
                     User::Leave(r);
-        		    }
+                    }
                 }
             else
                 {
@@ -314,231 +315,231 @@ void COma2AgentImportFile::WriteDataL(const TDesC8& aData)
             break;
         }
     }
-    
-// -----------------------------------------------------------------------------
-// COma2AgentImportFile::
-// 
-// -----------------------------------------------------------------------------
-//
-TInt COma2AgentImportFile::WriteData(const TDesC8& aData)
-	{
-	TInt r = KErrNone;
-	TRAP(r, WriteDataL(aData));
-	return r;
-	}
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
+// -----------------------------------------------------------------------------
+//
+TInt COma2AgentImportFile::WriteData(const TDesC8& aData)
+    {
+    TInt r = KErrNone;
+    TRAP(r, WriteDataL(aData));
+    return r;
+    }
+
+// -----------------------------------------------------------------------------
+// COma2AgentImportFile::
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma2AgentImportFile::WriteDataComplete()
-	{
-	TInt r = KErrNone;
-	CSupplierOutputFile *temp = NULL;
-	TPtrC8 type(NULL, 0);
-	
-	if (iFileOpen)
-		{
-		if (iImportType == EOma1DrmMessage)
-		    {
-		    TRAP(r, iMessageParser->FinalizeMessageParserL());
-		    }
-		else
-		    {
-		    TRAP(r, iDcfCreator->EncryptFinalizeL());
-		    }
-		iFile.Close();
-		iFileOpen = EFalse;
-		}
-	if( r ) 
-	    {
-		  return r;
+    {
+    TInt r = KErrNone;
+    CSupplierOutputFile *temp = NULL;
+    TPtrC8 type(NULL, 0);
+
+    if (iFileOpen)
+        {
+        if (iImportType == EOma1DrmMessage)
+            {
+            TRAP(r, iMessageParser->FinalizeMessageParserL());
+            }
+        else
+            {
+            TRAP(r, iDcfCreator->EncryptFinalizeL());
+            }
+        iFile.Close();
+        iFileOpen = EFalse;
+        }
+    if( r )
+        {
+          return r;
       }
-	if (iOutputFileName)
-		{
-		switch (iImportType)
-		    {
-		    case EPlainContent:
+    if (iOutputFileName)
+        {
+        switch (iImportType)
+            {
+            case EPlainContent:
             case EOma1DrmMessage:
                 type.Set(KOma1DcfContentType());
                 break;
             default:
                 return KErrGeneral;;
-		    }
-		TRAP(r, temp = CSupplierOutputFile::NewL(iOutputFileName->Des(),
-		    EContent, type));
-		if (r == KErrNone)
-			{
-			r = iOutputFiles.Append(temp);
-			if (r != KErrNone)
-				{
-				delete temp;
-				}
-			}
-		}
-	return r;
-	}
-		
+            }
+        TRAP(r, temp = CSupplierOutputFile::NewL(iOutputFileName->Des(),
+            EContent, type));
+        if (r == KErrNone)
+            {
+            r = iOutputFiles.Append(temp);
+            if (r != KErrNone)
+                {
+                delete temp;
+                }
+            }
+        }
+    return r;
+    }
+
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void COma2AgentImportFile::WriteData(
     const TDesC8& aData,
     TRequestStatus &aStatus)
-	{
-	TRequestStatus *ptr = &aStatus;
-	TInt r = WriteData(aData);
-	User::RequestComplete(ptr,r);
-	}
+    {
+    TRequestStatus *ptr = &aStatus;
+    TInt r = WriteData(aData);
+    User::RequestComplete(ptr,r);
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void COma2AgentImportFile::WriteDataComplete(
     TRequestStatus &aStatus)
-	{
-	TRequestStatus *ptr = &aStatus;
-	TInt r = WriteDataComplete();
-	User::RequestComplete(ptr,r);
-	}
-	
-// -----------------------------------------------------------------------------
-// COma2AgentImportFile::
-// 
-// -----------------------------------------------------------------------------
-//
-TInt COma2AgentImportFile::OutputFileCountL() const
-	{
-	return iOutputFiles.Count();
-	}
+    {
+    TRequestStatus *ptr = &aStatus;
+    TInt r = WriteDataComplete();
+    User::RequestComplete(ptr,r);
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
+// -----------------------------------------------------------------------------
+//
+TInt COma2AgentImportFile::OutputFileCountL() const
+    {
+    return iOutputFiles.Count();
+    }
+
+// -----------------------------------------------------------------------------
+// COma2AgentImportFile::
+//
 // -----------------------------------------------------------------------------
 //
 CSupplierOutputFile& COma2AgentImportFile::OutputFileL(
     TInt aIndex)
-	{
-	return *iOutputFiles[aIndex];
-	}
+    {
+    return *iOutputFiles[aIndex];
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TImportStatus COma2AgentImportFile::GetImportStatus() const
-	{
-	return iImportStatus;
-	}	
+    {
+    return iImportStatus;
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma2AgentImportFile::GetSuggestedOutputFileExtension(
     TDes& aFileExtension)
-	{
-	aFileExtension.Copy(_L(".dcf"));
-	return KErrNone;
-	}
+    {
+    aFileExtension.Copy(_L(".dcf"));
+    return KErrNone;
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma2AgentImportFile::GetSuggestedOutputFileName(
     TDes& aFileName)
-	{
-	aFileName.Append(_L(".dcf"));
-	return KErrNone;
-	}
+    {
+    aFileName.Append(_L(".dcf"));
+    return KErrNone;
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma2AgentImportFile::ContinueWithNewOutputFile(
     RFile& aFile,
     const TDesC& aFileName)
-	{
-	RFile file;
-	TInt r = KErrNone;
+    {
+    RFile file;
+    TInt r = KErrNone;
 
-	if (iOutputFileName != NULL)
-	    {
-	    delete iOutputFileName;
-	    iOutputFileName = NULL;
-	    }
-	TRAP(r, iOutputFileName = aFileName.AllocL());
-	if (r == KErrNone)
-	    {
-	    file.Duplicate(aFile);
+    if (iOutputFileName != NULL)
+        {
+        delete iOutputFileName;
+        iOutputFileName = NULL;
+        }
+    TRAP(r, iOutputFileName = aFileName.AllocL());
+    if (r == KErrNone)
+        {
+        file.Duplicate(aFile);
         iFile.Attach(file);
         iFileOpen = ETrue;
-		if (iImportType == EOma1DrmMessage)
-		    {
-		    TRAP(r, iMessageParser->InitializeMessageParserL(iFile));
-		    }
-		else
-		    {
-		    TRAP(r, iDcfCreator->EncryptInitializeL(iFile, *iDcfMimeType,
-		        iDcfRights));
-		    }
+        if (iImportType == EOma1DrmMessage)
+            {
+            TRAP(r, iMessageParser->InitializeMessageParserL(iFile));
+            }
+        else
+            {
+            TRAP(r, iDcfCreator->EncryptInitializeL(iFile, *iDcfMimeType,
+                iDcfRights));
+            }
         if (r == KErrNone)
             {
             r = WriteData(*iLastWriteData);
             }
         delete iLastWriteData;
         iLastWriteData = NULL;
-	    }
-	return r;
-	}
+        }
+    return r;
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void COma2AgentImportFile::ContinueWithNewOutputFile(
     RFile& aFile,
     const TDesC& aFileName,
     TRequestStatus& aStatus)
-	{
-	TRequestStatus *ptr = &aStatus;
-	TInt r = ContinueWithNewOutputFile(aFile, aFileName);
-	User::RequestComplete(ptr,r);
-	}
+    {
+    TRequestStatus *ptr = &aStatus;
+    TInt r = ContinueWithNewOutputFile(aFile, aFileName);
+    User::RequestComplete(ptr,r);
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void COma2AgentImportFile::NewMimePartL(
     const TDesC8& /*aMimeType*/,
     const CMetaDataArray& /*aImportMetaData*/)
-	{
-	User::Leave(KErrCANotSupported);
-	}
+    {
+    User::Leave(KErrCANotSupported);
+    }
 
 // -----------------------------------------------------------------------------
 // COma2AgentImportFile::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void COma2AgentImportFile::EndMimePartL()
-	{
-	User::Leave(KErrCANotSupported);
-	}
+    {
+    User::Leave(KErrCANotSupported);
+    }
 
 // End of file

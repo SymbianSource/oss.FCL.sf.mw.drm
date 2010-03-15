@@ -22,8 +22,8 @@
 #include <bautils.h>
 #include <eikfrlbd.h>
 #include <featmgr.h>
-#include <stringloader.h>
-#include <aknviewappui.h>
+#include <StringLoader.h>
+#include <aknViewAppUi.h>
 #include <aknradiobuttonsettingpage.h>
 #include <gsfwviewuids.h>
 #include <gsprivatepluginproviderids.h>
@@ -653,8 +653,8 @@ void CDRMSettingsPlugin::UpdateUsageReportingSettingL()
                 usageList,
                 model,
                 this ) );
-                                            
-        isValueUpdated = 
+
+        isValueUpdated =
             usageCheckBox->ExecuteLD( CAknSettingPage::EUpdateWhenAccepted );
 
         CleanupStack::PopAndDestroy( usageList );

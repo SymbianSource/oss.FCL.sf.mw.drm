@@ -25,7 +25,7 @@
 #include    <DRMRightsClient.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 // EXTERNAL DATA STRUCTURES

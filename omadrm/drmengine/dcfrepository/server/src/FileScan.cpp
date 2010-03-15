@@ -17,22 +17,22 @@
 
 
 // INCLUDE FILES
-#include	<e32std.h>
-#include	<e32base.h>
-#include	<f32file.h>
-#include    <drmcommon.h>
+#include    <e32std.h>
+#include    <e32base.h>
+#include    <f32file.h>
+#include    <DRMCommon.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include    <DriveInfo.h>
+#include    <driveinfo.h>
 #endif
 
 #include    "DcfRepSrv.h"
 #include    "SearchLeaf.h"
-#include	"FileScan.h"
+#include    "FileScan.h"
 
 // EXTERNAL DATA STRUCTURES
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 
@@ -69,7 +69,7 @@ LOCAL_C TBool IgnoreDir( RFs& aFs, TFileName& aDir );
  #ifndef RD_MULTIPLE_DRIVE
 LOCAL_C TBool IgnoreDir( TFileName& aDir )
     {
-    if ( !aDir.CompareF( KIgnoreDir1 ) || 
+    if ( !aDir.CompareF( KIgnoreDir1 ) ||
          !aDir.CompareF( KIgnoreDir2 ) )
         {
         return ETrue;
@@ -82,15 +82,15 @@ LOCAL_C TBool IgnoreDir( RFs& aFs, TFileName& aDir )
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
-	aFs.DriveToChar( driveNumber, driveLetter );
-	
-	TFileName ignore1;
-	TFileName ignore2;
-	
-	ignore1.Format( KIgnoreDir1, (TUint)driveLetter );
+    aFs.DriveToChar( driveNumber, driveLetter );
+
+    TFileName ignore1;
+    TFileName ignore2;
+
+    ignore1.Format( KIgnoreDir1, (TUint)driveLetter );
     ignore2.Format( KIgnoreDir2, (TUint)driveLetter );
-    
-    if ( !aDir.CompareF( ignore1 ) || 
+
+    if ( !aDir.CompareF( ignore1 ) ||
          !aDir.CompareF( ignore2 ) )
         {
         return ETrue;
@@ -98,7 +98,7 @@ LOCAL_C TBool IgnoreDir( RFs& aFs, TFileName& aDir )
     return EFalse;
     }
 #endif
-    
+
 // ============================ MEMBER FUNCTIONS ===============================
 
 // -----------------------------------------------------------------------------
@@ -107,10 +107,10 @@ LOCAL_C TBool IgnoreDir( RFs& aFs, TFileName& aDir )
 // might leave.
 // -----------------------------------------------------------------------------
 //
-CFileScan::CFileScan( RFs& aFs ) : 
+CFileScan::CFileScan( RFs& aFs ) :
 CActive( CActive::EPriorityStandard ),iServer(NULL),iFs(&aFs),iCurrentLeaf(NULL)
-	{
-	CleanInternal();
+    {
+    CleanInternal();
     }
 
 // -----------------------------------------------------------------------------
@@ -120,17 +120,17 @@ CActive( CActive::EPriorityStandard ),iServer(NULL),iFs(&aFs),iCurrentLeaf(NULL)
 //
 void CFileScan::ConstructL()
     {
-	TInt err = 0;
-	if ( !iFs )
-		{
-		err = KErrArgument;
-		}
-	else
-		{
-		err = KErrNone;
-		}
-	User::LeaveIfError( err );
-	}
+    TInt err = 0;
+    if ( !iFs )
+        {
+        err = KErrArgument;
+        }
+    else
+        {
+        err = KErrNone;
+        }
+    User::LeaveIfError( err );
+    }
 
 // -----------------------------------------------------------------------------
 // CFileScan::NewL
@@ -139,20 +139,20 @@ void CFileScan::ConstructL()
 //
 CFileScan* CFileScan::NewL( RFs& aFs )
     {
-    CFileScan* self = new( ELeave ) CFileScan( aFs ); 
-	CleanupStack::PushL( self );
+    CFileScan* self = new( ELeave ) CFileScan( aFs );
+    CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop(self);
     return self;
     }
 
-    
+
 // Destructor
 CFileScan::~CFileScan()
     {
-	CleanInternal();
-	iServer = NULL;
-	iFs = NULL;
+    CleanInternal();
+    iServer = NULL;
+    iFs = NULL;
     }
 
 
@@ -164,28 +164,28 @@ CFileScan::~CFileScan()
 // -----------------------------------------------------------------------------
 //
 void CFileScan::DoCancel()
-	{
-	CleanInternal();
-	}
+    {
+    CleanInternal();
+    }
 
 
 // -----------------------------------------------------------------------------
 // CFileScan::IsProtected
-// Function returns whether the specific file is protected or not 
+// Function returns whether the specific file is protected or not
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
 //
 TInt CFileScan::IsProtected( const TDesC& aFileName , TBool& aIsDCF )
-	{
-	TInt err = KErrNone;
-	aIsDCF = EFalse;
-	err = iServer->ProcessFile( aFileName , aIsDCF );
-	if ( err && err != KErrNoMemory )
-		{
-		err = KErrNone;
-		}
-	return err;
-	}
+    {
+    TInt err = KErrNone;
+    aIsDCF = EFalse;
+    err = iServer->ProcessFile( aFileName , aIsDCF );
+    if ( err && err != KErrNoMemory )
+        {
+        err = KErrNone;
+        }
+    return err;
+    }
 
 
 // -----------------------------------------------------------------------------
@@ -195,62 +195,62 @@ TInt CFileScan::IsProtected( const TDesC& aFileName , TBool& aIsDCF )
 // -----------------------------------------------------------------------------
 //
 void CFileScan::RunL()
-	{
-	TInt err = KErrNone;
-	if ( iSearching && iServer->State()!=EStateIdle )
-		{
-		err = SearchNext();
-		if ( err == KErrCancel )
-			{
-			err = KErrNone;
-			}
-		if ( !err )
-			{
-			SetActive();			
-			TRequestStatus* status = &iStatus;
-			User::RequestComplete( status , err );			
-			}
-		}
-	else 
-		{
-		CleanInternal();
-		iServer->CompleteScanning(err);
-		Deque();
-		}
-	if ( err )
-		{
-		CleanInternal();
-		iServer->CompleteScanning(err);
-		Deque();
-		}
-	}
+    {
+    TInt err = KErrNone;
+    if ( iSearching && iServer->State()!=EStateIdle )
+        {
+        err = SearchNext();
+        if ( err == KErrCancel )
+            {
+            err = KErrNone;
+            }
+        if ( !err )
+            {
+            SetActive();
+            TRequestStatus* status = &iStatus;
+            User::RequestComplete( status , err );
+            }
+        }
+    else
+        {
+        CleanInternal();
+        iServer->CompleteScanning(err);
+        Deque();
+        }
+    if ( err )
+        {
+        CleanInternal();
+        iServer->CompleteScanning(err);
+        Deque();
+        }
+    }
 
 
 
 // -----------------------------------------------------------------------------
 // CFileScan::SearchContent
-// Function starts the active objects to search protected file through whole file system 
+// Function starts the active objects to search protected file through whole file system
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
 //
 TInt CFileScan::SearchContent( CDcfRepSrv* aServer )
-	{
+    {
     TInt err = KErrNone;
-	
-	iServer = aServer;
-	CActiveScheduler::Add( this );
-	
-	iSearching = ETrue;
-	err = SearchNext();
-	if ( err )
-		{
-		return err;
-		}
-	SetActive();
-	TRequestStatus* status = &iStatus;
-	User::RequestComplete( status , KErrNone );
-	return err;
-	}
+
+    iServer = aServer;
+    CActiveScheduler::Add( this );
+
+    iSearching = ETrue;
+    err = SearchNext();
+    if ( err )
+        {
+        return err;
+        }
+    SetActive();
+    TRequestStatus* status = &iStatus;
+    User::RequestComplete( status , KErrNone );
+    return err;
+    }
 
 // -----------------------------------------------------------------------------
 // CFileScan::SearchDrive
@@ -259,16 +259,16 @@ TInt CFileScan::SearchContent( CDcfRepSrv* aServer )
 // -----------------------------------------------------------------------------
 //
 TInt CFileScan::SearchDrive()
-	{
-	_LIT( KDrive, "%c:");
-	TDriveList drivelist;
-	TChar driveLetter;
-	TInt driveNumber = EDriveA - 1;
-	TInt err = KErrNone;
+    {
+    _LIT( KDrive, "%c:");
+    TDriveList drivelist;
+    TChar driveLetter;
+    TInt driveNumber = EDriveA - 1;
+    TInt err = KErrNone;
 
 #ifdef RD_MULTIPLE_DRIVE
-	
-	TInt ramDrive( -1 );
+
+    TInt ramDrive( -1 );
     TInt romDrive( -1 );
 
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRam, ramDrive );
@@ -276,44 +276,44 @@ TInt CFileScan::SearchDrive()
 
 #endif
 
-	err = iFs->DriveList( drivelist ); 
+    err = iFs->DriveList( drivelist );
 
-	if ( iLastPosition != KNullDesC )
-		{
-		driveLetter = iLastPosition[0];
-		err = iFs->CharToDrive( driveLetter, driveNumber );
-		}
-	
-	driveNumber++;
-	
+    if ( iLastPosition != KNullDesC )
+        {
+        driveLetter = iLastPosition[0];
+        err = iFs->CharToDrive( driveLetter, driveNumber );
+        }
+
+    driveNumber++;
+
     for ( ; driveNumber < KMaxDrives ; driveNumber++ )
         {
-        
+
 #ifndef RD_MULTIPLE_DRIVE
-	    
-	    if ( driveNumber == EDriveD || driveNumber == EDriveZ )
-		    {
-		    }
-	    		
+
+        if ( driveNumber == EDriveD || driveNumber == EDriveZ )
+            {
+            }
+
 #else // RD_MULTIPLE_DRIVE
 
-		if ( driveNumber == ramDrive || driveNumber == romDrive )
-		    {
-			}
+        if ( driveNumber == ramDrive || driveNumber == romDrive )
+            {
+            }
 
 #endif
-		
-		else if ( drivelist[driveNumber] ) 
-				{
-				err = iFs->DriveToChar( driveNumber, driveLetter );
-				iLastPosition.Format( KDrive, (TUint)driveLetter );
-				iDeeper = ETrue;
-				return err;
-				}
+
+        else if ( drivelist[driveNumber] )
+                {
+                err = iFs->DriveToChar( driveNumber, driveLetter );
+                iLastPosition.Format( KDrive, (TUint)driveLetter );
+                iDeeper = ETrue;
+                return err;
+                }
         }
-	CleanInternal();
-	return err;
-	}
+    CleanInternal();
+    return err;
+    }
 
 
 
@@ -324,46 +324,46 @@ TInt CFileScan::SearchDrive()
 // -----------------------------------------------------------------------------
 //
 TInt CFileScan::SearchFolder( CDir*& aFolderList )
-	{
-	TInt err = KErrNone;
-	TRAP( err , iCurrentLeaf->SetLeafL( aFolderList ) );
-	return err;
-	}
+    {
+    TInt err = KErrNone;
+    TRAP( err , iCurrentLeaf->SetLeafL( aFolderList ) );
+    return err;
+    }
 
 // -----------------------------------------------------------------------------
 // CFileScan::SearchFile
-// This function searches for the DCF files under specific folder 
+// This function searches for the DCF files under specific folder
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
 //
 TInt CFileScan::SearchFile( CDir*& aFileList )
-	{
-	TInt err = KErrNone;
-	TInt i = 0;
-	TBool isDCF;
-	_LIT ( KFullFileName , "%S\\%S");
-	TFileName fileName;
+    {
+    TInt err = KErrNone;
+    TInt i = 0;
+    TBool isDCF;
+    _LIT ( KFullFileName , "%S\\%S");
+    TFileName fileName;
 
-	for ( ; i < aFileList->Count() && !err ; i++ )
-		{
-		if (!( *aFileList )[i].IsDir())
-		    {
-    		TPtrC extension = (*aFileList)[i].iName.Right( 4 );
-    		if( !extension.CompareF( KWma ) || 
-    		    !extension.CompareF( KWmv ) ||
-    		    !extension.CompareF( KAsf ) )
-    		    {
-    		    
-    		    }
-    		else
-    		    {
-    		    fileName.Format( KFullFileName , &iLastPosition , &( *aFileList )[i].iName );
-    		    err = IsProtected( fileName , isDCF );
-		        }
-    		}
-		}
-	return err;
-	}
+    for ( ; i < aFileList->Count() && !err ; i++ )
+        {
+        if (!( *aFileList )[i].IsDir())
+            {
+            TPtrC extension = (*aFileList)[i].iName.Right( 4 );
+            if( !extension.CompareF( KWma ) ||
+                !extension.CompareF( KWmv ) ||
+                !extension.CompareF( KAsf ) )
+                {
+
+                }
+            else
+                {
+                fileName.Format( KFullFileName , &iLastPosition , &( *aFileList )[i].iName );
+                err = IsProtected( fileName , isDCF );
+                }
+            }
+        }
+    return err;
+    }
 
 // -----------------------------------------------------------------------------
 // CFileScan::SearchNext
@@ -372,155 +372,155 @@ TInt CFileScan::SearchFile( CDir*& aFileList )
 // -----------------------------------------------------------------------------
 //
 TInt CFileScan::SearchNext()
-	{
-	TInt err = KErrNone;
+    {
+    TInt err = KErrNone;
 
-	err = CheckDrive();
-	if ( !err && iSearching )
-		{
-		if ( iDeeper )
-			{
-			err = CheckFolder();
-			}
-		if ( !err && iSearching )
-			{
-			err = ToNextLeaf();
-			}
-		}
-	return err;
-	}
+    err = CheckDrive();
+    if ( !err && iSearching )
+        {
+        if ( iDeeper )
+            {
+            err = CheckFolder();
+            }
+        if ( !err && iSearching )
+            {
+            err = ToNextLeaf();
+            }
+        }
+    return err;
+    }
 
 TInt CFileScan::CheckDrive()
-	{
-	// check if current drive is end of searching
-	TInt err = KErrNone;
+    {
+    // check if current drive is end of searching
+    TInt err = KErrNone;
 
-	if( !iCurrentLeaf )
-		{
-		err = SearchDrive();
-		if ( err || !iSearching )
-			{
-			return err;
-			}
-		CSearchLeaf* root = NULL;
-		TRAP( err , iCurrentLeaf = CSearchLeaf::NewL( root , iLastPosition ) );
-		}	
-	return err;
-	}
+    if( !iCurrentLeaf )
+        {
+        err = SearchDrive();
+        if ( err || !iSearching )
+            {
+            return err;
+            }
+        CSearchLeaf* root = NULL;
+        TRAP( err , iCurrentLeaf = CSearchLeaf::NewL( root , iLastPosition ) );
+        }
+    return err;
+    }
 
-TInt CFileScan::CheckFolder()	
-	{
-	// check current folder
-	_LIT ( KSearchDir , "%S\\*");
+TInt CFileScan::CheckFolder()
+    {
+    // check current folder
+    _LIT ( KSearchDir , "%S\\*");
 
-	TInt err = KErrNone;
-	CDir* fileList = NULL;
-	CDir* dirList = NULL;
-	TFileName temp;
-    
+    TInt err = KErrNone;
+    CDir* fileList = NULL;
+    CDir* dirList = NULL;
+    TFileName temp;
+
 #ifndef RD_MULTIPLE_DRIVE
     if ( IgnoreDir( iLastPosition ) )
 #else // RD_MULTIPLE_DRIVE
-    if ( IgnoreDir( *iFs, iLastPosition ) )    
+    if ( IgnoreDir( *iFs, iLastPosition ) )
 #endif
         {
         return err;
         }
-    
+
     if( iLastPosition.Length() + KSearchDir().Length() < iLastPosition.MaxLength() )
         {
-	    temp.Format( KSearchDir , &iLastPosition );
-	    err = iFs->GetDir( temp  
-		    , KEntryAttMaskSupported
-		    , ESortByName 
-		    , fileList , dirList );
-	
-	    if ( !err )
-		    {
-		    err = SearchFolder( dirList );
-		    if ( !err )
-			    {
-			    err = SearchFile( fileList );
-			    }
-		    }
-	    delete fileList;
-	    fileList = NULL;
-	    delete dirList;
-	    dirList = NULL;        
+        temp.Format( KSearchDir , &iLastPosition );
+        err = iFs->GetDir( temp
+            , KEntryAttMaskSupported
+            , ESortByName
+            , fileList , dirList );
+
+        if ( !err )
+            {
+            err = SearchFolder( dirList );
+            if ( !err )
+                {
+                err = SearchFile( fileList );
+                }
+            }
+        delete fileList;
+        fileList = NULL;
+        delete dirList;
+        dirList = NULL;
         }
-	return err;
-	}
+    return err;
+    }
 
 TInt CFileScan::ToNextLeaf()
-	{
-	_LIT ( KChildDir , "%S\\%S");
-	TInt err = KErrNone;
-	TFileName file;
-	CSearchLeaf* temp = NULL;
+    {
+    _LIT ( KChildDir , "%S\\%S");
+    TInt err = KErrNone;
+    TFileName file;
+    CSearchLeaf* temp = NULL;
 
-	file.Format( iLastPosition );
+    file.Format( iLastPosition );
 
-	if ( iCurrentLeaf->LeafList().Count() > 0 )
-		{
-		iDeeper = ETrue;
-		iCurrentLeaf = iCurrentLeaf->LeafList()[0];
-		iLastPosition.Format( KChildDir , &file , &iCurrentLeaf->FolderName() );
-		}
-	else
-		{
-		iDeeper = EFalse;
-		temp = iCurrentLeaf;
-		iCurrentLeaf = iCurrentLeaf->Root();
-		if ( iCurrentLeaf )
-			{
-			iCurrentLeaf->RemoveLeaf( temp );			
-			}
-		delete temp;
-		temp = NULL;
-		err = UpFolder();
-		}
-	return err;
-	}
+    if ( iCurrentLeaf->LeafList().Count() > 0 )
+        {
+        iDeeper = ETrue;
+        iCurrentLeaf = iCurrentLeaf->LeafList()[0];
+        iLastPosition.Format( KChildDir , &file , &iCurrentLeaf->FolderName() );
+        }
+    else
+        {
+        iDeeper = EFalse;
+        temp = iCurrentLeaf;
+        iCurrentLeaf = iCurrentLeaf->Root();
+        if ( iCurrentLeaf )
+            {
+            iCurrentLeaf->RemoveLeaf( temp );
+            }
+        delete temp;
+        temp = NULL;
+        err = UpFolder();
+        }
+    return err;
+    }
 
 TInt CFileScan::UpFolder()
-	{
-	TInt err = KErrNone;
-	TParse file;
-	if ( iLastPosition.Length()<3 )
-		{
-		return err;
-		}
-	err = file.Set( iLastPosition , NULL , NULL );
-	iLastPosition.Format( file.DriveAndPath() );
-	iLastPosition.SetLength( iLastPosition.Length() - 1 );
-	return err;
-	}
+    {
+    TInt err = KErrNone;
+    TParse file;
+    if ( iLastPosition.Length()<3 )
+        {
+        return err;
+        }
+    err = file.Set( iLastPosition , NULL , NULL );
+    iLastPosition.Format( file.DriveAndPath() );
+    iLastPosition.SetLength( iLastPosition.Length() - 1 );
+    return err;
+    }
 
 
 void CFileScan::CleanInternal()
-	{
-	CSearchLeaf* root = iCurrentLeaf;
-	iLastPosition = KNullDesC;
-	iSearching = EFalse;
-	root = GetRootLeaf();
-	delete root;
-	root = NULL;
-	iCurrentLeaf = NULL;
-	iDeeper = ETrue;
-	}
+    {
+    CSearchLeaf* root = iCurrentLeaf;
+    iLastPosition = KNullDesC;
+    iSearching = EFalse;
+    root = GetRootLeaf();
+    delete root;
+    root = NULL;
+    iCurrentLeaf = NULL;
+    iDeeper = ETrue;
+    }
 
 CSearchLeaf* CFileScan::GetRootLeaf()
-	{
-	CSearchLeaf* root = iCurrentLeaf;
-	if ( iCurrentLeaf )
-		{
-		while ( root->Root() )
-			{
-			root = root->Root();
-			}	
-		}
-	return root;
-	}
+    {
+    CSearchLeaf* root = iCurrentLeaf;
+    if ( iCurrentLeaf )
+        {
+        while ( root->Root() )
+            {
+            root = root->Root();
+            }
+        }
+    return root;
+    }
 
 // End of File
 

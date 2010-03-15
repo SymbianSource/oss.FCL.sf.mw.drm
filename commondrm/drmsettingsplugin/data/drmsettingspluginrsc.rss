@@ -26,7 +26,7 @@ NAME    DRMS // 4 letter ID
 #include    <avkon.rsg>
 #include    <avkon.rh>
 #include    <avkon.mbg>
-#include    <eikcore.rsg>
+#include    <EIKCORE.rsg>
 #include    <eikon.rsg>
 #include    <appinfo.rh>
 #include    <avkon.loc>
@@ -218,7 +218,7 @@ RESOURCE DRM_SETTINGS_FEATURE_ARRAY r_drm_settings_lbx
     {
     items =
         {
-#ifdef __DRM_OMA2        
+#ifdef __DRM_OMA2
 #ifdef RD_DRM_SILENT_RIGHTS_ACQUISITION
         DRM_SETTINGS_FEATURE
             {
@@ -226,7 +226,7 @@ RESOURCE DRM_SETTINGS_FEATURE_ARRAY r_drm_settings_lbx
             item = EDRMSettingsIdAutomaticActivation;
             },
 #endif // RD_DRM_SILENT_RIGHTS_ACQUISITION
-        
+
 #ifdef RD_DRM_METERING
         DRM_SETTINGS_FEATURE
             {
@@ -234,7 +234,7 @@ RESOURCE DRM_SETTINGS_FEATURE_ARRAY r_drm_settings_lbx
             item = EDRMSettingsIdUsageReporting;
             },
 #endif // RD_DRM_METERING
-   
+
         DRM_SETTINGS_FEATURE
             {
             txt = " \t"qtn_set_transaction_tracking"\t\t";
@@ -247,7 +247,7 @@ RESOURCE DRM_SETTINGS_FEATURE_ARRAY r_drm_settings_lbx
             txt = " \t"qtn_drm_set_license_deletion"\t\t";
             item = EDRMSettingsIdWMDRMLicenseDeletion;
             }
-        };    
+        };
     }
 
 

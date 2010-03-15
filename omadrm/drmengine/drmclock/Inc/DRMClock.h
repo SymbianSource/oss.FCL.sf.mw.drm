@@ -26,7 +26,7 @@
 #include <e32def.h>		// Type definitions
 #include <bacntf.h>
 #include <etelmm.h>
-#include <DrmTypes.h>
+#include <DRMTypes.h>
 #include <e32property.h>
 
 // CONSTANTS
@@ -40,6 +40,7 @@
 // FORWARD DECLARATIONS
 class CDRMNitzObserver;
 class CDRMNotifier;
+class CGPSWatcher;
 
 // CLASS DECLARATION
 
@@ -51,6 +52,14 @@ class CDRMNotifier;
 */
 NONSHARABLE_CLASS( CDRMClock )
     {
+    public:
+        // Notifications:        
+        enum 
+            {
+            ENotifyNone = 0,    
+            ENotifyGPSTimeReceived = 1    
+            };    
+    
     public:
 
         /**
@@ -106,6 +115,18 @@ NONSHARABLE_CLASS( CDRMClock )
         */
         void ResetSecureTimeL( const TTime& aSecureTime, const TInt& aTimeZone );
         
+        
+        /**
+        * Notify
+        *
+        * Notifies about an event to the DRM Clock
+        *
+        * @since 9.2
+        * @param Message The notification event   
+        *
+        */
+        void Notify( TInt aMessage );
+        
     protected:    
     private:
         /**
@@ -140,6 +161,9 @@ NONSHARABLE_CLASS( CDRMClock )
         RTelServer iEtelServer;
         RMobilePhone iPhone;
         CDRMNitzObserver* iObserver;
+        
+        // GPS watcher component, updates DRM time from GPS if available
+        CGPSWatcher* iGpsWatcher;
     };
 #endif      // DRMCLOCK_H   
             

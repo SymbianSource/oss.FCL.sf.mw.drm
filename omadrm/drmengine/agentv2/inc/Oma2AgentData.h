@@ -23,12 +23,13 @@
 //  INCLUDES
 #include <f32file.h>
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <caf/agentinterface.h>
-#include <dcfcommon.h>
-#include <drmrightsclient.h>
+#include <DcfCommon.h>
+#include <DRMRightsClient.h>
 
 //this header can be removed when ASYNC_READ flag is removed
-#include "dcfcache.h"
+#include "DcfCache.h"
 
 // FORWARD DECLARATIONS
 

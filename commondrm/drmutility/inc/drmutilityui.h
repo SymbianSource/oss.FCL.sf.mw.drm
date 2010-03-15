@@ -22,7 +22,7 @@
 //*** system include files go here:
 #include <e32base.h>
 #include <f32file.h>
-#include <aknnotifystd.h>
+#include <AknNotifyStd.h>
 
 //*** forward declarations go here:
 class CDRMConstraint;
@@ -37,12 +37,12 @@ namespace ContentAccess
     class CData;
     }
 
-namespace DRM 
+namespace DRM
 {
-    
+
     //*** forward declarations go here:
     class CDrmUtilityInfoNoteWrapper;
-    
+
  /**
   *  Utility class for DRM utility related graphic functions
   *
@@ -59,7 +59,7 @@ public:
      *
      * @return A functional CDrmUtilityUI -object
      * @leave System wide error code
-     */	
+     */
     IMPORT_C static CDrmUtilityUI* NewL( CCoeEnv* aCoeEnv = NULL );
 
     /**
@@ -68,36 +68,36 @@ public:
      *
      * @return A functional CDrmUtilityUI -object
      * @leave System wide error code
-     */	
+     */
     IMPORT_C static CDrmUtilityUI* NewLC( CCoeEnv* aCoeEnv = NULL );
 
     /**
      * Destructor
      */
     virtual ~CDrmUtilityUI();
-     
+
     /**
     * Display query dialog
     */
-    IMPORT_C TInt DisplayQueryWithIdL( TInt aTextResourceId, 
+    IMPORT_C TInt DisplayQueryWithIdL( TInt aTextResourceId,
                                        TInt aQueryResourceId );
-    
-    IMPORT_C TInt DisplayQueryWithIdValueL( TInt aTextResourceId, 
-                                            TInt aQueryResourceId, 
+
+    IMPORT_C TInt DisplayQueryWithIdValueL( TInt aTextResourceId,
+                                            TInt aQueryResourceId,
                                             const TDesC& aString );
-    
+
     IMPORT_C TInt DisplayQueryL( TInt aTextResourceId, TInt aValue );
-    
+
     IMPORT_C TInt DisplayQueryL( TInt aTextResourceId, const TDesC& aString );
-    
-    IMPORT_C TInt DisplayQueryL( TInt aTextResourceId, 
-        	                     const TDesC& aString, 
+
+    IMPORT_C TInt DisplayQueryL( TInt aTextResourceId,
+                                 const TDesC& aString,
                                  TInt aValue,
-        	                     TInt aStringPos = -1,
-        	                     TInt aValuePos = -1 );
-    
+                                 TInt aStringPos = -1,
+                                 TInt aValuePos = -1 );
+
     IMPORT_C TInt DisplayQueryL( TDesC& aPromptText, TInt aQueryResourceId );
-    
+
     IMPORT_C TInt SetAutomatedQueryL( CDRMConstraint* aConstraint );
 
    /**
@@ -106,22 +106,22 @@ public:
     IMPORT_C void ShowFutureRightsNoteL( CDRMConstraint* aConstraint );
 
     IMPORT_C void DisplayNoteL( TInt aTextResourceId );
-    
+
     IMPORT_C void DisplayNoteL( TInt aTextResourceId, const TDesC& aString );
-    
+
     IMPORT_C void DisplayNoteL( TInt aTextResourceId, TInt aValue );
-    
-    IMPORT_C void DisplayNoteL( TDesC& aPromptText, 
-                                TInt aResourceId, 
-                                const TDesC& aString = KNullDesC, 
-                                TInt aValue = -1 );   
-                                
+
+    IMPORT_C void DisplayNoteL( TDesC& aPromptText,
+                                TInt aResourceId,
+                                const TDesC& aString = KNullDesC,
+                                TInt aValue = -1 );
+
    /**
     * Display list query
     */
-    IMPORT_C TInt DisplayPopupWindowsForPreviewL( 
+    IMPORT_C TInt DisplayPopupWindowsForPreviewL(
                                                 ContentAccess::CData& aContent,
-                                                TInt aPreviewType, 
+                                                TInt aPreviewType,
                                                 TInt aMediaType );
 
 
@@ -132,21 +132,21 @@ private:
     CDrmUtilityUI( CCoeEnv* aCoeEnv );
 
     void ConstructL();
-    
+
     CAknResourceNoteDialog* CreateNoteForResourceL( TInt aResId );
-    
+
     TAknGlobalNoteType GlobalNoteTypeForResource( TInt aResId );
-    
+
     TInt GetOmaStartTime( CDRMConstraint* aConstraint, TTime& aStartTime );
-    
+
     TInt EvaluatePreviewMediaTypeL( ContentAccess::CData& aContent,
                                     TInt aPreviewType );
-    
-    void PrepareSecondaryDisplayL( CEikDialog& aDialog, 
+
+    void PrepareSecondaryDisplayL( CEikDialog& aDialog,
                                    TInt aResourceId,
-                                   const TDesC& aString = KNullDesC, 
+                                   const TDesC& aString = KNullDesC,
                                    TInt aValue = -1 );
-                                   
+
     void CancelSecondaryDisplayL( TInt aResourceId );
 
 
@@ -154,7 +154,7 @@ private: // Data members
 
     // Control environment, not owned
     CCoeEnv* iCoeEnv;
-    
+
     // Paths of the resource files
     HBufC* iUtilityResourceFile;
     HBufC* iAvkonResourceFile;
@@ -166,10 +166,10 @@ private: // Data members
     // Used to read resources when CoeEnv is not available
     CStringResourceReader* iUtilityStringResourceReader;
     CStringResourceReader* iAvkonStringResourceReader;
-    
+
     // File server
     RFs iFs;
-    
+
     // Used to queue up global notes
     RPointerArray<CDrmUtilityInfoNoteWrapper> iNoteList;
 

@@ -21,7 +21,7 @@
 #include <drmrightsinfo.h>
 #include <drmasyncobserver.h>
 
-#include "drmrightsinfoimpl.h"
+#include "DrmRightsInfoImpl.h"
 
 // ============================= LOCAL FUNCTIONS ===============================
 
@@ -56,7 +56,7 @@ void DRM::CDrmRightsInfo::ConstructL()
 EXPORT_C DRM::CDrmRightsInfo* DRM::CDrmRightsInfo::NewL()
     {
     DRM::CDrmRightsInfo* self( NewLC() );
-    
+
     CleanupStack::Pop( self );
 
     return self;
@@ -71,14 +71,14 @@ EXPORT_C DRM::CDrmRightsInfo* DRM::CDrmRightsInfo::NewL()
 EXPORT_C DRM::CDrmRightsInfo* DRM::CDrmRightsInfo::NewLC()
     {
     DRM::CDrmRightsInfo* self( new( ELeave ) CDrmRightsInfo );
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
-    
+
     return self;
     }
 
-    
+
 // Destructor
 DRM::CDrmRightsInfo::~CDrmRightsInfo()
     {
@@ -90,7 +90,7 @@ DRM::CDrmRightsInfo::~CDrmRightsInfo()
 // CDrmRightsInfo::GetUtility
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
-//  
+//
 EXPORT_C DRM::CDrmUtility& DRM::CDrmRightsInfo::GetUtility() const
     {
     return *iUtility;
@@ -101,31 +101,31 @@ EXPORT_C DRM::CDrmUtility& DRM::CDrmRightsInfo::GetUtility() const
 // CDrmRightsInfo::CheckRightsL
 // Syncronous method
 // -----------------------------------------------------------------------------
-//	
-EXPORT_C void DRM::CDrmRightsInfo::CheckRightsL( 
-    const TDesC& aUniqueId, 
+//
+EXPORT_C void DRM::CDrmRightsInfo::CheckRightsL(
+    const TDesC& aUniqueId,
     ContentAccess::TIntent aIntent,
     DRM::TDrmRightsInfo& aDetails )
     {
-    iImplementation->CheckRightsL( aUniqueId, aIntent, aDetails );    
+    iImplementation->CheckRightsL( aUniqueId, aIntent, aDetails );
     }
 
 // -----------------------------------------------------------------------------
 // CDrmRightsInfo::CheckRightsL
 // Asyncronous method
 // -----------------------------------------------------------------------------
-//	
-EXPORT_C TInt DRM::CDrmRightsInfo::CheckRightsAsyncL( 
-    const TDesC& aUniqueId, 
+//
+EXPORT_C TInt DRM::CDrmRightsInfo::CheckRightsAsyncL(
+    const TDesC& aUniqueId,
     ContentAccess::TIntent aIntent,
     DRM::TDrmRightsInfo& aDetails,
     DRM::MDrmAsyncObserver& aObserver )
     {
-    TInt operation = iImplementation->CheckRightsAsyncL( aUniqueId, 
-                                                         aIntent, 
-                                                         aDetails, 
+    TInt operation = iImplementation->CheckRightsAsyncL( aUniqueId,
+                                                         aIntent,
+                                                         aDetails,
                                                          aObserver );
-    return operation;                                                
+    return operation;
     }
 
 // -----------------------------------------------------------------------------
@@ -137,6 +137,6 @@ EXPORT_C TInt DRM::CDrmRightsInfo::CheckRightsAsyncL(
 EXPORT_C TInt DRM::CDrmRightsInfo::CancelOperation( TInt aOperationId )
     {
     return iImplementation->CancelOperation( aOperationId );
-    } 
+    }
 
 //  End of File

@@ -19,8 +19,8 @@
 // INCLUDE FILES
 
 // launching embedded details view
-#include <aknlaunchappservice.h>
-#include <aiwgenericparam.h>
+#include <AknLaunchAppService.h>
+#include <AiwGenericParam.h>
 #include <apgcli.h>
 #include <apgtask.h>
 #include <w32std.h>
@@ -52,7 +52,7 @@
 #include    "drmutilityui.h"
 
 #include    "drmagents.h"
-#include    "drmclockclient.h"
+#include    "DRMClockClient.h"
 
 #include    "drmutilityinternaltypes.h"
 #include    "drmutilitywmdrmutilities.h"
@@ -383,7 +383,7 @@ void DRM::CDrmUtilityWMDrmWrapper::GetRightsDataL(
                 // Check the duration, counts and whether the rights
                 // are unlimited or not
                 case ContentAccess::ERightsStatusValid:
-                    DrmUtilityWmDrmUtilities::CheckWmDrmRightsL( 
+                    DrmUtilityWmDrmUtilities::CheckWmDrmRightsL(
                         aUnconstrained, aTime, aCounts, *aArray[0] );
                     break;
                 }
@@ -702,7 +702,7 @@ void DRM::CDrmUtilityWMDrmWrapper::CreateLaunchParamL(
     ptr.Append( KMarker );
     // WM DRM protection scheme
     ptr.AppendNum( EDrmSchemeWmDrm );
-	ptr.Append( KMarker );
+    ptr.Append( KMarker );
 
     CleanupStack::Pop( aLaunchParam );
     }
@@ -736,7 +736,7 @@ void DRM::CDrmUtilityWMDrmWrapper::LoadDlaWrapperL()
 // CDrmUtilityWMDrmWrapper::GetRFileFromCDataL
 // -----------------------------------------------------------------------------
 //
-void DRM::CDrmUtilityWMDrmWrapper::GetRFileFromCDataL( 
+void DRM::CDrmUtilityWMDrmWrapper::GetRFileFromCDataL(
     ContentAccess::CData& aContent,
     RFile& aFile )
     {
@@ -749,7 +749,7 @@ void DRM::CDrmUtilityWMDrmWrapper::GetRFileFromCDataL(
 // CDrmUtilityWMDrmWrapper::IsDlaLicenseAcquisitionSilentL
 // -----------------------------------------------------------------------------
 //
-TBool DRM::CDrmUtilityWMDrmWrapper::IsDlaLicenseAcquisitionSilentL( 
+TBool DRM::CDrmUtilityWMDrmWrapper::IsDlaLicenseAcquisitionSilentL(
     RFile& aFile  )
     {
     LoadDlaWrapperL();
@@ -760,7 +760,7 @@ TBool DRM::CDrmUtilityWMDrmWrapper::IsDlaLicenseAcquisitionSilentL(
 // CDrmUtilityWMDrmWrapper::DlaLicenseAcquisitionL
 // -----------------------------------------------------------------------------
 //
-void DRM::CDrmUtilityWMDrmWrapper::DlaLicenseAcquisitionL( 
+void DRM::CDrmUtilityWMDrmWrapper::DlaLicenseAcquisitionL(
     RFile& aFile )
     {
     TInt iapId( 0 );
@@ -810,7 +810,7 @@ TInt DRM::CDrmUtilityWMDrmWrapper::DefaultAccessPointL()
     repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
     repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
     CleanupStack::PopAndDestroy( repository );
-    
+
     if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
         {
         alwaysAsk = ETrue;
@@ -821,8 +821,8 @@ TInt DRM::CDrmUtilityWMDrmWrapper::DefaultAccessPointL()
         cmManager.OpenLC();
         if ( !alwaysAsk )
             {
-            iapd32 = 
-                cmManager.GetConnectionMethodInfoIntL( ap, 
+            iapd32 =
+                cmManager.GetConnectionMethodInfoIntL( ap,
                                                        CMManager::ECmIapId );
             }
         else if ( alwaysAsk == KDestinationSelectionMode )

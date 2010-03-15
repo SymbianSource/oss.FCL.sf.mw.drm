@@ -22,7 +22,7 @@
 #include <sysutil.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "dbwatcher.h"
@@ -36,9 +36,9 @@ _LIT( KRdbBaseDir, "c:\\private\\101f51f2\\rdb\\");
 #endif
 
 _LIT( KDomainRoDir, "DomainROs" );
-static const TChar KDirs[CDbWatcher::KNumDirs] = 
+static const TChar KDirs[CDbWatcher::KNumDirs] =
     { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-    
+
 // ======== MEMBER FUNCTIONS ========
 
 void CDbWatcher::ConstructL( MWatcherObserver& aObserver )
@@ -47,42 +47,42 @@ void CDbWatcher::ConstructL( MWatcherObserver& aObserver )
     TFileName file;
 
     DRMLOG( _L( "CDbWatcher::ConstructL <-" ) );
-    
+
     User::LeaveIfError( iFs.Connect() );
     for ( i = 0; i < KNumDirs; i++ )
         {
-        
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
         // Ignore errors
         file.Copy( KRdbBaseDir );
-        
+
 #else //RD_MULTIPLE_DRIVE
-    
+
         TInt driveNumber( -1 );
         TChar driveLetter;
         DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
-	    iFs.DriveToChar( driveNumber, driveLetter );
-	
-	    TFileName dbBaseDir;
-	    dbBaseDir.Format( KRdbBaseDir, (TUint)driveLetter );
-        
+        iFs.DriveToChar( driveNumber, driveLetter );
+
+        TFileName dbBaseDir;
+        dbBaseDir.Format( KRdbBaseDir, (TUint)driveLetter );
+
         // Ignore errors
         file.Copy( dbBaseDir );
-        
+
 #endif
-        
+
         if ( i < KNumDirs - 1 )
             {
-            file.Append( KDirs[i] ); 
+            file.Append( KDirs[i] );
             }
         else
             {
-            file.Append( KDomainRoDir ); 
+            file.Append( KDomainRoDir );
             }
         iDirWatcher[i] = CDirWatcher::NewL( aObserver, iFs, file );
         }
-    
+
     DRMLOG( _L( "CDbWatcher::ConstructL ->" ) );
     }
 
@@ -102,28 +102,28 @@ CDbWatcher::CDbWatcher()
 CDbWatcher::~CDbWatcher()
     {
     TInt i;
-    
+
     DRMLOG( _L( "CDbWatcher::~CDbWatcher ->" ) );
 
     for ( i = 0; i < KNumDirs; i++ )
         {
         delete iDirWatcher[i];
-        }    
+        }
     iFs.Close();
-    
+
     DRMLOG( _L( "CDbWatcher::~CDbWatcher <-" ) );
     }
 
 void CDbWatcher::StartWatching()
     {
     TInt i;
-    
+
     DRMLOG( _L( "CDbWatcher::StartWatching ->" ) );
-    
+
     for ( i = 0; i < KNumDirs; i++ )
         {
         iDirWatcher[i]->StartWatching();
-        }    
+        }
 
     DRMLOG( _L( "CDbWatcher::StartWatching <-" ) );
     }

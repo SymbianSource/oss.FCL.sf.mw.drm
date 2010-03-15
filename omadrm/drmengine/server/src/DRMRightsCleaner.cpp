@@ -19,19 +19,19 @@
 
 // INCLUDE FILES
 
-#include <e32std.h>		// RPointerArray
-#include <e32def.h>		// Type definitions
+#include <e32std.h>     // RPointerArray
+#include <e32def.h>     // Type definitions
 
 #include <caf/caf.h>
-#include "DRMCommon.h"	// DRM Error messages
+#include "DRMCommon.h"  // DRM Error messages
 #include "DRMRightsCleaner.h"
-#include "DRMRightsDB.h"
+#include "drmrightsdb.h"
 #include "drmlog.h"
 
 
 // EXTERNAL DATA STRUCTURES
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 
@@ -50,7 +50,7 @@ const TInt KMaxDirs = 16;
 // ============================= LOCAL FUNCTIONS ===============================
 // ============================ MEMBER FUNCTIONS ===============================
 
-        
+
 // -----------------------------------------------------------------------------
 // CDRMRightsCleaner::NewL
 // Two-phased constructor.
@@ -62,56 +62,56 @@ CDRMRightsCleaner* CDRMRightsCleaner::NewL( RFs& aFs,
                                             const TDesC& aDatabasePath,
                                             const TTime& aTime )
     {
-    CDRMRightsCleaner* self = new( ELeave ) CDRMRightsCleaner( aFs, 
-                                                        aDatabase, aStatus, 
+    CDRMRightsCleaner* self = new( ELeave ) CDRMRightsCleaner( aFs,
+                                                        aDatabase, aStatus,
                                                         aDatabasePath, aTime );
     CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop();
-    
+
     return self;
     }
-  
-        
+
+
 // -----------------------------------------------------------------------------
-// Destructor        
+// Destructor
 // -----------------------------------------------------------------------------
 //
 CDRMRightsCleaner::~CDRMRightsCleaner()
     {
     // just in case
     Deque();
-    
+
     if( iCurrentDirectory )
         {
         delete iCurrentDirectory;
-        iCurrentDirectory = NULL;    
+        iCurrentDirectory = NULL;
         }
     };
 
 // -----------------------------------------------------------------------------
-// CDRMRightsCleaner::ExecuteCleanupLD        
+// CDRMRightsCleaner::ExecuteCleanupLD
 // -----------------------------------------------------------------------------
-//    
+//
 void CDRMRightsCleaner::ExecuteCleanupLD()
     {
     TRequestStatus* status = 0;
-    
-    if( !IsAdded() ) 
+
+    if( !IsAdded() )
         {
-        CActiveScheduler::Add(this);        
+        CActiveScheduler::Add(this);
         }
-    if ( !IsActive() ) 
+    if ( !IsActive() )
         {
-        SetActive();        
+        SetActive();
         }
-    
+
     iOperationStatus = KRequestPending;
     status = &iStatus;
-    User::RequestComplete(status,KErrNone);        
+    User::RequestComplete(status,KErrNone);
     };
 
-// -----------------------------------------------------------------------------                        
+// -----------------------------------------------------------------------------
 // Default Constructor - First phase.
 // -----------------------------------------------------------------------------
 //
@@ -128,52 +128,52 @@ CDRMRightsCleaner::CDRMRightsCleaner( RFs& aFs,
     iExpirationTime( aTime ),
     iCurrentDirectory( NULL ),
     iDirIndex( 0 ),
-    iCurrentFile( 0 )                                  
+    iCurrentFile( 0 )
     {
-        
-    }; 
-        
 
-// -----------------------------------------------------------------------------                        
+    };
+
+
+// -----------------------------------------------------------------------------
 // CDRMRightsCleaner::ConstructL
 // -----------------------------------------------------------------------------
-// 
+//
 void CDRMRightsCleaner::ConstructL()
-    {   
-    };  
+    {
+    };
 
-// -----------------------------------------------------------------------------                        
+// -----------------------------------------------------------------------------
 // CDRMRightsCleaner::RunError
 // More or less just ignore all errors and call RunL again
 // -----------------------------------------------------------------------------
-//  
+//
 TInt CDRMRightsCleaner::RunError(TInt aError)
     {
-    TRequestStatus* status = 0;  
-    
+    TRequestStatus* status = 0;
+
     if( aError == KErrCancel )
         {
         // we are complete:
         status = &iOperationStatus;
-        User::RequestComplete( status, KErrNone );                
-        delete this;           
+        User::RequestComplete( status, KErrNone );
+        delete this;
         return KErrNone;
         }
-      
+
     SetActive();
     status = &iStatus;
-    User::RequestComplete(status,KErrNone);      
-    
+    User::RequestComplete(status,KErrNone);
+
     return KErrNone;
     };
 
-// -----------------------------------------------------------------------------                        
+// -----------------------------------------------------------------------------
 // CDRMRightsCleaner::RunL
 // -----------------------------------------------------------------------------
-//      
+//
 void CDRMRightsCleaner::RunL()
     {
-    TRequestStatus* status = 0;    
+    TRequestStatus* status = 0;
     TInt error = KErrNone;
     TFileName path;
     TInt modIndex = 0;
@@ -181,7 +181,7 @@ void CDRMRightsCleaner::RunL()
 
     // If the status of the cleaning is other than KErrNone
     User::LeaveIfError( iStatus.Int() );
-    
+
     if( !iCurrentDirectory ||
         iCurrentFile >= iCurrentDirectory->Count() )
         {
@@ -190,58 +190,58 @@ void CDRMRightsCleaner::RunL()
             {
             // we are complete:
             status = &iOperationStatus;
-            User::RequestComplete( status, KErrNone );                
-            delete this; 
-            return;    
+            User::RequestComplete( status, KErrNone );
+            delete this;
+            return;
             }
-        
+
         // if it exists, delete it
         if( iCurrentDirectory )
             {
             delete iCurrentDirectory;
             iCurrentDirectory = 0;
             }
-        
+
         TFileName path = iDatabasePath;
-    
-    
+
+
         path.Append(iDirIndex < 10 ? iDirIndex + '0' : iDirIndex + 'a' - 10);
         path.Append('\\');
 
-       
+
         error =  iFileServer.GetDir(path, KEntryAttDir, ESortNone, iCurrentDirectory);
 
         DRMLOG(_L("Entering directory:"));
         DRMLOG( path );
 
-        // increase the dir counter    
+        // increase the dir counter
         iDirIndex++;
-        iCurrentFile = 0;                
+        iCurrentFile = 0;
         }
 
     if( !error && iCurrentDirectory->Count() )
         {
         modIndex = iDirIndex-1;
-        
+
         path = iDatabasePath;
         path.Append(modIndex < 10 ? modIndex + '0' : modIndex + 'a' - 10);
-        path.Append('\\');        
-                                
+        path.Append('\\');
+
         path.Append((*iCurrentDirectory)[iCurrentFile].iName);
-    
+
         DRMLOG(_L("Checking file:"));
         DRMLOG( path );
-    
+
         // increase the file counter
         iCurrentFile++;
-                                
+
         TRAP( error, removeFile = iRightsDb->DeleteExpiredL( path, iExpirationTime ) );
         if( error != KErrNone )
             {
             DRMLOG2( _L( "CDRMRightsCleaner: error %d cleaning:" ), error );
             DRMLOG( path );
             }
-        else 
+        else
             {
             if ( removeFile )
                 {
@@ -249,30 +249,30 @@ void CDRMRightsCleaner::RunL()
                 DRMLOG( path );
                 iFileServer.Delete( path );
                 }
-            }    
+            }
         }
-    
+
     SetActive();
     status = &iStatus;
-    User::RequestComplete(status, KErrNone);                
-    };    
+    User::RequestComplete(status, KErrNone);
+    };
 
-// -----------------------------------------------------------------------------                        
+// -----------------------------------------------------------------------------
 // CDRMRightsCleaner::DoCancel
 // -----------------------------------------------------------------------------
-//      
+//
 void CDRMRightsCleaner::DoCancel()
-    {     
-    }; 
+    {
+    };
 
 
-// -----------------------------------------------------------------------------                        
+// -----------------------------------------------------------------------------
 // CDRMRightsCleaner::DoCleanup
 // -----------------------------------------------------------------------------
-//      
+//
 void CDRMRightsCleaner::DoCleanup()
     {
-    TRequestStatus* status = 0;      
+    TRequestStatus* status = 0;
     if( iCancel <= 0 )
         {
         Cancel();
@@ -280,8 +280,8 @@ void CDRMRightsCleaner::DoCleanup()
         SetActive();
         status = &iStatus;
         User::RequestComplete(status, KErrCancel);
-        }       
-    }; 
+        }
+    };
 
 
 

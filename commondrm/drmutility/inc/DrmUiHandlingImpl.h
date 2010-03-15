@@ -22,11 +22,11 @@
 //*** system include files go here:
 #include <e32base.h>
 #include <f32file.h>
-#include <aknserverapp.h>
+#include <AknServerApp.h>
 #include <caf/caftypes.h>
 #include <caf/caferr.h>
 #include <drmagents.h>
-#include <drmrightsclient.h>
+#include <DRMRightsClient.h>
 #include <drmutilitytypes.h>
 
 //*** forward declarations go here:
@@ -518,12 +518,12 @@ protected: // Functions from base classes
     /**
     * From CActive Called when async request completes.
     */
-	void RunL();
+    void RunL();
 
     /**
     * From CActive Called when RunL leaves
     */
-	TInt RunError( TInt aError );
+    TInt RunError( TInt aError );
 
 private:
 
@@ -768,7 +768,7 @@ private:
     TBool LaunchBrowserL( const HBufC* aUrl );
 
     /**
-    * Get rights silently, if notes are not intended to be shown, put aShowNotes to EFalse 
+    * Get rights silently, if notes are not intended to be shown, put aShowNotes to EFalse
     */
     TInt GetSilentRightsL( const TDesC8& aUrl, const TBool aShowNotes );
 
@@ -791,7 +791,7 @@ private:
     * Handles exit from service
     * from MAknServerAppExitObserver
     */
-	void HandleServerAppExit(TInt aReason);
+    void HandleServerAppExit(TInt aReason);
 
     /**
      * Appends new async request data to async operation queue.
@@ -813,7 +813,7 @@ private:
 
     /**
     * Gets SilentRights and
-    * checks status after 
+    * checks status after
     * CallSilentAvailble after right
     * @return Etrue, if silent RO rerieval led to usable content
     */

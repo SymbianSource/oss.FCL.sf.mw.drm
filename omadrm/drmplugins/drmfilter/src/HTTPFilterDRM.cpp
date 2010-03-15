@@ -21,9 +21,9 @@
 #include <httpstringconstants.h>
 #include <httperr.h>
 #include <bautils.h>
-#include <drmmessageparser.h>
+#include <DRMMessageParser.h>
 
-#include "httpfilterdrm.h"
+#include "HTTPFilterDRM.h"
 
 // LOCAL CONSTANTS
 _LIT8( KDRMString1, "application/vnd.oma.drm.message" );
@@ -464,7 +464,7 @@ void CHTTPFilterDRM::DumpResponseHeadersL( RHTTPResponse& aResponse )
 // 
 void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
     {
-    // read the header data and check the MIME type here	
+    // read the header data and check the MIME type here    
     // check the status and body
     RHTTPResponse response = aTrans.Response();
     TInt status = response.StatusCode();
@@ -630,7 +630,7 @@ void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
         // Do not encrypt JAD files:
         if ( headers.GetField( fieldNameStr, 0, fieldVal ) == KErrNone )
             {
-            // If it is a JAD always ignore any of the above:	
+            // If it is a JAD always ignore any of the above:   
             const TBuf8<sizeof( KJADString )> JADStringBuf( KJADString );
             RStringF JADValue = strP.OpenFStringL( JADStringBuf );
             CleanupClosePushL( JADValue );
@@ -665,7 +665,7 @@ void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
             iDataSups.Append( drmData );
             response.SetBody( *drmData );
 
-            ///			
+            ///         
             RStringF DRMValue1 = strP.OpenFStringL( DRMStringBuf1 );
             CleanupClosePushL( DRMValue1 );
 

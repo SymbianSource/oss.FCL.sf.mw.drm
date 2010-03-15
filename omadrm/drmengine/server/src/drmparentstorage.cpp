@@ -18,13 +18,13 @@
 
 // INCLUDE FILES
 #include "drmparentstorage.h"
-#include "drmpermission.h"
+#include "DrmPermission.h"
 #include "drmlog.h"
 
 
 // EXTERNAL DATA STRUCTURES
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 
@@ -42,20 +42,20 @@ LOCAL_C const TUint KDefaultGranularity = 4;
 
 // ============================= LOCAL FUNCTIONS ===============================
 
-    
+
 // ============================ MEMBER FUNCTIONS ===============================
 
 // -----------------------------------------------------------------------------
 // CDRMParentStorage::CDRMParentStorage
 //
-// Default constructor 
+// Default constructor
 // -----------------------------------------------------------------------------
 //
 CDRMParentStorage::CDRMParentStorage():
 iParents( 1 )
     {
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMParentStorage::~CDRMParentStorage
 //
@@ -69,12 +69,12 @@ CDRMParentStorage::~CDRMParentStorage()
         iParentIDs->Reset();
         delete iParentIDs;
         }
-        
+
     // The lists inside are autocleaning, so deletion causes
-    // the contents to also be deleted    
+    // the contents to also be deleted
     iParents.ResetAndDestroy();
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMParentStorage::NewLC
 //
@@ -85,26 +85,26 @@ CDRMParentStorage* CDRMParentStorage::NewLC()
     {
     CDRMParentStorage* self = new( ELeave ) CDRMParentStorage;
     CleanupStack::PushL( self );
-    
+
     self->ConstructL();
-    
+
     return self;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMParentStorage::NewL
 //
 // Two-phase constructor
 // -----------------------------------------------------------------------------
-//    
+//
 CDRMParentStorage* CDRMParentStorage::NewL()
     {
     CDRMParentStorage* self = CDRMParentStorage::NewLC();
     CleanupStack::Pop(); // sefl
-    
+
     return self;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMParentStorage::ConstructL
 //
@@ -115,30 +115,30 @@ void CDRMParentStorage::ConstructL()
     {
     iParentIDs = new( ELeave ) CDesC8ArraySeg( KDefaultGranularity );
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMParentStorage::NewListL
 //
 // Insert a new list to the storage, and return a handle to it.
 // -----------------------------------------------------------------------------
-//    
+//
 CDRMPermissionList& CDRMParentStorage::NewListL()
     {
     __ASSERT_DEBUG( iParents.Count() >= iParentIDs->Count(), User::Invariant() );
-        
+
     if ( iParents.Count() == iParentIDs->Count() )
         {
         // Balanced lists.
         CDRMPermissionList* newList = CDRMPermissionList::NewLC();
         newList->SetAutoCleanup( ETrue );
-        
+
         iParents.AppendL( newList );
         CleanupStack::Pop();
         }
-        
+
     return *( iParents[ iParents.Count() - 1 ] );
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMParentStorage::AddL
 //
@@ -162,12 +162,12 @@ void CDRMParentStorage::AddL( const TDesC8& aCID )
 //
 // Check the count of the stored permissions for an id
 // -----------------------------------------------------------------------------
-//    
+//
 TBool CDRMParentStorage::HasPermissions( const TDesC8& aCID )
     {
     TBool r = EFalse;
     TInt pos;
-    
+
     if ( iParentIDs->FindIsq( aCID, pos ) == KErrNone )
         {
         r = ETrue;
@@ -180,13 +180,13 @@ TBool CDRMParentStorage::HasPermissions( const TDesC8& aCID )
 //
 // Operator.
 // -----------------------------------------------------------------------------
-//    
+//
 CDRMPermissionList& CDRMParentStorage::operator[]( const TDesC8& aCID )
     {
     TInt pos;
-    
+
     iParentIDs->FindIsq( aCID, pos );
     return *( iParents[ pos ] );
     }
-    
+
 // End of File

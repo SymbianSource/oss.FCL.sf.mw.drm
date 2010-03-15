@@ -17,14 +17,14 @@
 
 
 // INCLUDE FILES
-#include <aiwgenericparam.h>
-#include <genericparamconsumer.h>
+#include <AiwGenericParam.h>
+#include <GenericParamConsumer.h>
 
-#include "drmrightsmgrdocument.h"
-#include "drmrightsmgrappui.h"
-#include "drmcommonutilities.h"
+#include "DRMRightsMgrDocument.h"
+#include "DRMRightsMgrAppUi.h"
+#include "DRMCommonUtilities.h"
 
-#include "drmuilogger.h"
+#include "DRMUILogger.h"
 
 
 // ================= MEMBER FUNCTIONS =======================

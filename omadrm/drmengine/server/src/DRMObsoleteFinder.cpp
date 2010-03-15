@@ -18,26 +18,26 @@
 
 // INCLUDE FILES
 
-#include <e32std.h>		// RPointerArray
-#include <e32def.h>		// Type definitions
+#include <e32std.h>     // RPointerArray
+#include <e32def.h>     // Type definitions
 
 #include <caf/caf.h>
-#include <dcfrep.h>
-#include "DRMCommon.h"	// DRM Error messages
+#include <DcfRep.h>
+#include "DRMCommon.h"  // DRM Error messages
 #include "DRMObsoleteFinder.h"
-#include "DRMRightsDB.h"
+#include "drmrightsdb.h"
 #include "drmlog.h"
-#include <dcfrep.h>
+#include <DcfRep.h>
 
-#include <SysUtil.h>    // Disk space checking
+#include <sysutil.h>    // Disk space checking
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 // EXTERNAL DATA STRUCTURES
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 
@@ -61,12 +61,12 @@ LOCAL_C TInt CompareHBufC8( const HBufC8& aFirst, const HBufC8& aSecond );
 
 LOCAL_C TInt CompareHBufC8( const HBufC8& aFirst, const HBufC8& aSecond )
     {
-	return aFirst.Compare( aSecond );
+    return aFirst.Compare( aSecond );
     };
 
 // ============================ MEMBER FUNCTIONS ===============================
 
-        
+
 // -----------------------------------------------------------------------------
 // CDRMObsoleteFinder::NewL
 // Two-phased constructor.
@@ -78,74 +78,74 @@ CDRMObsoleteFinder* CDRMObsoleteFinder::NewL( RFs& aFs,
                                             RWriteStream& aStream,
                                             TBool aPerformScan )
     {
-    CDRMObsoleteFinder* self = new( ELeave ) CDRMObsoleteFinder( aFs, 
-                                                        aDatabase, aStatus, 
+    CDRMObsoleteFinder* self = new( ELeave ) CDRMObsoleteFinder( aFs,
+                                                        aDatabase, aStatus,
                                                         aStream );
     CleanupStack::PushL( self );
     self->ConstructL( aPerformScan );
     CleanupStack::Pop();
-    
+
     return self;
     }
-  
-        
+
+
 // -----------------------------------------------------------------------------
-// Destructor        
+// Destructor
 // -----------------------------------------------------------------------------
 //
 CDRMObsoleteFinder::~CDRMObsoleteFinder()
     {
     // just in case
     Cancel();
-    
+
     if( iDcfClient )
         {
         delete iDcfClient;
-        iDcfClient = NULL;    
+        iDcfClient = NULL;
         }
-    
+
     if( iContents )
         {
         delete iContents;
-        iContents = NULL;   
+        iContents = NULL;
         }
 
     if( iParents )
         {
         delete iParents;
-        iParents = NULL;            
+        iParents = NULL;
         }
-     
+
     if( iNoContents )
         {
         delete iNoContents;
-        iNoContents = NULL;            
-        }            
+        iNoContents = NULL;
+        }
     };
 
 // -----------------------------------------------------------------------------
-// CDRMObsoleteFinder::ExecuteCleanupLD        
+// CDRMObsoleteFinder::ExecuteCleanupLD
 // -----------------------------------------------------------------------------
-//    
+//
 void CDRMObsoleteFinder::ExecuteFinderLD()
     {
     TRequestStatus* status = 0;
-    
-    if( !IsAdded() ) 
+
+    if( !IsAdded() )
         {
-        CActiveScheduler::Add(this);        
+        CActiveScheduler::Add(this);
         }
-    if ( !IsActive() ) 
+    if ( !IsActive() )
         {
-        SetActive();        
+        SetActive();
         }
-    
+
     iOperationStatus = KRequestPending;
     status = &iStatus;
-    User::RequestComplete(status,KErrNone);        
+    User::RequestComplete(status,KErrNone);
     };
 
-// -----------------------------------------------------------------------------                        
+// -----------------------------------------------------------------------------
 // Default Constructor - First phase.
 // -----------------------------------------------------------------------------
 //
@@ -162,66 +162,66 @@ CDRMObsoleteFinder::CDRMObsoleteFinder( RFs& aFs,
     iStream( aStream ),
     iRightsDb( aDatabase ),
     iOperationStatus( aStatus ),
-    iState( KScanFileSystem )                         
+    iState( KScanFileSystem )
     {
-        
-    }; 
-        
 
-// -----------------------------------------------------------------------------                        
+    };
+
+
+// -----------------------------------------------------------------------------
 // CDRMObsoleteFinder::ConstructL
 // -----------------------------------------------------------------------------
-// 
+//
 void CDRMObsoleteFinder::ConstructL( const TBool aPerformScan )
     {
     // if the scan needs to be done, the initial state is different:
     if( aPerformScan )
         {
-        iState = KScanFileSystem;    
+        iState = KScanFileSystem;
         }
     else
         {
-        iState = KScanContents;    
-        } 
-       
+        iState = KScanContents;
+        }
+
     // connect to dcf repository
     iDcfClient = CDcfRep::NewL();
-    
-    // Create a new list
-    iContents = CDRMPointerArray<HBufC8>::NewL();    
-    
-    // Create a new list
-    iParents = CDRMPointerArray<HBufC8>::NewL();  
 
     // Create a new list
-    iNoContents = CDRMPointerArray<HBufC8>::NewL();  
-        
-    };  
+    iContents = CDRMPointerArray<HBufC8>::NewL();
 
-// -----------------------------------------------------------------------------                        
+    // Create a new list
+    iParents = CDRMPointerArray<HBufC8>::NewL();
+
+    // Create a new list
+    iNoContents = CDRMPointerArray<HBufC8>::NewL();
+
+    };
+
+// -----------------------------------------------------------------------------
 // CDRMObsoleteFinder::RunError
 // -----------------------------------------------------------------------------
-//  
+//
 TInt CDRMObsoleteFinder::RunError(TInt aError)
     {
     TRequestStatus* status = 0;
-    
+
     if( aError != KErrNone )
         {
         status = &iOperationStatus;
-        User::RequestComplete( status, aError );                
-        delete this;            
+        User::RequestComplete( status, aError );
+        delete this;
         }
     return KErrNone;
     };
 
-// -----------------------------------------------------------------------------                        
+// -----------------------------------------------------------------------------
 // CDRMObsoleteFinder::RunL
 // -----------------------------------------------------------------------------
-//      
+//
 void CDRMObsoleteFinder::RunL()
     {
-    TRequestStatus* status = 0;    
+    TRequestStatus* status = 0;
     TInt error = KErrNone;
     HBufC8* buffer = NULL;
 
@@ -232,8 +232,8 @@ void CDRMObsoleteFinder::RunL()
         {
         case KScanFileSystem:
             iState = KScanContents;
-            iDcfClient->RefreshDcf( iStatus );            
-            SetActive();    
+            iDcfClient->RefreshDcf( iStatus );
+            SetActive();
             break;
         case KScanContents:
             if( iIndex == -1 )
@@ -241,94 +241,94 @@ void CDRMObsoleteFinder::RunL()
                 // Get the contents
                 iRightsDb->GetContentIDListL( *iContents );
                 // Reset the index
-                iIndex = 0;  
+                iIndex = 0;
                 }
-            else 
+            else
                 {
-                iIndex++;                     
-                }  
-                
+                iIndex++;
+                }
+
             if( iIndex >= iContents->Count() )
                 {
                 iState = KRemoveUsedParents;
-                iIndex = -1;   
+                iIndex = -1;
                 }
-            else 
+            else
                 {
                 // Check if there is content
                 TRAP( error, iDcfClient->OrderListL( *(*iContents)[iIndex] ));
-        
+
                 // If an error occurs, leave if it's ok, continue
                 if( error != KErrNotFound )
                     {
-                    User::LeaveIfError( error ); 
-                    
+                    User::LeaveIfError( error );
+
                     // Get all the parents
-                    if( !error ) 
+                    if( !error )
                         {
-                        GetParentsL( *(*iContents)[iIndex], *iParents );   
-                        }                      
+                        GetParentsL( *(*iContents)[iIndex], *iParents );
+                        }
                     }
-                // If the error is not found, add to the no content list    
+                // If the error is not found, add to the no content list
                 else
                     {
                     buffer = (*iContents)[iIndex]->AllocLC();
                     iNoContents->AppendL( buffer );
-                    CleanupStack::Pop();    
-                    }                       
+                    CleanupStack::Pop();
+                    }
                 }
             SetActive();
             status = &iStatus;
-            User::RequestComplete(status,KErrNone);              
+            User::RequestComplete(status,KErrNone);
             break;
         case KRemoveUsedParents:
             if( iIndex == -1 )
                 {
-                iIndex = 0;  
+                iIndex = 0;
                 }
-            else 
+            else
                 {
-                iIndex++;                     
+                iIndex++;
                 }
-                  
+
             if( iIndex >= iParents->Count() )
                 {
                 iState = KWriteTempFile;
-                iIndex = -1; 
+                iIndex = -1;
                 }
             else
                 {
                 // Find the parent
-                error = iNoContents->FindInOrder( (*iParents)[iIndex], 
+                error = iNoContents->FindInOrder( (*iParents)[iIndex],
                                        TLinearOrder<HBufC8>(CompareHBufC8));
-                                      
+
                 if( error != KErrNotFound )
                     {
                     buffer = (*iNoContents)[error];
                     iNoContents->Remove( error );
                     delete buffer;
-                    buffer = 0;    
-                    }                                                           
+                    buffer = 0;
+                    }
                 }
             SetActive();
             status = &iStatus;
-            User::RequestComplete(status,KErrNone);                 
+            User::RequestComplete(status,KErrNone);
             break;
         case KWriteTempFile:
             ObsoleteToStreamL();
             // we are complete:
             status = &iOperationStatus;
-            User::RequestComplete( status, KErrNone );                
-            delete this; 
-            return;                          
+            User::RequestComplete( status, KErrNone );
+            delete this;
+            return;
         default:
             // illegal status, return error and delete object
             status = &iOperationStatus;
             User::RequestComplete( status, KErrGeneral );
-            delete this; 
-            return;                       
+            delete this;
+            return;
         }
-    };    
+    };
 
 
 // ----------------------------------------------------------------------------
@@ -340,45 +340,45 @@ void CDRMObsoleteFinder::GetParentsL( const TDesC8& aContentId,
     {
     HBufC8* parentId = NULL;
     TInt error = KErrNone;
-    CDRMPointerArray<CDRMPermission>* permissions = 
+    CDRMPointerArray<CDRMPermission>* permissions =
       CDRMPointerArray<CDRMPermission>::NewLC();
     permissions->SetAutoCleanup( ETrue );
-    CDRMPointerArray<CDRMPermission>& perm = *permissions;  
+    CDRMPointerArray<CDRMPermission>& perm = *permissions;
 
     TRAP( error, iRightsDb->GetDBEntryByContentIDL( aContentId, *permissions ) );
-    
+
     // If there are no keys it means that there is encryption key and such, but
     // no available permissions
     if( error == KErrCANoRights )
         {
         CleanupStack::PopAndDestroy(); // permissions
-        return;    
+        return;
         }
-    else 
+    else
         {
-        User::LeaveIfError(error);    
+        User::LeaveIfError(error);
         }
-        
+
     for( TInt i = 0; i < permissions->Count(); i++, error = KErrNone )
         {
         // Check if the permission has a parent
-        if( perm[i]->iParentUID ) 
+        if( perm[i]->iParentUID )
             {
             // if it does, insert it to the aParents array
-            error = aParents.FindInOrder( perm[i]->iParentUID, 
+            error = aParents.FindInOrder( perm[i]->iParentUID,
                                           TLinearOrder<HBufC8>(CompareHBufC8));
             if( error == KErrNotFound )
                 {
                 parentId = perm[i]->iParentUID->AllocLC();
-                User::LeaveIfError( aParents.InsertInOrder(parentId, 
+                User::LeaveIfError( aParents.InsertInOrder(parentId,
                                     TLinearOrder<HBufC8>(CompareHBufC8)) );
-                CleanupStack::Pop();       
+                CleanupStack::Pop();
                 }
             }
         }
 
-    CleanupStack::PopAndDestroy(); // permissions     
-    }; 
+    CleanupStack::PopAndDestroy(); // permissions
+    };
 
 
 // -----------------------------------------------------------------------------
@@ -402,25 +402,25 @@ void CDRMObsoleteFinder::ObsoleteToStreamL()
 
 #ifndef RD_MULTIPLE_DRIVE
 
-    if ( SysUtil::DiskSpaceBelowCriticalLevelL( &iFileServer, 
-                                                size, 
+    if ( SysUtil::DiskSpaceBelowCriticalLevelL( &iFileServer,
+                                                size,
                                                 EDriveC ) )
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
 
-    if ( SysUtil::DiskSpaceBelowCriticalLevelL( &iFileServer, 
-                                                size, 
+    if ( SysUtil::DiskSpaceBelowCriticalLevelL( &iFileServer,
+                                                size,
                                                 driveNumber ) )
-    
+
 #endif
 
         {
         DRMLOG( _L( "CDRMDbSession::UriListToFileL: KErrDiskFull" ) );
         User::Leave( KErrDiskFull );
-        }     
+        }
     // Write the whole stuff into the file.
     while( count < iNoContents->Count() )
         {
@@ -428,34 +428,34 @@ void CDRMObsoleteFinder::ObsoleteToStreamL()
         iStream.WriteL( *(*iNoContents)[count] );
         ++count;
         }
-    // Finish with a 0    
-    iStream.WriteUint16L( 0 );    
-    
+    // Finish with a 0
+    iStream.WriteUint16L( 0 );
+
     iStream.CommitL();
     }
 
-// -----------------------------------------------------------------------------                        
+// -----------------------------------------------------------------------------
 // CDRMObsoleteFinder::DoCancel
 // -----------------------------------------------------------------------------
-//      
+//
 void CDRMObsoleteFinder::DoCancel()
-    {  
-    }; 
+    {
+    };
 
-// -----------------------------------------------------------------------------                        
+// -----------------------------------------------------------------------------
 // CDRMObsoleteFinder::DoCleanup
 // -----------------------------------------------------------------------------
-//      
+//
 void CDRMObsoleteFinder::DoCleanup()
     {
-    TRequestStatus* status = 0;      
+    TRequestStatus* status = 0;
     if( iCancel <= 0 )
         {
         iCancel = 1;
         status = &iStatus;
         User::RequestComplete(status, KErrCancel);
-        }       
-    }; 
+        }
+    };
 
 
 

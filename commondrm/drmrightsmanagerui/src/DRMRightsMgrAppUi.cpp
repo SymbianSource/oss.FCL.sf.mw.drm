@@ -17,19 +17,19 @@
 
 
 // INCLUDE FILES
-#include <dcfrep.h>
-#include <dcfentry.h>
-#include <drmcommon.h>
-#include <dcfcommon.h>
+#include <DcfRep.h>
+#include <DcfEntry.h>
+#include <DRMCommon.h>
+#include <DcfCommon.h>
 #include <wmdrmagent.h> // for WMDRM file details view
 
-#include <drmrightsmanager.rsg>
+#include <DRMRightsManager.rsg>
 
-#include <aknwaitdialog.h>
+#include <AknWaitDialog.h>
 #include <aknlistquerydialog.h>
-#include <stringloader.h>
+#include <StringLoader.h>
 #include <aknnavide.h>
-#include <akndef.h>
+#include <AknDef.h>
 #include <barsread.h>  // for resource reader
 #include <centralrepository.h>
 #include <coeutils.h>
@@ -43,16 +43,16 @@
 #include <caf/data.h>
 #include <caf/caftypes.h>
 
-#include "drmrightsmgrappui.h"
-#include "drmrightsmgrdetailsview.h"
-#include "drmrightsmgrdocument.h"
-#include "drmcommonutilities.h"
-#include "drmuilogger.h"
-#include "drmrightsmanagerprivatecrkeys.h"
-#include "drmclockclient.h"
+#include "DRMRightsMgrAppUi.h"
+#include "DRMRightsMgrDetailsView.h"
+#include "DRMRightsMgrDocument.h"
+#include "DRMCommonUtilities.h"
+#include "DRMUILogger.h"
+#include "DRMRightsManagerPrivateCRKeys.h"
+#include "DRMClockClient.h"
 #include "drmutilityinternaltypes.h"
 
-#include "oma1dcf.h"
+#include "Oma1Dcf.h"
 #include "oma2dcf.h"
 // CONSTANTS
 _LIT8( Kflk, "flk:" );
@@ -83,13 +83,13 @@ CDRMRightsMgrAppUi::CDRMRightsMgrAppUi()
 void CDRMRightsMgrAppUi::ConstructL()
     {
     CLOG_WRITE( "-->ConstructL" );
-    
+
     iCoeEnv->AddForegroundObserverL( *this );
-    
+
     CDRMRightsMgrDetailsView* detailsView( NULL );
 
-    BaseConstructL( EAknEnableSkin | EAppOrientationAutomatic | 
-    	EAknEnableMSK | EAknSingleClickCompatible  );
+    BaseConstructL( EAknEnableSkin | EAppOrientationAutomatic |
+        EAknEnableMSK | EAknSingleClickCompatible  );
 
     User::LeaveIfError( iRightsClient.Connect() );
     iDRMCommon = DRMCommon::NewL();
@@ -121,9 +121,9 @@ void CDRMRightsMgrAppUi::ConstructL()
 //
 CDRMRightsMgrAppUi::~CDRMRightsMgrAppUi()
     {
-    
+
     iCoeEnv->RemoveForegroundObserver( *this );
-    
+
     delete iWaitDialog;
 
     delete iDRMCommon;
@@ -134,12 +134,12 @@ CDRMRightsMgrAppUi::~CDRMRightsMgrAppUi()
         {
         iDoorObserver->NotifyExit( MApaEmbeddedDocObserver::ENoChanges );
         }
-        
+
     if ( iContentURI )
         {
         delete iContentURI;
         }
-        
+
     }
 
 
@@ -200,7 +200,7 @@ void CDRMRightsMgrAppUi::StartOnlyForDetailsL( const TDesC8& aContentURI,
                                                const TInt aDrmScheme )
     {
 
-    // Store the content related information when the details view 
+    // Store the content related information when the details view
     // is to be shown for the first time so that the information will be
     // available for details view refreshing in the future.
     if ( !iContentURI )
@@ -209,7 +209,7 @@ void CDRMRightsMgrAppUi::StartOnlyForDetailsL( const TDesC8& aContentURI,
         iLocalID = aLocalID;
         iContentURI = aContentURI.AllocL();
         }
-    
+
     // For storing WM DRM rights information
     ContentAccess::RStreamablePtrArray<ContentAccess::CRightsInfo> array;
     CleanupClosePushL( array );
@@ -231,7 +231,7 @@ void CDRMRightsMgrAppUi::StartOnlyForDetailsL( const TDesC8& aContentURI,
         {
         case EDrmSchemeOmaDrm:
             CheckOmaDrmRightsL( aContentURI, aLocalID, rights, status );
-            if ( status < 0 ) 
+            if ( status < 0 )
                 {
                 rights = NULL;
                 }
@@ -360,20 +360,20 @@ void CDRMRightsMgrAppUi::GetItemNameL( const TDesC& aFullName,
             // Do not show name if group rights or forward lock
             if ( !aIsGroup )
                 {
-                if ( ( iRightsClient.ForwardLockURI( buffer ) == 
-                        KErrNone ) && buffer )  
+                if ( ( iRightsClient.ForwardLockURI( buffer ) ==
+                        KErrNone ) && buffer )
                     {
-                    
+
                     // Not forward lock
-                    if ( aID.Compare( *buffer ) != 0 )    
+                    if ( aID.Compare( *buffer ) != 0 )
                         {
                         parse.Set( aFullName, NULL, NULL );
                         aItemName = parse.NameAndExt();
-                        }   
+                        }
                     delete buffer;
                     buffer = NULL;
-                    
-                    }       
+
+                    }
                 else
                     {
                     parse.Set( aFullName, NULL, NULL );
@@ -395,7 +395,7 @@ void CDRMRightsMgrAppUi::GetItemNameL( const TDesC& aFullName,
                     }
                 delete buffer;
                 }
-            else 
+            else
                 {
                 // Do not show name if having group rights
                 if ( !aIsGroup )
@@ -557,7 +557,7 @@ void CDRMRightsMgrAppUi::HandleGainingForeground()
     // from the background to the foreground.
     if ( iForegroundHasBeenActive && iContentURI )
         {
-        StartOnlyForDetailsL( iContentURI->Des(), iLocalID, 
+        StartOnlyForDetailsL( iContentURI->Des(), iLocalID,
             iStartEmbedded, iDrmScheme );
         }
     }
@@ -757,18 +757,18 @@ void CDRMRightsMgrAppUi::CheckOmaDrmRightsL( const TDesC8& aContentURI,
                 SetSelectedItemFullName( fullName );
 
                 TFileName itemName;
-                
+
                 if ( entry->GroupId().Length() > 0 )
                     {
                     GetItemNameL( fullName, itemName, aContentURI, ETrue );
-                    }    
-                else 
+                    }
+                else
                     {
                     GetItemNameL( fullName, itemName, aContentURI, EFalse );
                     }
-                
+
                 delete entry;
-                
+
                 SetSelectedItemName( itemName );
 
                 if ( GetItemDataL( fullName, aContentURI, listable,

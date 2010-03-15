@@ -11,7 +11,7 @@
 *
 * Contributors:
 *
-* Description: 
+* Description:
 *
 */
 
@@ -25,7 +25,7 @@
 #include <asymmetric.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "DrmKeyStorage.h"

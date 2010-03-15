@@ -18,15 +18,15 @@
 
 // INCLUDE FILES
 #include <txtrich.h>                    // for CRichText
-#include <drmmessageparser.h>           // for CDrmMessageParser
-#include <drmrights.h>                  // for CDRMRights
+#include <DRMMessageParser.h>           // for CDrmMessageParser
+#include <DRMRights.h>                  // for CDRMRights
 #include <ecom/implementationproxy.h>   // for TImplementationProxy
 #include <push/cpushhandlerbase.h>      // for CPushHandlerBase
 #include <push/pluginkiller.h>          // for CPluginKiller
 #include <push/pushmessage.h>           // for CPushMessage
-#include <roapeng.h>                    // for CRoapEng
-#include <roapengbase.h>
-#include <roapobserver.h>
+#include <RoapEng.h>                    // for CRoapEng
+#include <RoapEngBase.h>
+#include <RoapObserver.h>
 #include <centralrepository.h>          // link against centralrepository.lib
 #include <msvuids.h>
 #include <msvids.h>
@@ -39,15 +39,15 @@
 #include <uri16.h>                          // TUriParser16
 #include <data_caging_path_literals.hrh>    // KDC_MTM_RESOURCE_DIR
 #include <uriutils.h>                       // UriUtils and so on
-#include <pushmtmui.rsg>                    // for R_PUSHMISC_UNK_SENDER
-#include <rohandler.rsg>                    // for R_QTN_DRM_MGR_INB_TITLE
+#include <PushMtmUi.rsg>                    // for R_PUSHMISC_UNK_SENDER
+#include <RoHandler.rsg>                    // for R_QTN_DRM_MGR_INB_TITLE
 #include <sysutil.h>                        // Disk space checking
 
-#include "crohandler.h"
-#include "romtmcli.h"                       // for CRightsObjectMtmClient
-#include "roapsyncwrapper.h"
+#include "CRoHandler.h"
+#include "RoMtmCli.h"                       // for CRightsObjectMtmClient
+#include "RoapSyncWrapper.h"
 
-#include "stringresourcereader.h"
+#include "StringResourceReader.h"
 #include "rohandlerdmgrwrapper.h"
 #include "rohandlerinternalcrkeys.h"
 

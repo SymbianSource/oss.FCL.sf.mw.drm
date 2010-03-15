@@ -11,7 +11,7 @@
 *
 * Contributors:
 *
-* Description: 
+* Description:
 *
 */
 
@@ -19,8 +19,8 @@
 #ifndef CDRMHELPERDMGRWRAPPER_H
 #define CDRMHELPERDMGRWRAPPER_H
 
-#include <DownloadMgrClient.h>
-#include <aknprogressdialog.h>
+#include <downloadmgrclient.h>
+#include <AknProgressDialog.h>
 #include <eikprogi.h>
 
 /**

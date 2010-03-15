@@ -31,9 +31,9 @@
 #include <msvuids.h>     // kuidmsvmessageentry
 #include <sysutil.h>     // disk space checking
 
-#include    "romtmcli.h"
-#include    "romtmcc.h"
-#include    "romtmcommon.h"
+#include    "RoMtmCli.h"
+#include    "RoMTMCC.h"
+#include    "RoMTMCommon.h"
 GLREF_C void Panic( TRoMtmCliPanic aPanic );
 
 // EXTERNAL DATA STRUCTURES

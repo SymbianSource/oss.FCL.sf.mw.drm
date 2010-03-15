@@ -26,7 +26,7 @@
 #include <hash.h>
 #include <asn1enc.h>
 #include <x509cert.h>
-#include "base64.h"
+#include "Base64.h"
 #include "RoapSigner.h"
 #include "RoapStorageClient.h"
 #include "RoapLog.h"

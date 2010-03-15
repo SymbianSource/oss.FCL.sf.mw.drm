@@ -19,7 +19,7 @@
 // INCLUDE FILES
 #include <f32file.h>
 #include <bautils.h>
-#include <aknviewappui.h>
+#include <aknViewAppUi.h>
 #include <coeaui.h>
 #include <coecntrl.h>
 #include <brctlinterface.h>
@@ -112,10 +112,10 @@ void CWmDrmDlaBrowserView::PostL(
     const TDesC8& aPostContentBoundary )
     {
     iCallback = aCallback;
-    iContainer->BrCtlInterface()->PostUrlL( aPostUrl, 
-                                            aPostContentType, 
-                                            aPostData, 
-                                            &aPostContentBoundary, 
+    iContainer->BrCtlInterface()->PostUrlL( aPostUrl,
+                                            aPostContentType,
+                                            aPostData,
+                                            &aPostContentBoundary,
                                             (TAny*)iContainer );
     iContainer->BrCtlInterface()->SetFocus( ETrue, EDrawNow );
     }
@@ -146,9 +146,9 @@ TUid CWmDrmDlaBrowserView::Id() const
 void CWmDrmDlaBrowserView::HandleCommandL(
     TInt aCommand )
     {
-    if ( aCommand >= TBrCtlDefs::ECommandIdBase + 
+    if ( aCommand >= TBrCtlDefs::ECommandIdBase +
                      TBrCtlDefs::ECommandIdWMLBase &&
-         aCommand <= TBrCtlDefs::ECommandIdBase + 
+         aCommand <= TBrCtlDefs::ECommandIdBase +
                      TBrCtlDefs::ECommandIdRange )
         {
         BrCtlHandleCommandL( aCommand );
@@ -167,7 +167,7 @@ void CWmDrmDlaBrowserView::DoActivateL(
     const TVwsViewId& /*aPrevViewId*/,
     TUid /*aCustomMessageId*/,
     const TDesC8& /*aCustomMessage*/ )
-    {  
+    {
     CreateContainerL();
     AppUi()->AddToStackL( *this, iContainer );
     HandleClientRectChange();
@@ -202,7 +202,7 @@ void CWmDrmDlaBrowserView::CreateContainerL()
     {
     RemoveContainer();
     iContainer = CWmDrmDlaBrowserContainer::NewL( this, this );
-    iContainer->SetMopParent( this );    
+    iContainer->SetMopParent( this );
     }
 
 // ---------------------------------------------------------------------------
@@ -232,10 +232,10 @@ void CWmDrmDlaBrowserView::BrCtlHandleCommandL( TInt aCommand )
 // CWmDrmDlaBrowserView::NetworkConnectionNeededL
 // ---------------------------------------------------------------------------
 //
-void CWmDrmDlaBrowserView::NetworkConnectionNeededL( 
-    TInt* aConnectionPtr, 
-    TInt* aSockSvrHandle, 
-    TBool* aNewConn, 
+void CWmDrmDlaBrowserView::NetworkConnectionNeededL(
+    TInt* aConnectionPtr,
+    TInt* aSockSvrHandle,
+    TBool* aNewConn,
     TApBearerType* aBearerType )
     {
     TInt ret( 0 );
@@ -245,7 +245,7 @@ void CWmDrmDlaBrowserView::NetworkConnectionNeededL(
         iConMgr->SetRequestedAP( iIap );
         ret = iConMgr->StartConnectionL( ETrue );
         }
-    
+
     // If connected, return needed info to framework
     if ( !ret )
         {
@@ -254,7 +254,7 @@ void CWmDrmDlaBrowserView::NetworkConnectionNeededL(
         *aNewConn = EFalse;
         *aBearerType = EApBearerTypeAllBearers;
         }
-    else 
+    else
         {
         User::Leave( KErrCancel );
         }
@@ -264,8 +264,8 @@ void CWmDrmDlaBrowserView::NetworkConnectionNeededL(
 // CWmDrmDlaBrowserView::HandleRequestL
 // ---------------------------------------------------------------------------
 //
-TBool CWmDrmDlaBrowserView::HandleRequestL( 
-    RArray<TUint>* /*aTypeArray*/, 
+TBool CWmDrmDlaBrowserView::HandleRequestL(
+    RArray<TUint>* /*aTypeArray*/,
     CDesCArrayFlat* /*aDesArray*/ )
     {
     return EFalse;
@@ -275,16 +275,16 @@ TBool CWmDrmDlaBrowserView::HandleRequestL(
 // CWmDrmDlaBrowserView::HandleDownloadL
 // ---------------------------------------------------------------------------
 //
-TBool CWmDrmDlaBrowserView::HandleDownloadL( 
-    RArray<TUint>* aTypeArray, 
+TBool CWmDrmDlaBrowserView::HandleDownloadL(
+    RArray<TUint>* aTypeArray,
     CDesCArrayFlat* aDesArray )
     {
     //Check that content type and local file name exists
-    //There must be both, because download manager downloads POST-content 
+    //There must be both, because download manager downloads POST-content
     //in advance calling this function
-    TInt contentTypeIndex( aTypeArray->Find( EParamReceivedContentType ) ); 
+    TInt contentTypeIndex( aTypeArray->Find( EParamReceivedContentType ) );
     TInt fileNameIndex( aTypeArray->Find( EParamLocalFileName ) );
-    if ( contentTypeIndex != KErrNotFound &&  
+    if ( contentTypeIndex != KErrNotFound &&
          fileNameIndex != KErrNotFound &&
          contentTypeIndex < aDesArray->Count() &&
          fileNameIndex < aDesArray->Count() )
@@ -294,7 +294,7 @@ TBool CWmDrmDlaBrowserView::HandleDownloadL(
         if ( dataTypePtr.CompareF( KDataTypeLicenseResponse ) == 0 )
             {
             //Get the path to the license response,
-            //read the response, delete the file and 
+            //read the response, delete the file and
             //make a license received - callback
             TPtrC16 filePathPtr( (*aDesArray)[fileNameIndex] );
             RFs fs;

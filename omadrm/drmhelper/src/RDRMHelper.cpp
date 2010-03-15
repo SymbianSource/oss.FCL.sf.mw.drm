@@ -19,10 +19,10 @@
 // INCLUDE FILES
 #include <e32std.h>
 #include <e32math.h>
-#include <drmcommon.h>
-#include "drmhelpercommon.h"
-#include "drmhelperserver.h"
-#include "RDRMHelper.h"
+#include <DRMCommon.h>
+#include "DRMHelperCommon.h"
+#include "DRMHelperServer.h"
+#include "rdrmhelper.h"
 
 // LOCAL CONSTANTS AND MACROS
 

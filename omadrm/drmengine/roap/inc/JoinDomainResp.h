@@ -23,7 +23,7 @@
 //  INCLUDES
 #include <hash.h>
 #include "RoapMessage.h"
-#include "DrmRightsClient.h"
+#include "DRMRightsClient.h"
 
 namespace Roap
 {
@@ -57,19 +57,19 @@ namespace Roap
 class CJoinDomainResp : public CRoapMessage
     {
     public:  // Constructors and destructor
-        
+
         /**
         * Two-phased constructor.
         */
         static CJoinDomainResp* NewL();
-        
+
         /**
         * Destructor.
         */
         virtual ~CJoinDomainResp();
 
     public: // New functions
-        
+
         /**
         * ?member_description.
         * @since Series ?XX ?SeriesXX_version
@@ -87,9 +87,9 @@ class CJoinDomainResp : public CRoapMessage
         * @return ?description
         */
         //?type ?member_function( ?type ?arg1 );
-        
+
     protected:  // New functions
-        
+
         /**
         * ?member_description.
         * @since Series ?XX ?SeriesXX_version
@@ -99,7 +99,7 @@ class CJoinDomainResp : public CRoapMessage
         //?type ?member_function( ?type ?arg1 );
 
     protected:  // Functions from base classes
-        
+
         /**
         * From ?base_class ?member_description
         */
@@ -129,7 +129,7 @@ class CJoinDomainResp : public CRoapMessage
         TBuf8<SHA1_HASH> iRiId;
         TBuf8<SHA1_HASH> iDomainKeyRiId;
         RPointerArray<HBufC8> iMacs;
-                
+
         TTime iDomainExpiration;
         TBool iHashChainSupport;
         RPointerArray<HBufC8> iDomainKeys;
@@ -139,7 +139,7 @@ class CJoinDomainResp : public CRoapMessage
         HBufC8* iErrorUrl;
         RPointerArray<HBufC8> iDomainKeyIDs;
         TKeyTransportScheme iTransportScheme;
-    
+
     protected:  // Data
         // ?one_line_short_description_of_data
         //?data_declaration;
@@ -147,7 +147,7 @@ class CJoinDomainResp : public CRoapMessage
     private:    // Data
         // ?one_line_short_description_of_data
         //?data_declaration;
-         
+
         // Reserved pointer for future extension
         //TAny* iReserved;
 
@@ -161,6 +161,6 @@ class CJoinDomainResp : public CRoapMessage
     };
 }
 
-#endif      // JOINDOMAINRESP_H   
-            
+#endif      // JOINDOMAINRESP_H
+
 // End of File

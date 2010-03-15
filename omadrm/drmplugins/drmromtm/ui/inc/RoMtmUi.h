@@ -22,8 +22,8 @@
 //  INCLUDES
 #include <e32base.h>
 #include <mtmuibas.h>
-#include <aknserverapp.h>
- 
+#include <AknServerApp.h>
+
 // CONSTANTS
 // MACRightsObjectS
 // DATA TYPES
@@ -43,8 +43,8 @@ class CDocumentHandler;
 
 // CLASS DECLARATION
 /**
-*	CRightsObjectMtmUi
-*  
+*   CRightsObjectMtmUi
+*
 *  @lib romtmui.lib
 *  @since 2.5
 */
@@ -52,169 +52,169 @@ class CDocumentHandler;
 // CRightsObjectMtmUi: User Interface MTM
 //
 class CRightsObjectMtmUi : public CBaseMtmUi , public MAknServerAppExitObserver , public MApaServerAppExitObserver
-	{
-	public:
-		// Construction
+    {
+    public:
+        // Construction
         /**
         * Two-phased constructor.
         */
-		static CRightsObjectMtmUi* NewL( CBaseMtm& aBaseMtm , CRegisteredMtmDll& aRegisteredMtmDll );
+        static CRightsObjectMtmUi* NewL( CBaseMtm& aBaseMtm , CRegisteredMtmDll& aRegisteredMtmDll );
 
-		// Destruction
+        // Destruction
 
         /**
         * Destructor.
         */
-		~CRightsObjectMtmUi();
+        ~CRightsObjectMtmUi();
 
-		/*************************************
-		*
-		*		from CBaseMtmUi
-		*
-		**************************************/
+        /*************************************
+        *
+        *       from CBaseMtmUi
+        *
+        **************************************/
 
 
         /**
         * CancelL.
         * @since 2.5
-		*
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		CMsvOperation* CancelL( TRequestStatus& aStatus, const CMsvEntrySelection& aSelection );
+        CMsvOperation* CancelL( TRequestStatus& aStatus, const CMsvEntrySelection& aSelection );
 
-		// Context-specific
+        // Context-specific
         /**
         * OpenL.
         * @since 2.5
-		*
-		* @param aStatus The request status to be completed when the operation has finished
-		* @return If successful, this is an asynchronously completing open operation. 
-		*         If failed, this is a completed operation, with status set to the relevant error code.
+        *
+        * @param aStatus The request status to be completed when the operation has finished
+        * @return If successful, this is an asynchronously completing open operation.
+        *         If failed, this is a completed operation, with status set to the relevant error code.
         */
-		CMsvOperation* OpenL( TRequestStatus& aStatus ); 
-		
+        CMsvOperation* OpenL( TRequestStatus& aStatus );
+
         /**
         * OpenL.
         * @since 2.5
-		*
-		* @param aStatus The request status to be completed when the operation has finished
-		* @param aSelection Selection of message entries 
-		* @return If successful, this is an asynchronously completing open operation. 
-		*         If failed, this is a completed operation, with status set to the relevant error code.
+        *
+        * @param aStatus The request status to be completed when the operation has finished
+        * @param aSelection Selection of message entries
+        * @return If successful, this is an asynchronously completing open operation.
+        *         If failed, this is a completed operation, with status set to the relevant error code.
         */
-		CMsvOperation* OpenL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection ); 
+        CMsvOperation* OpenL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection );
 
         /**
         * CloseL.
         * @since 2.5
-		*
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		CMsvOperation* CloseL( TRequestStatus& aStatus ); 
-		
-		/**
+        CMsvOperation* CloseL( TRequestStatus& aStatus );
+
+        /**
         * CloseL.
         * @since 2.5
-		*
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		CMsvOperation* CloseL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection );
+        CMsvOperation* CloseL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection );
 
-		// Launches editor/settings dialog as appropriate  
-		/**
+        // Launches editor/settings dialog as appropriate
+        /**
         * EditL.
         * @since 2.5
-		*
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		CMsvOperation* EditL( TRequestStatus& aStatus );
-		
-		/**
+        CMsvOperation* EditL( TRequestStatus& aStatus );
+
+        /**
         * EditL.
         * @since 2.5
-		*
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		CMsvOperation* EditL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection ) ;
+        CMsvOperation* EditL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection ) ;
 
-		// Launches viewer/settings dialog as appropriate  
+        // Launches viewer/settings dialog as appropriate
         /**
         * ViewL.
         * @since 2.5
-		*
-		* @param aStatus The request status to be completed when the operation has finished
-		* @return If successful, this is an asynchronously completing open operation. 
-		*         If failed, this is a completed operation, with status set to the relevant error code.
+        *
+        * @param aStatus The request status to be completed when the operation has finished
+        * @return If successful, this is an asynchronously completing open operation.
+        *         If failed, this is a completed operation, with status set to the relevant error code.
         */
-		CMsvOperation* ViewL( TRequestStatus& aStatus );
-		
+        CMsvOperation* ViewL( TRequestStatus& aStatus );
+
         /**
         * ViewL.
         * @since 2.5
-		*
-		* @param aStatus The request status to be completed when the operation has finished
-		* @param aSelection Selection of message entries 
-		* @return If successful, this is an asynchronously completing open operation. 
-		*         If failed, this is a completed operation, with status set to the relevant error code.
-        */		
-		CMsvOperation* ViewL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection );
+        *
+        * @param aStatus The request status to be completed when the operation has finished
+        * @param aSelection Selection of message entries
+        * @return If successful, this is an asynchronously completing open operation.
+        *         If failed, this is a completed operation, with status set to the relevant error code.
+        */
+        CMsvOperation* ViewL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection );
 
-		// Reply/forward
-		/**
+        // Reply/forward
+        /**
         * ReplyL.
         * @since 2.5
-		*
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		CMsvOperation* ReplyL( TMsvId aDestination , TMsvPartList aPartList , TRequestStatus& aCompletionStatus );
-		
-		/**
+        CMsvOperation* ReplyL( TMsvId aDestination , TMsvPartList aPartList , TRequestStatus& aCompletionStatus );
+
+        /**
         * ForwardL.
         * @since 2.5
-		*
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		CMsvOperation* ForwardL( TMsvId aDestination , TMsvPartList aPartList , TRequestStatus& aCompletionStatus );
+        CMsvOperation* ForwardL( TMsvId aDestination , TMsvPartList aPartList , TRequestStatus& aCompletionStatus );
 
 
-	public:
-		void HandleServerAppExit(TInt aReason);
+    public:
+        void HandleServerAppExit(TInt aReason);
 
 
-	protected: 
-		/*************************************
-		*
-		*		from CBaseMtm
-		*
-		**************************************/
-		void GetResourceFileName( TFileName& aFileName ) const;
+    protected:
+        /*************************************
+        *
+        *       from CBaseMtm
+        *
+        **************************************/
+        void GetResourceFileName( TFileName& aFileName ) const;
 
-	protected:
-		CRightsObjectMtmUi( CBaseMtm& aBaseMtm , CRegisteredMtmDll& aRegisteredMtmDll );
-		void ConstructL();
+    protected:
+        CRightsObjectMtmUi( CBaseMtm& aBaseMtm , CRegisteredMtmDll& aRegisteredMtmDll );
+        void ConstructL();
 
-	private:
-		void CheckMessageTypeL();
-		CMsvOperation* LaunchEditorApplicationL( TRequestStatus& aStatus , TMsvId aId , TBool aReadOnly );
-		void SetProgressSuccess( TPckgBuf<TMsvLocalOperationProgress>& aProgress , TMsvId aId );
-		CMsvOperation* CompletedOperationL( TRequestStatus& aObserverStatus );
+    private:
+        void CheckMessageTypeL();
+        CMsvOperation* LaunchEditorApplicationL( TRequestStatus& aStatus , TMsvId aId , TBool aReadOnly );
+        void SetProgressSuccess( TPckgBuf<TMsvLocalOperationProgress>& aProgress , TMsvId aId );
+        CMsvOperation* CompletedOperationL( TRequestStatus& aObserverStatus );
         TBool ShowQueryL( TDesC16& aFile );
         TInt CheckTriggerTypeL( TDesC16& aFile );
-	private:
-		TMessageType iType;
-		CDocumentHandler* iDocHandler;
-		RFs iFs;
-		CEikProcess* iHostProcess;
+    private:
+        TMessageType iType;
+        CDocumentHandler* iDocHandler;
+        RFs iFs;
+        CEikProcess* iHostProcess;
     CAknLaunchAppService* iOpenService;
-	};
+    };
 
 #endif      // RIGHTSOBJECTMTMUI_H
-            
+
 // End of File

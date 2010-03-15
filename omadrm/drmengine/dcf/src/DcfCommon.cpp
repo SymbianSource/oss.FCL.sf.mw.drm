@@ -22,13 +22,13 @@
 #include <f32file.h>
 #include "DcfCommon.h"
 #include "Oma1Dcf.h"
-#include "Oma2Dcf.h"
+#include "oma2dcf.h"
 
 // ============================ MEMBER FUNCTIONS ===============================
 
 // -----------------------------------------------------------------------------
 // CDcfCommon::CDcfCommon
-// 
+//
 // -----------------------------------------------------------------------------
 //
 CDcfCommon::CDcfCommon():
@@ -46,7 +46,7 @@ CDcfCommon::CDcfCommon():
 
 // -----------------------------------------------------------------------------
 // CDcfCommon::ConstructL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void CDcfCommon::ConstructL(
@@ -58,7 +58,7 @@ void CDcfCommon::ConstructL(
 
 // -----------------------------------------------------------------------------
 // CDcfCommon::NewL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 EXPORT_C CDcfCommon* CDcfCommon::NewL(
@@ -84,7 +84,7 @@ EXPORT_C CDcfCommon* CDcfCommon::NewL(
 
 // -----------------------------------------------------------------------------
 // CDcfCommon::NewL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 EXPORT_C CDcfCommon* CDcfCommon::NewL(
@@ -95,7 +95,7 @@ EXPORT_C CDcfCommon* CDcfCommon::NewL(
     RFile file;
     TInt r = KErrNone;
     CDcfCommon* self = NULL;
-    
+
     if (aFs == NULL)
         {
         fs = new RFs();
@@ -103,28 +103,28 @@ EXPORT_C CDcfCommon* CDcfCommon::NewL(
         CleanupStack::PushL(fs);
         User::LeaveIfError(fs->Connect());
         }
-    else 
+    else
         {
         fs = aFs;
         }
-    
-	r = file.Open(*fs, aFileName, EFileStream | EFileRead | EFileShareReadersOrWriters );
+
+    r = file.Open(*fs, aFileName, EFileStream | EFileRead | EFileShareReadersOrWriters );
     if( r == KErrInUse )
         {
-    	r = file.Open(*fs, aFileName, EFileStream | EFileRead | EFileShareAny);        
+        r = file.Open(*fs, aFileName, EFileStream | EFileRead | EFileShareAny);
 
-	    if (r == KErrInUse)
-	        {
-    	    r = file.Open(*fs, aFileName, EFileStream | EFileRead |
-    	        EFileShareReadersOnly);
-	        }
+        if (r == KErrInUse)
+            {
+            r = file.Open(*fs, aFileName, EFileStream | EFileRead |
+                EFileShareReadersOnly);
+            }
         }
-	if(r == KErrNone)
-	    {
-	    CleanupClosePushL(file);
-	    self = NewL(file);
-	    CleanupStack::PopAndDestroy();
-	    }
+    if(r == KErrNone)
+        {
+        CleanupClosePushL(file);
+        self = NewL(file);
+        CleanupStack::PopAndDestroy();
+        }
 
     if (aFs == NULL)
         {
@@ -136,7 +136,7 @@ EXPORT_C CDcfCommon* CDcfCommon::NewL(
 
 // -----------------------------------------------------------------------------
 // CDcfCommon::NewL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 EXPORT_C CDcfCommon::~CDcfCommon()
@@ -156,19 +156,19 @@ EXPORT_C CDcfCommon::~CDcfCommon()
 
 // -----------------------------------------------------------------------------
 // CDcfCommon::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt CDcfCommon::CheckUniqueId(const TDesC& aUniqueId)
-	{
-	if (aUniqueId.Compare(KDefaultContentObject) == 0)
-	    {
-	    return 0;
-	    }
-	else
-	    {
-	    return KErrNotFound;
-	    }
-	}
+    {
+    if (aUniqueId.Compare(KDefaultContentObject) == 0)
+        {
+        return 0;
+        }
+    else
+        {
+        return KErrNotFound;
+        }
+    }
 
-//  End of File  
+//  End of File
