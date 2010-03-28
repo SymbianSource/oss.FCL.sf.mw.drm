@@ -817,7 +817,7 @@ private:
     * CallSilentAvailble after right
     * @return Etrue, if silent RO rerieval led to usable content
     */
-    TBool CDrmUiHandlingImpl::GetSilentAndCallL(
+    TBool GetSilentAndCallL(
         MDrmHandleErrorObserver* aObserver,
         TInt aOperationId,
         const ContentAccess::TIntent aIntent,
@@ -830,7 +830,7 @@ private:
     * checks status if launched embedded.
     * CallRightsAvailable, if launched embedded or righsUrl not present
     */
-    void CDrmUiHandlingImpl::GetRightsAndCallL(
+    void GetRightsAndCallL(
         MDrmHandleErrorObserver* aObserver,
         TInt aOperationId,
         const ContentAccess::TIntent aIntent,

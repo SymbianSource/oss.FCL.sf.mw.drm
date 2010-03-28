@@ -157,8 +157,7 @@ private:
 
     void UpdateDrmTimeL( const RMessage2& aMessage );
 
-    void
-        CRoapStorageSession::VerifyOcspResponsesL( const RMessage2& aMessage );
+    void VerifyOcspResponsesL( const RMessage2& aMessage );
 
     void GetOcspResponderIdL( const RMessage2& aMessage );
 

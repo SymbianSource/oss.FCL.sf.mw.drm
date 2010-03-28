@@ -279,8 +279,7 @@ NONSHARABLE_CLASS(CDrmProtectedRoParser): public CBase, public MContentHandler
         * @param aProtectedRo protected RO element
         * @return protected RO element, if namespace was not added NULL
         */    
-        HBufC8* CDrmProtectedRoParser::AddRoapNamespaceL(
-            TDesC8& aProtectedRo ) const;
+        HBufC8* AddRoapNamespaceL( TDesC8& aProtectedRo ) const;
 
     private:
 
