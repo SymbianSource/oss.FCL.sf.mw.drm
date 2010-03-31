@@ -25,6 +25,9 @@
 #include "DRMClock.h"
 #include "drmlog.h"
 
+// Wait time in microseconds: wait 5 minutes
+const TInt KGpsDefaultWaitTime = 300000000;
+const TInt KMaxRetryCounter = 20;
 
 // ============================ MEMBER FUNCTIONS ===============================
 
@@ -36,8 +39,9 @@
 // -----------------------------------------------------------------------------
 //   
 CGPSWatcher::CGPSWatcher( CDRMClock* aClock ) :
-	CActive(EPriorityHigh),
-	iClock( aClock )
+	CTimer(EPriorityHigh),
+	iClock( aClock ),
+	iRetryCounter( 0 )
 	{
 	CActiveScheduler::Add(this);
 	}
@@ -80,6 +84,8 @@ CGPSWatcher* CGPSWatcher::NewL( CDRMClock* aClock )
 //
 void CGPSWatcher::ConstructL()
 	{
+	CTimer::ConstructL();
+
 	User::LeaveIfError(iPosServer.Connect());
 	
 	// Immediately subscribe for module status events
@@ -108,6 +114,9 @@ void CGPSWatcher::Subscribe()
 //
 void CGPSWatcher::RunL()
 	{
+	// If there are errors just leave and stop watching:    
+	DRMLOG2(_L("CGPSWatcher::RunL: error: '%d'"), iStatus.Int());   
+    	        
 	// If we already updated the time:
 	if( iTimeUpdater && iTimeUpdater->TimeReceived() )
 	    {
@@ -116,10 +125,26 @@ void CGPSWatcher::RunL()
 	    DRMLOG( _L("CGPSWatcher::RunL: object deleted, returning"));
 	    return;    
 	    }
+
+	// The server was killed:
+    if( iStatus.Int() == KErrServerTerminated )
+        {
+        if( iRetryCounter > KMaxRetryCounter )
+            {
+            DRMLOG( _L("CGPSWatcher::RunL: Maximum retries reached, stopping watcher.") );    
+            iClock->Notify( CDRMClock::ENotifyGPSTimeReceived );
+            return;         
+            }    
+	    // If there are errors just leave and stop watching:    
+	    DRMLOG2(_L("CGPSWatcher::RunL: server terminated, waiting '%d' microseconds"), KGpsDefaultWaitTime);               
+        After( TTimeIntervalMicroSeconds32(KGpsDefaultWaitTime) );
+        return;    
+        }	  
 	    
 	Subscribe();
 	TPositionModuleStatusEventBase::TModuleEvent occurredEvents = iStatusEvent.OccurredEvents();
 	DRMLOG2(_L("CGPSWatcher::RunL: occurredEvents = 0x%X"), occurredEvents);
+	
 	
 	// If time updater is not running, check module statuses
 	if(!iTimeUpdater)

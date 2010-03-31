@@ -26,7 +26,7 @@
 class CGPSTimeUpdater;
 class CDRMClock;
 
-class CGPSWatcher : public CActive
+class CGPSWatcher : public CTimer
 	{
 public:
 	~CGPSWatcher();
@@ -51,6 +51,9 @@ private:
 	
 	// not owned
 	CDRMClock* iClock;
+
+	// Retry counter
+	TInt iRetryCounter;
 	};
 
 #endif /* GPSWATCHER_H_ */

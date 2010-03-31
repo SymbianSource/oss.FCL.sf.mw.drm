@@ -21,7 +21,7 @@
 #define GPSTIMEUPDATER_H_
 
 #include <lbs.h>
-#include <LbsSatellite.h>
+#include <lbssatellite.h>
 
 class CDRMClock;
 

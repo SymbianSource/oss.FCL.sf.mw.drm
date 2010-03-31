@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2007 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2007-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -11,7 +11,7 @@
 *
 * Contributors:
 *
-* Description:  File that exports the files belonging to 
+* Description:  File that exports the files belonging to
 :                DRM Utility API
 *
 */
@@ -23,8 +23,6 @@ PRJ_PLATFORMS
 DEFAULT
 
 PRJ_EXPORTS
-
-#if (defined RD_DRM_COMMON_INTERFACE_FOR_OMA_AND_WMDRM)
 // Utility
 ../inc/drmutility.h                  MW_LAYER_PLATFORM_EXPORT_PATH( drmutility.h )
 
@@ -44,5 +42,3 @@ PRJ_EXPORTS
 
 // Types
 ../inc/drmutilitytypes.h             MW_LAYER_PLATFORM_EXPORT_PATH( drmutilitytypes.h )
-
-#endif // RD_DRM_COMMON_INTERFACE_FOR_OMA_AND_WMDRM

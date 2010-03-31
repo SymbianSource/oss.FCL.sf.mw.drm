@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2003-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -336,12 +336,8 @@ void CDRMRightsMgrDetailsView::RefreshListBoxL(
                 break;
             }
 
-#ifdef RD_DRM_COMMON_INTERFACE_FOR_OMA_AND_WMDRM
-
         DrmUtilityWmDrmUtilities::ParseWmDrmStringL( *aRights[0],
             rights.iPlayConstraint );
-#endif
-
         }
     else
         {

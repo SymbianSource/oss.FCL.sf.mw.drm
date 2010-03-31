@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2004-2006 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2004-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -18,10 +18,10 @@
 
 // INCLUDE FILES
 #include "DRMHelperDownloadManager.h"
-#include "DRMHelperDMgrWrapper.h"
+#include "DrmUtilityDmgrWrapper.h"
 
 // CONSTANTS
-_LIT( KDRMHelperDMgrHandlerName, "\\system\\libs\\drmhelperdmgrwrapper.dll" );
+_LIT( KDrmUtilityDmgrHandlerName, "DrmUtilityDmgrWrapper.dll" );
 
 typedef TAny* (*NewDMgrL)();
 
@@ -35,14 +35,14 @@ CDrmHelperDownloadManager::CDrmHelperDownloadManager()
 
 void CDrmHelperDownloadManager::ConstructL()
     {
-    User::LeaveIfError( iDMgrDll.Load( KDRMHelperDMgrHandlerName ) );
+    User::LeaveIfError( iDMgrDll.Load( KDrmUtilityDmgrHandlerName ) );
     NewDMgrL createDMgr = (NewDMgrL) iDMgrDll.Lookup( KFirstFunction );
     if ( !createDMgr )
         {
         User::Leave( KErrGeneral );
         }
     // Create the class, leaves in case of failure
-    iDMgrHandler = (CDRMHelperDMgrWrapper*) (*createDMgr)();
+    iDMgrHandler = reinterpret_cast<CDrmUtilityDmgrWrapper*>( (*createDMgr)() );
     }
 
 CDrmHelperDownloadManager* CDrmHelperDownloadManager::NewL()
