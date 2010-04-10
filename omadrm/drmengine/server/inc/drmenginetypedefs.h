@@ -24,4 +24,4 @@
 
 typedef CDRMPointerArray< CDRMPermission > CDRMPermissionList;
 typedef RDRMPointerArray< CDRMPermission > RDRMPermissionList;
-#endif DRMENGINETYPEDEFS_H
+#endif // DRMENGINETYPEDEFS_H
