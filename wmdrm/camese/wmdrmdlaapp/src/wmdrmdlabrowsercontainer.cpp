@@ -34,8 +34,7 @@ void CWmDrmDlaBrowserContainer::ConstructL(
     {
     CreateWindowL();
     SetRect( iView->ClientRect() );
-    ActivateL();
-
+    
     iBrCtlInterface = CreateBrowserControlL(
             this,                                      // parent control
             iView->ClientRect(),                       // client rect
@@ -59,6 +58,7 @@ void CWmDrmDlaBrowserContainer::ConstructL(
                                          ETrue );
     iBrCtlInterface->SetBrowserSettingL( TBrCtlDefs::ESettingsEmbedded,
                                          ETrue );
+    ActivateL();
     }
 
 // ---------------------------------------------------------------------------

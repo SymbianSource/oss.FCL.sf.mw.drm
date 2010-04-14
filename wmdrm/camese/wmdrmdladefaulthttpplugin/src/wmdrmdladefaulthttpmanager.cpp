@@ -660,9 +660,9 @@ void CWmDrmDlaDefaultHttpManager::DoStartL(
     if ( (iState == EOpen) && iKeepAlive )
         {
         TConnectionInfo connectionInfo;
-        GetConnectionInfoL(connectionInfo);
-        if ( connectionInfo.iIapId != iIapNumber &&
-             iIapNumber != 0 && connectionInfo.iIapId != 0 )
+        TRAPD(err, GetConnectionInfoL(connectionInfo) );
+        if ( err || ( connectionInfo.iIapId != iIapNumber &&
+             iIapNumber != 0 && connectionInfo.iIapId != 0 ) )
             {
             CleanupConnection();
             iState = EStart;
