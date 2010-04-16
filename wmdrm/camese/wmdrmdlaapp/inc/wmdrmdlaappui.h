@@ -20,8 +20,8 @@
 #define C_WMDRMDLAAPPUI_H
 
 // INCLUDES
-#include <aknviewappui.h>
-#include <aknserverapp.h>
+#include <aknViewAppUi.h>
+#include <AknServerApp.h>
 
 class CWmDrmDlaBrowserView;
 
@@ -32,19 +32,19 @@ class CWmDrmDlaAppUi : public CAknViewAppUi
 
         /**
         * Constructor.
-        */      
+        */
         CWmDrmDlaAppUi();
-        
+
         /**
         * Second phase constructor. Leaves on failure.
-        */      
+        */
         void ConstructL();
 
         /**
         * Destructor.
-        */      
+        */
         virtual ~CWmDrmDlaAppUi();
-        
+
         /**
          * Get browser view
          */
@@ -56,13 +56,13 @@ class CWmDrmDlaAppUi : public CAknViewAppUi
          * From CEikAppUi, takes care of command handling.
          * @param aCommand command to be handled
          */
-        void HandleCommandL( TInt aCommand );    
-        
+        void HandleCommandL( TInt aCommand );
+
     private:    // data
 
         //Not owned
         CWmDrmDlaBrowserView* iBrowserView;
-        
+
     };
 
 #endif // C_WMDRMDLAAPPUI_H

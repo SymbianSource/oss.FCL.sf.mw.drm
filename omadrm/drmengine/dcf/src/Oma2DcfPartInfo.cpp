@@ -22,14 +22,15 @@
 #include <f32file.h>
 #include <utf.h>
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include "Oma2Agent.h"
-#include "Oma2Dcf.h"
+#include "oma2dcf.h"
 #include "Oma2DcfPartInfo.h"
 
 // EXTERNAL DATA STRUCTURES
 //extern  ?external_data;
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 //extern ?external_function( ?arg_type,?arg_type);
 
 // CONSTANTS
@@ -93,7 +94,7 @@ COma2DcfPartInfo::COma2DcfPartInfo():
 
 // -----------------------------------------------------------------------------
 // COma2Dcf::NewL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 COma2DcfPartInfo* COma2DcfPartInfo::NewL()
@@ -111,4 +112,4 @@ COma2DcfPartInfo::~COma2DcfPartInfo()
     }
 
 
-//  End of File  
+//  End of File

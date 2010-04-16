@@ -22,16 +22,16 @@
 #include <apmstd.h>
 #include <utf.h>
 #include <stringpool.h>
-#include <xml/ParserFeature.h>
+#include <xml/parserfeature.h>
 
 #ifdef _DEBUG
 #include <flogger.h>
 #endif // _DEBUG
-#include "base64.h"
+#include "Base64.h"
 #include "DcfCommon.h"
 #include "DrmRightsParser.h"
-#include "DrmProtectedRoParser.h"
-#include "DrmRightsClient.h"
+#include "DRMProtectedRoParser.h"
+#include "DRMRightsClient.h"
 #include "hash.h"
 #include "DRMCommon.h"
 #include "OmaCrypto.h"
@@ -40,7 +40,7 @@
 #include "RoapMessage.h"
 #include "DcfRep.h"
 #include "DcfEntry.h"
-#include "Oma2Dcf.h"
+#include "oma2dcf.h"
 
 using namespace Roap;
 using namespace Xml;
@@ -804,7 +804,7 @@ EXPORT_C void CDrmProtectedRoParser::ParseAndStoreL(
         if ( integrityCheck && !r )
             {
             // Only add the rigths which were parsed in this loop
-    
+
             for ( TInt i( n ); i < aResultRights.Count(); i++)
                 {
                 cid = NULL;

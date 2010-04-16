@@ -19,7 +19,7 @@
 
 // INCLUDE FILES
 #include <e32std.h>
-#include "base64.h"
+#include "Base64.h"
 #include "RegistrationReq.h"
 
 using namespace Roap;
@@ -107,7 +107,7 @@ void CRegistrationReq::ConstructL()
 CRegistrationReq* CRegistrationReq::NewL()
     {
     CRegistrationReq* self = new( ELeave ) CRegistrationReq;
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop();
@@ -115,7 +115,7 @@ CRegistrationReq* CRegistrationReq::NewL()
     return self;
     }
 
-    
+
 // Destructor
 CRegistrationReq::~CRegistrationReq()
     {
@@ -176,7 +176,7 @@ HBufC8* CRegistrationReq::MessageAsXmlL(void)
             }
         BufAppendL(b, KReqCertChainEnd);
         }
-        
+
     if (iTrustedAuthorities.Count() > 0)
         {
         BufAppendL(b, KReqTrustedAuthorities);
@@ -186,16 +186,16 @@ HBufC8* CRegistrationReq::MessageAsXmlL(void)
             BufAppendBase64L(b, *iTrustedAuthorities[i]);
             BufAppendL(b, KReqTrustedRootEnd);
             }
-        BufAppendL(b, KReqTrustedAuthoritiesEnd);     
+        BufAppendL(b, KReqTrustedAuthoritiesEnd);
         }
-        
+
     if (iServerInfo)
         {
         BufAppendL(b, KReqServerInfo);
         BufAppendL(b, *iServerInfo);
-        BufAppendL(b, KReqServerInfoEnd);    
+        BufAppendL(b, KReqServerInfoEnd);
         }
-        
+
     if ((iDeviceDetailsManufacturer &&
          iDeviceDetailsModel &&
          iDeviceDetailsVersion) ||
@@ -205,26 +205,26 @@ HBufC8* CRegistrationReq::MessageAsXmlL(void)
         {
         BufAppendL(b, KReqExtensions);
         }
-        
+
     if (iPeerKeyIdentifier.Length())
         {
         BufAppendL(b, KReqPeerKey);
         BufAppendBase64L(b, iPeerKeyIdentifier);
         BufAppendL(b, KReqPeerKeyEnd);
         }
-        
+
      if (iOcspInfoStored)
         {
         BufAppendL(b, KReqNoOcspResponse);
         }
-        
+
      if (iOcspResponderKeyId)
         {
         BufAppendL(b, KReqOcspResponderKeyId);
         BufAppendBase64L(b, *iOcspResponderKeyId);
         BufAppendL(b, KReqOcspResponderKeyIdEnd);
         }
-         
+
     if (iDeviceDetailsManufacturer != NULL &&
         iDeviceDetailsModel != NULL &&
         iDeviceDetailsVersion != NULL)
@@ -237,7 +237,7 @@ HBufC8* CRegistrationReq::MessageAsXmlL(void)
         BufAppendL(b, *iDeviceDetailsVersion);
         BufAppendL(b, KReqDevDetailsEnd);
         }
-        
+
     if ((iDeviceDetailsManufacturer &&
          iDeviceDetailsModel &&
          iDeviceDetailsVersion) ||
@@ -256,4 +256,4 @@ HBufC8* CRegistrationReq::MessageAsXmlL(void)
     return r;
     }
 
-//  End of File  
+//  End of File

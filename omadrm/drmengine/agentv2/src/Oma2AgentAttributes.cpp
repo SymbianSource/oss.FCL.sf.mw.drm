@@ -22,18 +22,19 @@
 #include <charconv.h>
 
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <caf/attributeset.h>
 #include <caf/stringattributeset.h>
 #include <caf/virtualpath.h>
 #include <caf/caferr.h>
 #include <utf.h>
 #include <drmagents.h>
-#include "oma2agent.h"
-#include "oma2agentattributes.h"
-#include "oma1dcf.h"
+#include "Oma2Agent.h"
+#include "Oma2AgentAttributes.h"
+#include "Oma1Dcf.h"
 #include "oma2dcf.h"
-#include "drmrightsclient.h"
-#include "DrmProtectedRoParser.h"
+#include "DRMRightsClient.h"
+#include "DRMProtectedRoParser.h"
 
 using namespace ContentAccess;
 
@@ -682,7 +683,7 @@ TInt TOma2AgentAttributes::GetAttribute(
                      }
                 break;
             case DRM::EDrmAllowedOutputs:
-                value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision;
+                value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
                 break;
             case ERightsNone:
                 if (aRightsClient == NULL)

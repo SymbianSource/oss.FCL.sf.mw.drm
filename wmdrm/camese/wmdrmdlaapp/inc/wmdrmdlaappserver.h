@@ -20,15 +20,15 @@
 #define C_WMDRMDLAAPPSERVER_H
 
 // INCLUDES
-#include <aknserverapp.h>
+#include <AknServerApp.h>
 
 class CWmDrmDlaAppServer : public CAknAppServer
     {
-    
+
     public: // from CAknAppServer
-        
+
         CApaAppServiceBase* CreateServiceL( TUid aServiceType ) const;
-    
+
     };
 
 #endif // C_WMDRMDLAAPPSERVER_H

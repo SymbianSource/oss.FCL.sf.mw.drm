@@ -19,7 +19,7 @@
 
 // INCLUDE FILES
 #include <e32std.h>
-#include "base64.h"
+#include "Base64.h"
 #include "LeaveDomainReq.h"
 
 using namespace Roap;
@@ -85,7 +85,7 @@ void CLeaveDomainReq::ConstructL()
 CLeaveDomainReq* CLeaveDomainReq::NewL()
     {
     CLeaveDomainReq* self = new( ELeave ) CLeaveDomainReq;
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop();
@@ -93,7 +93,7 @@ CLeaveDomainReq* CLeaveDomainReq::NewL()
     return self;
     }
 
-    
+
 // Destructor
 CLeaveDomainReq::~CLeaveDomainReq()
     {
@@ -158,7 +158,7 @@ HBufC8* CLeaveDomainReq::MessageAsXmlL(void)
             }
         BufAppendL(b, KReqCertChainEnd);
         }
-        
+
     if ( iNotMember )
         {
         BufAppendL(b, KReqNotDomainMember);

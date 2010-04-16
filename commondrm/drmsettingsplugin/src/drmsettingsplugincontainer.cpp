@@ -18,10 +18,10 @@
 
 // INCLUDE FILES
 #include <aknlists.h>
-#include <aknutils.h>
+#include <AknUtils.h>
 #include <csxhelp/drm.hlp.hrh>
 #include <gslistbox.h>
-#include <stringloader.h>
+#include <StringLoader.h>
 #include <drmsettingspluginrsc.rsg>
 
 #include "drmsettingsplugincontainer.h"
@@ -34,7 +34,7 @@ const TUid KUidRightsManager = { 0x101F85C7 };
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::ConstructL()
-// 
+//
 // Symbian OS two phased constructor
 // ---------------------------------------------------------------------------
 //
@@ -47,19 +47,19 @@ void CDRMSettingsPluginContainer::ConstructL( const TRect& aRect )
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::CDRMSettingsPluginContainer()
-// 
-// Constructor 
+//
+// Constructor
 // ---------------------------------------------------------------------------
 //
-CDRMSettingsPluginContainer::CDRMSettingsPluginContainer( 
+CDRMSettingsPluginContainer::CDRMSettingsPluginContainer(
     TBool aWmdrmSupported ) : iWmdrmSupported( aWmdrmSupported )
     {
     }
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::~CDRMSettingsPluginContainer()
-// 
-// Destructor 
+//
+// Destructor
 // ---------------------------------------------------------------------------
 //
 CDRMSettingsPluginContainer::~CDRMSettingsPluginContainer()
@@ -78,16 +78,16 @@ CDRMSettingsPluginContainer::~CDRMSettingsPluginContainer()
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::ConstructListBoxL()
-// 
+//
 // Construct the listbox from resource array.
 // ---------------------------------------------------------------------------
 //
 void CDRMSettingsPluginContainer::ConstructListBoxL( TInt aResLbxId )
     {
-    iListBox->ConstructL( this, EAknListBoxSelectionList /* | 
+    iListBox->ConstructL( this, EAknListBoxSelectionList /* |
         EAknListBoxItemSpecificMenuDisabled */ );
-    iListboxItemArray = CGSListBoxItemTextArray::NewL( aResLbxId, 
-                                                       *iListBox, 
+    iListboxItemArray = CGSListBoxItemTextArray::NewL( aResLbxId,
+                                                       *iListBox,
                                                        *iCoeEnv );
     iListBox->Model()->SetItemTextArray( iListboxItemArray );
     iListBox->Model()->SetOwnershipType( ELbmDoesNotOwnItemArray );
@@ -97,7 +97,7 @@ void CDRMSettingsPluginContainer::ConstructListBoxL( TInt aResLbxId )
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::CreateListBoxItemsL()
-// 
+//
 // Create listbox items.
 // ---------------------------------------------------------------------------
 //
@@ -105,7 +105,7 @@ void CDRMSettingsPluginContainer::CreateListBoxItemsL()
     {
 #ifdef __DRM_OMA2
     MakeTransactionTrackingItemL();
-    
+
 #ifdef RD_DRM_SILENT_RIGHTS_ACQUISITION
     MakeAutomaticActivationItemL();
 #endif // RD_DRM_SILENT_RIGHTS_ACQUISITION
@@ -122,7 +122,7 @@ void CDRMSettingsPluginContainer::CreateListBoxItemsL()
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::UpdateListBoxL()
-// 
+//
 // Update listbox item.
 // ---------------------------------------------------------------------------
 //
@@ -134,26 +134,26 @@ void CDRMSettingsPluginContainer::UpdateListBoxL( TInt aFeatureId )
         case EDRMSettingsIdTransactionTracking:
             MakeTransactionTrackingItemL();
             break;
-            
+
 #ifdef RD_DRM_SILENT_RIGHTS_ACQUISITION
         case EDRMSettingsIdAutomaticActivation:
             MakeAutomaticActivationItemL();
             break;
 #endif // RD_DRM_SILENT_RIGHTS_ACQUISITION
-            
+
 #ifdef RD_DRM_METERING
         case EDRMSettingsIdUsageReporting:
             MakeUsageReportingItemL();
             break;
-#endif // RD_DRM_METERING     
+#endif // RD_DRM_METERING
 #endif // __DRM_OMA2
-       
+
         case EDRMSettingsIdWMDRMLicenseDeletion:
-            
+
             MakeWMDRMLicenseDeletionItemL();
-            
+
             break;
-       
+
         default:
             break;
         }
@@ -164,15 +164,15 @@ void CDRMSettingsPluginContainer::UpdateListBoxL( TInt aFeatureId )
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::MakeTransactionTrackingItemL()
-// 
-// Create Transaction tracking list item 
+//
+// Create Transaction tracking list item
 // ---------------------------------------------------------------------------
 //
 void CDRMSettingsPluginContainer::MakeTransactionTrackingItemL()
     {
     HBufC* dynamicText( NULL );
     TInt trxTrState( iModel->TransactionTrackingStateL() );
-    
+
     switch ( trxTrState )
         {
         case KDRMTransactionTrackingEnabled:
@@ -182,33 +182,33 @@ void CDRMSettingsPluginContainer::MakeTransactionTrackingItemL()
             dynamicText = StringLoader::LoadLC( R_DRM_SETTINGS_TTRACKING_OFF );
             break;
         }
-    
+
     TPtr ptrBuffer ( dynamicText->Des() );
 
-    
+
     // Finally, set the dynamic text
     iListboxItemArray->SetDynamicTextL( EDRMSettingsIdTransactionTracking, ptrBuffer );
 
     CleanupStack::PopAndDestroy( dynamicText );
 
     // And add to listbox
-    iListboxItemArray->SetItemVisibilityL( EDRMSettingsIdTransactionTracking, 
+    iListboxItemArray->SetItemVisibilityL( EDRMSettingsIdTransactionTracking,
         CGSListBoxItemTextArray::EVisible );
     }
 
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::MakeAutomaticActivationItemL()
-// 
-// Create Automatic activation list item 
+//
+// Create Automatic activation list item
 // ---------------------------------------------------------------------------
 //
 void CDRMSettingsPluginContainer::MakeAutomaticActivationItemL()
     {
     TInt automActivState( iModel->AutomaticActivationStateL() );
-    
+
     HBufC* dynamicText( NULL );
-    
+
     switch ( automActivState )
         {
         case KDRMTransactionTrackingEnabled:
@@ -218,32 +218,32 @@ void CDRMSettingsPluginContainer::MakeAutomaticActivationItemL()
             dynamicText = StringLoader::LoadLC( R_DRM_SETTINGS_AUTOM_ACTIV_OFF );
             break;
         }
-    
+
     TPtr ptrBuffer ( dynamicText->Des() );
 
     // Finally, set the dynamic text
-    iListboxItemArray->SetDynamicTextL( EDRMSettingsIdAutomaticActivation, 
+    iListboxItemArray->SetDynamicTextL( EDRMSettingsIdAutomaticActivation,
                                         ptrBuffer );
 
     CleanupStack::PopAndDestroy( dynamicText );
 
     // And add to listbox
-    iListboxItemArray->SetItemVisibilityL( EDRMSettingsIdAutomaticActivation, 
+    iListboxItemArray->SetItemVisibilityL( EDRMSettingsIdAutomaticActivation,
                                            CGSListBoxItemTextArray::EVisible );
     }
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::MakeUsageReportingItemL()
-// 
-// Create Usage reporting list item 
+//
+// Create Usage reporting list item
 // ---------------------------------------------------------------------------
 //
 void CDRMSettingsPluginContainer::MakeUsageReportingItemL()
     {
     TInt count( iModel->UsageReportingCount() );
-    
+
     HBufC* dynamicText( NULL );
-    
+
     switch ( count )
         {
         case 0:
@@ -257,24 +257,24 @@ void CDRMSettingsPluginContainer::MakeUsageReportingItemL()
             break;
         }
     CleanupStack::PushL( dynamicText );
-    
+
     TPtr ptrBuffer ( dynamicText->Des() );
 
     // Finally, set the dynamic text
-    iListboxItemArray->SetDynamicTextL( EDRMSettingsIdUsageReporting, 
+    iListboxItemArray->SetDynamicTextL( EDRMSettingsIdUsageReporting,
                                         ptrBuffer );
 
     CleanupStack::PopAndDestroy( dynamicText );
 
     // And add to listbox
-    iListboxItemArray->SetItemVisibilityL( EDRMSettingsIdUsageReporting, 
+    iListboxItemArray->SetItemVisibilityL( EDRMSettingsIdUsageReporting,
                                            CGSListBoxItemTextArray::EVisible );
     }
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::MakeWMDRMLicenseDeletionItemL()
-// 
-// Create WMDRM license deletion list item 
+//
+// Create WMDRM license deletion list item
 // ---------------------------------------------------------------------------
 //
 void CDRMSettingsPluginContainer::MakeWMDRMLicenseDeletionItemL()
@@ -283,26 +283,26 @@ void CDRMSettingsPluginContainer::MakeWMDRMLicenseDeletionItemL()
         {
         // Add to listbox
         iListboxItemArray->
-            SetItemVisibilityL( EDRMSettingsIdWMDRMLicenseDeletion, 
+            SetItemVisibilityL( EDRMSettingsIdWMDRMLicenseDeletion,
                                 CGSListBoxItemTextArray::EVisible );
         }
     else
         {
         // Add to listbox
         iListboxItemArray->
-            SetItemVisibilityL( EDRMSettingsIdWMDRMLicenseDeletion, 
+            SetItemVisibilityL( EDRMSettingsIdWMDRMLicenseDeletion,
                                 CGSListBoxItemTextArray::EInvisible );
-        
+
         }
     }
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::GetHelpContext() const
-//  
-// Gets Help 
+//
+// Gets Help
 // ---------------------------------------------------------------------------
 //
-void CDRMSettingsPluginContainer::GetHelpContext( 
+void CDRMSettingsPluginContainer::GetHelpContext(
     TCoeHelpContext& aContext ) const
     {
     aContext.iMajor = KUidRightsManager;
@@ -313,7 +313,7 @@ void CDRMSettingsPluginContainer::GetHelpContext(
 // ---------------------------------------------------------------------------
 // CDRMSettingsPluginContainer::CurrentFeatureId()
 //
-// Return the feature id of selected listitem  
+// Return the feature id of selected listitem
 // ---------------------------------------------------------------------------
 //
 TInt CDRMSettingsPluginContainer::CurrentFeatureId( ) const
@@ -332,5 +332,5 @@ CDRMSettingsModel* CDRMSettingsPluginContainer::Model()
     {
     return iModel;
     }
-    
+
 // End of File

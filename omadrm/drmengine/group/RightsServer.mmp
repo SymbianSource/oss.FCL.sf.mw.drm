@@ -22,7 +22,7 @@ TARGET          RightsServer.exe
 TARGETTYPE      EXE
 
 UID             0x1000008d 0x101F51F2
-CAPABILITY      CAP_SERVER DRM CommDD ProtServ PowerMgmt
+CAPABILITY      CAP_SERVER DRM CommDD ProtServ PowerMgmt Location
 VENDORID        VID_DEFAULT
 
 // Default system include paths for middleware layer modules.
@@ -103,6 +103,9 @@ SOURCE          DRMClockServer.cpp
 SOURCE          DRMClockSession.cpp
 
 SOURCE          DRMNitzObserver.cpp
+SOURCE          GPSWatcher.cpp
+SOURCE          GPSTimeUpdater.cpp
+
 #else
 #ifdef __DRM_OMA2
 SOURCEPATH      ../DRMClock/src
@@ -144,6 +147,7 @@ LIBRARY         InetProtUtil.lib            // URI parser
 LIBRARY         flogger.lib
 LIBRARY         featmgr.lib                 // Feature Manager
 LIBRARY         wmdrmfileserverclient.lib
+LIBRARY         lbs.lib                     // GPS libraries
 #ifdef RD_DRM_METERING
 LIBRARY         random.lib
 #endif

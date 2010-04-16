@@ -46,7 +46,7 @@ USERINCLUDE     ../uiData/inc
 USERINCLUDE     ../../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
-APP_LAYER_SYSTEMINCLUDE
+MW_LAYER_SYSTEMINCLUDE
 
 LIBRARY   euser.lib
 LIBRARY   mtur.lib

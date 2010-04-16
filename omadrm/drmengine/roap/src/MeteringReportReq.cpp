@@ -19,7 +19,7 @@
 
 // INCLUDE FILES
 #include <e32std.h>
-#include "base64.h"
+#include "Base64.h"
 #include "MeteringReportReq.h"
 #include "RoapLog.h"
 
@@ -66,7 +66,7 @@ _LIT8(KReqEncKeyInfoStart, "<ds:KeyInfo xmlns:ds=\"http://www.w3.org/2000/09/xml
 
 // Note the two versions below are because of different namespace
 // normalisation of element roap:X509SPKIHash on canonicalisation of
-// whole request to be signed and on canonicalisation of element 
+// whole request to be signed and on canonicalisation of element
 // <meteringReport> to be MAC calculated.
 // when changing one of these another one must be cahnges too.
 //
@@ -103,9 +103,9 @@ _LIT8( KCmlaIp1, "http://www.cm-la.com/tech/cmlaip/cmlaip#cmlaip-1");
 // ----------------------------------------------------------------------------
 // MeteringReportElementAsTextL
 //
-// write content of to given flat buffer 
+// write content of to given flat buffer
 // Used from MessageAsXmlL and from InsertMacL
-// Note content depends on value of 
+// Note content depends on value of
 // ----------------------------------------------------------------------------
 LOCAL_C inline void MeteringReportElementAsTextL(
     CBufFlat*& aBuf,
@@ -153,7 +153,7 @@ LOCAL_C inline void MeteringReportElementAsTextL(
         }
     else
         {
-        // used in mac calculation 
+        // used in mac calculation
         // canonical form requires namespace definition for namespace roap
         Roap::CRoapMessage::BufAppendL( aBuf, KReqRoapX509AndHashNs );
         }
@@ -167,7 +167,7 @@ LOCAL_C inline void MeteringReportElementAsTextL(
     // key wrapping info
     Roap::CRoapMessage::BufAppendBase64L( aBuf, *aReq.iEncryptedMekAndMak );
 
-    Roap::CRoapMessage::BufAppendL( aBuf, KReqCipherValueEnd );    
+    Roap::CRoapMessage::BufAppendL( aBuf, KReqCipherValueEnd );
 
     // Insert 128-bit encrypted MAC value
     if ( aReq.iMac )

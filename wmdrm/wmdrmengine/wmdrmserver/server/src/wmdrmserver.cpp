@@ -16,7 +16,7 @@
 */
 
 #include <bacntf.h>
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #include "wmdrmsession.h"
 #include "wmdrmserver.h"
 #include "clock.h"
@@ -32,23 +32,23 @@
 #include "logfn.h"
 
 CWmDrmServer::CWmDrmServer():
-	CServer2( CActive::EPriorityStandard,  ESharableSessions ),
-	iCache( NULL ), iDriveNumber( -1 ), iWmDrmRightsConfigFound( EFalse )
-	{
-	}
+    CServer2( CActive::EPriorityStandard,  ESharableSessions ),
+    iCache( NULL ), iDriveNumber( -1 ), iWmDrmRightsConfigFound( EFalse )
+    {
+    }
 
 CServer2* CWmDrmServer::NewLC()
-	{
-	LOGFN( "CWmDrmServer::NewLC" );
-	CWmDrmServer* self = new( ELeave ) CWmDrmServer;
-	CleanupStack::PushL( self );
-	self->ConstructL();
-	return self;
-	}
+    {
+    LOGFN( "CWmDrmServer::NewLC" );
+    CWmDrmServer* self = new( ELeave ) CWmDrmServer;
+    CleanupStack::PushL( self );
+    self->ConstructL();
+    return self;
+    }
 
 CWmDrmServer::~CWmDrmServer()
     {
-	LOGFN( "CWmDrmServer::~CWmDrmServer" );
+    LOGFN( "CWmDrmServer::~CWmDrmServer" );
     delete iCache;
     delete iEnumeratorCache;
     delete iClock;
@@ -58,34 +58,34 @@ CWmDrmServer::~CWmDrmServer()
     }
 
 void CWmDrmServer::ConstructL()
-	{
-	LOGFN( "CWmDrmServer::ConstructL" );
-	TDrmScheme drmScheme( EDrmSchemeWmDrm );
-	TChar driveLetter;
-	
-	StartL( KWmDrmServerName );
-	User::LeaveIfError( iFs.Connect() );
+    {
+    LOGFN( "CWmDrmServer::ConstructL" );
+    TDrmScheme drmScheme( EDrmSchemeWmDrm );
+    TChar driveLetter;
+
+    StartL( KWmDrmServerName );
+    User::LeaveIfError( iFs.Connect() );
     iCache = NULL;
-	iEnumeratorCache = NULL;
-	ResetCacheL();
-	iClock = CClock::NewL( this );
-	iClock->Start();
-	
+    iEnumeratorCache = NULL;
+    ResetCacheL();
+    iClock = CClock::NewL( this );
+    iClock->Start();
+
     // Check which drive is configured in the Central Repository Key
-    // for the desired storing location of license and sync stores. 
-	// Convert the drive letter to drive number and store it.
-	iWmDrmRightsConfigFound = 
-	    DrmRightsStoringLocation::CheckDrmRightsStorageDriveL( iFs,
-	        drmScheme, driveLetter );
-	
-	// Check also the system drive
-	DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, iSystemDriveNumber );
-	    
+    // for the desired storing location of license and sync stores.
+    // Convert the drive letter to drive number and store it.
+    iWmDrmRightsConfigFound =
+        DrmRightsStoringLocation::CheckDrmRightsStorageDriveL( iFs,
+            drmScheme, driveLetter );
+
+    // Check also the system drive
+    DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, iSystemDriveNumber );
+
     iFs.CharToDrive( driveLetter, iDriveNumber );
-	
-	iDb = CWmDrmDb::NewL( this );
-	iDataStore = CWmDrmDataStore::NewL( this );
-	}
+
+    iDb = CWmDrmDb::NewL( this );
+    iDataStore = CWmDrmDataStore::NewL( this );
+    }
 
 void CWmDrmServer::ResetCacheL()
     {
@@ -94,43 +94,43 @@ void CWmDrmServer::ResetCacheL()
         {
         delete iCache;
         iCache = NULL;
-	    }
+        }
     iCache = CSlotDataCache::NewL( this );
-	if ( iEnumeratorCache )
-	    {
-	    delete iEnumeratorCache;
-	    iEnumeratorCache = NULL;
-	    }
-	iEnumeratorCache = CSlotEnumeratorCache::NewL( this );
+    if ( iEnumeratorCache )
+        {
+        delete iEnumeratorCache;
+        iEnumeratorCache = NULL;
+        }
+    iEnumeratorCache = CSlotEnumeratorCache::NewL( this );
     }
 
 CSession2* CWmDrmServer::NewSessionL(
     const TVersion& /*aVersion*/,
     const RMessage2& /*aMessage*/ ) const
-	{
-	LOGFN( "CWmDrmServer::NewSessionL" );
-	return new( ELeave ) CWmDrmSession();
-	}
+    {
+    LOGFN( "CWmDrmServer::NewSessionL" );
+    return new( ELeave ) CWmDrmSession();
+    }
 
 CSlotDataCache* CWmDrmServer::Cache()
-	{
-	return iCache;
-	}
+    {
+    return iCache;
+    }
 
 CSlotEnumeratorCache* CWmDrmServer::EnumeratorCache()
-	{
+    {
     return iEnumeratorCache;
-	}
+    }
 
 CClock* CWmDrmServer::Clock()
-	{
-	return iClock;
-	}
+    {
+    return iClock;
+    }
 
 RFs& CWmDrmServer::Fs()
-	{
-	return iFs;
-	}
+    {
+    return iFs;
+    }
 
 CWmDrmDataStore* CWmDrmServer::DataStore()
     {
@@ -150,38 +150,38 @@ TInt64 CWmDrmServer::FreeSpaceL( TBool aConfiguredDrive )
         // Check the disk space from the configured drive
         User::LeaveIfError( iFs.Volume( info, iDriveNumber ) );
         }
-    else 
+    else
         {
         // Check the disk space from the system drive
-        User::LeaveIfError( iFs.Volume( info, iSystemDriveNumber ) );   
+        User::LeaveIfError( iFs.Volume( info, iSystemDriveNumber ) );
         }
-    return info.iFree;    
-    } 
+    return info.iFree;
+    }
 
 static void RunServerL()
-	{
-	LOGFN( "RunServerL" );
+    {
+    LOGFN( "RunServerL" );
 
-	User::LeaveIfError( RThread::RenameMe( KWmDrmServerName ) );
-	CActiveScheduler* s = new( ELeave ) CActiveScheduler;
-	CleanupStack::PushL( s );
-	CActiveScheduler::Install( s );
+    User::LeaveIfError( RThread::RenameMe( KWmDrmServerName ) );
+    CActiveScheduler* s = new( ELeave ) CActiveScheduler;
+    CleanupStack::PushL( s );
+    CActiveScheduler::Install( s );
     CWmDrmServer::NewLC();
-	RProcess::Rendezvous( KErrNone );
-	CActiveScheduler::Start();
-	CleanupStack::PopAndDestroy( 2 ); // server, s
-	}
+    RProcess::Rendezvous( KErrNone );
+    CActiveScheduler::Start();
+    CleanupStack::PopAndDestroy( 2 ); // server, s
+    }
 
 TInt E32Main()
-	{
-	__UHEAP_MARK;
-	CTrapCleanup* cleanup = CTrapCleanup::New();
-	TInt r = KErrNoMemory;
-	if ( cleanup )
-		{
-		TRAP( r, RunServerL() );
-		delete cleanup;
-		}
-	__UHEAP_MARKEND;
-	return r;
-	}
+    {
+    __UHEAP_MARK;
+    CTrapCleanup* cleanup = CTrapCleanup::New();
+    TInt r = KErrNoMemory;
+    if ( cleanup )
+        {
+        TRAP( r, RunServerL() );
+        delete cleanup;
+        }
+    __UHEAP_MARKEND;
+    return r;
+    }

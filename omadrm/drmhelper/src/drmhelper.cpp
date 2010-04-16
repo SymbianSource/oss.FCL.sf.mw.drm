@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2003-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -25,51 +25,52 @@
 #include "DcfCommon.h"
 #include "DRMHelperDownloadManager.h"
 
-#include <SaCls.h>
-#include <DRMHelper.rsg>
+#include <sacls.h>
+#include <Drmhelper.rsg>
 #include <AknQueryDialog.h>
 #include <DRMCommon.h>
 
-#include <StarterClient.h>
+#include <starterclient.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include <StringLoader.h>
 #include <eikproc.h> //CEikProcess
 #include <eikdoc.h> //CEikDocument
-#include <documenthandler.h> // KDRMErr*
+#include <DocumentHandler.h> // KDRMErr*
 #include <aknnotewrappers.h> // information note
-#include <aknglobalnote.h> // global info note
+#include <AknGlobalNote.h> // global info note
 
-#include <drmconstraint.h>
+#include <DrmConstraint.h>
 
 #include <stringresourcereader.h>
 #include <apgcli.h>
 #include <data_caging_path_literals.hrh>
 
 #include <AiwGenericParam.h>
-#include <dcfrep.h>
+#include <DcfRep.h>
 #include <DcfEntry.h>
 
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 
 #include <AknLaunchAppService.h> // for launching RMUI embedded
 
 #include <utf.h>
 
-#include <schemehandler.h> // for handling URLs
-#include "drmhelperserver.h"
-#include "consumedata.h"
-#include "drmtypes.h"
-#include "drmclockclient.h"
+#include <SchemeHandler.h> // for handling URLs
+#include "DRMHelperServer.h"
+#include "ConsumeData.h"
+#include "DRMTypes.h"
+#include "DRMClockClient.h"
 #include "DRMPointerArray.h"
 
 #include <SecondaryDisplay/DRMHelperSecondaryDisplay.h> // for secondary display support
-#include <aknmediatorfacade.h>
-#include <mediatoreventprovider.h>
-#include <mediatordomainuids.h>
+#include <AknMediatorFacade.h>
+#include <MediatorEventProvider.h>
+#include <MediatorDomainUIDs.h>
 #include <featmgr.h>
 
 #include "RoapStorageClient.h"
@@ -88,11 +89,11 @@
 #include <cmmanager.h>
 
 // publish & subrscibe
-#include <E32Property.h>
-#include <PsVariables.h>
+#include <e32property.h>
+#include <PSVariables.h>
 
 #ifdef __SERIES60_NATIVE_BROWSER
-#include <browseruisdkcrkeys.h>
+#include <BrowserUiSDKCRKeys.h>
 #endif
 
 #ifndef __SERIES60_NATIVE_BROWSER
@@ -3587,16 +3588,16 @@ void CDRMHelper::CreateLaunchParamL(
     {
     TInt index;
 
-    // MaxInt will fit into 10 characters
-    HBufC* b( HBufC::NewLC( 10 ) );
+    // MaxInt will fit into 11 characters
+    HBufC* b( HBufC::NewLC( 11 ) );
     b->Des().NumUC( aLocalId );
     HBufC* localIDBuf( b->ReAllocL( b->Des().Length() ) );
     CleanupStack::Pop( b );
     b = NULL;
     CleanupStack::PushL( localIDBuf );
 
-    // length of startparam is always 1 and 2 spaces are needed
-    TInt length = 1 + aUrl->Length() + localIDBuf->Des().Length() + 2;
+    // length of startparam is always 1 and some markers are needed
+    TInt length = 1 + aUrl->Length() + localIDBuf->Des().Length() + 3;
 
     aLaunchParam = HBufC::NewMaxL( length );
 
@@ -3604,7 +3605,7 @@ void CDRMHelper::CreateLaunchParamL(
     ptr.SetLength( 0 );
     _LIT( KOne, "1" );
     _LIT( KTwo, "2" );
-    _LIT( KSpace, " " );
+    _LIT( KMarker, "\x00" );
 
     // start param is 1 for embedded launch and 2 for launching details view
     // standalone
@@ -3616,9 +3617,9 @@ void CDRMHelper::CreateLaunchParamL(
         {
         ptr.Append( KTwo() );
         }
-    ptr.Append( KSpace() );
+    ptr.Append( KMarker() );
     ptr.Append( localIDBuf->Des() );
-    ptr.Append( KSpace() );
+    ptr.Append( KMarker() );
 
     index = ptr.Length();
     ptr.SetLength( length );
@@ -3626,6 +3627,8 @@ void CDRMHelper::CreateLaunchParamL(
         {
         ptr[index++] = ( unsigned char ) (*aUrl)[i];
         }
+
+    ptr[index] = ( unsigned char ) KMarker()[0];
 
     CleanupStack::PopAndDestroy( localIDBuf );
     }
@@ -5604,7 +5607,7 @@ void CDRMHelper::LaunchRightsManagerUiL( const TDesC& aParam16 )
 
         CAknLaunchAppService* launchAppService =
             CAknLaunchAppService::NewL( KUidDRMUI, this, paramList );
-        
+
         CleanupStack::PushL( launchAppService );
         iWait.Start();
 

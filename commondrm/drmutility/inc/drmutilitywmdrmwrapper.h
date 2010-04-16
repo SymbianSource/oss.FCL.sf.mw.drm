@@ -22,8 +22,9 @@
 //*** system include files go here:
 #include <e32base.h>
 #include <f32file.h>
-#include <aknserverapp.h>
+#include <AknServerApp.h>
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <drmutilitytypes.h>
 
 //*** user include files go here:

@@ -27,7 +27,7 @@
 #include <mmtsy_names.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "DrmKeyStorage.h"
@@ -50,7 +50,7 @@ _LIT(KLogName, "KeyStorage.log");
         buffer.Ptr(), buffer.Length());
 #else
 #define LOG(string)
-#define LOGHEX(buffer)       
+#define LOGHEX(buffer)
 #endif
 
 #pragma message("Compiling DRM Std KeyStorage..")
@@ -100,17 +100,17 @@ LOCAL_C void DoUnloadPhoneModule( TAny* aAny );
 LOCAL_C void WriteFileL(RFs& aFs, const TDesC& aName, const TDesC8& aData)
     {
     RFile file;
-    
+
     User::LeaveIfError(file.Replace(aFs, aName, EFileWrite));
     User::LeaveIfError(file.Write(aData));
     file.Close();
     }
-    
+
 LOCAL_C void ReadFileL(RFs& aFs, const TDesC& aName, HBufC8*& aContent)
-    {   
+    {
     RFile file;
     TInt size = 0;
-    
+
     User::LeaveIfError(file.Open(aFs, aName, EFileRead));
     CleanupClosePushL(file);
     User::LeaveIfError(file.Size(size));
@@ -150,7 +150,7 @@ RInteger OS2IPL(
     {
     RInteger r;
     TInt i;
-    
+
     r = RInteger::NewL(0);
     for (i = 0; i < aOctetStream.Length(); i++)
         {
@@ -172,7 +172,7 @@ void DoUnloadPhoneModule( TAny* aAny )
 
 // -----------------------------------------------------------------------------
 // CDrmStdKeyStorage* CDrmStdKeyStorage::NewL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 EXPORT_C CDrmStdKeyStorage* CDrmStdKeyStorage::NewL(RLibrary aLibrary)
@@ -186,9 +186,9 @@ EXPORT_C CDrmStdKeyStorage* CDrmStdKeyStorage::NewL(RLibrary aLibrary)
 
 // -----------------------------------------------------------------------------
 // CDrmStdKeyStorage::CDrmStdKeyStorage
-// 
+//
 // -----------------------------------------------------------------------------
-//    
+//
 CDrmStdKeyStorage::CDrmStdKeyStorage(RLibrary aLibrary):
     iFileMan(NULL),
     iRootSelected(EFalse),
@@ -200,18 +200,18 @@ CDrmStdKeyStorage::CDrmStdKeyStorage(RLibrary aLibrary):
 
 // -----------------------------------------------------------------------------
 // CDrmStdKeyStorage::ConstructL
-// 
+//
 // -----------------------------------------------------------------------------
-//   
+//
 void CDrmStdKeyStorage::ConstructL()
     {
-   
+
     LOG(_L("CDrmStdKeyStorage::ConstructL ->"));
     User::LeaveIfError(iFs.Connect());
     iFileMan = CFileMan::NewL(iFs);
 
-#ifdef __DRM_OMA2 
-	SelectDefaultRootL();
+#ifdef __DRM_OMA2
+    SelectDefaultRootL();
 #endif
 
     iDeviceSpecificKey.Copy(KDefaultKey);
@@ -221,7 +221,7 @@ void CDrmStdKeyStorage::ConstructL()
 
 // -----------------------------------------------------------------------------
 // MDrmKeyStorage::~MDrmKeyStorage
-// 
+//
 // -----------------------------------------------------------------------------
 //
 
@@ -230,7 +230,7 @@ MDrmKeyStorage::~MDrmKeyStorage()
     }
 // -----------------------------------------------------------------------------
 // DrmStdKeyStorage::~CDrmStdKeyStorage
-// 
+//
 // -----------------------------------------------------------------------------
 //
 
@@ -247,10 +247,10 @@ CDrmStdKeyStorage::~CDrmStdKeyStorage()
 
 // -----------------------------------------------------------------------------
 // DrmStdKeyStorage::ModulusSize
-// 
+//
 // -----------------------------------------------------------------------------
 //
-    
+
 TInt CDrmStdKeyStorage::ModulusSize()
     {
     LOG(_L("CDrmStdKeyStorage::ModulusSize ->"));
@@ -265,7 +265,7 @@ TInt CDrmStdKeyStorage::ModulusSize()
 
 // -----------------------------------------------------------------------------
 // DrmStdKeyStorage::SelectTrustedRootL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void CDrmStdKeyStorage::SelectTrustedRootL(
@@ -274,30 +274,30 @@ void CDrmStdKeyStorage::SelectTrustedRootL(
     TFileName fileName;
     TEntry entry;
     TInt i;
-    
+
     LOG(_L("CDrmStdKeyStorage::SelectTrustedRootL ->"));
     LOG(aRootKeyHash);
     if (aRootKeyHash.Length() != 0)
         {
-        
+
 #ifndef RD_MULTIPLE_DRIVE
-        
+
         fileName.Copy(KKeyStoragePath);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
         TFileName tempPath;
         TInt driveNumber( -1 );
         TChar driveLetter;
         DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
-    	iFs.DriveToChar( driveNumber, driveLetter );
-    
-    	tempPath.Format( KKeyStoragePath, (TUint)driveLetter );
-        
+        iFs.DriveToChar( driveNumber, driveLetter );
+
+        tempPath.Format( KKeyStoragePath, (TUint)driveLetter );
+
         fileName.Copy(tempPath);
-    
+
 #endif
-        
+
         for (i = 0; i < SHA1_HASH; i++)
             {
             fileName.AppendNumFixedWidth(aRootKeyHash[i], EHex, 2);
@@ -305,22 +305,22 @@ void CDrmStdKeyStorage::SelectTrustedRootL(
         fileName.Append('\\');
         if (iFs.Entry(fileName, entry) != KErrNone)
             {
-            
+
 #ifndef RD_MULTIPLE_DRIVE
-            
+
             fileName.Copy(KRomKeyStoragePath);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
             DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
-    	    iFs.DriveToChar( driveNumber, driveLetter );
-    	    
-    	    tempPath.Format( KRomKeyStoragePath, (TUint)driveLetter );
-            
+            iFs.DriveToChar( driveNumber, driveLetter );
+
+            tempPath.Format( KRomKeyStoragePath, (TUint)driveLetter );
+
             fileName.Copy(tempPath);
-    
+
 #endif
-            
+
             for (i = 0; i < SHA1_HASH; i++)
                 {
                 fileName.AppendNumFixedWidth(aRootKeyHash[i], EHex, 2);
@@ -332,7 +332,7 @@ void CDrmStdKeyStorage::SelectTrustedRootL(
         User::LeaveIfError(iFs.SetSessionPath(fileName));
         InitializeKeyL();
         CheckRootForCmlaL();
-        iRootSelected = ETrue;  
+        iRootSelected = ETrue;
         }
     else
         {
@@ -340,10 +340,10 @@ void CDrmStdKeyStorage::SelectTrustedRootL(
         }
     LOG(_L("CDrmStdKeyStorage::SelectTrustedRootL <-"));
     }
-    
+
 // -----------------------------------------------------------------------------
 // DrmStdKeyStorage::SelectDefaultRootL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void CDrmStdKeyStorage::SelectDefaultRootL()
@@ -351,44 +351,44 @@ void CDrmStdKeyStorage::SelectDefaultRootL()
     CDir* dir = NULL;
     TFileName dirName;
     TBool found = EFalse;
-    
+
     LOG(_L("CDrmStdKeyStorage::SelectDefaultRootL ->"));
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     if (iFs.GetDir(KKeyStoragePath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TFileName tempPath;
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     tempPath.Format( KKeyStoragePath, (TUint)driveLetter );
-    
+
     if (iFs.GetDir(tempPath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #endif
-    
+
         {
         __UHEAP_MARK;
         LOG(_L("  Checking keys on C:"));
         CleanupStack::PushL(dir);
         if (dir->Count() >= 1)
             {
-            
+
 #ifndef RD_MULTIPLE_DRIVE
-            
+
             dirName.Copy(KKeyStoragePath);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
             dirName.Copy(tempPath);
-    
+
 #endif
-            
+
             dirName.Append((*dir)[0].iName);
             dirName.Append('\\');
             User::LeaveIfError(iFs.SetSessionPath(dirName));
@@ -397,39 +397,39 @@ void CDrmStdKeyStorage::SelectDefaultRootL()
         CleanupStack::PopAndDestroy(dir);
         __UHEAP_MARKEND;
         }
-    
+
 #ifndef RD_MULTIPLE_DRIVE
 
     if (!found && iFs.GetDir(KRomKeyStoragePath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     tempPath.Format( KRomKeyStoragePath, (TUint)driveLetter );
-    
+
     if (!found && iFs.GetDir(tempPath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #endif
         {
-    	LOG(_L("  Checking keys on Z:"));
+        LOG(_L("  Checking keys on Z:"));
         CleanupStack::PushL(dir);
         if (dir->Count() < 1)
             {
             User::Leave(KErrGeneral);
             }
-        
+
 #ifndef RD_MULTIPLE_DRIVE
-        
+
         dirName.Copy(KRomKeyStoragePath);
-        
+
 #else //RD_MULTIPLE_DRIVE
-    
+
         dirName.Copy(tempPath);
-        
+
 #endif
-        
+
         dirName.Append((*dir)[0].iName);
         dirName.Append('\\');
         User::LeaveIfError(iFs.SetSessionPath(dirName));
@@ -438,14 +438,14 @@ void CDrmStdKeyStorage::SelectDefaultRootL()
         }
     if (!found)
         {
-        User::Leave(KErrGeneral); 
+        User::Leave(KErrGeneral);
         }
     InitializeKeyL();
     CheckRootForCmlaL();
     iRootSelected = ETrue;
     LOG(_L("CDrmStdKeyStorage::SelectDefaultRootL <-"));
     }
-    
+
 TBool CDrmStdKeyStorage::SelectedRootIsCmla()
     {
     return iRootIsCmla;
@@ -453,10 +453,10 @@ TBool CDrmStdKeyStorage::SelectedRootIsCmla()
 
 // -----------------------------------------------------------------------------
 // DrmStdKeyStorage::GetTrustedRootsL
-// 
+//
 // -----------------------------------------------------------------------------
 //
-    
+
 void CDrmStdKeyStorage::GetTrustedRootsL(
     RPointerArray<HBufC8>& aRootList)
     {
@@ -467,26 +467,26 @@ void CDrmStdKeyStorage::GetTrustedRootsL(
     TEntry entry;
     TUint8 c;
     TInt r = KErrNone;
-    
+
     LOG(_L("CDrmStdKeyStorage::GetTrustedRootsL ->"));
     aRootList.ResetAndDestroy();
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     if (iFs.GetDir(KKeyStoragePath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TFileName tempPath;
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     tempPath.Format( KKeyStoragePath, (TUint)driveLetter );
-    
+
     if (iFs.GetDir(tempPath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #endif
         {
         LOG(_L("  Getting roots on C:"));
@@ -510,20 +510,20 @@ void CDrmStdKeyStorage::GetTrustedRootsL(
             }
         CleanupStack::PopAndDestroy(dir);
         }
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     if (iFs.GetDir(KRomKeyStoragePath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     tempPath.Format( KRomKeyStoragePath, (TUint)driveLetter );
-    
+
     if (iFs.GetDir(tempPath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #endif
         {
         LOG(_L("  Getting roots on Z:"));
@@ -552,7 +552,7 @@ void CDrmStdKeyStorage::GetTrustedRootsL(
 
 // -----------------------------------------------------------------------------
 // DrmStdKeyStorage::GetCertificateChainL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void CDrmStdKeyStorage::GetCertificateChainL(
@@ -562,7 +562,7 @@ void CDrmStdKeyStorage::GetCertificateChainL(
     TInt i;
     CDir* dir = NULL;
     HBufC8* cert = NULL;
-    
+
     LOG(_L("CDrmStdKeyStorage::GetCertificateChainL ->"));
     if (!iRootSelected)
         {
@@ -617,7 +617,7 @@ void CDrmStdKeyStorage::ImportDataL(
     CSHA1* hasher = NULL;
     TBuf8<SHA1_HASH> publicKeyHash;
     TFileName fileName;
-    
+
     LOG(_L("CDrmStdKeyStorage::ImportDataL ->"));
     n = aCertificateChain.Count();
     cert = CX509Certificate::NewLC(aCertificateChain[n - 1]);
@@ -628,25 +628,25 @@ void CDrmStdKeyStorage::ImportDataL(
     CleanupStack::PushL(hasher);
     hasher->Update(*publicKey);
     publicKeyHash.Copy(hasher->Final());
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     fileName.Copy(KKeyStoragePath);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     TFileName keyStorageDir;
     keyStorageDir.Format( KKeyStoragePath, (TUint)driveLetter );
-    
+
     fileName.Copy(keyStorageDir);
-    
+
 #endif
-    
+
     for (i = 0; i < SHA1_HASH; i++)
         {
         fileName.AppendNumFixedWidth(publicKeyHash[i], EHex, 2);
@@ -675,17 +675,17 @@ void CDrmStdKeyStorage::ImportDataL(
 void CDrmStdKeyStorage::GetDeviceSpecificKeyL(
     TBuf8<KDeviceSpecificKeyLength>& aKey)
     {
-    
+
     HBufC8* key = NULL;
-    TInt n;    
-    CSHA1* hasher = NULL;  
+    TInt n;
+    CSHA1* hasher = NULL;
     TBuf8<SHA1_HASH> hash;
-    
+
     if (iDeviceSpecificKey.Compare(KDefaultKey) == 0)
         {
-        
+
         GetImeiL();
-        
+
         HBufC8* buf = HBufC8::NewLC( iImei->Size() + sizeof(VID_DEFAULT) );
         TPtr8 ptr( buf->Des() );
         ptr.Copy( *iImei );
@@ -708,7 +708,7 @@ void CDrmStdKeyStorage::GetDeviceSpecificKeyL(
             n--;
             }
         }
-    
+
     aKey.Copy(iDeviceSpecificKey);
     }
 
@@ -760,7 +760,7 @@ HBufC8* CDrmStdKeyStorage::ModularExponentiateWithKeyL(
     RInteger input;
     HBufC8* output;
     TInt keyLength = KKeyLength;
-    
+
     LOG(_L("CDrmStdKeyStorage::ModularExponentiateWithKeyL ->"));
     input = OS2IPL(aInput);
     CleanupClosePushL(input);
@@ -782,7 +782,7 @@ void CDrmStdKeyStorage::CheckRootForCmlaL()
     HBufC8* buffer = NULL;
     HBufC* name = NULL;
     CX509Certificate* cert = NULL;
-    
+
     LOG(_L("CDrmStdKeyStorage::CheckRootForCmlaL ->"));
     __UHEAP_MARK;
     iFs.GetDir(KSingingCertPattern, KEntryAttNormal, ESortByName, dir);
@@ -805,7 +805,7 @@ void CDrmStdKeyStorage::CheckRootForCmlaL()
     LOG(_L("CDrmStdKeyStorage::CheckRootForCmlaL <-"));
     __UHEAP_MARKEND;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDrmStdKeyStorage::GetRdbSerialNumberL
 // -----------------------------------------------------------------------------
@@ -815,42 +815,42 @@ void CDrmStdKeyStorage::GetRdbSerialNumberL(
     {
     HBufC8* buffer = NULL;
     TUint att;
-    
+
 #ifndef RD_MULTIPLE_DRIVE
 
     if (iFs.Att(KSerialNumberFile, att) != KErrNone)
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     TFileName serialNoFile;
     serialNoFile.Format( KSerialNumberFile, (TUint)driveLetter );
-    
+
     if (iFs.Att(serialNoFile, att) != KErrNone)
-    
+
 #endif
         {
         GenerateNewRdbSerialNumberL();
         }
-    
+
 #ifndef RD_MULTIPLE_DRIVE
 
     ReadFileL(iFs, KSerialNumberFile, buffer);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     ReadFileL(iFs, serialNoFile, buffer);
-    
+
 #endif
-    
+
     aSerialNumber.Copy(*buffer);
     delete buffer;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDrmStdKeyStorage::GenerateNewRdbSerialNumberL
 // -----------------------------------------------------------------------------
@@ -861,29 +861,29 @@ void CDrmStdKeyStorage::GenerateNewRdbSerialNumberL()
     TPtr8 random( const_cast<TUint8*>(serialNumber.Ptr()),
                   KRdbSerialNumberLength,
                   KRdbSerialNumberLength );
-    
+
     RandomDataGetL(random,KRdbSerialNumberLength);
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     WriteFileL(iFs, KSerialNumberFile, random);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     TFileName serialNoFile;
     serialNoFile.Format( KSerialNumberFile, (TUint)driveLetter );
-    
+
     WriteFileL(iFs, serialNoFile, random);
-    
+
 #endif
-    
+
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDrmStdKeyStorage::UdtEncryptL
 // -----------------------------------------------------------------------------
@@ -898,31 +898,31 @@ HBufC8* CDrmStdKeyStorage::UdtEncryptL(
     TX509KeyFactory factory;
     CRSAPKCS1v15Encryptor* encryptor = NULL;
     TPtr8 result(const_cast<TUint8*>(output->Ptr()), 0, 256);
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     ReadFileL(iFs, KUdtCertFileName, buffer);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     TFileName udtCertFile;
     udtCertFile.Format( KUdtCertFileName, (TUint)driveLetter );
-    
+
     ReadFileL(iFs, udtCertFile, buffer);
-    
+
 #endif
-    
+
     CleanupStack::PushL(buffer);
     cert = CX509Certificate::NewL(*buffer);
     CleanupStack::PushL(cert);
     key = factory.RSAPublicKeyL(cert->PublicKey().KeyData());
     CleanupStack::PushL(key);
-       
+
     encryptor = CRSAPKCS1v15Encryptor::NewLC(*key);
     encryptor->EncryptL(aInput, result);
 
@@ -950,19 +950,19 @@ void CDrmStdKeyStorage::GetRootCertificatesL(
 #ifndef RD_MULTIPLE_DRIVE
 
     if (iFs.GetDir(KKeyStoragePath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TFileName tempPath;
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     tempPath.Format( KKeyStoragePath, (TUint)driveLetter );
-    
+
     if (iFs.GetDir(tempPath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #endif
         {
         CleanupStack::PushL(dir);
@@ -970,17 +970,17 @@ void CDrmStdKeyStorage::GetRootCertificatesL(
             {
             if ((*dir)[i].IsDir())
                 {
-                
+
 #ifndef RD_MULTIPLE_DRIVE
-                
+
                 dirName.Copy(KKeyStoragePath);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
                 dirName.Copy(tempPath);
-    
+
 #endif
-                
+
                 dirName.Append((*dir)[i].iName);
                 dirName.Append('\\');
                 User::LeaveIfError(iFs.SetSessionPath(dirName));
@@ -995,20 +995,20 @@ void CDrmStdKeyStorage::GetRootCertificatesL(
             }
         CleanupStack::PopAndDestroy(dir);
         }
-    
+
 #ifndef RD_MULTIPLE_DRIVE
 
     if (iFs.GetDir(KRomKeyStoragePath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
-    
+
     tempPath.Format( KRomKeyStoragePath, (TUint)driveLetter );
-    
+
     if (iFs.GetDir(tempPath, KEntryAttDir, ESortByName, dir) == KErrNone)
-    
+
 #endif
         {
         CleanupStack::PushL(dir);
@@ -1016,17 +1016,17 @@ void CDrmStdKeyStorage::GetRootCertificatesL(
             {
             if ((*dir)[i].IsDir())
                 {
-                
+
 #ifndef RD_MULTIPLE_DRIVE
-                
+
                 dirName.Copy(KRomKeyStoragePath);
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
                 dirName.Copy(tempPath);
-    
+
 #endif
-                
+
                 dirName.Append((*dir)[i].iName);
                 dirName.Append('\\');
                 User::LeaveIfError(iFs.SetSessionPath(dirName));
@@ -1043,7 +1043,7 @@ void CDrmStdKeyStorage::GetRootCertificatesL(
         }
     iFs.SetSessionPath( path );
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDrmStdKeyStorage::GetIMEIL
 // -----------------------------------------------------------------------------
@@ -1056,24 +1056,24 @@ const TDesC& CDrmStdKeyStorage::GetImeiL()
         }
 
 #if (defined __WINS__ || defined WINSCW)
-    // Default IMEI used for emulator   
+    // Default IMEI used for emulator
     _LIT( KDefaultSerialNumber, "123456789123456789" );
     iImei = KDefaultSerialNumber().AllocL();
-        
+
     return *iImei;
 #else
- 
+
     TInt error( KErrNone );
     TInt count( 0 );
     TInt count2( 0 );
     TUint32 caps( 0 );
     TBool found (EFalse);
-    
+
     RTelServer etelServer;
     RMobilePhone phone;
-    
+
     TUint KMaxImeiTries = 5;
-    
+
     for ( TUint8 i = 0; i < KMaxImeiTries; ++i )
         {
         error = etelServer.Connect();
@@ -1081,31 +1081,31 @@ const TDesC& CDrmStdKeyStorage::GetImeiL()
             {
             User::After( TTimeIntervalMicroSeconds32( KWaitingTime ) );
             }
-        else 
+        else
             {
             break;
             }
         }
-    
+
     User::LeaveIfError( error );
     CleanupClosePushL( etelServer );
-    
-    User::LeaveIfError( etelServer.LoadPhoneModule( KMmTsyModuleName ) );  
-    
+
+    User::LeaveIfError( etelServer.LoadPhoneModule( KMmTsyModuleName ) );
+
     TUnloadModule unload;
     unload.iServer = &etelServer;
     unload.iName = &KMmTsyModuleName;
-    
+
     TCleanupItem item( DoUnloadPhoneModule, &unload );
     CleanupStack::PushL( item );
     User::LeaveIfError( etelServer.EnumeratePhones( count ) );
-        
+
     for ( count2 = 0; count2 < count && !found; ++count2 )
         {
         RTelServer::TPhoneInfo phoneInfo;
         User::LeaveIfError( etelServer.GetTsyName( count2, phoneInfo.iName ) );
-        
-        if ( phoneInfo.iName.CompareF(KMmTsyModuleName()) == 0 )   
+
+        if ( phoneInfo.iName.CompareF(KMmTsyModuleName()) == 0 )
            {
             User::LeaveIfError( etelServer.GetPhoneInfo( count2, phoneInfo ) );
             User::LeaveIfError( phone.Open( etelServer, phoneInfo.iName ) );
@@ -1119,45 +1119,45 @@ const TDesC& CDrmStdKeyStorage::GetImeiL()
         // Not found.
         User::Leave( KErrNotFound );
         }
-   
+
     User::LeaveIfError( phone.GetIdentityCaps( caps ) );
     if (!( caps & RMobilePhone::KCapsGetSerialNumber ))
         {
          User::Leave( KErrNotFound );
         }
-        
+
     RMobilePhone::TMobilePhoneIdentityV1 id;
     TRequestStatus status;
-    
+
     phone.GetPhoneId( status, id );
-       
+
     User::WaitForRequest( status );
-        
+
     User::LeaveIfError( status.Int() );
-        
+
     iImei = id.iSerialNumber.AllocL();
-        
+
     CleanupStack::PopAndDestroy( 3 ); // phone, item, etelServer
-        
+
     HBufC8* buf = HBufC8::NewL( iImei->Size() );
     TPtr8 ptr( buf->Des() );
     ptr.Copy( *iImei );
-        
+
     LOG(_L("IMEI:"));
     LOGHEX(ptr);
     delete buf;
-    
+
     return *iImei;
-#endif /* __WINS__ , WINSCW */ 
-       
+#endif /* __WINS__ , WINSCW */
+
     }
-    
-    
+
+
 // -----------------------------------------------------------------------------
 // CDrmStdKeyStorage::RandomDataGetL
 // -----------------------------------------------------------------------------
 //
-    
+
 void CDrmStdKeyStorage::RandomDataGetL( TDes8& aData, const TInt aLength )
     {
     if ( aLength <= 0 )

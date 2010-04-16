@@ -22,17 +22,17 @@
 //*** system include files go here:
 #include <e32base.h>
 #include <f32file.h>
-#include <caf/caftypes.h> 
-#include <drmrightsclient.h>
+#include <caf/caftypes.h>
+#include <DRMRightsClient.h>
 #include <drmutilitytypes.h>
 
-namespace DRM 
+namespace DRM
 {
     //*** Forward declarations
     class CDrmRightsInfoData;
     class MDrmAsyncObserver;
     class CDrmUtilityCommon;
-    
+
  /**
   *  Utility class for DRM related rights information handling
   *
@@ -43,7 +43,7 @@ NONSHARABLE_CLASS( CDrmRightsInfoImpl ) : public CActive
     {
 
 public:
-	
+
     IMPORT_C static CDrmRightsInfoImpl* NewL();
 
     IMPORT_C static CDrmRightsInfoImpl* NewLC();
@@ -56,12 +56,12 @@ public:
      *
      * @param[in]   aUniqueId : The unique identifier or the content
      * @param[in]   aIntent : The intent for the rights to check
-     * @param[out]  aDetails : Details of the rights status 
+     * @param[out]  aDetails : Details of the rights status
      * @return none
      * @leave System wide error code
-     */	
-    IMPORT_C void CheckRightsL( 
-        const TDesC& aUniqueId, 
+     */
+    IMPORT_C void CheckRightsL(
+        const TDesC& aUniqueId,
         ContentAccess::TIntent aIntent,
         TDrmRightsInfo& aDetails );
 
@@ -70,16 +70,16 @@ public:
      *
      * @param[in]   aUniqueId   The unique identifier or the content
      * @param[in]   aIntent     The intent for the rights to check
-     * @param[out]  aDetails    Details of the rights status 
+     * @param[out]  aDetails    Details of the rights status
      * @param[in]   aObserver   Observer which gets reported of
      *                          the async operation
      *
      * @return Operation identifier
      *
      * @leave System wide error code
-     */	
-    IMPORT_C TInt CheckRightsAsyncL( 
-        const TDesC& aUniqueId, 
+     */
+    IMPORT_C TInt CheckRightsAsyncL(
+        const TDesC& aUniqueId,
         ContentAccess::TIntent aIntent,
         TDrmRightsInfo& aDetails,
         MDrmAsyncObserver& aObserver );
@@ -90,18 +90,18 @@ public:
      *
      * @since S60 v5.0
      * @param[in]   aOperationId    identifier of the async operation
-     *                              to be cancelled      
+     *                              to be cancelled
      * @return KErrNotFound if the operation has already been executed
      *         or it does not exist
      */
-    IMPORT_C TInt CancelOperation( TInt aOperationId ); 
-    
+    IMPORT_C TInt CancelOperation( TInt aOperationId );
+
 
 public: // From base classes
 
 
 protected: // Functions from base classes
-        
+
     /**
     * From CActive Cancels async request.
     */
@@ -115,7 +115,7 @@ protected: // Functions from base classes
     /**
     * From CActive Called when RunL leaves
     */
- 	TInt RunError( TInt aError );
+    TInt RunError( TInt aError );
 
 private:
 
@@ -126,7 +126,7 @@ private:
     void PerformCheckRightsL( CDrmRightsInfoData& aData );
 
     void AppendToQueue( CDrmRightsInfoData* aData );
-    
+
     CDrmRightsInfoData* PopFront();
 
 
@@ -134,25 +134,25 @@ private: // Data members
 
     // DrmUtilityCommon
     CDrmUtilityCommon* iDrmUtilityCommon;
-    
+
     // Oma Drm client
     RDRMRightsClient iOmaClient;
-    
+
     // WM Drm Client
     // RWMDrmClient iWmClient;
-    
+
     // current request status:
     MDrmAsyncObserver* iObserver;
     TInt iOperationId;
-    
+
     // Operation Queue:
     CDrmRightsInfoData* iFirst;
     CDrmRightsInfoData* iLast;
-    
+
     // To prevent queue handling from being messed up by threads
     RSemaphore iSemaphore;
     };
-    
+
 }
 
 #endif // CDRMRIGHTSINFOIMPL_H

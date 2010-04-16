@@ -18,7 +18,7 @@
 
 // INCLUDE FILES
 #include <e32std.h>
-#include "consumedata.h"
+#include "ConsumeData.h"
 
 // LOCAL CONSTANTS AND MACROS
 
@@ -32,34 +32,34 @@
 CConsumeData::CConsumeData() : CBase()
     {
     }
-    
+
 // -----------------------------------------------------------------------------
 // CConsumeData::~ConsumeData
 // C++ default destructor
 // -----------------------------------------------------------------------------
-//    
+//
 CConsumeData::~CConsumeData()
     {
     // If the connection is still open call finish
-    if( iConnectionStatus && iContentURI8 ) 
+    if( iConnectionStatus && iContentURI8 )
         {
-        iRdb.Consume( ContentAccess::EStop, *iContentURI8 );    
+        iRdb.Consume( ContentAccess::EStop, *iContentURI8 );
         }
-    
+
     // Close the connection to the server:
     iRdb.Close();
-    
+
     // Reset the connection status
     iConnectionStatus = EFalse;
-        
+
     // Delete the content id
     if( iContentURI8 )
         {
         delete iContentURI8;
-        iContentURI8 = NULL;    
+        iContentURI8 = NULL;
         }
     }
-    
+
 
 // -----------------------------------------------------------------------------
 // CConsumeData::NewLC
@@ -73,7 +73,7 @@ CConsumeData* CConsumeData::NewLC( const TDesC8& aUri )
     self->ConstructL( aUri );
     return self;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CConsumeData::NewL
 // 2-phase constructor
@@ -83,8 +83,8 @@ CConsumeData* CConsumeData::NewL( const TDesC8& aUri )
     {
     CConsumeData* self = NewLC( aUri );
     CleanupStack::Pop( self );
-    return self;        
-    }    
+    return self;
+    }
 
 // -----------------------------------------------------------------------------
 // CConsumeData::Consume
@@ -93,21 +93,21 @@ CConsumeData* CConsumeData::NewL( const TDesC8& aUri )
 TInt CConsumeData::Consume( const ContentAccess::TIntent& aIntent )
     {
     TInt retVal = KErrNone;
-    
+
     if( !iConnectionStatus )
         {
-        return KErrNotReady;    
+        return KErrNotReady;
         }
-        
+
     retVal = iRdb.Consume( aIntent, *iContentURI8 );
 
     if( aIntent == ContentAccess::EStop )
         {
         iRdb.Close();
-        iConnectionStatus = EFalse;    
+        iConnectionStatus = EFalse;
         }
-        
-    return retVal;    
+
+    return retVal;
     }
 // -----------------------------------------------------------------------------
 // CConsumeData::CompareUri
@@ -117,9 +117,9 @@ TInt CConsumeData::CompareUri( const TDesC8& aUri ) const
     {
     if( !iContentURI8 )
         {
-        return KErrNotReady;    
+        return KErrNotReady;
         }
-        
+
     return iContentURI8->Des().Compare( aUri );
     }
 
@@ -135,9 +135,9 @@ void CConsumeData::ConstructL( const TDesC8& aUri )
 
     // Set the connection status
     iConnectionStatus = ETrue;
-    
+
     // copy the url for internal use
-    iContentURI8 = aUri.AllocL();    
+    iContentURI8 = aUri.AllocL();
     }
 
 // ========================== OTHER EXPORTED FUNCTIONS =========================

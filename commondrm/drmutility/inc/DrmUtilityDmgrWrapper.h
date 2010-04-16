@@ -11,7 +11,7 @@
 *
 * Contributors:
 *
-* Description:  
+* Description:
 *
 */
 
@@ -20,7 +20,7 @@
 #define CDRMUTILITYDMGRWRAPPER_H
 
 #include <DownloadMgrClient.h>
-#include <aknprogressdialog.h>
+#include <AknProgressDialog.h>
 #include <eikprogi.h>
 
 /**
@@ -50,8 +50,8 @@ public:
 *  @lib DrmUtilityDmgrWrapper
 *  @since S60 v5.0
 */
-class CDrmUtilityDmgrWrapper : CBase, 
-    public MHttpDownloadMgrObserver, 
+class CDrmUtilityDmgrWrapper : CBase,
+    public MHttpDownloadMgrObserver,
     public MDrmUtilityDmgrWrapper,
     public MProgressDialogCallback
     {
@@ -71,7 +71,7 @@ public:
     */
     void DownloadAndHandleRoapTriggerL( const HBufC8* aUrl );
 
-    void DownloadAndHandleRoapTriggerL( const HBufC8* aUrl,  
+    void DownloadAndHandleRoapTriggerL( const HBufC8* aUrl,
         CCoeEnv& aCoeEnv );
 
     HBufC8* GetErrorUrlL();

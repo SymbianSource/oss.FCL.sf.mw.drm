@@ -20,32 +20,32 @@
 #include <e32std.h>
 #include <e32test.h>
 #include <etelmm.h>
-#include <DrmTypes.h>
+#include <DRMTypes.h>
 #include <starterclient.h>
 #include <featmgr.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "DRMRightsServer.h"
-#include "DRMRightsDb.h"
+#include "drmrightsdb.h"
 #include "DRMDbSession.h"
 #include "DRMEngineClientServer.h"
-#include "DRMLog.h"
+#include "drmlog.h"
 #include "DRMNotifier.h"
 #include "DrmKeyStorage.h"
-#include "drmnotifierserver.h"
-#include "roapstorageserver.h"
+#include "DRMNotifierServer.h"
+#include "RoapStorageServer.h"
 #include "drmnotifierclientserver.h"
 #include "drmroapclientserver.h"
 #include "DRMXOma.h"
 #include "DRMBackupObserver.h"
 #include "DRMBackup.h"
 #include "flogger.h"
-#include "drmrightsparser.h"
-#include "drmrights.h"
-#include "drmhelpercommon.h"
+#include "DrmRightsParser.h"
+#include "DRMRights.h"
+#include "DRMHelperCommon.h"
 
 #include  "wmdrmclientwrapper.h"
 
@@ -65,7 +65,7 @@ _LIT( KLogName, "backup.log");
 */
 
 // EXTERNAL DATA STRUCTURES
-// EXTERNAL FUNCTION PROTOTYPES 
+// EXTERNAL FUNCTION PROTOTYPES
 // CONSTANTS
 LOCAL_C const TUint KMaxHeapsize = 0x7A120;
 
@@ -159,16 +159,16 @@ LOCAL_C void DoUnloadPhoneModule( TAny* aAny );
 // Returns: TInt: Symbian OS error code.
 // -----------------------------------------------------------------------------
 //
-LOCAL_C TInt Startup( void ) 
+LOCAL_C TInt Startup( void )
     {
     TInt error = KErrNone;
     CTrapCleanup* trap = CTrapCleanup::New();
     CActiveScheduler* scheduler = new CActiveScheduler();
-    
+
     if ( trap && scheduler )
         {
         CActiveScheduler::Install( scheduler );
-    
+
         error = StartDBServer();
         }
     else
@@ -176,23 +176,23 @@ LOCAL_C TInt Startup( void )
         error = KErrNoMemory;
         }
 
-    delete scheduler; 
+    delete scheduler;
     scheduler = NULL;
-    
+
     delete trap;
     trap = NULL;
-    
+
     if ( error )
         {
         // Something went wrong. Release the client (if any).
         SignalClient();
-        
+
         if ( error == KErrAlreadyExists )
             {
             error = KErrNone;
             }
         }
-       
+
     return error;
     }
 
@@ -216,50 +216,50 @@ void SignalClient( void )
 // This function starts the actual server under TRAP harness and starts
 // waiting for connections. This function returns only if there has been
 // errors during server startup or the server is stopped for some reason.
-// 
+//
 // Returns: TInt: Symbian OS error code.
 // -----------------------------------------------------------------------------
-TInt StartDBServer( void ) 
+TInt StartDBServer( void )
     {
     TInt error = KErrNone;
     CDRMRightsServer* server = NULL;
     TUint8 count = 0;
-    
+
     do
         {
         DRMLOG2( _L( "RightsServer.exe: StartDBServer: %d" ), error );
-        
+
         ++count;
-        
+
         TRAP( error, ( server = CDRMRightsServer::NewL() ) );
-        
-        if ( error ) 
+
+        if ( error )
             {
             User::After( TTimeIntervalMicroSeconds32(KWaitingTime) );
             }
-        
+
         } while( error && ( count <= KMaxStartTries ) );
-        
-    if( error ) 
+
+    if( error )
         {
         DRMLOG2( _L( "RightsServer.exe: CDRMRightsServer::NewL failed: %d " ), error );
         // Failed
         return error;
         }
-    
+
     // Release the semaphore if necessary.
     SignalClient();
-   
+
     // Start waiting for connections
     CActiveScheduler::Start();
-    
+
     // Dying...
     // Delete CDRMRigntsServer
-        
+
     DRMLOG( _L( "RightsServer.exe: DB server dying..." ) );
 
     delete server;
-    
+
     return KErrNone;
     }
 
@@ -290,7 +290,7 @@ void PointerArrayResetDestroyAndClose(TAny* aPtr)
     (reinterpret_cast<RPointerArray<S>*>(aPtr))->ResetAndDestroy();
     (reinterpret_cast<RPointerArray<S>*>(aPtr))->Close();
     }
-#endif    
+#endif
 
 // ============================ MEMBER FUNCTIONS ===============================
 
@@ -302,46 +302,46 @@ void PointerArrayResetDestroyAndClose(TAny* aPtr)
 CDRMRightsServer* CDRMRightsServer::NewL()
     {
     CDRMRightsServer* self = new( ELeave ) CDRMRightsServer();
-    
+
     CleanupStack::PushL( self );
-    
+
     self->ConstructL();
-    
+
     CleanupStack::Pop( self );
-    
+
     return self;
     }
 
 // -----------------------------------------------------------------------------
 // Destructor
 // -----------------------------------------------------------------------------
-CDRMRightsServer::~CDRMRightsServer() 
+CDRMRightsServer::~CDRMRightsServer()
     {
     DRMLOG( _L( "CDRMRightsServer::~" ) );
-    
+
     delete iIMEI; iIMEI = NULL;
-    
+
     delete iIMSI; iIMSI = NULL;
-    
+
     delete iDb; iDb = NULL;
-    
+
     iClock.Close();
     iCache.Close();
-    
+
     iMeteringDb.Close();
-    
+
     iFs.Close();
     iActiveCountConstraints.ResetAndDestroy();
     iActiveCountConstraints.Close();
-    
+
     delete iBackupObserver;
-    delete iBackupHandler;    
+    delete iBackupHandler;
     delete iActiveBackupClient;
     delete iDbWatcher;
 
-#if 0    
+#if 0
     // Close and delete the shared data client
-    if( iSharedDataClient ) 
+    if( iSharedDataClient )
         {
         iSharedDataClient->Close();
         delete iSharedDataClient;
@@ -353,7 +353,7 @@ CDRMRightsServer::~CDRMRightsServer()
         {
         delete iNotifier; iNotifier = NULL;
         }
-        
+
     //An empty semaphore
     RSemaphore semaphore;
     }
@@ -366,18 +366,18 @@ CDRMRightsServer::~CDRMRightsServer()
 TBool CDRMRightsServer::GetSecureTime( TTime& aTime ) const
     {
     DRMClock::ESecurityLevel secLevel = DRMClock::KInsecure;
-	
-	TInt timezone( 0 );
-	
+
+    TInt timezone( 0 );
+
     iClock.GetSecureTime( aTime, timezone, secLevel );
-	
+
     if( secLevel == DRMClock::KSecure )
         {
         DRMLOG( _L( "CDRMRightsServer::GetSecureTime: Time is secure\r\n" ) );
-        return ETrue;		
-        }	
-        
-    DRMLOG( _L( "CDRMRightsServer::GetSecureTime: Time is not secure\r\n" ) );    	
+        return ETrue;
+        }
+
+    DRMLOG( _L( "CDRMRightsServer::GetSecureTime: Time is not secure\r\n" ) );
 
     return EFalse;
     }
@@ -406,8 +406,8 @@ RFs& CDRMRightsServer::FileServerSession()
     {
     return iFs;
     }
-    
-    
+
+
 RDRMReplayCache& CDRMRightsServer::ReplayCache()
     {
     return iCache;
@@ -426,8 +426,8 @@ RDrmMeteringDb& CDRMRightsServer::MeteringDatabase()
 //
 void CDRMRightsServer::HandleNotifyL(const TUid /*aUid*/,
                                      const TDesC& /*aKey*/,
-                                     const TDesC& /*aValue*/)  
-    {   
+                                     const TDesC& /*aValue*/)
+    {
     /* XXX Backup via Publish/Subscribe
     __ASSERT_DEBUG( iDb, User::Invariant() );
     TInt value = -1;
@@ -453,12 +453,12 @@ void CDRMRightsServer::HandleNotifyL(const TUid /*aUid*/,
 
                 if( value == 1 ) // PrepareForBackup
                     {
-                    TRAPD( error, iDb->BackupDBL( KNullDesC, 
+                    TRAPD( error, iDb->BackupDBL( KNullDesC,
                                                   KNullDesC8 ) );
                     // Notify that it's done
                     User::LeaveIfError( iSharedDataClient->AssignToTemporaryFile(
                                         KSDUidSystem ) );
-                    User::LeaveIfError( iSharedDataClient->SetInt( 
+                    User::LeaveIfError( iSharedDataClient->SetInt(
                                         KDRMBackupRestoreStatus, 0 ) );
                     iSharedDataClient->Flush();
                     }
@@ -473,7 +473,7 @@ void CDRMRightsServer::HandleNotifyL(const TUid /*aUid*/,
 // From CActive. Complete the request and restart the scheduler.
 // -----------------------------------------------------------------------------
 //
-TInt CDRMRightsServer::RunError( TInt aError ) 
+TInt CDRMRightsServer::RunError( TInt aError )
     {
     DRMLOG2( _L( "CDRMRightsServer::RunError: %d" ), aError );
 
@@ -482,10 +482,10 @@ TInt CDRMRightsServer::RunError( TInt aError )
         {
         Message().Complete( aError );
         }
-    
+
     // Restart the scheduler.
     ReStart();
-    
+
     // Error handled.
     return KErrNone;
     }
@@ -501,8 +501,8 @@ CSession2* CDRMRightsServer::NewSessionL( const TVersion& aVersion,
 
     if ( ! User::QueryVersionSupported( TVersion( DRMEngine::KServerMajorVersion,
         DRMEngine::KServerMinorVersion,
-        DRMEngine::KServerBuildVersion ), 
-        aVersion ) ) 
+        DRMEngine::KServerBuildVersion ),
+        aVersion ) )
         {
         // Sorry, no can do.
         User::Leave( KErrNotSupported );
@@ -518,40 +518,40 @@ CSession2* CDRMRightsServer::NewSessionL( const TVersion& aVersion,
 // might leave.
 // -----------------------------------------------------------------------------
 //
-CDRMRightsServer::CDRMRightsServer() : 
+CDRMRightsServer::CDRMRightsServer() :
     CServer2( EPriorityStandard ),
     iIMEI( NULL ),
-    iArmed( EFalse ),    
+    iArmed( EFalse ),
     iIMSI( NULL ),
     iGetImsi( ETrue )
     {
     // Nothing
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMRightsServer::ConstructL
 // Symbian 2nd phase constructor can leave.
 // -----------------------------------------------------------------------------
 //
-void CDRMRightsServer::ConstructL() 
+void CDRMRightsServer::ConstructL()
     {
     DRMLOG( _L( "CDRMRightsServer::ConstructL" ) );
 
     TDRMKey key;
     RSemaphore semaphore;
     RProcess currentprocess;
-    
+
     // Ignore errors
     User::RenameThread( KRightsServerThread );
     User::LeaveIfError( iFs.Connect() );
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     // Ignore errors
     iFs.MkDirAll( KDRMDbTempPath );
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TFileName tempPath;
     TFileName tempPath2;
     TFileName tempRemovablePath;
@@ -559,15 +559,15 @@ void CDRMRightsServer::ConstructL()
     TChar driveLetter;
     TChar driveLetterRemovable;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
-	iFs.DriveToChar( driveNumber, driveLetter );
-	
-	tempPath.Format( KDbTempPath, (TUint)driveLetter );
-    
+    iFs.DriveToChar( driveNumber, driveLetter );
+
+    tempPath.Format( KDbTempPath, (TUint)driveLetter );
+
     // Ignore errors
     iFs.MkDirAll( tempPath );
-    
+
 #endif
-        
+
     DRMLOG( _L( "CDRMRightsServer::ConstructL: SharedDataClient" ) );
 
     // Create and instance of the shared data client
@@ -581,134 +581,134 @@ void CDRMRightsServer::ConstructL()
         KSDUidSystem, &KBackupRestoreStatus ) );
     User::LeaveIfError(iSharedDataClient->NotifyChange(
         KSDUidSystem, &KDRMBackupRestoreStatus) );
-    */  
-      
-      
+    */
+
+
     GetDbKeyL( key );
-    
-    
+
+
     DRMLOG( _L( "CDRMRightsServer::ConstructL: database" ) );
 
     GetIMEIL();
-    
+
     // Create the imsi pointer array:
     iIMSI = CDRMPointerArray<HBufC8>::NewL();
     iIMSI->SetAutoCleanup(ETrue);
-    
+
     GetIMSIL();
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     iDb = CDRMRightsDB::NewL( iFs, KRightsDir, key, *iIMEI );
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     tempPath.Format( KRightsDir, (TUint)driveLetter );
-    
+
     iDb = CDRMRightsDB::NewL( iFs, tempPath, key, *iIMEI );
-    
+
 #endif
-        
+
     key.FillZ();
-        
+
     DRMLOG( _L( "CDRMRightsServer::ConstructL: DB started." ) );
 
     DRMLOG( _L( "CDRMRightsServer::ConstructL: Starting Notifier ." ) );
-        
+
     User::LeaveIfError( semaphore.CreateGlobal( KDRMEngCommonSemaphore, 0 ) );
     CleanupClosePushL( semaphore );
-    
+
     StartThreadL( DRMNotifier::KServerName, StartupNotifier, semaphore );
     DRMLOG( _L( "CDRMRightsServer::ConstructL: Notifier thread created." ) );
-    
+
     StartThreadL( Roap::KServerName, StartupRoapStorage, semaphore );
     DRMLOG( _L( "CDRMRightsServer::ConstructL: ROAP thread created." ) );
-    
+
 #ifdef __DRM_CLOCK
     StartThreadL( DRMClock::KServerName, StartupClock, semaphore );
     DRMLOG( _L( "CDRMRightsServer::ConstructL: clock thread created." ) );
 #endif
-    
+
     CleanupStack::PopAndDestroy(); // semaphore
-    
+
     iNotifier = CDRMNotifier::NewL();
-    
+
     iCache.Set( iFs );
 
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     iCache.InitL( KTimedReplayCacheFile, KPlainReplayCacheFile );
 
-#ifdef RD_DRM_METERING               
+#ifdef RD_DRM_METERING
     iMeteringDb.Set( iFs );
     iMeteringDb.InitL( KMeteringDataBaseFile );
 #endif
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     tempPath.Format( KTimedReplayCacheFile, (TUint)driveLetter );
     tempPath2.Format( KPlainReplayCacheFile, (TUint)driveLetter );
-    
+
     iCache.InitL( tempPath, tempPath2 );
-    
-#ifdef RD_DRM_METERING               
-    
+
+#ifdef RD_DRM_METERING
+
     tempPath.Format( KMeteringDataBaseFile, (TUint)driveLetter );
-    
+
     iMeteringDb.Set( iFs );
     iMeteringDb.InitL( tempPath );
 
 #endif
-    
+
 #endif
-    
+
     User::LeaveIfError( iClock.Connect() );
 
     // xoma header list creation
     iXOmaHeaders = new (ELeave) RPointerArray< CDRMXOma >();
-    
+
     // p/s
     iBackupObserver = CDRMBackupObserver::NewL( *(const_cast<CDRMRightsServer*>(this)));
     iBackupObserver->Start();
-    
+
 #ifdef USE_RO_IMPORT
     // Import any OMA DRM 1.0 RO in the import directory, ignore all errors (except
     // when checking the default removable mass storage)
     TInt r = KErrNone;
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     TRAP( r, ImportRightsObjectsL( KInternalImportDir ) );
     TRAP( r, ImportRightsObjectsL( KUserDiskImportDir ) );
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     tempPath.Format( KInternalImportDir, (TUint)driveLetter );
-    
+
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultMassStorage, driveNumber );
-	iFs.DriveToChar( driveNumber, driveLetter );
-    
-	// Default mass storage is usually eMMC
+    iFs.DriveToChar( driveNumber, driveLetter );
+
+    // Default mass storage is usually eMMC
     tempPath2.Format( KUserDiskImportDir, (TUint)driveLetter );
-    
+
     // Find out if a removable mass storage also exists
     r = DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRemovableMassStorage, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetterRemovable );
-    
-    // Import is not needed from the default removable mass storage drive if the drive 
-    // letter of the default mass storage and the default removable mass storage are 
+
+    // Import is not needed from the default removable mass storage drive if the drive
+    // letter of the default mass storage and the default removable mass storage are
     // the same or the removable mass storage is not supported
-    if ( ( driveLetter != driveLetterRemovable ) && ( r == KErrNone ) ) 
+    if ( ( driveLetter != driveLetterRemovable ) && ( r == KErrNone ) )
         {
         tempRemovablePath.Format( KUserRemovableDiskImportDir, (TUint)driveLetterRemovable );
         TRAP( r, ImportRightsObjectsL( tempRemovablePath ) );
         }
-    
+
     TRAP( r, ImportRightsObjectsL( tempPath ) );
     TRAP( r, ImportRightsObjectsL( tempPath2 ) );
-    
+
 #endif
-    
+
 #endif
 
     // Add the server to the scheduler.
@@ -717,17 +717,17 @@ void CDRMRightsServer::ConstructL()
     // Start watching our RDB
     iDbWatcher = CDbWatcher::NewL( *this );
     iDbWatcher->StartWatching();
-    
+
     // Start watching the helper server
     iProcWatcher = CProcWatcher::NewL( *this, _L( "*DcfRepSrv*" ), _L( "DcfRepSrv" ) );
     iProcWatcher->StartWatching();
-    
+
     // Ready to watch
     iArmed = ETrue;
 
     __UHEAP_MARK;
     TRAP( r, FeatureManager::InitializeLibL() );
-    if( !r && FeatureManager::FeatureSupported( KFeatureIdWindowsMediaDrm ) ) 
+    if( !r && FeatureManager::FeatureSupported( KFeatureIdWindowsMediaDrm ) )
         {
         static const TInt KGateOrdinal = 1;
         RLibrary library;
@@ -748,47 +748,47 @@ void CDRMRightsServer::ConstructL()
                 __UHEAP_MARKEND;
                 }
             }
-        library.Close();    
+        library.Close();
         }
     FeatureManager::UnInitializeLib();
-    __UHEAP_MARKEND;  
+    __UHEAP_MARKEND;
     }
- 
-// -----------------------------------------------------------------------------   
+
+// -----------------------------------------------------------------------------
 // CDRMRightsServer::StartThreadL
 // Start a new thread.
-// -----------------------------------------------------------------------------    
+// -----------------------------------------------------------------------------
 void CDRMRightsServer::StartThreadL( const TDesC& aThreadName,
                                      TThreadFunction aFunc,
                                      RSemaphore& aSemaphore )
     {
     RThread thread;
-    
-    User::LeaveIfError( 
+
+    User::LeaveIfError(
           thread.Create( aThreadName,
-                         aFunc, 
+                         aFunc,
                          KDefaultStackSize,
-                         KMinHeapSize, 
+                         KMinHeapSize,
                          KMaxHeapsize,
                          NULL ) );
-    
+
     thread.Resume();
-    
+
     aSemaphore.Wait();
-    
+
     thread.Close();
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMRightsServer::GetDbKeyL
-// Fetches the rights database key from Wallet or uses a constant 
+// Fetches the rights database key from Wallet or uses a constant
 // key if Wallet is not supported.
 // -----------------------------------------------------------------------------
 //
-void CDRMRightsServer::GetDbKeyL( TDRMKey& aKey  ) 
+void CDRMRightsServer::GetDbKeyL( TDRMKey& aKey  )
     {
     TInt r = KErrNone;
-    
+
     DRMLOG( _L( "CDRMRightsServer::GetDbKey" ) );
     MDrmKeyStorage* storage = DrmKeyStorageNewL();
     TRAP( r, storage->GetDeviceSpecificKeyL( aKey ) );
@@ -801,28 +801,28 @@ void CDRMRightsServer::GetDbKeyL( TDRMKey& aKey  )
 // Generates the actual key based on the given key seed.
 // -----------------------------------------------------------------------------
 //
-void CDRMRightsServer::GenerateKeyL( HBufC*& aKeySeed, 
+void CDRMRightsServer::GenerateKeyL( HBufC*& aKeySeed,
                                     TDRMKey& aKey ) const
     {
-    __ASSERT_ALWAYS( aKeySeed->Size() >= KDRMKeyLength, 
+    __ASSERT_ALWAYS( aKeySeed->Size() >= KDRMKeyLength,
         User::Leave( KErrUnderflow ) );
-    
+
     TPtrC8 key( reinterpret_cast< TUint8* >( const_cast< TUint16* >( aKeySeed->Ptr() ) ),
                 KDRMKeyLength );
-    
+
     aKey = key;
     }
 
 
 // -----------------------------------------------------------------------------
 // CDRMRightsServer::XOmaHeaders()
-// return the pointer of the X-Oma headers list 
+// return the pointer of the X-Oma headers list
 // -----------------------------------------------------------------------------
 //
 RPointerArray< CDRMXOma >& CDRMRightsServer::XOmaHeaders( void )
-	{
-	return *iXOmaHeaders;
-	}
+    {
+    return *iXOmaHeaders;
+    }
 
 
 
@@ -836,19 +836,19 @@ const TDesC& CDRMRightsServer::GetIMEIL()
         {
         return *iIMEI;
         }
-    
+
 #ifdef DRM_USE_SERIALNUMBER_URI
     TInt error( KErrNone );
     TInt count( 0 );
     TInt count2( 0 );
     TUint32 caps( 0 );
     TBool found (EFalse);
-    
+
     RTelServer etelServer;
     RMobilePhone phone;
-    
+
     TUint KMaxImeiTries = 5;
-    
+
     for ( TUint8 i = 0; i < KMaxImeiTries; ++i )
         {
         error = etelServer.Connect();
@@ -856,31 +856,31 @@ const TDesC& CDRMRightsServer::GetIMEIL()
             {
             User::After( TTimeIntervalMicroSeconds32( KWaitingTime ) );
             }
-        else 
+        else
             {
             break;
             }
         }
-    
+
     User::LeaveIfError( error );
     CleanupClosePushL( etelServer );
-    
-    User::LeaveIfError( etelServer.LoadPhoneModule( KMmTsyModuleName ) );  
-    
+
+    User::LeaveIfError( etelServer.LoadPhoneModule( KMmTsyModuleName ) );
+
     TUnloadModule unload;
     unload.iServer = &etelServer;
     unload.iName = &KMmTsyModuleName;
-    
+
     TCleanupItem item( DoUnloadPhoneModule, &unload );
     CleanupStack::PushL( item );
     User::LeaveIfError( etelServer.EnumeratePhones( count ) );
-        
+
     for ( count2 = 0; count2 < count && !found; ++count2 )
         {
         RTelServer::TPhoneInfo phoneInfo;
         User::LeaveIfError( etelServer.GetTsyName( count2, phoneInfo.iName ) );
-        
-        if ( phoneInfo.iName.CompareF(KMmTsyModuleName()) == 0 )   
+
+        if ( phoneInfo.iName.CompareF(KMmTsyModuleName()) == 0 )
            {
             User::LeaveIfError( etelServer.GetPhoneInfo( count2, phoneInfo ) );
             User::LeaveIfError( phone.Open( etelServer, phoneInfo.iName ) );
@@ -894,43 +894,43 @@ const TDesC& CDRMRightsServer::GetIMEIL()
         // Not found.
         User::Leave( KErrNotFound );
         }
-   
+
     User::LeaveIfError( phone.GetIdentityCaps( caps ) );
     if ( caps & RMobilePhone::KCapsGetSerialNumber )
         {
         RMobilePhone::TMobilePhoneIdentityV1 id;
         TRequestStatus status;
-    
+
         phone.GetPhoneId( status, id );
-        
+
         User::WaitForRequest( status );
-        
+
         User::LeaveIfError( status.Int() );
-        
+
         iIMEI = id.iSerialNumber.AllocL();
-        
+
         CleanupStack::PopAndDestroy( 3 ); // phone, item, etelServer
-        
+
         HBufC8* buf = HBufC8::NewL( iIMEI->Size() );
         TPtr8 ptr( buf->Des() );
         ptr.Copy( *iIMEI );
-        
+
         DRMLOG(_L("IMEI:"));
         DRMLOGHEX(ptr);
         delete buf;
-    
+
         return *iIMEI;
         }
-    
+
     User::Leave( KErrNotFound );
-    
+
     // Never happens...
-    return *iIMEI; 
-    
+    return *iIMEI;
+
 #else
     _LIT( KDefaultSerialNumber, "123456789123456789" );
     iIMEI = KDefaultSerialNumber().AllocL();
-        
+
     return *iIMEI;
 #endif
     }
@@ -941,13 +941,13 @@ const TDesC& CDRMRightsServer::GetIMEIL()
 //
 const CDRMPointerArray<HBufC8>& CDRMRightsServer::GetIMSIL()
     {
-    
+
     if ( !iGetImsi )
         {
         return *iIMSI;
         }
 
-#ifndef __WINS__   
+#ifndef __WINS__
     TInt error( KErrNone );
     TInt count( 0 );
     TInt count2( 0 );
@@ -955,11 +955,11 @@ const CDRMPointerArray<HBufC8>& CDRMRightsServer::GetIMSIL()
     TBool found (EFalse);
     HBufC8* imsi = NULL;
     HBufC8* imsiNumber = NULL;
-    
+
     RTelServer etelServer;
     RMobilePhone phone;
-    
-    TUint KMaxImeiTries = 5;    
+
+    TUint KMaxImeiTries = 5;
     for ( TUint8 i = 0; i < KMaxImeiTries; ++i )
         {
         error = etelServer.Connect();
@@ -967,31 +967,31 @@ const CDRMPointerArray<HBufC8>& CDRMRightsServer::GetIMSIL()
             {
             User::After( TTimeIntervalMicroSeconds32( KWaitingTime ) );
             }
-        else 
+        else
             {
             break;
             }
         }
-    
+
     User::LeaveIfError( error );
-    CleanupClosePushL( etelServer );     
-    User::LeaveIfError( etelServer.LoadPhoneModule( KMmTsyModuleName ) );  
-    
+    CleanupClosePushL( etelServer );
+    User::LeaveIfError( etelServer.LoadPhoneModule( KMmTsyModuleName ) );
+
     TUnloadModule unload;
     unload.iServer = &etelServer;
     unload.iName = &KMmTsyModuleName;
-    
+
     TCleanupItem item( DoUnloadPhoneModule, &unload );
     CleanupStack::PushL( item );
-    
+
     User::LeaveIfError( etelServer.EnumeratePhones( count ) );
-        
+
     for ( count2 = 0; count2 < count && !found; ++count2 )
         {
         RTelServer::TPhoneInfo phoneInfo;
         User::LeaveIfError( etelServer.GetTsyName( count2, phoneInfo.iName ) );
-        
-        if ( phoneInfo.iName.CompareF(KMmTsyModuleName()) == 0 )   
+
+        if ( phoneInfo.iName.CompareF(KMmTsyModuleName()) == 0 )
            {
             User::LeaveIfError( etelServer.GetPhoneInfo( count2, phoneInfo ) );
             User::LeaveIfError( phone.Open( etelServer, phoneInfo.iName ) );
@@ -1005,127 +1005,127 @@ const CDRMPointerArray<HBufC8>& CDRMRightsServer::GetIMSIL()
         // Not found.
         User::Leave( KErrNotFound );
         }
-   
- 
+
+
     User::LeaveIfError( phone.GetIdentityCaps( caps ) );
 
     if( caps & RMobilePhone::KCapsGetSubscriberId )
         {
-        RMobilePhone::TMobilePhoneSubscriberId imsiId;        
+        RMobilePhone::TMobilePhoneSubscriberId imsiId;
         TRequestStatus status;
-    
+
         phone.GetSubscriberId( status, imsiId );
-        
+
         User::WaitForRequest( status );
-        
+
         if( ! status.Int() )
-            {             
+            {
             imsi = HBufC8::NewMaxLC( imsiId.Length() + KImsiId().Size() );
             TPtr8 imsiPtr(const_cast<TUint8*>(imsi->Ptr()), 0, imsi->Size());
-      
+
             imsiNumber = CnvUtfConverter::ConvertFromUnicodeToUtf8L( imsiId );
             CleanupStack::PushL( imsiNumber );
-            
+
             imsiPtr.Copy( KImsiId() );
             imsiPtr.Append( *imsiNumber );
             CleanupStack::PopAndDestroy(); // imsiNumber
             }
         else
-            {            
+            {
             imsi = NULL;
             }
         }
     else
-        {         
+        {
         imsi = NULL;
-        } 
-    
-    
+        }
+
+
     // Clean up whatever is in there
     iIMSI->ResetAndDestroy();
-    
-    if( imsi ) 
-        { 
-        // if we got it we wont try again             
+
+    if( imsi )
+        {
+        // if we got it we wont try again
         iIMSI->AppendL( imsi );
         CleanupStack::Pop(); // imsi
-        iGetImsi = EFalse;            
+        iGetImsi = EFalse;
         }
 
     // Check for possible extra IMSI individual constraints
     AppendExtendedIndividualConstraintsL(&phone);
-    
+
     CleanupStack::PopAndDestroy(); // phone
     CleanupStack::PopAndDestroy(); // cleanup item
     CleanupStack::PopAndDestroy(); // etel server
 
-    return *iIMSI; 
-    
+    return *iIMSI;
+
 #else
     HBufC8* imsi = NULL;
-    
-    if( iGetImsi ) 
+
+    if( iGetImsi )
         {
         iGetImsi = EFalse;
         _LIT8( KDefaultSerialNumber, "IMSI:123456789123456789" );
         imsi = KDefaultSerialNumber().AllocLC();
         iIMSI->AppendL( imsi );
-        CleanupStack::Pop();        
+        CleanupStack::Pop();
         AppendExtendedIndividualConstraintsL();
         }
 
-        
+
     return *iIMSI;
 #endif // __WINS__
     }
 
-// -----------------------------------------------------------------------------   
+// -----------------------------------------------------------------------------
 // CDRMRightsServer::AppendExtendedIndividualConstraintsL
 // If the extension DLL exists it is loaded and used to obtain additional
 // valid individual constraints
-// -----------------------------------------------------------------------------    
+// -----------------------------------------------------------------------------
 void CDRMRightsServer::AppendExtendedIndividualConstraintsL(RMobilePhone* aMobilePhone)
-    {    	    	
+    {
     // Load the externsion DLL
     RLibrary lib;
-    
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     if (lib.LoadRomLibrary(KDRMIndividualConstraintExtensionDll,KNullDesC)==KErrNone)
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
-	iFs.DriveToChar( driveNumber, driveLetter );
-	
-	TFileName individualConstraindExtensionDll;
-	individualConstraindExtensionDll.Format( 
-	                    KIndividualConstraintExtensionDll, (TUint)driveLetter );
-    
+    iFs.DriveToChar( driveNumber, driveLetter );
+
+    TFileName individualConstraindExtensionDll;
+    individualConstraindExtensionDll.Format(
+                        KIndividualConstraintExtensionDll, (TUint)driveLetter );
+
     if ( lib.LoadRomLibrary( individualConstraindExtensionDll, KNullDesC ) == KErrNone )
-    
+
 #endif
-    
-    	{
+
+        {
         CleanupClosePushL(lib);
 
-        // Get first exported ordinal - factory method returning 
+        // Get first exported ordinal - factory method returning
         // MDRMIndividualConstraintExtension*
-        TLibraryFunction factory = lib.Lookup(1); 
+        TLibraryFunction factory = lib.Lookup(1);
 
         if (factory)
             {
             // Instantiate object
-            MDRMIndividualConstraintExtension* extendedConstraints = 
+            MDRMIndividualConstraintExtension* extendedConstraints =
                 reinterpret_cast<MDRMIndividualConstraintExtension*>(factory());
 
             if (extendedConstraints)
                 {
-			    CleanupStack::PushL(TCleanupItem(Release,extendedConstraints));
+                CleanupStack::PushL(TCleanupItem(Release,extendedConstraints));
                 extendedConstraints->AppendConstraintsL(*iIMSI,aMobilePhone);
-			    CleanupStack::PopAndDestroy(extendedConstraints); //calls Release
+                CleanupStack::PopAndDestroy(extendedConstraints); //calls Release
                 }
             }
 
@@ -1139,8 +1139,8 @@ void CDRMRightsServer::AppendExtendedIndividualConstraintsL(RMobilePhone* aMobil
 // -----------------------------------------------------------------------------
 void CDRMRightsServer::Release(TAny* aIndividualConstraintExtension)
     {
-    MDRMIndividualConstraintExtension* extendedConstraints = 
-    	reinterpret_cast<MDRMIndividualConstraintExtension*>(aIndividualConstraintExtension);
+    MDRMIndividualConstraintExtension* extendedConstraints =
+        reinterpret_cast<MDRMIndividualConstraintExtension*>(aIndividualConstraintExtension);
     extendedConstraints->Release(); //free resources
     }
 
@@ -1152,14 +1152,14 @@ void CDRMRightsServer::Release(TAny* aIndividualConstraintExtension)
 
 void CDRMRightsServer::HandleBackupEventL( TInt aBackupEvent )
     {
-	//RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::BackupCalled\n\r"));    
+    //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::BackupCalled\n\r"));
 
     //conn::TBURPartType eventType;
     //conn::TBackupIncType incType;
     TDriveList aDriveList;
-    
-    //RFileLogger::WriteFormat(KLogDir, KLogName, EFileLoggingModeAppend, _L8("backupevent: %d"), aBackupEvent);              
-    
+
+    //RFileLogger::WriteFormat(KLogDir, KLogName, EFileLoggingModeAppend, _L8("backupevent: %d"), aBackupEvent);
+
     // If there is no operation going or state is normal
     // Delete the client and handler
 
@@ -1169,73 +1169,73 @@ void CDRMRightsServer::HandleBackupEventL( TInt aBackupEvent )
         /*
         if( aBackupEvent == conn::EBURUnset )
             {
-            	        RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Unset\n\r"));                
+                        RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Unset\n\r"));
             }
-        else 
+        else
             {
-	        RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Normal\n\r"));                
-            } 
-        */                 
+            RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Normal\n\r"));
+            }
+        */
         if( iActiveBackupClient )
             {
             delete iActiveBackupClient;
-            iActiveBackupClient = NULL;    
+            iActiveBackupClient = NULL;
             }
-        
+
         if( iBackupHandler )
             {
             delete iBackupHandler;
-            iBackupHandler = NULL;    
+            iBackupHandler = NULL;
             }
-        }  
+        }
     else if( aBackupEvent & conn::EBURBackupFull ||
              aBackupEvent & conn::EBURRestoreFull )
         {
-	    //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Full\n\r"));         
+        //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Full\n\r"));
         // ab handler
         iBackupHandler = CDRMBackup::NewL( iDb, iFs );
-    
+
         // ab client
         iActiveBackupClient = conn::CActiveBackupClient::NewL( iBackupHandler );
-        
+
         // Confirm that we have done everything if there even was anything to do
-	    //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Confirm F \n\r"));         
-        iActiveBackupClient->ConfirmReadyForBURL( KErrNone );        
+        //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Confirm F \n\r"));
+        iActiveBackupClient->ConfirmReadyForBURL( KErrNone );
         }
     else if( aBackupEvent & conn::EBURBackupPartial ||
              aBackupEvent & conn::EBURRestorePartial )
         {
-	    //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Partial\n\r"));         
+        //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Partial\n\r"));
         // ab handler
         iBackupHandler = CDRMBackup::NewL( iDb, iFs );
-    
-        // ab client
-        iActiveBackupClient = conn::CActiveBackupClient::NewL( iBackupHandler );                
 
-        if( !iActiveBackupClient->DoesPartialBURAffectMeL() ) 
+        // ab client
+        iActiveBackupClient = conn::CActiveBackupClient::NewL( iBackupHandler );
+
+        if( !iActiveBackupClient->DoesPartialBURAffectMeL() )
             {
-	        //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::NotMe\n\r"));             
+            //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::NotMe\n\r"));
             delete iActiveBackupClient;
-            iActiveBackupClient = NULL;    
+            iActiveBackupClient = NULL;
 
             delete iBackupHandler;
-            iBackupHandler = NULL;    
+            iBackupHandler = NULL;
             }
         else
             {
-	        //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Confirm P \n\r"));            
+            //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Confirm P \n\r"));
             // Confirm that we have done everything if there even was anything to do
             iActiveBackupClient->ConfirmReadyForBURL( KErrNone );
-	        //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Confirm P Done \n\r"));                             
-            }    
+            //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Confirm P Done \n\r"));
+            }
         }
-    else 
+    else
         {
-	    //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Argument\n\r"));         
+        //RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("Handle::Argument\n\r"));
         // Unknown operation
-        User::Leave(KErrArgument);    
+        User::Leave(KErrArgument);
         }
-    };  
+    };
 
 // -----------------------------------------------------------------------------
 // CDRMRightsServer::WatchedObjectChangedL
@@ -1246,7 +1246,7 @@ void CDRMRightsServer::WatchedObjectChangedL( const TDesC& aObject )
     {
     DRMLOG( _L( "CDRMRightsServer::WatchedObjectChangedL ->" ) );
     DRMLOG( aObject );
-    
+
     if ( aObject.Left( KDirIdentifier().Length() ) == KDirIdentifier &&
          !iDb->Updating() && iArmed )
         {
@@ -1259,7 +1259,7 @@ void CDRMRightsServer::WatchedObjectChangedL( const TDesC& aObject )
         User::LeaveIfError( starter.Connect() );
         starter.Reset( RStarterSession::EDRMReset );
         starter.Close();
-#endif        
+#endif
         }
     else if ( aObject.Left( KProcIdentifier().Length() ) == KProcIdentifier && iArmed )
         {
@@ -1273,10 +1273,10 @@ void CDRMRightsServer::WatchedObjectChangedL( const TDesC& aObject )
         starter.Close();
 #endif
         }
-    
+
     DRMLOG( _L( "CDRMRightsServer::WatchedObjectChangedL <-" ) );
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMRightsServer::HasActiveCountConstraint
 // Check ID for active count constraint
@@ -1286,7 +1286,7 @@ TBool CDRMRightsServer::HasActiveCountConstraint( const TDesC8& aContentId )
     {
     TInt i;
     TBool r = EFalse;
-    
+
     for ( i = 0; r == EFalse && i < iActiveCountConstraints.Count(); i++ )
         {
         if ( iActiveCountConstraints[i]->CompareF( aContentId ) == 0 )
@@ -1307,7 +1307,7 @@ void CDRMRightsServer::RemoveActiveCountConstraint( const TDesC8& aContentId )
     TInt i;
     TInt r = KErrNotFound;
     HBufC8* id = NULL;
-    
+
     for ( i = 0; r == KErrNotFound && i < iActiveCountConstraints.Count(); i++ )
         {
         if ( iActiveCountConstraints[i]->CompareF( aContentId ) == 0 )
@@ -1317,7 +1317,7 @@ void CDRMRightsServer::RemoveActiveCountConstraint( const TDesC8& aContentId )
         }
     if ( r != KErrNotFound )
         {
-        id = iActiveCountConstraints[r];	
+        id = iActiveCountConstraints[r];
         iActiveCountConstraints.Remove( r );
         delete id;
         id = NULL;
@@ -1373,7 +1373,7 @@ void CDRMRightsServer::ImportRightsObjectsL( const TDesC& aImportDir )
         &rights);
     TDRMUniqueID id;
     TTime time;
-    
+
     DRMLOG( _L( "CDRMRightsServer::ImportRightsObjectsL" ) );
     DRMLOG( aImportDir );
     __UHEAP_MARK;
@@ -1402,7 +1402,7 @@ void CDRMRightsServer::ImportRightsObjectsL( const TDesC& aImportDir )
                 CleanupStack::PushL( listCleanup );
                 CDRMPermission& permission = rights[0]->GetPermission();
                 CDRMAsset& asset = rights[0]->GetAsset();
-                
+
                 // Add RO only if no rights are available at all for this content
                 TRAP( r, k = iDb->GetDecryptionKeyL( *asset.iUid ) );
                 if (k == NULL )
@@ -1423,14 +1423,14 @@ void CDRMRightsServer::ImportRightsObjectsL( const TDesC& aImportDir )
     __UHEAP_MARKEND;
     DRMLOG( _L( "CDRMRightsServer::ImportRightsObjectsL done" ) );
     }
-#endif    
-    
+#endif
+
 // ========================== OTHER EXPORTED FUNCTIONS =========================
 
 
-TInt E32Main() 
+TInt E32Main()
     {
-    return Startup(); 
+    return Startup();
     }
 
 

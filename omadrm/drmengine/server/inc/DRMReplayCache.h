@@ -21,7 +21,7 @@
 
 //  INCLUDES
 #include <e32std.h>
-#include <D32DBMS.H>
+#include <d32dbms.h>
 
 // CONSTANTS
 // MACROS
@@ -43,35 +43,35 @@ class CPersistentStore;
 NONSHARABLE_CLASS( RDRMReplayCache )
     {
     public: // Constructors and destructor
-    
+
     /**
     * Constructor.
     * @since S60Rel3.0
     */
     RDRMReplayCache( RFs& aFs );
-    
+
     /**
     * Default constructor.
     * @since S60Rel3.0
     */
     RDRMReplayCache();
-    
+
     public: // New functions
-    
+
     /**
     * Sets the ifs according to this reference.
     *
     * @since S60Rel3.0
-    * @param aFs Reference to open file server session. 
+    * @param aFs Reference to open file server session.
     */
     void Set( RFs& aFs );
-    
+
     /**
     * Closes the cache.
     * @since S60Rel3.0
     */
     void Close();
-    
+
     /**
     * Initializes the view.
     * @since S60Rel3.0
@@ -80,13 +80,13 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     */
     void InitL( const TDesC& aTimedDb,
                 const TDesC& aPlainDb );
-                
+
     /**
     * Destructor.
     * @since S60Rel3.0
     */
     ~RDRMReplayCache();
-    
+
     /**
     * Add an entry to the DB. Overloaded.
     * @since S60Rel3.0
@@ -94,7 +94,7 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * @param aaTime Timestamp of the permission.
     * @param aaTime Insertion time.
     */
-    void AddL( const TDesC8& aID, 
+    void AddL( const TDesC8& aID,
                const TTime& aTime,
                const TTime& aInsertionTime  );
 
@@ -104,7 +104,7 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * @param aID    Content-ID.
     * @param aaTime Insertion time.
     */
-    void AddL( const TDesC8& aID, 
+    void AddL( const TDesC8& aID,
                const TTime& aInsertionTime  );
 
     /**
@@ -114,9 +114,9 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * @param aaTime Timestamp of the permission.
     * @return Boolean.
     */
-    TBool InCacheL( const TDesC8& aCID, 
+    TBool InCacheL( const TDesC8& aCID,
                     const TTime& aTime );
-    
+
     /**
     * Checks whether an entry is in cache. Overloaded.
     * @since S60Rel3.0
@@ -131,9 +131,9 @@ NONSHARABLE_CLASS( RDRMReplayCache )
         ETimeDb,
         EPlainDb
         };
-        
+
     private: // Private functions
-    
+
     /**
     * Initializes the database.
     * @since S60Rel3.0
@@ -141,7 +141,7 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * @param aFileName File name.
     * @param aId Database ID.
     */
-    void InitDbL( RDbNamedDatabase& aDb, 
+    void InitDbL( RDbNamedDatabase& aDb,
                   const TDesC& aFileName,
                   TDatabaseId aId );
 
@@ -151,7 +151,7 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * @param aDb Database.
     * @param aFileName File name.
     */
-    void OpenDbL( RDbNamedDatabase& aDb, 
+    void OpenDbL( RDbNamedDatabase& aDb,
                   const TDesC& aFileName );
 
     /**
@@ -162,7 +162,7 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * @param aId Database ID.
     */
     void ReplaceDbL( RDbNamedDatabase& aDb,
-                     const TDesC& aFileName, 
+                     const TDesC& aFileName,
                      TDatabaseId aId );
 
     /**
@@ -171,10 +171,10 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * @param aView View to initialize.
     * @param aDb Database ID.
     */
-    void InitViewLC( RDbView& aView, 
+    void InitViewLC( RDbView& aView,
                      TDatabaseId aDb,
                      TBool aUpdate );
-    
+
     /**
     * Compare the given ID to the ID in the current position of the view.
     * @since S60Rel3.0
@@ -183,7 +183,7 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * @return Boolean.
     */
     TBool CompareCIDL( RDbRowSet& aView, const TDesC8& aCID );
-    
+
     /**
     * Push a cleanup item to the cleanup stack in order to rollback
     * the database.
@@ -191,7 +191,7 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * @param aDb Database.
     */
     void PushL( RDbDatabase& aDb );
-    
+
     /**
     * Pop the cleanup item pushed in by PushL
     * @since S60Rel3.0
@@ -202,36 +202,36 @@ NONSHARABLE_CLASS( RDRMReplayCache )
     * Delete items starting from the oldest one.
     * @since S60Rel3.0
     * @param aView View.
-    * @param aHowMany How many items to delete. 
+    * @param aHowMany How many items to delete.
     */
     void DeleteOldestsL( RDbRowSet& aView, TInt16 aHowMany );
-    
+
     /**
     * Compacts the view to the upper limit of the view capacity.
     * @since S60Rel3.0
     * @param aView View to compact.
     */
     void CompactViewL( RDbRowSet& aView );
-    
+
     /**
     * Insert a content-id to the current position in the view.
     * @since S60Rel3.0
     * @param aView View to which the insertion is made.
-    * @param aId ID to add.    
+    * @param aId ID to add.
     */
-    void InsertIdL( RDbRowSet& aView, 
+    void InsertIdL( RDbRowSet& aView,
                     const TDesC8& aId );
-    
+
     private: // Data
     // File server session handle. Not owned by this object.
     RFs* iFs;
-    
+
     // Database for timestamped items.
     RDbNamedDatabase iTimeDb;
-    
+
     // Database for the items without timestamp.
     RDbNamedDatabase iPlainDb;
     // RDbView iView;
     };
 
-#endif //DRMREPLAYCACHE_H   
+#endif //DRMREPLAYCACHE_H

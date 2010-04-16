@@ -24,26 +24,26 @@
 #include <cmmanager.h>
 
 #ifdef __SERIES60_NATIVE_BROWSER
-#include <browseruisdkcrkeys.h>
+#include <BrowserUiSDKCRKeys.h>
 #endif
 
 #ifdef RD_MULTIPLE_DRIVE
 #include <driveinfo.h>
 #endif
 
-#include <stringloader.h>
+#include <StringLoader.h>
 #include <data_caging_path_literals.hrh>
 
-#include <coneresloader.h>
+#include <ConeResLoader.h>
 #include <apparc.h>
 
 #include <drmhelperdmgrwrapper.rsg>
 
-#include "roapeng.h"
-#include "roapsyncwrapper.h"
-#include "roapdef.h"
-#include "drmhelperdmgrwrapper.h"
-#include "drmhelperdmgrwrapperlogger.h"
+#include "RoapEng.h"
+#include "RoapSyncWrapper.h"
+#include "RoapDef.h"
+#include "DRMHelperDMgrWrapper.h"
+#include "DRMHelperDMgrWrapperLogger.h"
 
 // DEBUG macros
 #ifdef _DEBUG

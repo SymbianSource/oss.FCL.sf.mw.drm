@@ -20,7 +20,7 @@
 #define DRMENGINETYPEDEFS_H
 
 #include "DRMPointerArray.h"
-#include "drmpermission.h"
+#include "DrmPermission.h"
 
 typedef CDRMPointerArray< CDRMPermission > CDRMPermissionList;
 typedef RDRMPointerArray< CDRMPermission > RDRMPermissionList;

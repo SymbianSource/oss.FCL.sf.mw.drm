@@ -23,12 +23,12 @@
 #include <f32file.h>
 #include <caf/caftypes.h>
 #include <caf/data.h>
-#include <drmrightsclient.h>
+#include <DRMRightsClient.h>
 #include <drmautomatedusage.h>
 #include <drmautomatedusageobserver.h>
 
 #include "rdrmhelperclient.h"
-#include "drmqueue.h"
+#include "DrmQueue.h"
 
 //forward declarations
 class CDRMConstraint;
@@ -607,7 +607,7 @@ protected: // Functions from base classes
     * From CActive Called if RunL leaves
     */
     TInt RunError( TInt aError );
-	    
+
 
 private: // Member functions
 
@@ -615,7 +615,7 @@ private: // Member functions
                             CDrmUtility* aDrmUtility );
 
     void ConstructL();
-    
+
     void Activate( TRequestStatus*& aStatus );
 
     // Checks whether there exists suitable oma RO for automated use
@@ -661,10 +661,10 @@ private: // Data members
     // own
     CDrmUtilityUI* iDrmUtilityUi;
 
-	 // Async observer and current operation id for async operations
-	 // not own
+     // Async observer and current operation id for async operations
+     // not own
     MDrmAsyncObserver* iObserver;
-	 // not own
+     // not own
     TInt iOperationId;
     };
 }

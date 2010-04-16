@@ -33,7 +33,7 @@
 #include <caf/caftypes.h>
 #include <caf/rightsinfo.h>
 
-#include "drmrightsmgrdetailscontainer.h"
+#include "DRMRightsMgrDetailsContainer.h"
 
 // FORWARD DECLARATIONS
 class CDRMRightsConstraints;

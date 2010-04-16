@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2004-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2004-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -18,19 +18,19 @@
 
 // INCLUDE FILES
 #include <txtrich.h>                    // for CRichText
-#include <drmmessageparser.h>           // for CDrmMessageParser
-#include <drmrights.h>                  // for CDRMRights
+#include <DRMMessageParser.h>           // for CDrmMessageParser
+#include <DRMRights.h>                  // for CDRMRights
 #include <ecom/implementationproxy.h>   // for TImplementationProxy
 #include <push/cpushhandlerbase.h>      // for CPushHandlerBase
 #include <push/pluginkiller.h>          // for CPluginKiller
 #include <push/pushmessage.h>           // for CPushMessage
-#include <roapeng.h>                    // for CRoapEng
-#include <roapengbase.h>
-#include <roapobserver.h>
+#include <RoapEng.h>                    // for CRoapEng
+#include <RoapEngBase.h>
+#include <RoapObserver.h>
 #include <centralrepository.h>          // link against centralrepository.lib
 #include <msvuids.h>
 #include <msvids.h>
-#include <downloadmgrclient.h>
+#include <DownloadMgrClient.h>
 
 #ifdef RD_MULTIPLE_DRIVE
 #include <driveinfo.h>
@@ -39,15 +39,14 @@
 #include <uri16.h>                          // TUriParser16
 #include <data_caging_path_literals.hrh>    // KDC_MTM_RESOURCE_DIR
 #include <uriutils.h>                       // UriUtils and so on
-#include <pushmtmui.rsg>                    // for R_PUSHMISC_UNK_SENDER
-#include <rohandler.rsg>                    // for R_QTN_DRM_MGR_INB_TITLE
+#include <RoHandler.rsg>                    // for R_QTN_DRM_MGR_INB_TITLE
 #include <sysutil.h>                        // Disk space checking
 
-#include "crohandler.h"
-#include "romtmcli.h"                       // for CRightsObjectMtmClient
-#include "roapsyncwrapper.h"
+#include "CRoHandler.h"
+#include "RoMtmCli.h"                       // for CRightsObjectMtmClient
+#include "RoapSyncWrapper.h"
 
-#include "stringresourcereader.h"
+#include "StringResourceReader.h"
 #include "rohandlerdmgrwrapper.h"
 #include "rohandlerinternalcrkeys.h"
 
@@ -114,6 +113,8 @@ _LIT( KZero, "0" );
 
 _LIT( KRoAcquisitionPrefix, "ROA:" );
 _LIT( KTriggerPrefix, "TRI:" );
+
+_LIT( KEmpty, " " );
 
 // MODULE DATA STRUCTURES
 
@@ -715,6 +716,7 @@ void CRoHandler::HandleRightsMessageL()
     HBufC16 *number( NULL );
     HBufC16 *messageContent( NULL );
     HBufC16* buffer( NULL );
+    _LIT( KMarker, "\x00" );
 
     TInt ret( 0 );
     if ( iMessageBodyPtr.Size() == 0 )
@@ -771,12 +773,14 @@ void CRoHandler::HandleRightsMessageL()
         TPtr ptr( number->Des() );
         ptr.AppendNum( localId, EDecimal );
 
-        messageContent = HBufC16::NewL( ptr.Length() + uri16.Length() + 4 );
+        messageContent = HBufC16::NewL( ptr.Length() + uri16.Length() + 5 );
         TPtr ptrToMz( messageContent->Des() );
-        ptrToMz.Append( _L( "1 " ) );
+        ptrToMz.Append( _L( "1" ) );
+        ptrToMz.Append( KMarker );
         ptrToMz.Append( ptr ); // add localID
-        ptrToMz.Append( _L( " " ) ); // add space
+        ptrToMz.Append( KMarker );
         ptrToMz.Append( uri16 ); //add uri16
+        ptrToMz.Append( KMarker );
 
         CleanupStack::PopAndDestroy( number );
         CleanupStack::PopAndDestroy( buffer );
@@ -1216,28 +1220,7 @@ HBufC* CRoHandler::GetDetailLC()
     // First line in Inbox: TMsvEntry::iDetails.
     if ( !flag || srvAddress.Length() == 0 )
         {
-        // Read from resource.
-
-#ifndef RD_MULTIPLE_DRIVE
-
-        TFileName resourceFile( KDriveZ );
-
-#else //RD_MULTIPLE_DRIVE
-
-        _LIT( KDriveRoot, "%c:" );
-        TInt driveNumber( -1 );
-        TChar driveLetter;
-        DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
-        iFs.DriveToChar( driveNumber, driveLetter );
-
-        TFileName resourceFile;
-        resourceFile.Format( KDriveRoot, (TUint )driveLetter );
-
-#endif
-
-        resourceFile.Append( KDC_MTM_RESOURCE_DIR );
-        resourceFile.Append( KPushMtmRes );
-        ReadFromResourceLC( resourceFile, R_PUSHMISC_UNK_SENDER, result );
+        result = KEmpty().AllocL();
         }
     else
         {

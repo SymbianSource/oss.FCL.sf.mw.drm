@@ -17,8 +17,8 @@
 
 
 // INCLUDE FILES
-#include "drmutilitydownloadmanager.h"
-#include "drmutilitydmgrwrapper.h"
+#include "DrmUtilityDownloadManager.h"
+#include "DrmUtilityDmgrWrapper.h"
 
 // CONSTANTS
 _LIT( KDrmUtilityDmgrHandlerName, "\\system\\libs\\DrmUtilityDmgrWrapper.dll" );
@@ -63,9 +63,9 @@ void CDrmUtilityDownloadManager::ConstructL()
 //
 CDrmUtilityDownloadManager* CDrmUtilityDownloadManager::NewL()
     {
-    CDrmUtilityDownloadManager* self( 
+    CDrmUtilityDownloadManager* self(
                                 new( ELeave ) CDrmUtilityDownloadManager() );
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop();
@@ -84,7 +84,7 @@ CDrmUtilityDownloadManager::~CDrmUtilityDownloadManager()
 // CDrmUtilityDownloadManager::DownloadAndHandleRoapTriggerL
 //
 // -----------------------------------------------------------------------------
-//    
+//
 void CDrmUtilityDownloadManager::DownloadAndHandleRoapTriggerL(
     const HBufC8* aUrl, CCoeEnv& aCoeEnv )
     {
@@ -104,7 +104,7 @@ void CDrmUtilityDownloadManager::DownloadAndHandleRoapTriggerL(
 
 // -----------------------------------------------------------------------------
 // CDrmUtilityDownloadManager::GetErrorUrlL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 HBufC8* CDrmUtilityDownloadManager::GetErrorUrlL()

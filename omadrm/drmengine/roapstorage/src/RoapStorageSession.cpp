@@ -31,7 +31,7 @@
 #include <random.h>
 #endif //RD_DRM_METERING
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 #include <e32base.h>  // CleanupResetAndDestroyPushL dependencies
 #include "drmaescrypto.h"
@@ -41,22 +41,22 @@
 #include "DRMDomainContext.h"
 #include "RoapStorageServer.h"
 #include "CmlaCrypto.h"
-#include "DrmAesCrypto.h"
+#include "drmaescrypto.h"
 #include "DrmKeyStorage.h"
 #include "RoapDef.h"
 #include "RoapLog.h"
 #include "drmroapclientserver.h"
-#include "drmclockclient.h"
-#include "DrmTypes.h"
-#include "drmpointerarray.h"
+#include "DRMClockClient.h"
+#include "DRMTypes.h"
+#include "DRMPointerArray.h"
 //OCSP classes
-#include "roapocsp.h"
+#include "RoapOcsp.h"
 #include "responsedecoder.h"
 #include "certid.h"
 //drm clock
-#include "drmclockclient.h"
+#include "DRMClockClient.h"
 
-#include "base64.h"
+#include "Base64.h"
 
 #include "cleanupresetanddestroy.h" // CleanupResetAndDestroyPushL
 // NAMESPACES

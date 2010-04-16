@@ -17,12 +17,12 @@
 
 
 // INCLUDE FILES
-#include <drmpermission.h>
-#include <drmconstraint.h>
+#include <DrmPermission.h>
+#include <DrmConstraint.h>
 
 #include "drmutilitycommon.h"
-#include "drmclockclient.h"
-#include "drmpointerarray.h"
+#include "DRMClockClient.h"
+#include "DRMPointerArray.h"
 
 // ============================= LOCAL FUNCTIONS ===============================
 
@@ -57,10 +57,10 @@ void DRM::CDrmUtilityCommon::ConstructL()
 EXPORT_C DRM::CDrmUtilityCommon* DRM::CDrmUtilityCommon::NewLC()
     {
     DRM::CDrmUtilityCommon* self( new( ELeave ) CDrmUtilityCommon() );
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
-    
+
     return self;
     }
 
@@ -72,9 +72,9 @@ EXPORT_C DRM::CDrmUtilityCommon* DRM::CDrmUtilityCommon::NewLC()
 EXPORT_C DRM::CDrmUtilityCommon* DRM::CDrmUtilityCommon::NewL()
     {
     DRM::CDrmUtilityCommon* self( NewLC() );
-    
+
     CleanupStack::Pop( self );
-    
+
     return self;
     }
 
@@ -88,8 +88,8 @@ DRM::CDrmUtilityCommon::~CDrmUtilityCommon()
 // CDrmUtilityCommon::GetOmaRightsStatusL
 //
 // -----------------------------------------------------------------------------
-//	
-EXPORT_C DRM::TDrmRightsInfo DRM::CDrmUtilityCommon::GetOmaRightsStatusL( 
+//
+EXPORT_C DRM::TDrmRightsInfo DRM::CDrmUtilityCommon::GetOmaRightsStatusL(
     HBufC8*& aContentUri,
     ContentAccess::TIntent aIntent,
     CDRMConstraint* aConstraint )
@@ -103,30 +103,30 @@ EXPORT_C DRM::TDrmRightsInfo DRM::CDrmUtilityCommon::GetOmaRightsStatusL(
     CDRMConstraint* constraint( NULL );
     CDRMConstraint* toplevel( NULL );
     TUint32 retval( 0 );
-    TInt r( KErrNone );          
-        
+    TInt r( KErrNone );
+
     r = clockClient.Connect();
     CleanupClosePushL( clockClient );
     if ( !r )
         {
-        TInt timeZone( 0 );        
+        TInt timeZone( 0 );
         clockClient.GetSecureTime( drmTime, timeZone, secLevel );
         }
-                                      
+
     uriList = CDRMPointerArray<CDRMPermission>::NewLC();
     uriList->SetAutoCleanup( ETrue );
-    TRAP_IGNORE( iOmaClient.GetDBEntriesL( *aContentUri, *uriList ) );                                  
-                                      
+    TRAP_IGNORE( iOmaClient.GetDBEntriesL( *aContentUri, *uriList ) );
+
     if ( !uriList->Count() )
         {
         CleanupStack::PopAndDestroy( 2, &clockClient ); //clockClient, uriList
         return DRM::EURightsInfoMissing;
         }
-    
+
     individuals = CDRMPointerArray<HBufC8>::NewLC();
     individuals->SetAutoCleanup( ETrue );
-    TRAP_IGNORE( iOmaClient.GetSupportedIndividualsL( *individuals ) );    
-    
+    TRAP_IGNORE( iOmaClient.GetSupportedIndividualsL( *individuals ) );
+
     // Now we have the time, rights and the individual constraints do the
     // checking. The rights are never valid if we get here so we don't have
     // to check for that
@@ -134,12 +134,12 @@ EXPORT_C DRM::TDrmRightsInfo DRM::CDrmUtilityCommon::GetOmaRightsStatusL(
         {
         toplevel = NULL;
         constraint = NULL;
-        
+
         // If the toplevel constraint is defined, get it:
         toplevel = (*uriList)[i]->TopLevelConstraint();
         // If constraint for the intent is defined, get it
         constraint = (*uriList)[i]->ConstraintForIntent( aIntent );
-        
+
         // Top level constraint and constraint for intent, merge them
         if ( toplevel && constraint )
             {
@@ -150,11 +150,11 @@ EXPORT_C DRM::TDrmRightsInfo DRM::CDrmUtilityCommon::GetOmaRightsStatusL(
             {
             }
         // Only top level constraint or no constraints at all, continue
-        else 
+        else
             {
             continue;
             }
-                    
+
         // If the constraint is rejected due to non time reasons or there is no
         // time it can't be future
         constraint->Valid( drmTime, *individuals, retval );
@@ -166,9 +166,9 @@ EXPORT_C DRM::TDrmRightsInfo DRM::CDrmUtilityCommon::GetOmaRightsStatusL(
             {
             continue;
             }
-        
+
         drmTime.HomeTime();
-        
+
         // If the constrain has active start time and it is not valid,
         // it must be future
         if ( constraint->iActiveConstraints & EConstraintStartTime )
@@ -176,11 +176,11 @@ EXPORT_C DRM::TDrmRightsInfo DRM::CDrmUtilityCommon::GetOmaRightsStatusL(
             possiblefuture = ETrue;
             if ( aConstraint )
                 {
-                aConstraint->DuplicateL( *constraint );                       
+                aConstraint->DuplicateL( *constraint );
                 }
             }
-                
-        // If the constrain has active interval and it´s start time is in 
+
+        // If the constrain has active interval and it´s start time is in
         // future, it must be future
         else if ( constraint->iActiveConstraints & EConstraintInterval &&
                   constraint->iIntervalStart > drmTime )
@@ -188,14 +188,14 @@ EXPORT_C DRM::TDrmRightsInfo DRM::CDrmUtilityCommon::GetOmaRightsStatusL(
             possiblefuture = ETrue;
             if ( aConstraint )
                 {
-                aConstraint->DuplicateL( *constraint );                     
+                aConstraint->DuplicateL( *constraint );
                 }
             }
         } // End of for loop
-        
-	CleanupStack::PopAndDestroy( 3, &clockClient ); //individuals, urilist, 
+
+    CleanupStack::PopAndDestroy( 3, &clockClient ); //individuals, urilist,
                                                     //clockClient
-	return possiblefuture ? DRM::EURightsInfoFuture : DRM::EURightsInfoExpired;
-	}
-	
+    return possiblefuture ? DRM::EURightsInfoFuture : DRM::EURightsInfoExpired;
+    }
+
 //  End of File

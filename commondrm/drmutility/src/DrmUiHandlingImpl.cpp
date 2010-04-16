@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2009 Nokia Corporation and/or its subsidiary(-ies).
+ * Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
  * All rights reserved.
  * This component and the accompanying materials are made available
  * under the terms of "Eclipse Public License v1.0"
@@ -27,7 +27,7 @@
 
 // publish & subscribe
 #include <e32property.h>
-#include <psvariables.h>
+#include <PSVariables.h>
 #include <centralrepository.h>
 
 // coeenv
@@ -38,7 +38,7 @@
 
 // browser
 #ifdef __SERIES60_NATIVE_BROWSER
-#include <browseruisdkcrkeys.h>
+#include <BrowserUiSDKCRKeys.h>
 #endif
 
 // caf
@@ -46,26 +46,26 @@
 #include <caf/caftypes.h>
 
 // launching embedded details view
-#include <aknlaunchappservice.h>
-#include <aiwgenericparam.h>
+#include <AknLaunchAppService.h>
+#include <AiwGenericParam.h>
 #include <apgcli.h>
 
 // character conversions
 #include <utf.h>
 
 // handling urls
-#include <schemehandler.h>
+#include <SchemeHandler.h>
 
 // resources
 #include <data_caging_path_literals.hrh>
 #include <drmutility.rsg>
 
 // drm
-#include <oma2agent.h>
+#include <Oma2Agent.h>
 #include <drmagents.h>
-#include <drmpermission.h>
-#include <drmconstraint.h>
-#include <drmrightsclient.h>
+#include <DrmPermission.h>
+#include <DrmConstraint.h>
+#include <DRMRightsClient.h>
 #include <drmutility.h>
 #include <drmutilitytypes.h>
 #include <drmasyncobserver.h>
@@ -77,21 +77,21 @@
 
 #include "drmutilitycommon.h"
 #include "drmutilityui.h"
-#include "drmuihandlingimpl.h"
+#include "DrmUiHandlingImpl.h"
 #include "drmuihandlingdata.h"
-#include "drmutilitydownloadmanager.h"
+#include "DrmUtilityDownloadManager.h"
 #include "drmutilityinternaltypes.h"
 #include "drmuicheckrightsobserver.h"
 #include "drmutilitywmdrm.h"
 #include "drmutilitywmdrmwrapper.h"
 
-#include "roapstorageclient.h"
-#include "drmtypes.h"
+#include "RoapStorageClient.h"
+#include "DRMTypes.h"
 #include "drmsettingsplugininternalcrkeys.h"
-#include "drmricontext.h"
-#include "drmdomaincontext.h"
+#include "DRMRIContext.h"
+#include "DRMDomainContext.h"
 
-#include "drmutilityinternalcrkeys.h"      // Cenrep extension for OmaBased
+#include "DrmUtilityInternalcrkeys.h"      // Cenrep extension for OmaBased
 
 // CONSTANTS
 const TInt KCommandHandleErrorFile( 1 );
@@ -1612,12 +1612,12 @@ void DRM::CDrmUiHandlingImpl::DoCheckOmaRightsAmountL(
         {
         permission = iOmaClient.GetActiveRightsL( aIntent, *aContentUri,
             reason );
-            
+
         if( !permission )
             {
             User::Leave( KErrCANoPermission); //coverity check
             }
-            
+
         CleanupStack::PushL( permission );
 
         toplevel = permission->TopLevelConstraint();
@@ -3826,7 +3826,7 @@ void DRM::CDrmUiHandlingImpl::CreateLaunchParamL(
     __ASSERT_DEBUG( !aLaunchParam && aUrl && aFullPath,
         User::Panic( KDRMUtilityDebugPanicMessage,
             KDRMUtilityDebugPanicCode ) );
-    _LIT( KSpace, " " );
+    _LIT( KMarker, "\x00" );
 
     RPointerArray<CDRMPermission> uriList;
     TPtr ptr( NULL, 0 );
@@ -3850,10 +3850,10 @@ void DRM::CDrmUiHandlingImpl::CreateLaunchParamL(
     ptr.AppendNum( localId );
 
     // length of startparam and drm protection scheme are always 1 and
-    // 4 spaces are needed
-    const TInt KSpacesBetweenParams( 4 );
+    // 5 markers are needed
+    const TInt KMarkersForParams( 5 );
     TInt length( 1 + aUrl->Length() + ptr.Length() + aFullPath->Length()
-        + KSpacesBetweenParams + 1 );
+        + KMarkersForParams + 1 );
 
     aLaunchParam = HBufC::NewLC( length );
     ptr.Set( aLaunchParam->Des() );
@@ -3869,20 +3869,21 @@ void DRM::CDrmUiHandlingImpl::CreateLaunchParamL(
         {
         ptr.AppendNum( EDrmLaunchParamStandAloneUtility );
         }
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     ptr.Append( *localIDBuf );
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
 
     HBufC* contentUrl( CnvUtfConverter::ConvertToUnicodeFromUtf8L( *aUrl ) );
 
     ptr.Append( *contentUrl );
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
 
     // OMA DRM protection scheme
     ptr.AppendNum( EDrmSchemeOmaDrm );
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
 
     ptr.Append( *aFullPath );
+    ptr.Append( KMarker );
 
     delete contentUrl;
 
@@ -3902,13 +3903,13 @@ void DRM::CDrmUiHandlingImpl::CreateLaunchParamL(
         User::Panic( KDRMUtilityDebugPanicMessage,
             KDRMUtilityDebugPanicCode ) );
     _LIT( KZero, "0" );
-    _LIT( KSpace, " " );
+    _LIT( KMarker, "\x00" );
 
     TPtr ptr( NULL, 0 );
 
     // Length of startparam and drm protection scheme and zero local id
-    // are always 1 and total of 3 spaces are needed
-    TInt length( 1 + aUrl->Length() + 1 + 3 + 1 );
+    // are always 1 and total of 4 markers are needed
+    TInt length( 1 + aUrl->Length() + 1 + 4 + 1 );
 
     aLaunchParam = HBufC::NewLC( length );
     ptr.Set( aLaunchParam->Des() );
@@ -3924,14 +3925,15 @@ void DRM::CDrmUiHandlingImpl::CreateLaunchParamL(
         {
         ptr.AppendNum( EDrmLaunchParamStandAloneUtility );
         }
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     // Default value 0 for localId in case of WM DRM file
     ptr.Append( KZero );
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     ptr.Append( *aUrl );
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     // WM DRM protection scheme
     ptr.AppendNum( EDrmSchemeWmDrm );
+    ptr.Append( KMarker );
 
     CleanupStack::Pop( aLaunchParam );
     }

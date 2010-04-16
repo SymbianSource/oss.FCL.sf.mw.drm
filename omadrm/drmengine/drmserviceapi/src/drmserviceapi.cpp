@@ -19,8 +19,8 @@
 
 #include <drmserviceapi.h>
 
-#include "roapstorageclient.h"
-#include "drmclockclient.h"
+#include "RoapStorageClient.h"
+#include "DRMClockClient.h"
 
 
 // ======== LOCAL FUNCTIONS ========
@@ -65,7 +65,7 @@ DRM::CDrmServiceApi::~CDrmServiceApi()
         delete iClockClient;
         iClockClient = NULL;
         }
-    
+
     // Roap storage client
     if( iRoapStorageClient )
         {
@@ -79,14 +79,14 @@ DRM::CDrmServiceApi::~CDrmServiceApi()
 // CDrmServiceApi::GetSecureTime
 // ---------------------------------------------------------------------------
 //
-EXPORT_C TInt DRM::CDrmServiceApi::GetSecureTime( 
-    TTime& aTime, 
+EXPORT_C TInt DRM::CDrmServiceApi::GetSecureTime(
+    TTime& aTime,
     TInt& aTimeZone,
     DRMClock::ESecurityLevel& aSecurityLevel ) const
     {
-    return iClockClient->GetSecureTime( aTime, aTimeZone, aSecurityLevel);    
+    return iClockClient->GetSecureTime( aTime, aTimeZone, aSecurityLevel);
     };
-                        
+
 // ---------------------------------------------------------------------------
 // CDrmServiceApi::UpdateSecureTime
 // ---------------------------------------------------------------------------
@@ -132,10 +132,10 @@ void DRM::CDrmServiceApi::ConstructL()
     {
     // Create an instance of the clock client
     iClockClient = new (ELeave) RDRMClockClient;
-    
+
     // Connect to the server
     User::LeaveIfError( iClockClient->Connect() );
-    
+
     // Create and instance of the roap storage client
     iRoapStorageClient = new (ELeave) Roap::RRoapStorageClient;
 

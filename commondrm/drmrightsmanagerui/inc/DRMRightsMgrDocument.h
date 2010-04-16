@@ -21,11 +21,11 @@
 #define DRMRIGHTSMGRDOCUMENT_H
 
 // INCLUDES
-#include <akndoc.h>
+#include <AknDoc.h>
 
-#include <genericparamconsumer.h>
+#include <GenericParamConsumer.h>
 
-#include "drmrightsmanager.hrh"
+#include "DRMRightsManager.hrh"
 
 
 // FORWARD DECLARATIONS

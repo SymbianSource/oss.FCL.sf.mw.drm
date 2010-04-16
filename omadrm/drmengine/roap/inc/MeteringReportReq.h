@@ -27,7 +27,7 @@
 #include "RoapMessage.h"
 #include "RoapDef.h"
 #include "OmaCrypto.h"
-#include "CMLACrypto.h"
+#include "CmlaCrypto.h"
 
 namespace Roap
 {
@@ -44,19 +44,19 @@ namespace Roap
 NONSHARABLE_CLASS( CMeteringReportReq ): public CRoapMessage
     {
     public:  // Constructors and destructor
-        
+
         /**
         * Two-phased constructor.
         */
         static CMeteringReportReq* NewL();
-        
+
         /**
         * Destructor.
         */
         virtual ~CMeteringReportReq();
 
     public: // New functions
-        
+
         /**
         * ?member_description.
         * @since Series ?XX ?SeriesXX_version
@@ -82,9 +82,9 @@ NONSHARABLE_CLASS( CMeteringReportReq ): public CRoapMessage
         * @return ?description
         */
         virtual HBufC8* MessageAsXmlL(void);
-        
+
     protected:  // New functions
-        
+
         /**
         * ?member_description.
         * @since Series ?XX ?SeriesXX_version
@@ -94,7 +94,7 @@ NONSHARABLE_CLASS( CMeteringReportReq ): public CRoapMessage
         //?type ?member_function( ?type ?arg1 );
 
     protected:  // Functions from base classes
-        
+
         /**
         * From ?base_class ?member_description
         */
@@ -130,7 +130,7 @@ NONSHARABLE_CLASS( CMeteringReportReq ): public CRoapMessage
         HBufC8* iSignature;
         HBufC8* iCipherValue;
         HBufC8* iEncryptedMekAndMak;
-        HBufC8* iMac;       
+        HBufC8* iMac;
         // Optional nonce from the trigger
         HBufC8* iTriggerNonce;
         TKeyTransportScheme iAlgorithmInUse;
@@ -142,7 +142,7 @@ NONSHARABLE_CLASS( CMeteringReportReq ): public CRoapMessage
     private:    // Data
         // ?one_line_short_description_of_data
         //?data_declaration;
-         
+
         // Reserved pointer for future extension
         //TAny* iReserved;
 
@@ -156,6 +156,6 @@ NONSHARABLE_CLASS( CMeteringReportReq ): public CRoapMessage
     };
 }
 
-#endif      // METERINGREPORTREQ_H   
-            
+#endif      // METERINGREPORTREQ_H
+
 // End of File

@@ -19,7 +19,7 @@
 // INCLUDE FILES
 #include <stringpool.h>
 #include <http/thttphdrval.h>
-#include <HttpFilterCommonStringsExt.h>
+#include <httpfiltercommonstringsext.h>
 
 #include "RoapHttpHandler.h"
 #include "RoapObserver.h"

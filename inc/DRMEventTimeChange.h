@@ -22,8 +22,8 @@
 
 //  INCLUDES
 #include <e32base.h>
-#include <DrmTypes.h>
-#include <DRMEvent.h>   
+#include <DRMTypes.h>
+#include <DRMEvent.h>
 
 // CONSTANTS
 
@@ -45,7 +45,7 @@
 *  @since S60Rel2.8
 */
 
-class CDRMEventTimeChange : public MDRMEvent, public CBase 
+class CDRMEventTimeChange : public MDRMEvent, public CBase
 {
 public: // Constructors and destructor
 
@@ -72,10 +72,10 @@ public: // Constructors and destructor
     * @since S60Rel3.0
     */
     IMPORT_C static CDRMEventTimeChange* NewL();
-    
+
     /**
     * Destructor
-    */   
+    */
     IMPORT_C virtual ~CDRMEventTimeChange();
 
 public: // new functions
@@ -96,7 +96,7 @@ public: // new functions
     /**
     * GetOldTime
     *
-    * Returns what the time was before the time changed 
+    * Returns what the time was before the time changed
     *
     * @since S60Rel2.8
     */
@@ -117,7 +117,7 @@ public: // new functions
     /**
     * GetNewTime
     *
-    * Returns what the time is after the time changed 
+    * Returns what the time is after the time changed
     *
     * @since S60Rel2.8
     */
@@ -161,7 +161,7 @@ public: // new functions
     /**
     * GetNewTimeZone
     *
-    * Returns what the timezone is after the time changed 
+    * Returns what the timezone is after the time changed
     *
     * @since S60Rel2.8
     */
@@ -204,7 +204,7 @@ public: // new functions
     /**
     * GetNewSecurityLevel
     *
-    * Returns what the security level is after the time changed 
+    * Returns what the security level is after the time changed
     *
     * @since S60Rel2.8
     */
@@ -235,7 +235,7 @@ public: // Functions from base classes
 
     /**
     * WriteInt64L
-    * 
+    *
     * Writes the 64 bit integer to the stream
     *
     * @since    3.0
@@ -248,7 +248,7 @@ public: // Functions from base classes
 
     /**
     * ReadInt64L
-    * 
+    *
     * Reads the 64 bit integer from the stream
     *
     * @since    3.0
@@ -257,10 +257,10 @@ public: // Functions from base classes
     * @return   The function leaves with Symbian OS error code if an
     *           error occurs
     */
-    void ReadInt64L( TInt64& aRead, RReadStream& aStream ); 
+    void ReadInt64L( TInt64& aRead, RReadStream& aStream );
 
 private:
-    
+
     /**
     * C++ default constructor.
     */
@@ -270,7 +270,7 @@ private:
     * First Phase constructor
     */
     void ConstructL();
-   
+
     // Prohibit copy constructor
     CDRMEventTimeChange( const CDRMEventTimeChange& );
 
@@ -282,21 +282,21 @@ private:
 
     // The new time after the change
     TTime iNewTime;
-    
+
     // The old timezone before the change
     TInt iOldTimeZone;
-    
+
     // The new timezone after the change
     TInt iNewTimeZone;
-    
+
     // The old security level before the change
     DRMClock::ESecurityLevel iOldSecurityLevel;
-    
+
     // The new security level after the change
     DRMClock::ESecurityLevel iNewSecurityLevel;
-    
+
 };
 
 #endif      // CDRMEVENTTIMECHANGE_H
-            
+
 // End of File

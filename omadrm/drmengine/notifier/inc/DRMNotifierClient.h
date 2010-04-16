@@ -11,7 +11,7 @@
 *
 * Contributors:
 *
-* Description:  This class handles communications between a notifier client & 
+* Description:  This class handles communications between a notifier client &
 *                DRM server in DRM notifier.
 *
 */
@@ -22,7 +22,7 @@
 #define RDRMNOTIFIERCLIENT_H
 
 //  INCLUDES
-#include <E32STD.H>
+#include <e32std.h>
 #include <DRMEvent.h>
 
 // CONSTANTS
@@ -36,7 +36,7 @@ const TInt KMaxMessageSlots = 2;
 
 /**
 *  This class handles all client/server communications.
-*  
+*
 *  @lib DRMCommon.dll
 *  @since S60Rel2.6
 */
@@ -46,16 +46,16 @@ class RDRMNotifierClient : public RSessionBase
        /**
         * C++ default constructor.
         */
-       RDRMNotifierClient(TDRMEventType* aEventType, TDRMEventType* aEventTypeWait, 
+       RDRMNotifierClient(TDRMEventType* aEventType, TDRMEventType* aEventTypeWait,
                           TPtr8* aPtr, TPtr8* aWaitPtr);
-       
+
        /**
         * Destructor.
         */
        virtual ~RDRMNotifierClient();
-       
+
     public: // New functions
-        
+
        /**
        * This method opens a connection to the server.
        * @since S60Rel2.6
@@ -72,7 +72,7 @@ class RDRMNotifierClient : public RSessionBase
        * @since S60Rel2.6
        * @param aStatus  the status will be updated when the a notification
        *                 has been received
-       * @return none 
+       * @return none
        */
        void WaitForCompletion( TRequestStatus& aStatus );
 
@@ -86,7 +86,7 @@ class RDRMNotifierClient : public RSessionBase
        * @since S60Rel2.6
        * @param aStatus  the status will be updated when all notifications have
        *                 been forwarded
-       * @return none 
+       * @return none
        */
        void SendEvent( TRequestStatus& aStatus );
 
@@ -100,7 +100,7 @@ class RDRMNotifierClient : public RSessionBase
        * @since S60Rel2.6
        * @param aEventType  the event type to listen to
        * @param aURI  optional URI to limit the C/S communication
-       * @return none 
+       * @return none
        */
        void RegisterForType( TDRMEventType aEventType, HBufC8* aURI = 0 );
 
@@ -108,14 +108,14 @@ class RDRMNotifierClient : public RSessionBase
        /**
        * UnRegisterFromType
        *
-       * Unregister from the server from listening to specific event types, 
-       * if a URI is provided notifications of the type that have that URI 
+       * Unregister from the server from listening to specific event types,
+       * if a URI is provided notifications of the type that have that URI
        * as affected URI will get unregistered
        *
        * @since S60Rel2.6
        * @param aEventType  the event type to listen to
        * @param aURI  optional URI to limit the C/S communication
-       * @return none 
+       * @return none
        */
        void UnRegisterFromType( TDRMEventType aEventType, HBufC8* aURI = 0 );
 
@@ -131,13 +131,13 @@ class RDRMNotifierClient : public RSessionBase
        */
        void CancelRequest();
 
-       
+
     public: // Functions from base classes
-        void Close();      
+        void Close();
     protected:  // New functions
-        
+
     protected:  // Functions from base classes
-        
+
     private:
 
         // Prohibit copy constructor
@@ -153,12 +153,12 @@ class RDRMNotifierClient : public RSessionBase
         TPtr8* iData;
         TPtr8* iWaitData;
         TPckg<TInt> numdata;
-        
+
     public:     // Friend classes
     protected:  // Friend classes
     private:    // Friend classes
     };
 
 #endif      // RDRMNOTIFIERCLIENT_H
-            
+
 // End of File

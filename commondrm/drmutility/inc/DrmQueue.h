@@ -83,11 +83,11 @@ public:
     C* PopFront();
 
     /**
-    * Checks 
+    * Checks
     * implementation
     * @param[in]   aId : ID representing data to be popped from queue
-    * @return      Pointer to data object in queue, NULL if not found 
-    * 
+    * @return      Pointer to data object in queue, NULL if not found
+    *
     */
     C* PopItem( TInt aId );
 
@@ -119,6 +119,6 @@ private:
 }
 
 // Since it's a template class include the implementation
-#include "drmqueue.inl"
+#include "DrmQueue.inl"
 
 #endif // CDRMAUTOMATEDUSAGE_H

@@ -22,11 +22,11 @@
 
 //  INCLUDES
 #include <caf/agentfactory.h>
-#include "oma2agentcontent.h"
-#include "oma2agentdata.h"
-#include "oma2agentmanager.h"
-#include "oma2agentrightsmanager.h"
-#include "oma2agentimportfile.h"
+#include "Oma2AgentContent.h"
+#include "Oma2AgentData.h"
+#include "Oma2AgentManager.h"
+#include "Oma2AgentRightsManager.h"
+#include "Oma2AgentImportFile.h"
 
 // CONSTANTS
 //const ?type ?constant_var = ?constant;
@@ -60,19 +60,19 @@ namespace ContentAccess
 class COma2AgentFactory : public CAgentFactory
     {
     public:  // Constructors and destructor
-        
+
         /**
         * Two-phased constructor.
         */
         static COma2AgentFactory* NewL();
-        
+
         /**
         * Destructor.
         */
         virtual ~COma2AgentFactory();
 
     public: // New functions
-        
+
         /**
         * ?member_description.
         * @since Series ?XX ?SeriesXX_version
@@ -89,17 +89,17 @@ class COma2AgentFactory : public CAgentFactory
         * @param ?arg1 ?description
         * @return ?description
         */
-		CAgentContent* CreateContentBrowserL(const TDesC& aURI, TContentShareMode aShareMode);	
-		CAgentContent* CreateContentBrowserL(RFile& aFile);
-		CAgentData* CreateDataConsumerL(const TVirtualPathPtr& aVirtualPath, TContentShareMode aShareMode);
-		CAgentData* CreateDataConsumerL(RFile& aFile, const TDesC& aUniqueId);
-		CAgentManager*  CreateManagerL();
-		CAgentImportFile* CreateImporterL(const TDesC8& aMimeType, const CMetaDataArray& aMetaDataArray, const TDesC& aOutputDirectory, const TDesC& aSuggestedFileName);
-		CAgentImportFile* CreateImporterL(const TDesC8& aMimeType, const CMetaDataArray& aMetaDataArray);
-		CAgentRightsManager* CreateRightsManagerL();	
+        CAgentContent* CreateContentBrowserL(const TDesC& aURI, TContentShareMode aShareMode);
+        CAgentContent* CreateContentBrowserL(RFile& aFile);
+        CAgentData* CreateDataConsumerL(const TVirtualPathPtr& aVirtualPath, TContentShareMode aShareMode);
+        CAgentData* CreateDataConsumerL(RFile& aFile, const TDesC& aUniqueId);
+        CAgentManager*  CreateManagerL();
+        CAgentImportFile* CreateImporterL(const TDesC8& aMimeType, const CMetaDataArray& aMetaDataArray, const TDesC& aOutputDirectory, const TDesC& aSuggestedFileName);
+        CAgentImportFile* CreateImporterL(const TDesC8& aMimeType, const CMetaDataArray& aMetaDataArray);
+        CAgentRightsManager* CreateRightsManagerL();
 
     protected:  // New functions
-        
+
         /**
         * ?member_description.
         * @since Series ?XX ?SeriesXX_version
@@ -109,7 +109,7 @@ class COma2AgentFactory : public CAgentFactory
         //?type ?member_function( ?type ?arg1 );
 
     protected:  // Functions from base classes
-        
+
         /**
         * From ?base_class ?member_description
         */
@@ -135,7 +135,7 @@ class COma2AgentFactory : public CAgentFactory
     public:     // Data
         // ?one_line_short_description_of_data
         //?data_declaration;
-    
+
     protected:  // Data
         // ?one_line_short_description_of_data
         //?data_declaration;
@@ -143,7 +143,7 @@ class COma2AgentFactory : public CAgentFactory
     private:    // Data
         // ?one_line_short_description_of_data
         //?data_declaration;
-         
+
         // Reserved pointer for future extension
         //TAny* iReserved;
 
@@ -158,6 +158,6 @@ class COma2AgentFactory : public CAgentFactory
 
 }
 
-#endif      // OMA2AGENTFACTORY_H   
-            
+#endif      // OMA2AGENTFACTORY_H
+
 // End of File

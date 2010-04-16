@@ -21,7 +21,7 @@
 #define CROAPSYNCWRAPPER_H
 
 #include <e32base.h>
-#include <roapobserver.h>
+#include <RoapObserver.h>
 
 /**
 *  Synchronous wrapper for ROAP protocol suite.

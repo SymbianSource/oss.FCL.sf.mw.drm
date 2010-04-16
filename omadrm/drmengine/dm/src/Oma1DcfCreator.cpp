@@ -30,19 +30,19 @@
 #include <symmetric.h>
 #include "Oma1DcfCreator.h"
 #include "DRMRightsClient.h"
-#include "DRMPermission.h"
-#include "DRMConstraint.h"
+#include "DrmPermission.h"
+#include "DrmConstraint.h"
 #include "DRMCommon.h"
 #include "DrmKeyStorage.h"
 
 
 // EXTERNAL DATA STRUCTURES
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 
-static const TInt KMaxEncryptionSize = 2048;    
+static const TInt KMaxEncryptionSize = 2048;
 
 // MACROS
 
@@ -64,7 +64,7 @@ EXPORT_C COma1DcfCreator::COma1DcfCreator(void)
     {
     iEncryptionStream = NULL;
     iEncryptionBuffer = NULL;
-    } 
+    }
 
 // -----------------------------------------------------------------------------
 // COma1DcfCreator::ConstructL
@@ -83,13 +83,13 @@ EXPORT_C void COma1DcfCreator::ConstructL()
 EXPORT_C COma1DcfCreator* COma1DcfCreator::NewL()
     {
     COma1DcfCreator* self = new COma1DcfCreator();
-    
+
     User::LeaveIfNull(self);
-    
+
     CleanupStack::PushL(self);
     self->ConstructL();
     CleanupStack::Pop();
-    
+
     return self;
     }
 
@@ -105,11 +105,11 @@ EXPORT_C COma1DcfCreator::~COma1DcfCreator()
 
 // -----------------------------------------------------------------------------
 // COma1DcfCreator::
-// 
+//
 // -----------------------------------------------------------------------------
 EXPORT_C void COma1DcfCreator::EncryptInitializeL(
     RWriteStream& anOutput,
-    const TDesC8& aMIMEType, 
+    const TDesC8& aMIMEType,
     CDRMRights* aRightsObject)
     {
     const TUint KVersion = 1;
@@ -130,7 +130,7 @@ EXPORT_C void COma1DcfCreator::EncryptInitializeL(
         if (err == KErrCANoRights)
             {
             key.SetLength(KDCFKeySize);
-            iRdb.GetRandomDataL(key);    
+            iRdb.GetRandomDataL(key);
             User::LeaveIfError(iRdb.AddRecord(key, aRightsObject->GetPermission(),
                 uri, id));
             User::LeaveIfError(iRdb.InitializeKey(uri));
@@ -181,9 +181,9 @@ EXPORT_C void COma1DcfCreator::EncryptInitializeL(
     anOutput.CommitL();
     iBytesWritten += 3 + aMIMEType.Size() + 2 + KLDFHeader().Size() +
         iIv.Size();
-    
+
     CleanupStack::PopAndDestroy(); // rights
-    } 
+    }
 
 // -----------------------------------------------------------------------------
 // COma1DcfCreator::EncryptUpdateL
@@ -196,7 +196,7 @@ EXPORT_C void COma1DcfCreator::EncryptUpdateL(const TDesC8& aMessageData)
     TInt size;
     TPtr8 ptr(iEncryptionBuffer->Des());
     TPtrC8 data;
-    
+
     data.Set(aMessageData);
     if (iRemainder.Size() > 0 && iRemainder.Size() + data.Size() >= KDCFKeySize)
         {
@@ -210,7 +210,7 @@ EXPORT_C void COma1DcfCreator::EncryptUpdateL(const TDesC8& aMessageData)
         data.Set(data.Right(data.Size() - n));
         iRemainder.SetLength(0);
         }
-    
+
     size = data.Size();
     for (i = 0; size > KDCFKeySize; i += KMaxEncryptionSize)
         {
@@ -233,7 +233,7 @@ EXPORT_C void COma1DcfCreator::EncryptUpdateL(const TDesC8& aMessageData)
 EXPORT_C void COma1DcfCreator::EncryptFinalizeL()
     {
     TPtr8 ptr(iEncryptionBuffer->Des());
-    
+
     ptr.Copy(iRemainder);
     iRdb.Encrypt(iIv, ptr, ETrue);
     iEncryptionStream->WriteL(ptr);
@@ -249,8 +249,8 @@ EXPORT_C void COma1DcfCreator::EncryptFinalizeL()
 // content with the DCF.
 // -----------------------------------------------------------------------------
 EXPORT_C void COma1DcfCreator::EncryptContentL(
-    HBufC8*& aContent, 
-    const TDesC8& aMIMEType, 
+    HBufC8*& aContent,
+    const TDesC8& aMIMEType,
     CDRMRights* aRightsObject)
     {
     RMemWriteStream output;
@@ -259,7 +259,7 @@ EXPORT_C void COma1DcfCreator::EncryptContentL(
 
     size = aContent->Length() +
         aMIMEType.Length() +
-        KLDContentURI().Length() + 
+        KLDContentURI().Length() +
         KLDFHeader().Length() + 256;
     buffer = User::Alloc(size);
     User::LeaveIfNull(buffer);
@@ -282,18 +282,18 @@ EXPORT_C void COma1DcfCreator::EncryptContentL(
 // Turn a plain content file into a DCF.
 // -----------------------------------------------------------------------------
 EXPORT_C void COma1DcfCreator::EncryptFileL(
-    const TDesC& aFileName, 
-    const TDesC& aDCFFileName, 
-    const TDesC8& aMIMEType, 
+    const TDesC& aFileName,
+    const TDesC& aDCFFileName,
+    const TDesC8& aMIMEType,
     CDRMRights* aRightsObject)
     {
-    TInt r = KErrNone;    
+    TInt r = KErrNone;
     RFs fs;
     RFile input;
     RFileWriteStream output;
     HBufC8* buf = HBufC8::NewLC(8000);
     TPtr8 buffer(const_cast<TUint8*>(buf->Ptr()),0,8000);
-   
+
 
     User::LeaveIfError(fs.Connect());
     CleanupClosePushL(fs);
@@ -302,26 +302,26 @@ EXPORT_C void COma1DcfCreator::EncryptFileL(
     if(r == KErrInUse)
         {
         r = input.Open(fs, aFileName, EFileRead | EFileShareAny);
-                                                      
+
         if(r == KErrInUse)
             {
-            User::LeaveIfError(input.Open(fs, aFileName, EFileRead | 
+            User::LeaveIfError(input.Open(fs, aFileName, EFileRead |
                                                          EFileShareReadersOnly));
-            r = KErrNone;                                             
+            r = KErrNone;
             }
         }
-        
-    User::LeaveIfError( r );        
-    
+
+    User::LeaveIfError( r );
+
     CleanupClosePushL(input);
-    
+
     User::LeaveIfError(output.Replace(fs, aDCFFileName, EFileWrite));
-    CleanupClosePushL(output);    
-    
-   
+    CleanupClosePushL(output);
+
+
     EncryptInitializeL(output, aMIMEType, aRightsObject);
 
-    
+
     do
         {
         input.Read(buffer, buffer.MaxSize());
@@ -333,7 +333,7 @@ EXPORT_C void COma1DcfCreator::EncryptFileL(
             }
         }
     while (buffer.Size() > 0);
- 
+
     EncryptFinalizeL();
 
     CleanupStack::PopAndDestroy(4); // output, input, fs, buf
@@ -344,9 +344,9 @@ EXPORT_C void COma1DcfCreator::EncryptFileL(
 // Encrypt plain content to a DCF and stores it in a file.
 // -----------------------------------------------------------------------------
 EXPORT_C void COma1DcfCreator::EncryptContentToFileL(
-    const TDesC8& aContent, 
-    const TDesC& aFileName, 
-    const TDesC8& aMIMEType, 
+    const TDesC8& aContent,
+    const TDesC& aFileName,
+    const TDesC8& aMIMEType,
     CDRMRights* aRightsObject)
     {
     RFs fs;

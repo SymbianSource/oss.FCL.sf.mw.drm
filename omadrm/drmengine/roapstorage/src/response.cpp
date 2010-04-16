@@ -21,7 +21,7 @@
 #include <x509cert.h>
 #include <x500dn.h>
 
-#include "roapocsp.h"
+#include "RoapOcsp.h"
 #include "oids.h"
 #include "certid.h"
 

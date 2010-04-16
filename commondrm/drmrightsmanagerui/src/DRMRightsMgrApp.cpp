@@ -19,8 +19,8 @@
 // INCLUDE FILES
 #include <eikstart.h>
 
-#include "drmrightsmgrapp.h"
-#include "drmrightsmgrdocument.h"
+#include "DRMRightsMgrApp.h"
+#include "DRMRightsMgrDocument.h"
 
 
 // ================= MEMBER FUNCTIONS =======================

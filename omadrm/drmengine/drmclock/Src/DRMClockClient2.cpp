@@ -18,14 +18,14 @@
 
 // INCLUDE FILES
 #include "DRMClockClient.h"
-#include "DRMclockClientServer.h"
+#include "drmclockclientserver.h"
 #include "DRMTypes.h"
 
-#include "DRMLog.h"
+#include "drmlog.h"
 
 
 // EXTERNAL DATA STRUCTURES
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 // MACROS
@@ -57,7 +57,7 @@ LOCAL_C const TInt KTimeZoneIncrement = 15;
 EXPORT_C RDRMClockClient::RDRMClockClient()
     {
     }
-    
+
 // -----------------------------------------------------------------------------
 // RDRMClockClient::~RDRMClockClient
 // Destructor.
@@ -65,7 +65,7 @@ EXPORT_C RDRMClockClient::RDRMClockClient()
 //
 EXPORT_C RDRMClockClient::~RDRMClockClient()
     {
-    }    
+    }
 
 // -----------------------------------------------------------------------------
 // RDRMClockClient::Connect
@@ -75,23 +75,23 @@ EXPORT_C RDRMClockClient::~RDRMClockClient()
 EXPORT_C TInt RDRMClockClient::Connect()
     {
     TInt ret = KErrNone;
-#ifdef __DRM_CLOCK    
+#ifdef __DRM_CLOCK
     DRMLOG( _L( "RDRMClockClient::Connect" ) );
 
-    const TVersion requiredVersion( 
+    const TVersion requiredVersion(
         DRMClock::KServerMajorVersion,
         DRMClock::KServerMinorVersion,
         DRMClock::KServerBuildVersion );
-    
+
     DRMLOG( _L("RDRMClockClient: Create a new session" ) );
     ret = CreateSession( DRMClock::KServerName,
-                         requiredVersion, 
+                         requiredVersion,
                          KMaxMessageSlots );
     DRMLOG2( _L( "Result: %d") , ret );
 #else
     DRMLOG( _L( "RDRMClockClient: No Session Created, DRMClock is off") );
 #endif // __DRM_CLOCK
-    
+
     return ret;
     }
 
@@ -100,7 +100,7 @@ EXPORT_C TInt RDRMClockClient::Connect()
 // Closes the connection to the server.
 // -----------------------------------------------------------------------------
 //
-EXPORT_C void RDRMClockClient::Close() 
+EXPORT_C void RDRMClockClient::Close()
     {
     DRMLOG( _L( "RDRMClockClient::Close" ) );
 
@@ -115,38 +115,38 @@ EXPORT_C void RDRMClockClient::Close()
 EXPORT_C TInt RDRMClockClient::GetSecureTime( TTime& aTime, TInt& aTimeZone,
                                      DRMClock::ESecurityLevel& aSecurityLevel ) const
     {
-#ifdef __DRM_CLOCK    	
+#ifdef __DRM_CLOCK
     TPckg<TTime> package(aTime);
     TPckg<TInt> package2(aTimeZone);
     TPckg<DRMClock::ESecurityLevel> package3(aSecurityLevel);
-                
+
     DRMLOG( _L( "RDRMClockClient::GetSecureTime" ) );
     TInt error = KErrNone;
-    
+
     // Send the message.
     error = SendReceive( DRMClock::EGetDRMTime, TIpcArgs( &package, &package2, &package3 ) );
-    
+
     DRMLOG2( _L( "RDRMClockClient::GetSecureTime: %d" ), error );
     return error;
 #else
     DRMLOG( _L( "RDRMClockClient::GetSecureTime, UI Time is returned, DRMClock is off" ) );
-	  TTime currentLocal;
+      TTime currentLocal;
     TInt64 result = 0;
-    	  
-	  // aTime:
-	  aTime.UniversalTime();
-	  currentLocal.HomeTime();
-    
+
+      // aTime:
+      aTime.UniversalTime();
+      currentLocal.HomeTime();
+
     result = currentLocal.Int64() - aTime.Int64();
     result /= KMinuteInMicroseconds;
     result /= KTimeZoneIncrement;
-    
+
     // aTimeZone:
     aTimeZone = I64INT(result);
 
-	  // aSecurityLevel:
-	  aSecurityLevel = DRMClock::KSecure;
-	  return KErrNone;
+      // aSecurityLevel:
+      aSecurityLevel = DRMClock::KSecure;
+      return KErrNone;
 #endif // __DRM_CLOCK
     }
 
@@ -162,11 +162,11 @@ EXPORT_C TInt RDRMClockClient::UpdateSecureTime( const TTime& aTime, const TInt&
 #ifdef __DRM_CLOCK
     TPckg<TTime> package(aTime);
     TPckg<TInt> package2(aTimeZone);
-    
+
     DRMLOG( _L( "RDRMClockClient::UpdateSecureTime" ) );
-        
+
     error = SendReceive( DRMClock::EUpdateDRMTime, TIpcArgs( &package, &package2 ) );
-    
+
     DRMLOG2( _L( "RDRMClockClient::UpdateSecureTime: " ), error );
 #else
     DRMLOG( _L("RDRMClockClient::UpdateSecureTime, Did nothing DRMClock is off") );
@@ -177,4 +177,4 @@ EXPORT_C TInt RDRMClockClient::UpdateSecureTime( const TTime& aTime, const TInt&
 
 // ========================== OTHER EXPORTED FUNCTIONS =========================
 
-//  End of File  
+//  End of File

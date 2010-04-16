@@ -19,14 +19,14 @@
 // INCLUDE FILES
 #include    <caf/caftypes.h>
 #include    <caf/data.h>
-#include    <oma2agent.h>
+#include    <Oma2Agent.h>
 #include    <utf.h>
-#include    <drmrights.h>
+#include    <DRMRights.h>
 #include    <drmagents.h>
 #include    <e32cmn.h>
 #include    <drmutility.h>
 
-#include    "drmautomatedusageimpl.h"
+#include    "DrmAutomatedUsageImpl.h"
 #include    "drmautomatedusagedata.h"
 #include    "drmutilityui.h"
 
@@ -68,16 +68,16 @@ LOCAL_C TBool IntervalsEqual( const CDRMConstraint *aFirst,
                               const CDRMConstraint *aSecond )
     {
     TBool equal( EFalse );
-    TInt64 startDifference( 
+    TInt64 startDifference(
         aFirst->iIntervalStart.Int64() - aSecond->iIntervalStart.Int64() );
 
-    if( aFirst->iInterval == aSecond->iInterval && 
-        -KTimeMarginal <= startDifference  && 
+    if( aFirst->iInterval == aSecond->iInterval &&
+        -KTimeMarginal <= startDifference  &&
         startDifference <= KTimeMarginal )
         {
         equal = ETrue;
         }
-    return equal;    
+    return equal;
     }
 
 
@@ -105,7 +105,7 @@ LOCAL_C TBool HasCountOrAccumulated( const CDRMConstraint* aConstraint )
     // constraint has counters, timed counters or accumulated
     if ( aConstraint->iActiveConstraints &  ( EConstraintCounter |
                                               EConstraintTimedCounter |
-                                              EConstraintAccumulated ) ) 
+                                              EConstraintAccumulated ) )
         {
         return ETrue;
         }
@@ -128,7 +128,7 @@ DRM::CDrmAutomatedUsageImpl::CDrmAutomatedUsageImpl(
                                      iCoeEnv( aCoeEnv ),
                                      iDrmUtility( aDrmUtility )
     {
-    
+
     }
 
 // -----------------------------------------------------------------------------
@@ -155,11 +155,11 @@ void DRM::CDrmAutomatedUsageImpl::ConstructL()
 // -----------------------------------------------------------------------------
 //
 EXPORT_C DRM::CDrmAutomatedUsageImpl* DRM::CDrmAutomatedUsageImpl::NewL(
-    CCoeEnv* aCoeEnv, 
+    CCoeEnv* aCoeEnv,
     DRM::CDrmUtility* aDrmUtility )
     {
-    DRM::CDrmAutomatedUsageImpl* self( 
-                        DRM::CDrmAutomatedUsageImpl::NewLC( aCoeEnv, 
+    DRM::CDrmAutomatedUsageImpl* self(
+                        DRM::CDrmAutomatedUsageImpl::NewLC( aCoeEnv,
                                                             aDrmUtility ) );
     CleanupStack::Pop( self );
     return self;
@@ -175,7 +175,7 @@ EXPORT_C DRM::CDrmAutomatedUsageImpl* DRM::CDrmAutomatedUsageImpl::NewLC(
     CCoeEnv* aCoeEnv, DRM::CDrmUtility* aDrmUtility )
     {
     DRM::CDrmAutomatedUsageImpl* self(
-                     new( ELeave ) DRM::CDrmAutomatedUsageImpl( aCoeEnv, 
+                     new( ELeave ) DRM::CDrmAutomatedUsageImpl( aCoeEnv,
                                                                 aDrmUtility ) );
     CleanupStack::PushL( self );
     self->ConstructL();
@@ -187,7 +187,7 @@ EXPORT_C DRM::CDrmAutomatedUsageImpl* DRM::CDrmAutomatedUsageImpl::NewLC(
 DRM::CDrmAutomatedUsageImpl::~CDrmAutomatedUsageImpl()
     {
     DRM::CDrmAutomatedUsageData* data( iDrmQueue->PopFront() );
-    
+
     // Empty the queue:
     while ( data )
         {
@@ -196,17 +196,17 @@ DRM::CDrmAutomatedUsageImpl::~CDrmAutomatedUsageImpl()
         delete data;
         data = iDrmQueue->PopFront();
         }
-    
+
     delete iDrmQueue;
-    
+
     delete iDrmUtilityUi;
-    
+
     iDrmHelperClient.Close();
-    
+
     //iWmClient.Close();
-    
+
     iOmaClient.Close();
-    
+
     // Remove the object from active scheduler etc.
     if ( IsAdded() )
         {
@@ -244,11 +244,11 @@ EXPORT_C TBool DRM::CDrmAutomatedUsageImpl::CanSetAutomatedL(
         return EFalse;
         }
 
-    ContentAccess::CData* data( 
-            ContentAccess::CData::NewLC( aFile, 
+    ContentAccess::CData* data(
+            ContentAccess::CData::NewLC( aFile,
                                          ContentAccess::KDefaultContentObject,
                                          ContentAccess::EPeek ) );
-                                                              
+
     returnValue = CanSetAutomatedL( *data, aIntent, aAutomatedType );
     CleanupStack::PopAndDestroy( data );
     return returnValue;
@@ -272,7 +272,7 @@ EXPORT_C TBool DRM::CDrmAutomatedUsageImpl::CanSetAutomatedL(
     TBool canSetAutomated( EFalse );
     TBool protectedFile( EFalse );
 
-    User::LeaveIfError( aData.GetAttribute( ContentAccess::EIsProtected, 
+    User::LeaveIfError( aData.GetAttribute( ContentAccess::EIsProtected,
                                             protectedFile ) );
     if ( !protectedFile )
         {
@@ -281,13 +281,13 @@ EXPORT_C TBool DRM::CDrmAutomatedUsageImpl::CanSetAutomatedL(
         }
 
     User::LeaveIfError( aData.GetAttribute( DRM::EDrmAgentUid, agentUid ) );
-                                                
+
     if ( agentUid == DRM::EDrmWmAgent )
         {
         //WMDRM not supported as automated. So no need to continue.
         return EFalse;
         }
-    
+
     uniqueId8 = GetContentIdL( aData );
     CleanupStack::PushL( uniqueId8 );
 
@@ -343,8 +343,8 @@ EXPORT_C void DRM::CDrmAutomatedUsageImpl::SetAutomatedL(
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
     ContentAccess::CData* data =
-        ContentAccess::CData::NewLC( aFile, 
-                                     ContentAccess::KDefaultContentObject, 
+        ContentAccess::CData::NewLC( aFile,
+                                     ContentAccess::KDefaultContentObject,
                                      ContentAccess::EPeek );
     SetAutomatedL( *data, aIntent, aAutomatedType, aServiceType);
     CleanupStack::PopAndDestroy( data );
@@ -366,14 +366,14 @@ EXPORT_C TInt DRM::CDrmAutomatedUsageImpl::SetAutomatedAsyncL(
     TInt ret( KErrNone );
 
     ContentAccess::CData* data =
-        ContentAccess::CData::NewLC( aFile, 
-                                     ContentAccess::KDefaultContentObject, 
+        ContentAccess::CData::NewLC( aFile,
+                                     ContentAccess::KDefaultContentObject,
                                      ContentAccess::EPeek );
 
     ret = SetAutomatedAsyncL( *data, aIntent, aAutomatedType, aObserver, aServiceType );
-    
+
     CleanupStack::PopAndDestroy( data );
-    
+
     return ret;
     }
 
@@ -394,17 +394,17 @@ EXPORT_C void DRM::CDrmAutomatedUsageImpl::SetAutomatedL(
         User::Leave( KErrArgument );
         }
 
-    DRM::CDrmAutomatedUsageData* data( 
-        DRM::CDrmAutomatedUsageData::NewLC( 
+    DRM::CDrmAutomatedUsageData* data(
+        DRM::CDrmAutomatedUsageData::NewLC(
                                 aData,
                                 aIntent,
-                                aAutomatedType, 
-                                NULL, 
+                                aAutomatedType,
+                                NULL,
                                 aServiceType,
                                 DRM::CDrmAutomatedUsageData::ESetAutomated ) );
-    
+
     User::LeaveIfError ( DoSetAutomatedL( data ) );
-    
+
     CleanupStack::PopAndDestroy( data );
     }
 
@@ -426,21 +426,21 @@ EXPORT_C TInt DRM::CDrmAutomatedUsageImpl::SetAutomatedAsyncL(
         User::Leave( KErrArgument );
         }
 
-    DRM::CDrmAutomatedUsageData* data( 
+    DRM::CDrmAutomatedUsageData* data(
         DRM::CDrmAutomatedUsageData::NewL(
-                                aData, 
-                                aIntent, 
-                                aAutomatedType, 
-                                &aObserver, 
+                                aData,
+                                aIntent,
+                                aAutomatedType,
+                                &aObserver,
                                 aServiceType,
                                 DRM::CDrmAutomatedUsageData::ESetAutomated ) );
 
     iDrmQueue->AppendToQueueL( data );
-    
+
     TRequestStatus* status( &iStatus );
-    
+
     Activate( status );
-    
+
     return data->iOperationId;
     }
 
@@ -457,9 +457,9 @@ EXPORT_C void DRM::CDrmAutomatedUsageImpl::RemoveAutomatedL(
     const DRM::TDrmAutomatedType aAutomatedType,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    ContentAccess::CData* data( 
-            ContentAccess::CData::NewLC( aFile, 
-                                         ContentAccess::KDefaultContentObject, 
+    ContentAccess::CData* data(
+            ContentAccess::CData::NewLC( aFile,
+                                         ContentAccess::KDefaultContentObject,
                                          ContentAccess::EPeek ) );
 
     RemoveAutomatedL( *data, aIntent, aAutomatedType, aServiceType );
@@ -480,18 +480,18 @@ EXPORT_C TInt DRM::CDrmAutomatedUsageImpl::RemoveAutomatedAsyncL(
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
     TInt ret( KErrNone );
-    
-    ContentAccess::CData* data( 
-            ContentAccess::CData::NewLC( aFile, 
-                                         ContentAccess::KDefaultContentObject, 
+
+    ContentAccess::CData* data(
+            ContentAccess::CData::NewLC( aFile,
+                                         ContentAccess::KDefaultContentObject,
                                          ContentAccess::EPeek ) );
-    
-    ret = RemoveAutomatedAsyncL( *data, 
-                                 aIntent, 
-                                 aAutomatedType, 
-                                 aObserver, 
+
+    ret = RemoveAutomatedAsyncL( *data,
+                                 aIntent,
+                                 aAutomatedType,
+                                 aObserver,
                                  aServiceType );
-    
+
     CleanupStack::PopAndDestroy( data );
     return ret;
     }
@@ -508,17 +508,17 @@ EXPORT_C void DRM::CDrmAutomatedUsageImpl::RemoveAutomatedL(
     const DRM::TDrmAutomatedType aAutomatedType,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    DRM::CDrmAutomatedUsageData* data ( 
+    DRM::CDrmAutomatedUsageData* data (
         DRM::CDrmAutomatedUsageData::NewLC(
                             aData,
-                            aIntent, 
-                            aAutomatedType, 
-                            NULL, 
+                            aIntent,
+                            aAutomatedType,
+                            NULL,
                             aServiceType,
                             DRM::CDrmAutomatedUsageData::ERemoveAutomated ) );
-    
+
     User::LeaveIfError( DoRemoveAutomated( data ) );
-    
+
     CleanupStack::PopAndDestroy( data );
     }
 
@@ -535,21 +535,21 @@ EXPORT_C TInt DRM::CDrmAutomatedUsageImpl::RemoveAutomatedAsyncL(
     DRM::MDrmAsyncObserver& aObserver,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    DRM::CDrmAutomatedUsageData* data( 
+    DRM::CDrmAutomatedUsageData* data(
         DRM::CDrmAutomatedUsageData::NewL(
-                            aData, 
-                            aIntent, 
-                            aAutomatedType, 
-                            &aObserver, 
+                            aData,
+                            aIntent,
+                            aAutomatedType,
+                            &aObserver,
                             aServiceType,
                             DRM::CDrmAutomatedUsageData::ERemoveAutomated ) );
 
     iDrmQueue->AppendToQueueL( data );
-    
+
     TRequestStatus* status( &iStatus );
-    
+
     Activate( status );
-    
+
     return data->iOperationId;
     }
 
@@ -565,7 +565,7 @@ EXPORT_C void DRM::CDrmAutomatedUsageImpl::RemoveAutomatedL(
     const DRM::TDrmAutomatedType aAutomatedType,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    DRM::CDrmAutomatedUsageData* data( 
+    DRM::CDrmAutomatedUsageData* data(
         DRM::CDrmAutomatedUsageData::NewLC(
                             aUniqueId,
                             aIntent,
@@ -573,9 +573,9 @@ EXPORT_C void DRM::CDrmAutomatedUsageImpl::RemoveAutomatedL(
                             NULL,
                             aServiceType,
                             DRM::CDrmAutomatedUsageData::ERemoveAutomated ) );
-    
+
     User::LeaveIfError( DoRemoveAutomated( data ) );
-    
+
     CleanupStack::PopAndDestroy( data );
     }
 
@@ -592,21 +592,21 @@ EXPORT_C TInt DRM::CDrmAutomatedUsageImpl::RemoveAutomatedAsyncL(
     MDrmAsyncObserver& aObserver,
     const TDrmAutomatedServiceType aServiceType )
     {
-    DRM::CDrmAutomatedUsageData* data( 
+    DRM::CDrmAutomatedUsageData* data(
         DRM::CDrmAutomatedUsageData::NewL(
-                            aUniqueId, 
-                            aIntent, 
-                            aAutomatedType, 
-                            &aObserver, 
+                            aUniqueId,
+                            aIntent,
+                            aAutomatedType,
+                            &aObserver,
                             aServiceType,
                             DRM::CDrmAutomatedUsageData::ERemoveAutomated ) );
 
     iDrmQueue->AppendToQueueL( data );
-    
+
     TRequestStatus* status( &iStatus );
-    
+
     Activate( status );
-    
+
     return data->iOperationId;
     }
 
@@ -651,14 +651,14 @@ EXPORT_C TInt DRM::CDrmAutomatedUsageImpl::CancelOperation( TInt aOperationId )
     {
     TInt returnValue( KErrNotFound );
     DRM::CDrmAutomatedUsageData* data( iDrmQueue->PopItem( aOperationId ) );
-    
+
     if ( data )
         {
         data->iObserver->OperationCompleted( aOperationId, KErrCancel );
         delete data;
         returnValue = KErrNone;
         }
-    
+
     return returnValue;
     }
 #pragma mark -
@@ -948,49 +948,49 @@ void DRM::CDrmAutomatedUsageImpl::RunL()
     {
     DRM::CDrmAutomatedUsageData* data( iDrmQueue->PopFront() );
     TRequestStatus *status( &iStatus );
-    
+
     if ( !data )
         {
         return;
         }
-    
-    CleanupStack::PushL( data );        
-    
+
+    CleanupStack::PushL( data );
+
     // Take this into the "current" variable in case an error occurs
     iObserver = data->iObserver;
     iOperationId = data->iOperationId;
-    
+
     TInt err( KErrNone );
-        
+
     switch ( data->iOperation )
         {
         case DRM::CDrmAutomatedUsageData::ESetAutomated:
-            
+
             err = DoSetAutomatedL( data );
-            
+
             break;
-        
+
         case DRM::CDrmAutomatedUsageData::ERemoveAutomated:
-            
+
             err = DoRemoveAutomated( data );
-            
+
             break;
-        
+
         default:
-            
+
             err = KErrArgument;
-            
+
             break;
         }
-    
+
     iObserver->OperationCompleted( iOperationId, err );
-    
+
     CleanupStack::PopAndDestroy( data );
-    
-    // Get ready for another round:    
+
+    // Get ready for another round:
     SetActive();
-    
-    // complete internal request: 
+
+    // complete internal request:
     User::RequestComplete( status, KErrNone );
     }
 
@@ -998,7 +998,7 @@ void DRM::CDrmAutomatedUsageImpl::RunL()
 // DRM::CDrmAutomatedUsageImpl::RunError
 // -----------------------------------------------------------------------------
 //
-TInt DRM::CDrmAutomatedUsageImpl::RunError( 
+TInt DRM::CDrmAutomatedUsageImpl::RunError(
     TInt aError )
     {
     iObserver->OperationCompleted( iOperationId, aError );
@@ -1017,13 +1017,13 @@ void DRM::CDrmAutomatedUsageImpl::Activate( TRequestStatus*& aStatus )
         {
         CActiveScheduler::Add( this );
         }
-   
-    if ( !IsActive() ) 
+
+    if ( !IsActive() )
         {
-        SetActive();        
-    
-        // complete internal request: 
-        User::RequestComplete( aStatus, KErrNone ); 
+        SetActive();
+
+        // complete internal request:
+        User::RequestComplete( aStatus, KErrNone );
         }
     }
 

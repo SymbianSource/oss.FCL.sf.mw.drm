@@ -23,10 +23,10 @@
 #include <DocumentHandler.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include  <PathInfo.h>
-#include  <DriveInfo.h>
+#include  <pathinfo.h>
+#include  <driveinfo.h>
 #else
-#include  <PathInfo.h>
+#include  <pathinfo.h>
 #endif
 
 #ifndef __WINS__
@@ -37,7 +37,7 @@
 
 #include <flogger.h>
 #include <x509cert.h>
-#include <x509CertExt.h>
+#include <x509certext.h>
 #include <hash.h>
 #include <utf.h>
 #include <asn1dec.h>
@@ -45,7 +45,7 @@
 #include <e32base.h>  // CleanupResetAndDestroyPushL dependencies
 
 #include "cleanupresetanddestroy.h" // CleanupResetAndDestroyPushL
-#include "DrmRights.h"
+#include "DRMRights.h"
 #include "RoapEng.h"
 #include "RoapTrigger.h"
 #include "wbxmlroaptriggerparser.h"
@@ -72,12 +72,12 @@
 #include "RoapLog.h"
 #include "RoapObserver.h"
 #include "CmlaCrypto.h"
-#include "DrmRiContext.h"
-#include "DrmDomainContext.h"
-#include "DrmProtectedRoParser.h"
+#include "DRMRIContext.h"
+#include "DRMDomainContext.h"
+#include "DRMProtectedRoParser.h"
 #include "DRMClockClient.h"
 #include "DcfRep.h"
-#include "dcfentry.h"
+#include "DcfEntry.h"
 #include "Base64.h"
 #include "drmsettingsplugininternalcrkeys.h"
 

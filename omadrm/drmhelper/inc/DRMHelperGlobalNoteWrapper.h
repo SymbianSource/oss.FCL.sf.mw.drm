@@ -22,7 +22,7 @@
 
 //  INCLUDES
 #include <e32base.h>
-#include <StringResourceReader.h>
+#include <stringresourcereader.h>
 
 // CONSTANTS
 const TInt KDRMNoteBufferMaxSize ( 256 );

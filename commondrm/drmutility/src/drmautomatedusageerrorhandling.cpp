@@ -18,7 +18,7 @@
 
 
 #include "drmautomatedusageerrorhandling.h"
-#include "drmautomatedusageimpl.h"
+#include "DrmAutomatedUsageImpl.h"
 
 // ======== MEMBER FUNCTIONS ========
 
@@ -46,7 +46,7 @@ void DRM::CDrmAutomatedUsageErrorHandling::ConstructL(
 // Two-phased constructor
 // ---------------------------------------------------------------------------
 //
-EXPORT_C DRM::CDrmAutomatedUsageErrorHandling* 
+EXPORT_C DRM::CDrmAutomatedUsageErrorHandling*
 DRM::CDrmAutomatedUsageErrorHandling::NewL(
     DRM::CDrmAutomatedUsageImpl* aImplementation )
     {
@@ -86,15 +86,15 @@ DRM::CDrmAutomatedUsageErrorHandling::~CDrmAutomatedUsageErrorHandling()
 // RFile based asynchronous method
 // ---------------------------------------------------------------------------
 //
-EXPORT_C TInt DRM::CDrmAutomatedUsageErrorHandling::HandleErrorAsyncL( 
+EXPORT_C TInt DRM::CDrmAutomatedUsageErrorHandling::HandleErrorAsyncL(
     RFile& aFile,
-    ContentAccess::TIntent aIntent, 
-    TInt aError, 
+    ContentAccess::TIntent aIntent,
+    TInt aError,
     DRM::MDrmHandleErrorObserver& aObserver )
     {
-    return iImplementation->HandleErrorAsyncL( aFile, 
-                                               aIntent, 
-                                               aError, 
+    return iImplementation->HandleErrorAsyncL( aFile,
+                                               aIntent,
+                                               aError,
                                                aObserver );
     }
 
@@ -103,10 +103,10 @@ EXPORT_C TInt DRM::CDrmAutomatedUsageErrorHandling::HandleErrorAsyncL(
 // RFile based method
 // ---------------------------------------------------------------------------
 //
-EXPORT_C void DRM::CDrmAutomatedUsageErrorHandling::HandleErrorL( 
+EXPORT_C void DRM::CDrmAutomatedUsageErrorHandling::HandleErrorL(
     RFile& aFile,
-    ContentAccess::TIntent aIntent,              
-    TInt aError, 
+    ContentAccess::TIntent aIntent,
+    TInt aError,
     DRM::MDrmHandleErrorObserver* aObserver )
     {
     iImplementation->HandleErrorL( aFile, aIntent, aError, aObserver );
@@ -117,15 +117,15 @@ EXPORT_C void DRM::CDrmAutomatedUsageErrorHandling::HandleErrorL(
 // CData based asynchronous method
 // ---------------------------------------------------------------------------
 //
-EXPORT_C TInt DRM::CDrmAutomatedUsageErrorHandling::HandleErrorAsyncL( 
+EXPORT_C TInt DRM::CDrmAutomatedUsageErrorHandling::HandleErrorAsyncL(
     ContentAccess::CData& aFile,
     ContentAccess::TIntent aIntent,
-    TInt aError, 
+    TInt aError,
     DRM::MDrmHandleErrorObserver& aObserver )
     {
-    return iImplementation->HandleErrorAsyncL( aFile, 
-                                               aIntent, 
-                                               aError, 
+    return iImplementation->HandleErrorAsyncL( aFile,
+                                               aIntent,
+                                               aError,
                                                aObserver);
     }
 
@@ -134,13 +134,13 @@ EXPORT_C TInt DRM::CDrmAutomatedUsageErrorHandling::HandleErrorAsyncL(
 // CData based method
 // ---------------------------------------------------------------------------
 //
-EXPORT_C void DRM::CDrmAutomatedUsageErrorHandling::HandleErrorL( 
+EXPORT_C void DRM::CDrmAutomatedUsageErrorHandling::HandleErrorL(
     ContentAccess::CData& aData,
     ContentAccess::TIntent aIntent,
-    TInt aError, 
+    TInt aError,
     DRM::MDrmHandleErrorObserver* aObserver )
     {
-    iImplementation->HandleErrorL( aData, aIntent, aError, aObserver );    
+    iImplementation->HandleErrorL( aData, aIntent, aError, aObserver );
     }
 // End of File
 

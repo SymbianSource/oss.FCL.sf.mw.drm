@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2007-2007 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2007-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -21,8 +21,6 @@
 
 #include <data_caging_paths_for_iby.hrh>
 
-#ifdef RD_DRM_COMMON_INTERFACE_FOR_OMA_AND_WMDRM
-
 file=ABI_DIR\BUILD_DIR\DRMUtility.dll                    SHARED_LIB_DIR\DRMUtility.dll
 
 file=ABI_DIR\BUILD_DIR\drmutilitycommon.dll              SHARED_LIB_DIR\drmutilitycommon.dll
@@ -41,7 +39,5 @@ file=ABI_DIR\BUILD_DIR\DRMUiHandlingImpl.dll             SHARED_LIB_DIR\DRMUiHan
 
 file=ABI_DIR\BUILD_DIR\DRMAutomatedUsage.dll             SHARED_LIB_DIR\DRMAutomatedUsage.dll
 file=ABI_DIR\BUILD_DIR\DRMAutomatedUsageImpl.dll         SHARED_LIB_DIR\DRMAutomatedUsageImpl.dll
-
-#endif // RD_DRM_COMMON_INTERFACE_FOR_OMA_AND_WMDRM
 
 #endif // DRMUTILITY_IBY

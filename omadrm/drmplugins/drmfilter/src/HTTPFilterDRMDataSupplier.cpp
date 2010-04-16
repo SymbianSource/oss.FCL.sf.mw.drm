@@ -17,15 +17,16 @@
 
 #include <http/rhttptransaction.h>
 #include <barsc.h>
-#include <drmcommon.h>
+#include <DRMCommon.h>
 #include <f32file.h>
 #include <s32buf.h>
-#include <drmmessageparser.h>
+#include <DRMMessageParser.h>
 #include <caf/caf.h>
-#include <oma2agent.h>
+#include <caf/cafplatform.h>
+#include <Oma2Agent.h>
 
-#include "httpfilterdrmdatasupplier.h"
-#include "httpfilterdrm.h"
+#include "HTTPFilterDRMDataSupplier.h"
+#include "HTTPFilterDRM.h"
 
 //------------------------------------------------------------------------
 
@@ -57,7 +58,7 @@ CHTTPFilterDRMDataSupplier* CHTTPFilterDRMDataSupplier::NewL( TInt aTransId,
 // CHTTPFilterDRMDataSupplier::NewL
 // Two-phase constructor, CFM
 // -----------------------------------------------------------------------------
-//	
+//
 CHTTPFilterDRMDataSupplier* CHTTPFilterDRMDataSupplier::NewL( TInt aTransId,
     MHTTPDataSupplier* iDataBody, TProcessedContentType aType,
     CHTTPFilterDRM* aOwner )
@@ -79,7 +80,7 @@ CHTTPFilterDRMDataSupplier* CHTTPFilterDRMDataSupplier::NewL( TInt aTransId,
 CHTTPFilterDRMDataSupplier::CHTTPFilterDRMDataSupplier( TInt aTransId,
     MHTTPDataSupplier* iDataBody, CHTTPFilterDRM* aOwner ) :
     iTransId( aTransId ), iBufPtr( 0, 0 ), iPHData( iDataBody ), iSendReady(
-        EFalse ), iOwner( aOwner )
+        EFalse ), iLastPart( EFalse ), iOwner( aOwner )
     {
     iDRMMessageParser = 0;
     iPrevPos = 0;
@@ -269,9 +270,9 @@ void CHTTPFilterDRMDataSupplier::ProcessDataPartL()
         permission->iAvailableRights = ERightsPlay | ERightsDisplay
             | ERightsExecute | ERightsPrint;
 
-        permission->iRightsObjectVersion.iVersionMain = 1; // major version for Oma 1 Rights Objects		
+        permission->iRightsObjectVersion.iVersionMain = 1; // major version for Oma 1 Rights Objects
 
-        // "ringtone=no" present 
+        // "ringtone=no" present
         permission->iInfoBits = ENoRingingTone;
 
         // Set the permission to the rights class, it will duplicate the permission
@@ -350,17 +351,29 @@ void CHTTPFilterDRMDataSupplier::ProcessDataPartL()
 TBool CHTTPFilterDRMDataSupplier::GetNextDataPart( TPtrC8& aDataPart )
     {
 
+    // First call after releasedata
     if ( iDataPartSize == KWholeDataPart )
         {
         aDataPart.Set( iMemBuf->iBuf->GetPtr() );
         iDataPartSize = aDataPart.Length();
+        if( iSendReady )
+            {
+            iLastPart = ETrue;
+            }
         }
-    else
+    else // Consecutive calls so that we always return the same part
+         // and same amount of data
         {
         aDataPart.Set( iMemBuf->iBuf->GetPtr().Left( iDataPartSize ) );
         }
 
-    return ( iDataPartSize == KWholeDataPart ) ? iSendReady : EFalse;
+    // this check did not work, as in this phase the iDataPartSize is never
+    // KWholeDataPart
+    //return ( iDataPartSize == KWholeDataPart ) ? iSendReady : EFalse;
+
+    // Always return info if this is the last part, this is only true
+    // if iSendReady has been true when ReleaseData() has been called
+    return iLastPart;
     }
 
 // -----------------------------------------------------------------------------
@@ -370,7 +383,8 @@ TBool CHTTPFilterDRMDataSupplier::GetNextDataPart( TPtrC8& aDataPart )
 //
 void CHTTPFilterDRMDataSupplier::ReleaseData()
     {
-    if ( iDataPartSize == KWholeDataPart )
+    if ( iDataPartSize == KWholeDataPart ||
+         ( iLastPart && iSendReady ) )
         {
         TRAP_IGNORE( Sink()->SeekL( MStreamBuf::EWrite, TStreamPos(0) ) );
         if ( iSendReady )
@@ -388,6 +402,13 @@ void CHTTPFilterDRMDataSupplier::ReleaseData()
         CleanupStack::PopAndDestroy( b );
         // Update data part size to available data.
         iDataPartSize = KWholeDataPart;
+
+        // if we are ready processing, make sure the client knows this
+        // is the last part
+        if( iSendReady )
+            {
+            iLastPart = ETrue;
+            }
         }
     }
 
@@ -550,7 +571,7 @@ ContentAccess::CManager* CHTTPFilterDRMDataSupplier::GetCafDataL(
             }
         }
     CleanupStack::Pop( manager );
-    CleanupStack::PopAndDestroy( &agents );        
+    CleanupStack::PopAndDestroy( &agents );
     return manager;
     }
 

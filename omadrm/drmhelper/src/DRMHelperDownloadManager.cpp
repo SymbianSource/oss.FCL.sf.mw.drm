@@ -18,7 +18,7 @@
 
 // INCLUDE FILES
 #include "DRMHelperDownloadManager.h"
-#include "drmhelperdmgrwrapper.h"
+#include "DRMHelperDMgrWrapper.h"
 
 // CONSTANTS
 _LIT( KDRMHelperDMgrHandlerName, "\\system\\libs\\drmhelperdmgrwrapper.dll" );
@@ -48,7 +48,7 @@ void CDrmHelperDownloadManager::ConstructL()
 CDrmHelperDownloadManager* CDrmHelperDownloadManager::NewL()
     {
     CDrmHelperDownloadManager* self = new( ELeave ) CDrmHelperDownloadManager();
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop();
@@ -61,7 +61,7 @@ CDrmHelperDownloadManager::~CDrmHelperDownloadManager()
     delete iDMgrHandler;
     iDMgrDll.Close();
     }
-    
+
 void CDrmHelperDownloadManager::DownloadAndHandleRoapTriggerL(
     const HBufC8* aUrl, CCoeEnv& aCoeEnv )
     {

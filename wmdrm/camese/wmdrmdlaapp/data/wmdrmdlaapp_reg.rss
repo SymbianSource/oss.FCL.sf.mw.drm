@@ -26,7 +26,6 @@ UID3 0x2001E5E1
 RESOURCE APP_REGISTRATION_INFO
     {
     app_file = "wmdrmdlaapp";
-    localisable_resource_file = APP_RESOURCE_DIR"\\wmdrmdlaapp";
     hidden = KAppIsHidden;
     embeddability = KAppEmbeddableOnly;
     service_list =

@@ -21,7 +21,7 @@
 
 #include <s32file.h>
 #include <caf/agentinterface.h>
-#include <oma2agent.h>
+#include <Oma2Agent.h>
 
 using namespace ContentAccess;
 
@@ -47,11 +47,11 @@ public:
         const CMetaDataArray& aMetaDataArray,
         const TDesC& aOutputDirectory,
         const TDesC& aSuggestedFileName);
-        
+
     static COma2AgentImportFile* NewL(
         const TDesC8& aMimeType,
         const CMetaDataArray& aMetaDataArray);
-        
+
     virtual ~COma2AgentImportFile();
 
 public:
@@ -59,59 +59,59 @@ public:
     // From CAgentImportFile
     virtual TInt WriteData(
         const TDesC8& aData);
-        
+
     virtual void WriteData(
         const TDesC8& aData,
         TRequestStatus& aStatus);
-        
+
     virtual TInt WriteDataComplete();
-    
+
     virtual void WriteDataComplete(
         TRequestStatus& aStatus);
-        
+
     virtual TInt OutputFileCountL() const;
-    
+
     virtual CSupplierOutputFile& OutputFileL(
         TInt aIndex);
-        
+
     virtual TImportStatus GetImportStatus() const;
-    
+
     virtual TInt GetSuggestedOutputFileExtension(
         TDes& aFileExtension);
-        
+
     virtual TInt GetSuggestedOutputFileName(
         TDes& aFileName);
-        
+
     virtual TInt ContinueWithNewOutputFile(
-        RFile& aFile, 
+        RFile& aFile,
         const TDesC& aFileName);
-        
+
     virtual void ContinueWithNewOutputFile(
-        RFile& aFile, 
-        const TDesC& aFileName, 
+        RFile& aFile,
+        const TDesC& aFileName,
         TRequestStatus& aStatus);
-        
+
     virtual void NewMimePartL(
-        const TDesC8& aMimeType, 
+        const TDesC8& aMimeType,
         const CMetaDataArray& aImportMetaData);
-        
+
     virtual void EndMimePartL();
 
 private:
 
     COma2AgentImportFile(
         TBool aAgentCreatesOutputFiles);
-        
+
     void ConstructL(
-        const TDesC8& aMimeType, 
-        const CMetaDataArray& aMetaDataArray, 
-        const TDesC& aOutputDirectory, 
+        const TDesC8& aMimeType,
+        const CMetaDataArray& aMetaDataArray,
+        const TDesC& aOutputDirectory,
         const TDesC& aSuggestedFileName);
-        
+
     TInt OpenOutputFile();
-    
+
     void WriteDataL(const TDesC8& aData);
-    
+
 private:
 
     TImportType iImportType;
@@ -130,5 +130,5 @@ private:
     CDRMRights* iDcfRights;
     HBufC8* iDcfMimeType;
     };
-    
+
 #endif // __OMA2AGENTIMPORTFILE_H__

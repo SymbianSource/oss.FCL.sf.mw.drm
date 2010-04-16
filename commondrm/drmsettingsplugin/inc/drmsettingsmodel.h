@@ -21,7 +21,7 @@
 // INCLUDES
 #include    <centralrepository.h>
 #include    <e32property.h>
-#include    "roapstorageclient.h"
+#include    "RoapStorageClient.h"
 
 // FORWARD DECLARATIONS
 class CDRMRIContext;
@@ -32,7 +32,7 @@ const TInt KDRMTransactionTrackingEnabled = 1;
 
 const TInt KDRMAutomaticActivationNotAllowed = 0;
 const TInt KDRMAutomaticActivationAllowed = 1;
-    
+
 
 // CLASS DEFINITIONS
 
@@ -42,7 +42,7 @@ const TInt KDRMAutomaticActivationAllowed = 1;
 */
 class   CDRMSettingsModel : public CBase
     {
-    
+
     public:  // Constructor and destructor
         /**
         * Two-phased constructor
@@ -54,8 +54,8 @@ class   CDRMSettingsModel : public CBase
         */
         ~CDRMSettingsModel();
 
-    public: // New 
-         
+    public: // New
+
         /**
         * Get transaction tracking state
         * @return KDRMTransactionTrackingDisabled
@@ -68,7 +68,7 @@ class   CDRMSettingsModel : public CBase
         * @param aValue updated value
         */
         void SetTransactionTrackingStateL( TInt aValue );
-       
+
         /**
         * Get automatic activation state
         * @return KDRMAutomaticActivationNotAllowed
@@ -81,7 +81,7 @@ class   CDRMSettingsModel : public CBase
         * @param aValue updated value
         */
         void SetAutomaticActivationStateL( TInt aValue );
-        
+
         /**
         * Get usage reporting state
         * @return count of services for which reporting is allowed
@@ -96,50 +96,50 @@ class   CDRMSettingsModel : public CBase
         * @return RI alias name or RI url if no alias available
         */
         HBufC* GetSingleRIAliasL( TInt aIndex );
-        
+
         /**
-        * Get the first RI alias, where metering is allowed 
+        * Get the first RI alias, where metering is allowed
         * @return RI alias name or RI url if no alias available
         */
         HBufC* GetFirstAllowedMeteringRIAliasL();
-        
+
         /**
-        * Get number of RI contexts 
+        * Get number of RI contexts
         * @return number of RIContexts
         */
         TInt GetRiContextCount();
-        
+
         /**
         * Get metering status of RI Context
-        * 
+        *
         * @param aIndex : Index of the RI context
         *
         * @return Status of metering
         */
         TBool IsMeteringAllowed( TInt aIndex );
-        
+
         /**
         * Find out if metering is allowed for all RI Contexts
-        * 
+        *
         * @return Status of metering
         */
         TBool IsMeteringAllowedForAll();
-        
+
         /**
         * Sets the value for metering to be enabled or disabled
         *
         * @param aIndex : Index of the RI context
         * @param aIsAllowed : ETrue if set to allowed, EFalse if not allowed
-        */        
+        */
         void SetMeteringStatus( TInt aIndex, TBool aIsAllowed );
-        
+
         /**
         * Save the changes done to RI Contexs
         */
         void SaveMeteringChanges();
-       
+
     private: // Private constructors
-        
+
         /**
         * Default C++ contructor
         */
@@ -150,9 +150,9 @@ class   CDRMSettingsModel : public CBase
         * @return void
         */
         void ConstructL();
-        
+
     private: // Data
-        
+
         // DRM Settings Central Repository.
         CRepository* iDRMSettingsRepository;
 
@@ -161,9 +161,9 @@ class   CDRMSettingsModel : public CBase
 
         // List of service providers with which device has been registered
         RPointerArray<CDRMRIContext> iRIContextList;
-        
+
     };
-    
-#endif // DRMSETTINGSMODEL_H  
+
+#endif // DRMSETTINGSMODEL_H
 
 // End of File

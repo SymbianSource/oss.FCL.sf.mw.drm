@@ -20,17 +20,17 @@
 // INCLUDE FILES
 #include "DRMHelperInfoNoteWrapper.h"
 
-#include <stringloader.h>
+#include <StringLoader.h>
 #include <AknGlobalConfirmationQuery.h>
 #include <avkon.hrh> // EAknSoftkeyNo
-#include <aknglobalnote.h>
+#include <AknGlobalNote.h>
 
 #include <SecondaryDisplay/DRMHelperSecondaryDisplay.h>
-#include <aknmediatorfacade.h>
+#include <AknMediatorFacade.h>
 #include <featmgr.h>
-#include <aknsddata.h>
-#include <DrmHelper.h>
-#include <DrmHelper.rsg>
+#include <aknSDData.h>
+#include <DRMHelper.h>
+#include <Drmhelper.rsg>
 
 // EXTERNAL DATA STRUCTURES
 

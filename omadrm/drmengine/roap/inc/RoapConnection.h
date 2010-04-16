@@ -23,7 +23,7 @@
 
 #include <e32base.h>
 #include <es_sock.h>
-#include <CommDbConnPref.h>
+#include <commdbconnpref.h>
 
 namespace Roap
 {

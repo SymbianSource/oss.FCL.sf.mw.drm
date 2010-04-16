@@ -52,7 +52,7 @@ LIBRARY         sysutil.lib // SysUtil
 #if defined(ARMCC)
 deffile ../eabi/
 #elif defined( WINSCW )
-deffile ../bwinscw/
+deffile ../BWINSCW/
 #elif defined( WINS )
 deffile ../bwins/
 #else

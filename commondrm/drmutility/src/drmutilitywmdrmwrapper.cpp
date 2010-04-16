@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -19,8 +19,8 @@
 // INCLUDE FILES
 
 // launching embedded details view
-#include <aknlaunchappservice.h>
-#include <aiwgenericparam.h>
+#include <AknLaunchAppService.h>
+#include <AiwGenericParam.h>
 #include <apgcli.h>
 #include <apgtask.h>
 #include <w32std.h>
@@ -38,7 +38,7 @@
 #include <cmconnectionmethoddef.h>
 #include <cmmanager.h>
 #ifdef __SERIES60_NATIVE_BROWSER
-#include <browseruisdkcrkeys.h>
+#include <BrowserUiSDKCRKeys.h>
 #endif
 
 #include    <wmdrmagent.h> // for WMDRM file details view
@@ -52,7 +52,7 @@
 #include    "drmutilityui.h"
 
 #include    "drmagents.h"
-#include    "drmclockclient.h"
+#include    "DRMClockClient.h"
 
 #include    "drmutilityinternaltypes.h"
 #include    "drmutilitywmdrmutilities.h"
@@ -383,7 +383,7 @@ void DRM::CDrmUtilityWMDrmWrapper::GetRightsDataL(
                 // Check the duration, counts and whether the rights
                 // are unlimited or not
                 case ContentAccess::ERightsStatusValid:
-                    DrmUtilityWmDrmUtilities::CheckWmDrmRightsL( 
+                    DrmUtilityWmDrmUtilities::CheckWmDrmRightsL(
                         aUnconstrained, aTime, aCounts, *aArray[0] );
                     break;
                 }
@@ -672,13 +672,13 @@ void DRM::CDrmUtilityWMDrmWrapper::CreateLaunchParamL(
                                  KWmDrmWrapperDebugPanicCode ) );
 
     _LIT( KZero, "0" );
-    _LIT( KSpace, " " );
+    _LIT( KMarker, "\x00" );
 
     TPtr ptr( NULL, 0 );
 
     // length of startparam and drm protection type indicator and zero local id
-    // are always 1 and total of 3 spaces are needed
-    TInt length( 1 + aUrl->Length() + 1 + 3 + 1 );
+    // are always 1 and total of 4 markers are needed
+    TInt length( 1 + aUrl->Length() + 1 + 4 + 1 );
 
     aLaunchParam = HBufC::NewLC( length );
     ptr.Set( aLaunchParam->Des() );
@@ -694,14 +694,15 @@ void DRM::CDrmUtilityWMDrmWrapper::CreateLaunchParamL(
         {
         ptr.AppendNum( EDrmLaunchParamStandAloneUtility );
         }
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     // Default value 0 for localId in case of WM DRM file
     ptr.Append( KZero );
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     ptr.Append( *aUrl );
-    ptr.Append( KSpace );
+    ptr.Append( KMarker );
     // WM DRM protection scheme
     ptr.AppendNum( EDrmSchemeWmDrm );
+    ptr.Append( KMarker );
 
     CleanupStack::Pop( aLaunchParam );
     }
@@ -735,7 +736,7 @@ void DRM::CDrmUtilityWMDrmWrapper::LoadDlaWrapperL()
 // CDrmUtilityWMDrmWrapper::GetRFileFromCDataL
 // -----------------------------------------------------------------------------
 //
-void DRM::CDrmUtilityWMDrmWrapper::GetRFileFromCDataL( 
+void DRM::CDrmUtilityWMDrmWrapper::GetRFileFromCDataL(
     ContentAccess::CData& aContent,
     RFile& aFile )
     {
@@ -748,7 +749,7 @@ void DRM::CDrmUtilityWMDrmWrapper::GetRFileFromCDataL(
 // CDrmUtilityWMDrmWrapper::IsDlaLicenseAcquisitionSilentL
 // -----------------------------------------------------------------------------
 //
-TBool DRM::CDrmUtilityWMDrmWrapper::IsDlaLicenseAcquisitionSilentL( 
+TBool DRM::CDrmUtilityWMDrmWrapper::IsDlaLicenseAcquisitionSilentL(
     RFile& aFile  )
     {
     LoadDlaWrapperL();
@@ -759,7 +760,7 @@ TBool DRM::CDrmUtilityWMDrmWrapper::IsDlaLicenseAcquisitionSilentL(
 // CDrmUtilityWMDrmWrapper::DlaLicenseAcquisitionL
 // -----------------------------------------------------------------------------
 //
-void DRM::CDrmUtilityWMDrmWrapper::DlaLicenseAcquisitionL( 
+void DRM::CDrmUtilityWMDrmWrapper::DlaLicenseAcquisitionL(
     RFile& aFile )
     {
     TInt iapId( 0 );
@@ -809,7 +810,7 @@ TInt DRM::CDrmUtilityWMDrmWrapper::DefaultAccessPointL()
     repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
     repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
     CleanupStack::PopAndDestroy( repository );
-    
+
     if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
         {
         alwaysAsk = ETrue;
@@ -820,8 +821,8 @@ TInt DRM::CDrmUtilityWMDrmWrapper::DefaultAccessPointL()
         cmManager.OpenLC();
         if ( !alwaysAsk )
             {
-            iapd32 = 
-                cmManager.GetConnectionMethodInfoIntL( ap, 
+            iapd32 =
+                cmManager.GetConnectionMethodInfoIntL( ap,
                                                        CMManager::ECmIapId );
             }
         else if ( alwaysAsk == KDestinationSelectionMode )

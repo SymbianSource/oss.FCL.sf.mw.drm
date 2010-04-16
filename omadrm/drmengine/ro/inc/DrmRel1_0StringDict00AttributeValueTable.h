@@ -21,31 +21,31 @@
 #ifndef STRINGTABLE_DrmRel1_0StringDict00AttributeValueTable
 #define STRINGTABLE_DrmRel1_0StringDict00AttributeValueTable
 
-#include "StringPool.h"
+#include "stringpool.h"
 
 struct TStringTable;
 
 /** A String table */
-class DrmRel1_0StringDict00AttributeValueTable 
-	{
+class DrmRel1_0StringDict00AttributeValueTable
+    {
 public:
-	enum TStrings
-		{
-		/**  */
-		EXmlnsOEx,
-		/**  */
-		EXmlnsODd,
-		/**  */
-		EXmlnsDs,
-		/** http://odrl.net/1.1/ODRL-EX */
-		EOdrlEx,
-		/** http://odrl.net/1.1/ODRL-DD */
-		EOdrlDd,
-		/** http://www.w3.org/2000/09/xmldsig/ */
-		EXmlDsig
-		};
-	static const TStringTable Table;	
-	};
+    enum TStrings
+        {
+        /**  */
+        EXmlnsOEx,
+        /**  */
+        EXmlnsODd,
+        /**  */
+        EXmlnsDs,
+        /** http://odrl.net/1.1/ODRL-EX */
+        EOdrlEx,
+        /** http://odrl.net/1.1/ODRL-DD */
+        EOdrlDd,
+        /** http://www.w3.org/2000/09/xmldsig/ */
+        EXmlDsig
+        };
+    static const TStringTable Table;
+    };
 
 #endif // STRINGTABLE_DrmRel1_0StringDict00AttributeValueTable
 

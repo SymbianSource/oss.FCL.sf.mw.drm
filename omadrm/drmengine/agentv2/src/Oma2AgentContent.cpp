@@ -19,6 +19,7 @@
 
 // INCLUDE FILES
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <caf/bitset.h>
 #include <caf/attribute.h>
 #include <e32test.h>
@@ -28,14 +29,14 @@
 #include <schemehandler.h>
 
 
-#include "oma2agentcontent.h"
-#include "oma2agentattributes.h"
-#include "oma1dcf.h"
+#include "Oma2AgentContent.h"
+#include "Oma2AgentAttributes.h"
+#include "Oma1Dcf.h"
 #include "oma2dcf.h"
 #include "symmetric.h"
-#include "DrmRights.h"
+#include "DRMRights.h"
 #include "Oma2DcfPartInfo.h"
-#include "DrmProtectedRoParser.h"
+#include "DRMProtectedRoParser.h"
 
 using namespace ContentAccess;
 
@@ -546,7 +547,7 @@ void COma2AgentContent::NotifyStatusChangeL(
 // COma2AgentContent::NotifyStatusChange
 //
 // -----------------------------------------------------------------------------
-// 
+//
 void COma2AgentContent::NotifyStatusChange(
     TEventMask aEventMask,
     TRequestStatus& aStatus,

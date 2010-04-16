@@ -19,7 +19,7 @@
 
 // INCLUDE FILES
 #include <e32std.h>
-#include "base64.h"
+#include "Base64.h"
 #include "RightsReq.h"
 
 using namespace Roap;
@@ -108,7 +108,7 @@ void CRightsReq::ConstructL()
 CRightsReq* CRightsReq::NewL()
     {
     CRightsReq* self = new( ELeave ) CRightsReq;
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop();
@@ -116,7 +116,7 @@ CRightsReq* CRightsReq::NewL()
     return self;
     }
 
-    
+
 // Destructor
 CRightsReq::~CRightsReq()
     {
@@ -197,7 +197,7 @@ HBufC8* CRightsReq::MessageAsXmlL(void)
             }
         BufAppendL(b, KReqCertChainEnd);
         }
-        
+
     if (iTransTrackIDs.Count() ||
         iPeerKeyIdentifier.Length() ||
         iOcspResponderKeyId ||
@@ -205,26 +205,26 @@ HBufC8* CRightsReq::MessageAsXmlL(void)
         {
         BufAppendL(b, KReqExtensions);
         }
-        
+
     if (iPeerKeyIdentifier.Length())
         {
         BufAppendL(b, KReqPeerKey);
         BufAppendBase64L(b, iPeerKeyIdentifier);
         BufAppendL(b, KReqPeerKeyEnd);
         }
-        
+
     if (iOcspInfoStored)
         {
         BufAppendL(b, KReqNoOcspResponse);
         }
-        
+
     if (iOcspResponderKeyId)
         {
         BufAppendL(b, KReqOcspResponderKeyId);
         BufAppendBase64L(b, *iOcspResponderKeyId);
         BufAppendL(b, KReqOcspResponderKeyIdEnd);
         }
-        
+
     for ( TInt i = 0; i < iTransTrackIDs.Count() && i < iContentIDs.Count(); i++ )
         {
         BufAppendL(b, KReqTransactionContentId);
@@ -234,7 +234,7 @@ HBufC8* CRightsReq::MessageAsXmlL(void)
         BufAppendL(b, *iTransTrackIDs[i]);
         BufAppendL(b, KReqTransactionIdEnd);
         }
-               
+
     if (iTransTrackIDs.Count() ||
          iPeerKeyIdentifier.Length() ||
          iOcspResponderKeyId ||
@@ -251,4 +251,4 @@ HBufC8* CRightsReq::MessageAsXmlL(void)
     return r;
     }
 
-//  End of File  
+//  End of File

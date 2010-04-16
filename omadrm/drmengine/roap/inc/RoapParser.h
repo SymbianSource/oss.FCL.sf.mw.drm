@@ -21,9 +21,9 @@
 #define ROAPPARSER_H
 
 //  INCLUDES
-#include <Xml/Parser.h>
-#include <Xml/ContentHandler.h>
-#include <Xml/XmlParserErrors.h>
+#include <xml/parser.h>
+#include <xml/contenthandler.h>
+#include <xml/xmlparsererrors.h>
 #include "RoapMessage.h"
 
 using namespace Xml;

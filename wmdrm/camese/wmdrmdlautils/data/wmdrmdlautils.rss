@@ -25,7 +25,7 @@ NAME WDLA // 4 letter ID
 #include <avkon.rsg>
 #include <avkon.rh>
 #include <avkon.mbg>
-#include <eikcore.rsg>
+#include <EIKCORE.rsg>
 #include <eikon.rsg>
 #include <appinfo.rh>
 #include <avkon.loc>
@@ -39,7 +39,7 @@ RESOURCE RSS_SIGNATURE {}
 
 RESOURCE TBUF { buf = ""; }
 
-// RESOURCE DEFINITIONS 
+// RESOURCE DEFINITIONS
 
 // -----------------------------------------------------------------------------
 // r_wmdrmdla_list_query
@@ -77,7 +77,7 @@ RESOURCE TBUF r_wmdrmdla_note_aquisition_failed
 // r_wmdrmdla_wait_note_acquiring_license
 // Note displayed when the license is being acquired for a song
 // ---------------------------------------------------------------------------
-// 
+//
 RESOURCE TBUF r_wmdrmdla_wait_note_acquiring_license
     {
     buf = qtn_drm_wait_getting_key;
@@ -87,7 +87,7 @@ RESOURCE TBUF r_wmdrmdla_wait_note_acquiring_license
 // r_wmdrmdla_wait_note_metering
 // Note displayed when the metering is being done
 // ---------------------------------------------------------------------------
-// 
+//
 RESOURCE TBUF r_wmdrmdla_wait_note_metering
     {
     buf = qtn_drm_wait_getting_key;

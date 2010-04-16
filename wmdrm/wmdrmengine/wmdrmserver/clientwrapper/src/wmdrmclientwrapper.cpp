@@ -16,7 +16,7 @@
 */
 
 
-#include "WmDrmClientWrapper.h"
+#include "wmdrmclientwrapper.h"
 
 // CONSTANTS
 
@@ -57,7 +57,7 @@ CWmDrmClientWrapper* CWmDrmClientWrapper::NewL()
 //
 CWmDrmClientWrapper* CWmDrmClientWrapper::NewLC()
     {
-	CWmDrmClientWrapper* self = new( ELeave ) CWmDrmClientWrapper();
+    CWmDrmClientWrapper* self = new( ELeave ) CWmDrmClientWrapper();
     CleanupStack::PushL( self );
     self->ConstructL();
     return self;
@@ -90,14 +90,14 @@ TInt CWmDrmClientWrapper::Connect()
 // DRM gate function
 //------------------------------------------------------------------------------
 EXPORT_C TAny* GateFunctionWmDrmClientWrapper()
-	{
-	CWmDrmClientWrapper* launcher = NULL;
-	TRAPD( err, launcher = CWmDrmClientWrapper::NewL() );
-	if( err != KErrNone )
-	    {
-	    return NULL;
-	    }
+    {
+    CWmDrmClientWrapper* launcher = NULL;
+    TRAPD( err, launcher = CWmDrmClientWrapper::NewL() );
+    if( err != KErrNone )
+        {
+        return NULL;
+        }
 
-	return launcher;
-	}
+    return launcher;
+    }
 

@@ -19,7 +19,7 @@
 // INCLUDE FILES
 #include <e32std.h>
 
-#include "DRMViewItems.h"
+#include "DrmViewItems.h"
 
 
 // ================= MEMBER FUNCTIONS =======================
@@ -30,9 +30,9 @@
 //
 TItemData::TItemData()
 : iIndexInArray( -1 ),
-  iItemName( NULL ), 
-  iItemFullName( NULL ), 
-  iIndexIcon( -1 ), 
+  iItemName( NULL ),
+  iItemFullName( NULL ),
+  iIndexIcon( -1 ),
   iTypeOfObject( -1 ),
   iContentCanBeSent( EFalse ),
   iLocalID( 0 ),
@@ -50,20 +50,20 @@ TItemData::TItemData()
 // -----------------------------------------------------------------------------
 //
 TItemData::TItemData( const TInt aIndexInArray,
-                      const TDesC& aItemName, 
-                      const TDesC& aItemFullName, 
-                      const TInt aIndexIcon, 
+                      const TDesC& aItemName,
+                      const TDesC& aItemFullName,
+                      const TInt aIndexIcon,
                       const TInt aTypeOfObject,
-                      const TBool aContentCanBeSent, 
-                      const TDesC8& aContentURI, 
-                      const TTime& aFutureActivationTime, 
+                      const TBool aContentCanBeSent,
+                      const TDesC8& aContentURI,
+                      const TTime& aFutureActivationTime,
                       const TBool aUnlimitedRights,
                       const TBool aIndividualConstraint,
                       const TBool aUsageAllowed )
 : iIndexInArray( aIndexInArray ),
-  iItemName( aItemName ), 
-  iItemFullName( aItemFullName ), 
-  iIndexIcon( aIndexIcon ), 
+  iItemName( aItemName ),
+  iItemFullName( aItemFullName ),
+  iIndexIcon( aIndexIcon ),
   iTypeOfObject( aTypeOfObject ),
   iContentCanBeSent( aContentCanBeSent ),
   iLocalID( 0 ),
@@ -81,20 +81,20 @@ TItemData::TItemData( const TInt aIndexInArray,
 // -----------------------------------------------------------------------------
 //
 TItemData::TItemData( const TInt aIndexInArray,
-                      const TDesC& aItemName, 
-                      const TDesC& aItemFullName, 
-                      const TInt aIndexIcon, 
+                      const TDesC& aItemName,
+                      const TDesC& aItemFullName,
+                      const TInt aIndexIcon,
                       const TInt aTypeOfObject,
                       const TUint32 aLocalID,
-                      const TDesC8& aContentURI, 
-                      const TTime& aFutureActivationTime, 
+                      const TDesC8& aContentURI,
+                      const TTime& aFutureActivationTime,
                       const TBool aUnlimitedRights,
                       const TBool aIndividualConstraint,
                       const TBool aUsageAllowed )
 : iIndexInArray( aIndexInArray ),
-  iItemName( aItemName ), 
-  iItemFullName( aItemFullName ), 
-  iIndexIcon( aIndexIcon ), 
+  iItemName( aItemName ),
+  iItemFullName( aItemFullName ),
+  iIndexIcon( aIndexIcon ),
   iTypeOfObject( aTypeOfObject ),
   iContentCanBeSent( EFalse ),
   iLocalID( aLocalID ),
@@ -107,4 +107,4 @@ TItemData::TItemData( const TInt aIndexInArray,
     }
 
 
-// End of File  
+// End of File

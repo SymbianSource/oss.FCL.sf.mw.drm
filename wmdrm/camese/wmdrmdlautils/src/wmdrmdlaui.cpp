@@ -27,9 +27,9 @@
 #include <eikfrlbd.h>
 #include <coemain.h>
 #include <bautils.h>
-#include <stringloader.h>
+#include <StringLoader.h>
 #include <aknnotewrappers.h>
-#include <aknglobalnote.h>
+#include <AknGlobalNote.h>
 #include <aknlistquerydialog.h>
 #include <badesca.h>
 #include <gulicon.h>
@@ -46,7 +46,7 @@
 #ifndef RD_MULTIPLE_DRIVE
 _LIT( KDriveZ, "z:" );
 #else
-_LIT( KRomDriveFormatter, "%c:" );                                      
+_LIT( KRomDriveFormatter, "%c:" );
 #endif
 
 _LIT( KWmdrmDlaUtilsResFileName, "wmdrmdlautils.rsc" );
@@ -67,7 +67,7 @@ void CWmDrmDlaUi::ConstructL()
         {
         User::Leave( KErrNotSupported );
         }
-    
+
     //Create resource file path
     TPtr wmdrmDlaUtilsResourcePtr( NULL, 0 );
     iWmdrmDlaUtilsResourceFile = HBufC::NewL( KMaxFileName );
@@ -83,14 +83,14 @@ void CWmDrmDlaUi::ConstructL()
     TInt driveNumber( -1 );
     TChar driveLetter;
     //Get rom drive number
-    User::LeaveIfError( 
-            DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, 
+    User::LeaveIfError(
+            DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom,
                                         driveNumber ) );
     //Get drive letter from the drive number
-    User::LeaveIfError( 
-            iCoeEnv->FsSession().DriveToChar( driveNumber, 
+    User::LeaveIfError(
+            iCoeEnv->FsSession().DriveToChar( driveNumber,
                                               driveLetter ) );
-    wmdrmDlaUtilsResourcePtr.AppendFormat( KRomDriveFormatter, 
+    wmdrmDlaUtilsResourcePtr.AppendFormat( KRomDriveFormatter,
                                            (TUint)driveLetter );
 
 #endif
@@ -103,13 +103,13 @@ void CWmDrmDlaUi::ConstructL()
     TFileName resourceFile;
     resourceFile = *iWmdrmDlaUtilsResourceFile;
     //Find the correct language file for the resource
-    BaflUtils::NearestLanguageFile( iCoeEnv->FsSession(), 
+    BaflUtils::NearestLanguageFile( iCoeEnv->FsSession(),
                                     resourceFile );
-    //Add resource file to the CCoeEnv. 
+    //Add resource file to the CCoeEnv.
     //Resource file must be removed from the CCoeEnv when we are done
-    iWmdrmDlaUtilsResourceFileOffset 
+    iWmdrmDlaUtilsResourceFileOffset
         = iCoeEnv->AddResourceFileL( resourceFile );
-    
+
     iGlobalNote = CAknGlobalNote::NewL();
     }
 
@@ -168,7 +168,7 @@ CWmDrmDlaUi::~CWmDrmDlaUi()
 // CWmDrmDlaUi::ShowErrorNoteL
 // ---------------------------------------------------------------------------
 //
-EXPORT_C void CWmDrmDlaUi::ShowErrorNoteL( 
+EXPORT_C void CWmDrmDlaUi::ShowErrorNoteL(
     TInt aTextResourceId )
     {
     LOGFN( "CWmDrmDlaUi::ShowErrorNoteL" );
@@ -182,7 +182,7 @@ EXPORT_C void CWmDrmDlaUi::ShowErrorNoteL(
 // CWmDrmDlaUi::ShowWaitNoteL
 // ---------------------------------------------------------------------------
 //
-EXPORT_C void CWmDrmDlaUi::ShowWaitNoteL( 
+EXPORT_C void CWmDrmDlaUi::ShowWaitNoteL(
     TInt aTextResourceId,
     MWmDrmDlaWaitNoteCallback* aCallback )
     {
@@ -192,8 +192,8 @@ EXPORT_C void CWmDrmDlaUi::ShowWaitNoteL(
         User::Leave( KErrInUse );
         }
     iGlobalNoteText = StringLoader::LoadL( aTextResourceId, iCoeEnv );
-    iGlobalNoteId = iGlobalNote->ShowNoteL( iStatus, 
-                                            EAknGlobalWaitNote, 
+    iGlobalNoteId = iGlobalNote->ShowNoteL( iStatus,
+                                            EAknGlobalWaitNote,
                                             *iGlobalNoteText );
     iCallback = aCallback;
     SetActive();
@@ -213,30 +213,30 @@ EXPORT_C void CWmDrmDlaUi::RemoveWaitNote()
 // CWmDrmDlaUi::ShowListQueryL
 // ---------------------------------------------------------------------------
 //
-EXPORT_C TInt CWmDrmDlaUi::ShowListQueryL( 
+EXPORT_C TInt CWmDrmDlaUi::ShowListQueryL(
     MDesCArray* aItems,
     CArrayPtr<CGulIcon>* aIcons )
     {
     LOGFN( "CWmDrmDlaUi::ShowListQueryL" );
-    
+
     //This method takes the ownership of the input parameters
     //Push the input parameters to the cleanupstack to make sure we won't leak
     //memory
     CleanupStack::PushL( aIcons );
     CleanupStack::PushL( aItems );
-    
+
     //Check that both inputs really exist.
     if ( !aItems || !aIcons )
         {
         User::Leave( KErrArgument );
         }
-    
+
     //Create the query with index parameter
     //Query will take the ownership of the items and icons
     TInt index( 0 );
     CAknListQueryDialog* dlg = new (ELeave) CAknListQueryDialog( &index );
     dlg->PrepareLC( R_WMDRMDLA_LIST_QUERY );
-    
+
     //Arrange cleanupstack in a way that query can take the ownership of the
     //items and icons
     CleanupStack::Pop( 2, aItems ); //dlg, aItems
@@ -248,13 +248,13 @@ EXPORT_C TInt CWmDrmDlaUi::ShowListQueryL(
     dlg->SetIconArrayL( aIcons );
     CleanupStack::Pop( 2, aIcons ); //dlg, aIcons
     CleanupStack::PushL( dlg );
-    
+
     //Enable marquee scrolling for the text items
-    CEikFormattedCellListBox* listbox( 
+    CEikFormattedCellListBox* listbox(
             static_cast<CEikFormattedCellListBox*>( dlg->ListBox() ) /* ,
             EAknListBoxItemSpecificMenuDisabled */ );
     listbox->ItemDrawer()->ColumnData()->EnableMarqueeL( ETrue );
-    
+
     //Launch the query
     TInt key( dlg->RunLD() );
     LOG2( "key: %d", key );
@@ -290,7 +290,7 @@ void CWmDrmDlaUi::RunL()
         {
         iCallback->UserWaitNoteCancellation();
         }
-    }    
+    }
 
 // ---------------------------------------------------------------------------
 // CWmDrmDlaUi::RunError
@@ -301,7 +301,7 @@ TInt CWmDrmDlaUi::RunError( TInt /*aError*/ )
     return KErrNone;
     }
 
-    
+
 // ---------------------------------------------------------------------------
 // CWmDrmDlaUi::CancelWaitNote
 // ---------------------------------------------------------------------------

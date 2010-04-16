@@ -17,11 +17,11 @@
 
 
 // INCLUDE FILES
-#include <Oma2Dcf.h>
+#include <oma2dcf.h>
 #include <drmagents.h>
 #include <drmutility.h>
 #include <centralrepository.h>
-#include <UTF.h>
+#include <utf.h>
 
 #include "Oma1Dcf.h"
 
@@ -65,7 +65,7 @@ LOCAL_C void FormatGUID( TDes8 &aGUID )
         {
         copyGUID[i] = aGUID[13 - i];
         }
-    for ( i = 8; i < 16 ; i++) 
+    for ( i = 8; i < 16 ; i++)
         {
         copyGUID[i] = aGUID[i];
         }
@@ -97,26 +97,26 @@ LOCAL_C TInt64 ConvertToInt64( TDesC8& aDes )
 // -----------------------------------------------------------------------------
 // Default constructor
 // -----------------------------------------------------------------------------
-//  
+//
 DRM::CDrmUtility::CDrmUtility()
     {
     }
-    
+
 // -----------------------------------------------------------------------------
 // Destructor
 // -----------------------------------------------------------------------------
-//  
+//
 DRM::CDrmUtility::~CDrmUtility()
     {
     delete iOmaBasedAgentName;
     delete iOmaBasedMimeType;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDrmUtility::NewLC
 // First phase constructor
 // -----------------------------------------------------------------------------
-//  
+//
 EXPORT_C DRM::CDrmUtility* DRM::CDrmUtility::NewLC()
     {
     DRM::CDrmUtility* self( new( ELeave ) CDrmUtility );
@@ -129,7 +129,7 @@ EXPORT_C DRM::CDrmUtility* DRM::CDrmUtility::NewLC()
 // CDrmUtility::NewL
 // First phase constructor
 // -----------------------------------------------------------------------------
-//  
+//
 EXPORT_C DRM::CDrmUtility* DRM::CDrmUtility::NewL()
     {
     DRM::CDrmUtility* self( NewLC() );
@@ -140,7 +140,7 @@ EXPORT_C DRM::CDrmUtility* DRM::CDrmUtility::NewL()
 void DRM::CDrmUtility::ConstructL()
     {
     TInt err( KErrNone );
-             
+
      TRAP(err, FetchOmaBasedInfoL() );
      if( err)
          {
@@ -154,7 +154,7 @@ void DRM::CDrmUtility::ConstructL()
              delete iOmaBasedMimeType;
              }
          iOmaBasedMimeType = NULL;
-         }   
+         }
     }
 
 // -----------------------------------------------------------------------------
@@ -167,23 +167,23 @@ void DRM::CDrmUtility::FetchOmaBasedInfoL()
     CRepository* repository( NULL );
     RBuf bOmaBasedAgentName;
     RBuf bOmaBasedMimeType;
-    
+
     CleanupClosePushL(bOmaBasedAgentName);
     CleanupClosePushL(bOmaBasedMimeType);
     bOmaBasedAgentName.CreateL( KCenRepDataLength );
     bOmaBasedMimeType.CreateL( KCenRepDataLength );
- 
+
     TRAP( err, repository = CRepository::NewL( KCRUidOmaBased ) );
     if ( !err )
         {
         CleanupStack::PushL( repository );
-        
+
         err = repository->Get( KDrmOmaBasedName, bOmaBasedAgentName );
         if( !err )
             {
-            iOmaBasedAgentName = bOmaBasedAgentName.AllocL(); 
+            iOmaBasedAgentName = bOmaBasedAgentName.AllocL();
             }
-        
+
         err = repository->Get( KOmaBasedMimeType, bOmaBasedMimeType );
         if( !err )
             {
@@ -191,9 +191,9 @@ void DRM::CDrmUtility::FetchOmaBasedInfoL()
             }
         CleanupStack::PopAndDestroy( repository );
         }
-    
+
     CleanupStack::PopAndDestroy(2);
-    
+
     User::LeaveIfError( err );
     }
 
@@ -201,8 +201,8 @@ void DRM::CDrmUtility::FetchOmaBasedInfoL()
 // -----------------------------------------------------------------------------
 // CDrmUtility::GetDrmInfoL
 // -----------------------------------------------------------------------------
-//  
-EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL( 
+//
+EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
     RFile& aFileHandle,
     TPtrC& aAgent,
     DRM::TDrmProtectionStatus& aProtected ) const
@@ -215,44 +215,44 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
     TInt64 headerSize( 0 );
     TBool isDrmFile( EFalse );
     TPtr8 headerPtr( NULL, 0 );
-        
+
     aProtected = DRM::EUUnprotected;
     aAgent.Set( KNullDesC );
-    
+
     CheckFileHandleL( aFileHandle );
     User::LeaveIfError( file.Duplicate( aFileHandle ) );
     CleanupClosePushL( file );
 
     User::LeaveIfError( file.Seek( ESeekStart, pos ) );
-    
+
     // Check if the file is an ASF file
     // To be Checked on runtime wether WM DRM is supporeted or not
     User::LeaveIfError( file.Read( 0, header, KMinContentLength ) );
     if ( header.Length() < KMinContentLength )
         {
-        User::Leave( KErrArgument ); 
-        }    
-        
+        User::Leave( KErrArgument );
+        }
+
     FormatGUID( header );
-    
+
     if ( header == KASFHeaderObject )
         {
         // It's ASF, check still whether it's WM DRM protected or not
         file.Read( header, KWMHeaderObjectLength );
         headerSize = ConvertToInt64( header );
-        if( headerSize <= KWMTopLevelHeaderObjectLength || 
+        if( headerSize <= KWMTopLevelHeaderObjectLength ||
             headerSize > KMaxWMHeaderLength )
             {
             User::Leave( KErrArgument );
             }
         buffer = HBufC8::NewLC( headerSize );
 
-        headerPtr.Set( buffer->Des() ); 
-        User::LeaveIfError( file.Read( headerPtr, 
+        headerPtr.Set( buffer->Des() );
+        User::LeaveIfError( file.Read( headerPtr,
                 headerSize - ( KMinContentLength + KWMHeaderObjectLength ) ) );
-    
+
         r = headerPtr.Find( KWrmHeader );
-        if ( r == KErrNotFound ) 
+        if ( r == KErrNotFound )
             {
             aProtected = DRM::EUUnprotected;
             }
@@ -260,33 +260,33 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
             {
             isDrmFile = ETrue;
             aProtected = DRM::EUProtected;
-            aAgent.Set( DRM::KDrmWMAgentName );                            
+            aAgent.Set( DRM::KDrmWMAgentName );
             }
-        CleanupStack::PopAndDestroy( buffer ); // buffer    
+        CleanupStack::PopAndDestroy( buffer ); // buffer
         }
     else
         {
         // Check whether it's OMA DRM protected or not
         buffer = HBufC8::NewLC( KOmaHeaderLength );
-        
+
         headerPtr.Set( buffer->Des() );
         User::LeaveIfError( file.Read( 0, headerPtr ));
-        
+
         if ( COma1Dcf::IsValidDcf( headerPtr ) )
             {
             isDrmFile = ETrue;
-            aProtected = DRM::EUProtected;                             
-            aAgent.Set( DRM::KDrmOmaAgentName );                
+            aProtected = DRM::EUProtected;
+            aAgent.Set( DRM::KDrmOmaAgentName );
             }
         else if ( COma2Dcf::IsValidDcf( headerPtr ) )
             {
             isDrmFile = ETrue;
             _LIT8( KCommonHeadersBox, "ohdr" );
             pos = headerPtr.Find( KCommonHeadersBox );
-            
+
             // If no box can be found or if there isn't enough data
             // set protection as unknown
-            if( pos == KErrNotFound || 
+            if( pos == KErrNotFound ||
                 headerPtr.Length() < pos + KOma2EncryptionFieldOffset )
                 {
                 aProtected = DRM::EUUnknown;
@@ -299,31 +299,31 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
             else
                 {
                 aProtected = DRM::EUProtected;
-                }                  
-            aAgent.Set( DRM::KDrmOmaAgentName );                
-            }   
+                }
+            aAgent.Set( DRM::KDrmOmaAgentName );
+            }
         else if ( (buffer->Des())[0] == 1)
             {
             // set the mimetype from the buffer which is in the beginning
-            // starting from byte 3 with the length specified at position 2		
+            // starting from byte 3 with the length specified at position 2
             TPtrC8 mimeType( buffer->Des().Mid(3, (buffer->Des())[1]) );
-            if( !mimeType.CompareF( *iOmaBasedMimeType ) ) 
-                {	
+            if( !mimeType.CompareF( *iOmaBasedMimeType ) )
+                {
                 aAgent.Set( *DRM::CDrmUtility::iOmaBasedAgentName );
                 isDrmFile = ETrue;
                 }
             }
         CleanupStack::PopAndDestroy( buffer );
-        }  
+        }
     CleanupStack::PopAndDestroy( &file ); // file
     return isDrmFile;
-    }  
-  
+    }
+
 // -----------------------------------------------------------------------------
 // CDrmUtility::GetDrmInfoL
 // -----------------------------------------------------------------------------
-//  
-EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL( 
+//
+EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
     const TDesC8& aContent,
     TPtrC& aAgent,
     DRM::TDrmProtectionStatus& aProtected ) const
@@ -333,44 +333,44 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
     TPtr8 asfPtr( NULL, 0 );
     TBuf8< 32 > asfGuidHex;
     TBool isDrmFile( EFalse );
-    
+
     aProtected = DRM::EUUnprotected;
     aAgent.Set( KNullDesC );
 
     if ( aContent.Length() < KMinContentLength )
         {
-        User::Leave( KErrArgument );   
+        User::Leave( KErrArgument );
         }
-        
+
     // Check if the file is an ASF file
-    asfPtr.Set( 
+    asfPtr.Set(
         const_cast<TUint8*>( asfGuidHex.Ptr() ), 0, KMinContentLength * 2 );
-    asfPtr.Copy( aContent.Left( KMinContentLength ) );    
+    asfPtr.Copy( aContent.Left( KMinContentLength ) );
     FormatGUID( asfPtr );
-    
+
     if ( asfPtr == KASFHeaderObject )
         {
         // It's ASF, check still whether it's WM DRM protected or not
         r = aContent.Find( KWrmHeader );
-        if ( r == KErrNotFound ) 
+        if ( r == KErrNotFound )
             {
-            aProtected = DRM::EUUnprotected;   
+            aProtected = DRM::EUUnprotected;
             }
         else
             {
             isDrmFile = ETrue;
-            aProtected = DRM::EUProtected;                               
-            aAgent.Set( DRM::KDrmWMAgentName ); 
-            }   
+            aProtected = DRM::EUProtected;
+            aAgent.Set( DRM::KDrmWMAgentName );
+            }
         }
     else
         {
         // Check whether it's OMA DRM protected or not.
-        if ( ( aContent.Length() >= KMinContentLengthOma1Based ) && 
+        if ( ( aContent.Length() >= KMinContentLengthOma1Based ) &&
             ( COma1Dcf::IsValidDcf( aContent ) ) )
             {
             isDrmFile = ETrue;
-            aProtected = DRM::EUProtected;                          
+            aProtected = DRM::EUProtected;
             aAgent.Set( DRM::KDrmOmaAgentName );
             }
         else if ( COma2Dcf::IsValidDcf( aContent ) )
@@ -378,32 +378,32 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
             isDrmFile = ETrue;
             _LIT8( KCommonHeadersBox, "ohdr" );
             TInt pos( aContent.Find( KCommonHeadersBox ) );
-            
+
             // If no box can be found or if there isn't enough data
             // set protection as unknown
-            if ( pos == KErrNotFound || 
+            if ( pos == KErrNotFound ||
                  aContent.Length() < pos + KOma2EncryptionFieldOffset )
                 {
                 aProtected = DRM::EUUnknown;
                 }
-            // If encryption field is 0, then content isn't protected    
+            // If encryption field is 0, then content isn't protected
             else if ( !aContent[pos + KOma2EncryptionFieldOffset] )
                 {
-                aProtected = DRM::EUUnprotected;    
+                aProtected = DRM::EUUnprotected;
                 }
             else
                 {
-                aProtected = DRM::EUProtected;    
-                }                               
-            aAgent.Set( DRM::KDrmOmaAgentName );            
+                aProtected = DRM::EUProtected;
+                }
+            aAgent.Set( DRM::KDrmOmaAgentName );
             }
         else if ( (aContent)[0] == 1)
             {
             // set the mimetype from the buffer which is in the beginning
-            // starting from byte 3 with the length specified at position 2     
+            // starting from byte 3 with the length specified at position 2
             TPtrC8 mimeType( aContent.Mid(3, (aContent)[1]) );
             if( !mimeType.CompareF( *iOmaBasedMimeType ) )
-                {   
+                {
                 aAgent.Set( *DRM::CDrmUtility::iOmaBasedAgentName );
                 isDrmFile = ETrue;
                 aProtected = DRM::EUProtected;
@@ -411,21 +411,21 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
             }
         }
     return isDrmFile;
-    }      
+    }
 
 // -----------------------------------------------------------------------------
 // CDrmUtility::IsProtectedL
 // -----------------------------------------------------------------------------
-//  
+//
 EXPORT_C TBool DRM::CDrmUtility::IsProtectedL( RFile& aFileHandle ) const
     {
     DRM::TDrmProtectionStatus protection( DRM::EUUnknown );
     TPtrC agent( KNullDesC );
     TBool isDrmFile( EFalse );
     TBool isProtected( EFalse );
-    
+
     isDrmFile = GetDrmInfoL( aFileHandle, agent, protection );
-    
+
     if ( isDrmFile && protection == DRM::EUProtected )
         {
         isProtected = ETrue;
@@ -433,20 +433,20 @@ EXPORT_C TBool DRM::CDrmUtility::IsProtectedL( RFile& aFileHandle ) const
     return isProtected;
     }
 
-    
+
 // -----------------------------------------------------------------------------
 // CDrmUtility::IsProtectedL
 // -----------------------------------------------------------------------------
-//  
+//
 EXPORT_C TBool DRM::CDrmUtility::IsProtectedL( const TDesC8& aContent ) const
     {
     DRM::TDrmProtectionStatus protection( DRM::EUUnknown );
     TPtrC agent( KNullDesC );
     TBool isDrmFile( EFalse );
     TBool isProtected( EFalse );
-    
+
     isDrmFile = GetDrmInfoL( aContent, agent, protection );
-    
+
     if( isDrmFile && protection == DRM::EUProtected )
         {
         isProtected = ETrue;
@@ -458,8 +458,8 @@ EXPORT_C TBool DRM::CDrmUtility::IsProtectedL( const TDesC8& aContent ) const
 // -----------------------------------------------------------------------------
 // CDrmUtility::GetAgentL
 // -----------------------------------------------------------------------------
-//  
-EXPORT_C TBool DRM::CDrmUtility::GetAgentL( 
+//
+EXPORT_C TBool DRM::CDrmUtility::GetAgentL(
     RFile& aFileHandle,
     TPtrC& aAgent ) const
     {
@@ -470,12 +470,12 @@ EXPORT_C TBool DRM::CDrmUtility::GetAgentL(
 
     return isDrmFile;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDrmUtility::GetAgentL
 // -----------------------------------------------------------------------------
-//  
-EXPORT_C TBool DRM::CDrmUtility::GetAgentL( 
+//
+EXPORT_C TBool DRM::CDrmUtility::GetAgentL(
     const TDesC8& aContent,
     TPtrC& aAgent ) const
     {
@@ -486,14 +486,14 @@ EXPORT_C TBool DRM::CDrmUtility::GetAgentL(
 
     return isDrmFile;
     }
- 	
+
 
 // -----------------------------------------------------------------------------
 // CDrmUtility::CheckFileHandlerL
 // Checks whether given filehandle is valid if not leaves with KErrArgument
 // (other items were commented in a header).
 // -----------------------------------------------------------------------------
-// 
+//
 EXPORT_C void DRM::CDrmUtility::CheckFileHandleL( RFile& aFileHandle ) const
     {
     if ( !aFileHandle.SubSessionHandle() )
@@ -501,5 +501,5 @@ EXPORT_C void DRM::CDrmUtility::CheckFileHandleL( RFile& aFileHandle ) const
         User::Leave( KErrBadHandle );
         }
     }
-       
+
 //  End of File

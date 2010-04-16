@@ -19,7 +19,7 @@
 // INCLUDE FILES
 
 #include "DrmAsset.h"
-#include "DrmRights.h"
+#include "DRMRights.h"
 #include "DrmPermission.h"
 #include "DrmConstraint.h"
 

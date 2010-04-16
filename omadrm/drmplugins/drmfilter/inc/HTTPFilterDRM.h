@@ -22,9 +22,9 @@
 #include <http/rhttpsession.h>
 #include <http/cecomfilter.h>
 #include <http/framework/httplogger.h>
-#include <drmcommon.h>
+#include <DRMCommon.h>
 
-#include "httpfilterdrmdatasupplier.h"
+#include "HTTPFilterDRMDataSupplier.h"
 
 #ifndef DEBUG_LOGGING
 #undef _LOGGING

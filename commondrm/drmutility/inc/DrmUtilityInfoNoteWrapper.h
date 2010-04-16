@@ -22,9 +22,9 @@
 
 //  INCLUDES
 #include <e32base.h>
-#include <aknglobalnote.h>
+#include <AknGlobalNote.h>
 
-namespace DRM 
+namespace DRM
 {
 
 /**
@@ -33,14 +33,14 @@ namespace DRM
 NONSHARABLE_CLASS ( CDrmUtilityInfoNoteWrapper ) : public CActive
     {
     public:  // Constructors and destructor
-        
+
         /**
         * Two-phased constructor.
         */
         static CDrmUtilityInfoNoteWrapper* NewL();
-        
+
         static CDrmUtilityInfoNoteWrapper* NewLC();
-        
+
         /**
         * Destructor.
         */
@@ -52,31 +52,31 @@ NONSHARABLE_CLASS ( CDrmUtilityInfoNoteWrapper ) : public CActive
         /**
         * Synchronous wrapper for showing global note.
         * @param aType type of Info note to be displayed
-        * @param aNoteText string containing note text       
+        * @param aNoteText string containing note text
         * @param aResource resource identifier
-        * @param aString is transferred for CoverUi string data     
+        * @param aString is transferred for CoverUi string data
         * @param aValue is transferred for CoverUi numerical data
         * @return button code
         */
-        void ShowNoteL(  TAknGlobalNoteType aType, 
+        void ShowNoteL(  TAknGlobalNoteType aType,
                          const TDesC& aNoteText,
-                         TInt aResourceId = -1, 
+                         TInt aResourceId = -1,
                          const TDesC& aString = KNullDesC,
                          TInt aValue = -1 );
 
         /**
         * Synchronous wrapper for showing global note.
         * @param[inout] aResourceId takes primary display
-        *               resource ID and returns CoverUiId     
+        *               resource ID and returns CoverUiId
         * @return       boolean if ID was valid CoverUiId
         */
         static TBool EvaluateCoverResourceId( TInt& aResourceId );
-    
+
     private: // From CActive
-    
-    	void DoCancel();
-    	void RunL();
-        
+
+        void DoCancel();
+        void RunL();
+
     private:
 
         /**
@@ -87,16 +87,16 @@ NONSHARABLE_CLASS ( CDrmUtilityInfoNoteWrapper ) : public CActive
         /**
         * By default Symbian 2nd phase constructor is private.
         */
-        void ConstructL();        
-       
+        void ConstructL();
+
     private: // Data
-        
-        CAknGlobalNote* iNote; 
+
+        CAknGlobalNote* iNote;
     };
 
 }
 
-#endif      // __DRMUTILITYINFONOTEWRAPPER_H__   
-            
+#endif      // __DRMUTILITYINFONOTEWRAPPER_H__
+
 // End of File
 

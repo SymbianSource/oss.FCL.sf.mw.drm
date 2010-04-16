@@ -19,7 +19,7 @@
 
 // INCLUDE FILES
 #include <e32std.h>
-#include "base64.h"
+#include "Base64.h"
 #include "JoinDomainReq.h"
 #include "RoapDef.h"
 
@@ -100,7 +100,7 @@ void CJoinDomainReq::ConstructL()
 CJoinDomainReq* CJoinDomainReq::NewL()
     {
     CJoinDomainReq* self = new( ELeave ) CJoinDomainReq;
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop();
@@ -108,7 +108,7 @@ CJoinDomainReq* CJoinDomainReq::NewL()
     return self;
     }
 
-    
+
 // Destructor
 CJoinDomainReq::~CJoinDomainReq()
     {
@@ -174,7 +174,7 @@ HBufC8* CJoinDomainReq::MessageAsXmlL(void)
             }
         BufAppendL(b, KReqCertChainEnd);
         }
-        
+
     if (iPeerKeyIdentifier.Length() ||
         iOcspResponderKeyId ||
         iOcspInfoStored ||
@@ -182,19 +182,19 @@ HBufC8* CJoinDomainReq::MessageAsXmlL(void)
         {
         BufAppendL(b, KReqExtensions);
         }
-        
+
     if (iPeerKeyIdentifier.Length())
         {
         BufAppendL(b, KReqPeerKey);
         BufAppendBase64L(b, iPeerKeyIdentifier);
         BufAppendL(b, KReqPeerKeyEnd);
         }
-        
+
     if (iOcspInfoStored)
         {
         BufAppendL(b, KReqNoOcspResponse);
         }
-        
+
     if (iOcspResponderKeyId)
         {
         BufAppendL(b, KReqOcspResponderKeyId);
@@ -206,7 +206,7 @@ HBufC8* CJoinDomainReq::MessageAsXmlL(void)
         {
         BufAppendL(b, KReqHashChainSupport);
         }
-               
+
     if (iPeerKeyIdentifier.Length() ||
         iOcspResponderKeyId ||
         iOcspInfoStored ||

@@ -21,13 +21,13 @@
 #include "DRMHelperGlobalNoteWrapper.h"
 #include "DRMHelperInfoNoteWrapper.h"
 
-#include <stringloader.h>
+#include <StringLoader.h>
 #include <AknGlobalConfirmationQuery.h>
 #include <avkon.hrh> // EAknSoftkeyNo
 
 #include <SecondaryDisplay/DRMHelperSecondaryDisplay.h>
-#include <aknmediatorfacade.h>
-#include <aknsddata.h>
+#include <AknMediatorFacade.h>
+#include <aknSDData.h>
 #include <featmgr.h>
 
 // EXTERNAL DATA STRUCTURES

@@ -23,9 +23,9 @@
 #include <e32base.h>
 #include <mtclbase.h>
 #include <mtsr.h>
-#include <MSVSTORE.H>
-#include <MSVUIDS.H>
-#include <MSVIDS.H>
+#include <msvstore.h>
+#include <msvuids.h>
+#include <msvids.h>
 
 
 
@@ -40,180 +40,180 @@
 
 // CLASS DECLARATION
 /**
-*	CRightsObjectServerMtm
-*  
+*   CRightsObjectServerMtm
+*
 *  @lib RoMtmSer.lib
 *  @since 2.5
 */
 
 
 //
-//	CRightsObjectServerMtm: The Server-side MTM implementation
+//  CRightsObjectServerMtm: The Server-side MTM implementation
 //
 class CRightsObjectServerMtm : public CBaseServerMtm
-	{
-	public:
+    {
+    public:
 
 
 
-	// Constructor, initialisation, and destructor 
+    // Constructor, initialisation, and destructor
 
         /**
         * Two-phased constructor.
         */
-		IMPORT_C static CRightsObjectServerMtm* NewL( CRegisteredMtmDll& aRegisteredMtmDll , CMsvServerEntry* aInitialEntry );
-	
+        IMPORT_C static CRightsObjectServerMtm* NewL( CRegisteredMtmDll& aRegisteredMtmDll , CMsvServerEntry* aInitialEntry );
+
         /**
         * Destructor.
-        */		
-		~CRightsObjectServerMtm();
+        */
+        ~CRightsObjectServerMtm();
 
-		/*************************************
-		*
-		*		from CBaseMtm
-		*
-		**************************************/
-		// Copy and move 
-		
-		/**
+        /*************************************
+        *
+        *       from CBaseMtm
+        *
+        **************************************/
+        // Copy and move
+
+        /**
         * CopyToLocalL
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		void CopyToLocalL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
+        void CopyToLocalL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
 
-		/**
+        /**
         * CopyFromLocalL
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		void CopyFromLocalL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
+        void CopyFromLocalL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
 
-		/**
+        /**
         * CopyToLocalL
         * @since 2.5
-        * 
-		* Not Supported
-		*
-        */		
-		void CopyWithinServiceL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
-		
-		/**
+        *
+        * Not Supported
+        *
+        */
+        void CopyWithinServiceL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
+
+        /**
         * MoveToLocalL
         * @since 2.5
-        * 
-		* Not Supported
-		*
-        */		
-		void MoveToLocalL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
-		
-		/**
+        *
+        * Not Supported
+        *
+        */
+        void MoveToLocalL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
+
+        /**
         * MoveFromLocalL
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		void MoveFromLocalL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
-		
-		/**
+        void MoveFromLocalL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
+
+        /**
         * MoveWithinServiceL
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		void MoveWithinServiceL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
+        void MoveWithinServiceL( const CMsvEntrySelection& aSelection , TMsvId aDestination , TRequestStatus& aStatus );
 
-		// Create, change, delete 
-		
-		/**
+        // Create, change, delete
+
+        /**
         * DeleteAllL
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		void DeleteAllL( const CMsvEntrySelection& aSelection , TRequestStatus& aStatus );
-		
-		/**
+        void DeleteAllL( const CMsvEntrySelection& aSelection , TRequestStatus& aStatus );
+
+        /**
         * CreateL
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		void CreateL( TMsvEntry aNewEntry , TRequestStatus& aStatus );
-		
-		/**
+        void CreateL( TMsvEntry aNewEntry , TRequestStatus& aStatus );
+
+        /**
         * ChangeL
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		void ChangeL( TMsvEntry aNewEntry , TRequestStatus& aStatus );
+        void ChangeL( TMsvEntry aNewEntry , TRequestStatus& aStatus );
 
-		// Command and progress
-		
-		/**
+        // Command and progress
+
+        /**
         * StartCommandL
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		void StartCommandL( CMsvEntrySelection& aSelection , TInt aCommand , 
-			const TDesC8& aParameter , TRequestStatus& aStatus );
-		
-		/**
+        void StartCommandL( CMsvEntrySelection& aSelection , TInt aCommand ,
+            const TDesC8& aParameter , TRequestStatus& aStatus );
+
+        /**
         * CommandExpected
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		TBool CommandExpected();
-		
-		
-		/**
+        TBool CommandExpected();
+
+
+        /**
         * Progress
         * @since 2.5
-        * 
-		* Not Supported
-		*
+        *
+        * Not Supported
+        *
         */
-		const TDesC8& Progress();
+        const TDesC8& Progress();
 
-		// void RunL()
-		// void SetInitialEntry(CMsvServerEntry* aEntry)=0;
-	protected:
-  
-		/*************************************
-		*
-		*		from CActive
-		*
-		**************************************/
-		void DoCancel();
-		/*************************************
-		*
-		*		from CBaseMtm
-		*
-		**************************************/
-		void DoRunL();
-		void DoComplete(TInt aError);
+        // void RunL()
+        // void SetInitialEntry(CMsvServerEntry* aEntry)=0;
+    protected:
 
-	private:
-		CRightsObjectServerMtm( CRegisteredMtmDll& aRegisteredMtmDll , CMsvServerEntry* aInitialEntry );
-		void ConstructL();
+        /*************************************
+        *
+        *       from CActive
+        *
+        **************************************/
+        void DoCancel();
+        /*************************************
+        *
+        *       from CBaseMtm
+        *
+        **************************************/
+        void DoRunL();
+        void DoComplete(TInt aError);
 
-	private:
-	};
+    private:
+        CRightsObjectServerMtm( CRegisteredMtmDll& aRegisteredMtmDll , CMsvServerEntry* aInitialEntry );
+        void ConstructL();
+
+    private:
+    };
 
 #endif      // RIGHTSOBJECTSERVERMTM_H
-            
+
 // End of File

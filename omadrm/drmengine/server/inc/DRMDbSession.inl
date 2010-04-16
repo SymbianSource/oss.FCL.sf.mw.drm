@@ -18,7 +18,7 @@
 
 
 // INCLUDE FILES
-#include "DRMConstraint.h"
+#include "DrmConstraint.h"
 #include "DRMRightsServer.h"
 
 // ============================= LOCAL FUNCTIONS ===============================
@@ -28,7 +28,7 @@ inline TBool CDRMDbSession::Invalid( const CDRMConstraint& aConstraint )
     {
     if ( ( ( aConstraint.iActiveConstraints & EConstraintCounter ) &&
            ( aConstraint.iCounter < 1 ) ) ||
-         ( ( aConstraint.iActiveConstraints & 
+         ( ( aConstraint.iActiveConstraints &
              EConstraintInterval ) &&
            ( aConstraint.iIntervalStart != Time::NullTTime() ) ) )
         {
@@ -37,7 +37,7 @@ inline TBool CDRMDbSession::Invalid( const CDRMConstraint& aConstraint )
 
     return EFalse;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CDRMDbSession::UpdateSecureTime
 // Update secure time.
@@ -59,4 +59,4 @@ inline const TDesC8& CDRMDbSession::GetContentId()
 
 
 // ========================== OTHER EXPORTED FUNCTIONS =========================
-//  End of File  
+//  End of File

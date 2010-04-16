@@ -22,7 +22,7 @@
 #include <coemain.h>
 
 #include "drmuierrorhandling.h"
-#include "drmuihandlingimpl.h"
+#include "DrmUiHandlingImpl.h"
 
 // ============================= LOCAL FUNCTIONS ===============================
 

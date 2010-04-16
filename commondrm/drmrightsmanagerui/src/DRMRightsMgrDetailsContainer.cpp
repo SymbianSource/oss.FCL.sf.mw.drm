@@ -17,15 +17,15 @@
 
 
 // INCLUDE FILES
-#include <stringloader.h>
+#include <StringLoader.h>
 #include <aknlists.h>
-#include <cdirectorylocalizer.h>
-#include <drmrights.h>
+#include <CDirectoryLocalizer.h>
+#include <DRMRights.h>
 
-#include <drmrightsmanager.rsg>
+#include <DRMRightsManager.rsg>
 
-#include "drmrightsmgrdetailscontainer.h"
-#include "drmcommonutilities.h"
+#include "DRMRightsMgrDetailsContainer.h"
+#include "DRMCommonUtilities.h"
 #include "drmutilityinternaltypes.h"
 
 // CONSTANTS

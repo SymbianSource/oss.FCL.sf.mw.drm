@@ -21,24 +21,24 @@
 #include <s32strm.h>
 #include <s32mem.h>
 #include <caf/caf.h>
-#include "DRMPermission.h"
-#include "DRMConstraint.h"
+#include "DrmPermission.h"
+#include "DrmConstraint.h"
 #include "drmlog.h"
-#include "OMA2Agent.h"
+#include "Oma2Agent.h"
 
 // EXTERNAL DATA STRUCTURES
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 
 // Synchronizing marker in the beginning of the stream in order to synchronize
-// to externalized Permission object having the new structure.  
+// to externalized Permission object having the new structure.
 const TInt32 KSyncMark = 0xAFCE;
 
 // Old and new version number of the Permission object
 const TInt8 KVersion3_2_0 = 0;
-const TInt8 KVersion3_2_1 = 1;   
+const TInt8 KVersion3_2_1 = 1;
 
 
 const TInt KSanityDataLengthLow = 0;
@@ -84,8 +84,8 @@ EXPORT_C CDRMPermission* CDRMPermission::NewLC()
     CDRMPermission* self = new( ELeave ) CDRMPermission();
     CleanupStack::PushL( self );
     self->ConstructL();
-    
-    return self;    
+
+    return self;
     };
 
 
@@ -98,7 +98,7 @@ EXPORT_C CDRMPermission* CDRMPermission::NewL()
     {
     CDRMPermission* self = NewLC();
     CleanupStack::Pop();
-    
+
     return self;
     };
 
@@ -108,7 +108,7 @@ EXPORT_C CDRMPermission* CDRMPermission::NewL()
 //
 CDRMPermission::CDRMPermission() :
     iSyncMark( KSyncMark ),
-    iVersion( KVersion3_2_1 ), // Version number for differentiation in 
+    iVersion( KVersion3_2_1 ), // Version number for differentiation in
                                // InternalizeL.
     iUniqueID( 0 ),
     iOriginalInsertTime( Time::NullTTime() ),
@@ -128,9 +128,9 @@ CDRMPermission::CDRMPermission() :
     iRiId.SetLength( KRiIdSize );
     iRiId.Fill( 0 );
     };
-    
-    
-    
+
+
+
 // -----------------------------------------------------------------------------
 // Destructor
 // -----------------------------------------------------------------------------
@@ -148,31 +148,31 @@ EXPORT_C CDRMPermission::~CDRMPermission()
         delete iPlay;
         iPlay = NULL;
         }
-        
+
     if( iDisplay )
         {
         delete iDisplay;
         iDisplay = NULL;
         }
-        
+
     if( iExecute )
         {
         delete iExecute;
         iExecute = NULL;
         }
-        
+
     if( iExport )
         {
         delete iExport;
         iExport = NULL;
         }
-        
+
     if( iPrint )
         {
         delete iPrint;
         iPrint = NULL;
         }
-       
+
     if( iParentUID )
         {
         delete iParentUID;
@@ -190,88 +190,88 @@ EXPORT_C CDRMPermission::~CDRMPermission()
         delete iDomainID;
         iDomainID = NULL;
         }
-        
+
     if( iOnExpiredUrl )
         {
         delete iOnExpiredUrl;
         iOnExpiredUrl = NULL;
         }
     };
-    
+
 // -----------------------------------------------------------------------------
 // CDRMPermission::ExternalizeL
 // -----------------------------------------------------------------------------
 //
 EXPORT_C void CDRMPermission::ExternalizeL( RWriteStream& aStream ) const
     {
-    
+
     // used for the buffers
     TInt dataLength = 0;
-    
+
     // Used for mode
     TUint8 exportMode = 0;
-    
+
     // Write the synchronizing marker
     aStream.WriteInt32L( iSyncMark );
-    
+
     // Write the version number
     aStream.WriteInt32L( iVersion );
-    
+
     // Unique ID of the permission
     aStream.WriteUint32L( iUniqueID );
-    
+
     // The original insertion time
     WriteInt64L( iOriginalInsertTime.Int64(), aStream );
-    
+
     // Top level constraint
-    if( !iTopLevel ) 
+    if( !iTopLevel )
         {
         User::Leave( KErrNotReady );
         }
     iTopLevel->ExternalizeL( aStream );
-    
+
     // Play constraint
     if( !iPlay )
         {
         User::Leave( KErrNotReady );
         }
     iPlay->ExternalizeL( aStream );
-    
+
     // Display constraint
     if( !iDisplay )
         {
         User::Leave( KErrNotReady );
         }
     iDisplay->ExternalizeL( aStream );
-    
+
     // Execute constraint
     if( !iExecute )
         {
         User::Leave( KErrNotReady );
         }
     iExecute->ExternalizeL( aStream );
-    
+
     // Print constraint
     if( !iPrint )
         {
         User::Leave( KErrNotReady );
         }
     iPrint->ExternalizeL( aStream );
-    
+
     // Export constraint
     if( !iExport )
         {
         User::Leave( KErrNotReady );
         }
     iExport->ExternalizeL( aStream );
-    
+
     // Export mode
     exportMode = iExportMode;
     aStream.WriteUint8L( exportMode );
-    
+
     // Content id of the parent rights object
     dataLength = 0;
-    if( iParentUID ) 
+    if( iParentUID )
         {
         dataLength = iParentUID->Length();
         }
@@ -279,47 +279,47 @@ EXPORT_C void CDRMPermission::ExternalizeL( RWriteStream& aStream ) const
 
     if( dataLength )
         {
-        aStream.WriteL( iParentUID->Des() );        
-        }             
-    
+        aStream.WriteL( iParentUID->Des() );
+        }
+
     // Rights Object if of the rights delivery container
-    dataLength = 0;    
+    dataLength = 0;
     if( iRoID )
         {
         dataLength = iRoID->Length();
         }
     aStream.WriteInt32L( dataLength );
-    
+
     if( dataLength )
         {
-        aStream.WriteL( iRoID->Des() );        
+        aStream.WriteL( iRoID->Des() );
         }
-    
+
     // Domain identifier
-    dataLength = 0;    
+    dataLength = 0;
     if( iDomainID )
         {
         dataLength = iDomainID->Length();
         }
     aStream.WriteInt32L( dataLength );
-    
+
     if( dataLength )
         {
-        aStream.WriteL( iDomainID->Des() );        
-        }    
-       
-    // Available rights    
+        aStream.WriteL( iDomainID->Des() );
+        }
+
+    // Available rights
     aStream.WriteUint16L( iAvailableRights );
 
-    // Version number of the rights object    
+    // Version number of the rights object
     aStream.WriteUint16L( iRightsObjectVersion.iVersionMain );
     aStream.WriteUint16L( iRightsObjectVersion.iVersionSub );
-    
+
     // Info bits
     aStream.WriteInt32L( iInfoBits );
-    
+
     aStream.WriteL( iRiId );
-     
+
     // OnExpiredUrl
     dataLength = 0;
     if ( iOnExpiredUrl )
@@ -327,37 +327,37 @@ EXPORT_C void CDRMPermission::ExternalizeL( RWriteStream& aStream ) const
         dataLength = iOnExpiredUrl->Length();
         }
     aStream.WriteInt32L( dataLength );
-    
+
     if ( dataLength )
         {
         aStream.WriteL( iOnExpiredUrl->Des() );
         }
-    
+
     // For future use
     aStream.WriteInt32L( 0 );
-    
+
     };
-    
+
 // -----------------------------------------------------------------------------
 // CDRMPermission::InternalizeL
 // -----------------------------------------------------------------------------
 //
 EXPORT_C void CDRMPermission::InternalizeL( RReadStream& aStream )
-    {    
-    
+    {
+
     TInt64 timeData = 0;
-    
+
     // used for the buffers
     TInt dataLength = 0;
     TPtr8 dataBuffer(NULL,0,0);
     HBufC8* dataPart = NULL;
-    
+
     // (Possible) synchronizing marker
     iSyncMark = aStream.ReadInt32L();
-    
+
     if ( iSyncMark == KSyncMark )
         {
-        
+
         // The internalized Permission object has the new structure if the
         // synchronizing marker is found in the beginning of the stream. In that
         // case read version number and Unique ID.
@@ -367,276 +367,276 @@ EXPORT_C void CDRMPermission::InternalizeL( RReadStream& aStream )
         iUniqueID = aStream.ReadUint32L();
 
         }
-    else 
+    else
         {
-        
+
         // The internalized Permission object has the old structure. The
         // stream information that was read to iSyncMark is actually the
         // Unique ID.
         iUniqueID = (TDRMUniqueID)iSyncMark;
         iVersion = KVersion3_2_0; // Old version, needed for differentation
-        
+
         }
-            
+
     // The original insertion time
     ReadInt64L( timeData, aStream );
     iOriginalInsertTime = timeData;
-    
+
     // Top level constraint
     if( !iTopLevel )
         {
         iTopLevel = CDRMConstraint::NewL();
         }
-        
+
     iTopLevel->InternalizeL( aStream );
-    
+
     // Play constraint
     if( !iPlay )
         {
         iPlay = CDRMConstraint::NewL();
         }
-         
+
     iPlay->InternalizeL( aStream );
-    
+
     // Display constraint
     if( !iDisplay )
         {
         iDisplay = CDRMConstraint::NewL();
         }
-        
+
     iDisplay->InternalizeL( aStream );
-    
+
     // Execute constraint
     if( !iExecute )
         {
         iExecute = CDRMConstraint::NewL();
         }
-         
+
     iExecute->InternalizeL( aStream );
-    
+
     // Print constraint
     if( !iPrint)
         {
         iPrint = CDRMConstraint::NewL();
         }
-         
+
     iPrint->InternalizeL( aStream );
-    
+
     // Export constraint
-     
+
     iExport->InternalizeL( aStream );
-    
+
     // Export mode
     iExportMode = static_cast<TExportMode>(aStream.ReadUint8L());
-    
+
     // Content id of the parent rights object
     dataLength = aStream.ReadInt32L();
-    
+
     SanitizeL( dataLength );
-    
+
     if( dataLength > 0 )
         {
         // Reserve a new buffer:
         dataPart = HBufC8::NewMaxLC( dataLength );
-        
+
         // Set the read buffer:
         dataBuffer.Set(const_cast<TUint8*>(dataPart->Ptr()), 0, dataLength);
-        
+
         // Read the data:
         aStream.ReadL( dataBuffer );
-        
-        // Pop the buffer 
+
+        // Pop the buffer
         CleanupStack::Pop(); // dataPart
-                
-        // If an old content identifier exists delete it        
+
+        // If an old content identifier exists delete it
         if( iParentUID )
             {
             delete iParentUID;
             iParentUID = NULL;
             }
-        
+
         // assign the new content id
-        iParentUID = dataPart;    
+        iParentUID = dataPart;
         }
     else
         {
-        // If an old individual exists delete it 
+        // If an old individual exists delete it
         if( iParentUID )
             {
             delete iParentUID;
             iParentUID = NULL;
-            }        
-        }           
-    
-    
+            }
+        }
+
+
     // Rights Object if of the rights delivery container
     // Read the individual
     dataLength = aStream.ReadInt32L();
 
     SanitizeL( dataLength );
-        
+
     if( dataLength > 0 )
         {
         // Reserve a new buffer:
         dataPart = HBufC8::NewMaxLC( dataLength );
-        
+
         // Set the read buffer:
         dataBuffer.Set(const_cast<TUint8*>(dataPart->Ptr()), 0, dataLength);
-        
+
         // Read the data:
         aStream.ReadL( dataBuffer );
-        
-        // Pop the buffer 
+
+        // Pop the buffer
         CleanupStack::Pop(); // dataPart
-                
-        // If an old content identifier exists delete it        
+
+        // If an old content identifier exists delete it
         if( iRoID )
             {
             delete iRoID;
             iRoID = NULL;
             }
-        
+
         // assign the new content id
-        iRoID = dataPart;    
+        iRoID = dataPart;
         }
     else
         {
-        // If an old individual exists delete it 
+        // If an old individual exists delete it
         if( iRoID )
             {
             delete iRoID;
             iRoID = NULL;
-            }        
-        }           
-    
+            }
+        }
+
     // Domain identifier
     dataLength = aStream.ReadInt32L();
 
     SanitizeL( dataLength );
-        
+
     if( dataLength > 0 )
         {
         // Reserve a new buffer:
         dataPart = HBufC8::NewMaxLC( dataLength );
-        
+
         // Set the read buffer:
         dataBuffer.Set(const_cast<TUint8*>(dataPart->Ptr()), 0, dataLength);
-        
+
         // Read the data:
         aStream.ReadL( dataBuffer );
-        
-        // Pop the buffer 
+
+        // Pop the buffer
         CleanupStack::Pop(); // dataPart
-                
-        // If an old content identifier exists delete it        
+
+        // If an old content identifier exists delete it
         if( iDomainID )
             {
             delete iDomainID;
             iDomainID = NULL;
             }
-        
+
         // assign the new content id
-        iDomainID = dataPart;    
+        iDomainID = dataPart;
         }
     else
         {
-        // If an old individual exists delete it 
+        // If an old individual exists delete it
         if( iDomainID )
             {
             delete iDomainID;
             iDomainID = NULL;
-            }        
-        }           
-    
+            }
+        }
 
-    // Available rights    
+
+    // Available rights
     iAvailableRights = aStream.ReadUint16L();
 
-    // Version number of the rights object    
+    // Version number of the rights object
     iRightsObjectVersion.iVersionMain = aStream.ReadUint16L();
     iRightsObjectVersion.iVersionSub = aStream.ReadUint16L();
-    
+
     // Information bits
     iInfoBits = aStream.ReadInt32L();
-    
+
     aStream.ReadL( iRiId );
-    
+
     // New structure of Permission object
     if ( iVersion == KVersion3_2_1 )
         {
-        
+
         // OnExpiredUrl
         dataLength = aStream.ReadInt32L();
-    
+
         SanitizeL( dataLength );
-        
+
         if( dataLength > 0 )
             {
-            
+
             // Reserve a new buffer:
             dataPart = HBufC8::NewMaxLC( dataLength );
-        
+
             // Set the read buffer:
-            dataBuffer.Set(const_cast<TUint8*>(dataPart->Ptr()), 0, 
+            dataBuffer.Set(const_cast<TUint8*>(dataPart->Ptr()), 0,
                            dataLength);
-        
+
             // Read the data:
             aStream.ReadL( dataBuffer );
-        
-            // Pop the buffer 
+
+            // Pop the buffer
             CleanupStack::Pop(); // dataPart
-                
-            // If an old OnExpiredUrl exists delete it        
+
+            // If an old OnExpiredUrl exists delete it
             if( iOnExpiredUrl )
                 {
                 delete iOnExpiredUrl;
                 iOnExpiredUrl = NULL;
                 }
-        
+
             // assign the new OnExpiredUrl
-            iOnExpiredUrl = dataPart;    
+            iOnExpiredUrl = dataPart;
             }
             else
             {
-            // If an old OnExpiredUrl exists delete it 
+            // If an old OnExpiredUrl exists delete it
             if( iOnExpiredUrl )
                 {
                 delete iOnExpiredUrl;
                 iOnExpiredUrl = NULL;
-                }        
-            }           
-      
+                }
+            }
+
         // For future use or development, reads the data at the end of the stream
         dataLength = aStream.ReadInt32L();
-    
+
         SanitizeL( dataLength );
-        
+
         if ( dataLength > 0 )
             {
             // Reserve a new buffer:
             dataPart = HBufC8::NewMaxLC( dataLength );
-        
+
             // Set the read buffer:
             dataBuffer.Set(const_cast<TUint8*>(dataPart->Ptr()), 0, dataLength);
-        
+
             // Read the data:
             aStream.ReadL( dataBuffer );
-        
-            // Delete the buffer 
+
+            // Delete the buffer
             CleanupStack::PopAndDestroy( dataPart );
             }
         }
-    
-    // Permission can be considered to have the new structure after 
-    // internalization. 
-    if ( iVersion == KVersion3_2_0 ) 
+
+    // Permission can be considered to have the new structure after
+    // internalization.
+    if ( iVersion == KVersion3_2_0 )
         {
         iSyncMark = KSyncMark;
-        iVersion = KVersion3_2_1; 
+        iVersion = KVersion3_2_1;
         }
-        
+
     };
-    
+
 // -----------------------------------------------------------------------------
 // CDRMPermission::Stateful
 // -----------------------------------------------------------------------------
@@ -653,19 +653,19 @@ EXPORT_C TBool CDRMPermission::Stateful() const
         }
     else if( (iAvailableRights & ERightsDisplay) &&  iDisplay->Stateful() )
         {
-        return ETrue;    
+        return ETrue;
         }
     else if( (iAvailableRights & ERightsExecute) &&  iExecute->Stateful() )
         {
-        return ETrue;    
+        return ETrue;
         }
     else if( (iAvailableRights & ERightsPrint) &&  iPrint->Stateful() )
         {
         return ETrue;
         }
-    return EFalse;        
+    return EFalse;
     };
-	
+
 // -----------------------------------------------------------------------------
 // CDRMPermission::SoftwareConstrained
 // -----------------------------------------------------------------------------
@@ -685,25 +685,25 @@ EXPORT_C TBool CDRMPermission::SoftwareConstrained() const
     else if ( (iAvailableRights & ERightsDisplay) &&
         iDisplay->iActiveConstraints & ( EConstraintVendor | EConstraintSoftware ) )
         {
-        return ETrue;    
+        return ETrue;
         }
     else if ( (iAvailableRights & ERightsExecute) &&
         iExecute->iActiveConstraints & ( EConstraintVendor | EConstraintSoftware ) )
         {
-        return ETrue;    
+        return ETrue;
         }
     else if ( (iAvailableRights & ERightsPrint) &&
         iPrint->iActiveConstraints & ( EConstraintVendor | EConstraintSoftware ) )
         {
         return ETrue;
         }
-    return EFalse;        
+    return EFalse;
     };
-	
+
 // -----------------------------------------------------------------------------
 // CDRMPermission::Child
 // -----------------------------------------------------------------------------
-//	
+//
 EXPORT_C TBool CDRMPermission::Child() const
     {
     return iParentUID ? ETrue : EFalse;
@@ -712,105 +712,105 @@ EXPORT_C TBool CDRMPermission::Child() const
 // -----------------------------------------------------------------------------
 // CDRMPermission::Size
 // -----------------------------------------------------------------------------
-//	
+//
 EXPORT_C TInt CDRMPermission::Size() const
     {
     TInt size = 0;
-    
+
     // synchronizing marker
     size += sizeof(TInt32);
-    
+
     // Version number
     size += sizeof(TInt32);
-    
+
     // Unique ID of the permission
     size += sizeof(TDRMUniqueID);
-    
+
     // The original insertion time
     size += sizeof(TTime);
-    
+
     // Top level constraint
     size += iTopLevel->Size();
-    
+
     // Play constraint
     size += iPlay->Size();
-    
+
     // Display constraint
     size += iDisplay->Size();
-    
+
     // Execute constraint
     size += iExecute->Size();
-    
+
     // Print constraint
     size += iPrint->Size();
-    
+
     // Export constraint
     size += iExport->Size();
-    
+
     // Export mode
     size += sizeof(TUint8);
-    
+
     // Content id of the parent rights object
     size += sizeof(TInt32);
-    
+
     if( iParentUID )
         {
         size += iParentUID->Size();
         }
-    
+
     // Rights Object if of the rights delivery container
     size += sizeof(TInt32);
-    
+
     if( iRoID )
         {
         size += iRoID->Size();
         }
-    
+
     // Domain identifier
     size += sizeof(TInt32);
-        
+
     if( iDomainID )
         {
         size += iDomainID->Size();
         }
-    
+
     // Available rights
     size += sizeof(TUint16);
-    
+
     // Version number of the rights object
     size += sizeof(TUint16);
     size += sizeof(TUint16);
-    
+
     // infobits
     size += sizeof(TInt32);
-    
+
     // RI ID
     size += KRiIdSize;
-      
+
     // OnExpiredUrl
     size += sizeof(TInt32);
-    
+
     if ( iOnExpiredUrl )
         {
         size += iOnExpiredUrl->Size();
         }
-    
+
     // For future use
     size += sizeof(TInt32);
-    
+
     return size;
-    
+
     };
 
 // -----------------------------------------------------------------------------
 // CDRMPermission::ConstraintForIntent
 // -----------------------------------------------------------------------------
-//	
-EXPORT_C CDRMConstraint* CDRMPermission::ConstraintForIntent( 
+//
+EXPORT_C CDRMConstraint* CDRMPermission::ConstraintForIntent(
     const ContentAccess::TIntent aIntent )
     {
     CDRMConstraint* r = NULL;
-    
+
     switch ( aIntent )
         {
         case ContentAccess::EPlay:
@@ -838,14 +838,14 @@ EXPORT_C CDRMConstraint* CDRMPermission::ConstraintForIntent(
                 }
             break;
         }
-        
+
     return r;
     }
 
 // -----------------------------------------------------------------------------
 // CDRMPermission::ConstraintForIntent
 // -----------------------------------------------------------------------------
-//	
+//
 EXPORT_C CDRMConstraint* CDRMPermission::TopLevelConstraint()
     {
     if ( iAvailableRights & ERightsTopLevel )
@@ -861,18 +861,18 @@ EXPORT_C CDRMConstraint* CDRMPermission::TopLevelConstraint()
 // -----------------------------------------------------------------------------
 // CDRMPermission::ConsumeRights
 // -----------------------------------------------------------------------------
-//	
+//
 EXPORT_C void CDRMPermission::ConsumeRights( const TIntent aIntent, const TTime& aCurrentTime )
     {
-    //__ASSERT_DEBUG( !( aIntent == ERightsTopLevel ), User::Leave( KErrArgument ) ); 
-    
+    //__ASSERT_DEBUG( !( aIntent == ERightsTopLevel ), User::Leave( KErrArgument ) );
+
     CDRMConstraint* constraint( TopLevelConstraint() );
-    
+
     if ( constraint )
         {
         constraint->Consume( aCurrentTime );
         }
-    
+
     constraint = ConstraintForIntent( aIntent );
     if ( constraint )
         {
@@ -891,8 +891,8 @@ EXPORT_C void CDRMPermission::ImportL( const TDesC8& aBuffer )
     CleanupClosePushL( stream );
 
     InternalizeL( stream );
-    
-    CleanupStack::PopAndDestroy(); // Stream   
+
+    CleanupStack::PopAndDestroy(); // Stream
     };
 
 
@@ -909,10 +909,10 @@ EXPORT_C HBufC8* CDRMPermission::ExportL() const
     CleanupClosePushL( stream );
 
     ExternalizeL( stream );
-    
+
     CleanupStack::PopAndDestroy(); // Stream
     CleanupStack::Pop();
-    return data;    
+    return data;
     };
 
 // -----------------------------------------------------------------------------
@@ -921,64 +921,64 @@ EXPORT_C HBufC8* CDRMPermission::ExportL() const
 //
 EXPORT_C void CDRMPermission::DuplicateL( const CDRMPermission& aPermission )
     {
-    
+
     // Synchronizing marker
     iSyncMark = aPermission.iSyncMark;
-    
+
     // Version number
     iVersion = aPermission.iVersion;
-    
+
     // Unique ID of the permission
     iUniqueID = aPermission.iUniqueID;
-    
+
     // The original insertion time
     iOriginalInsertTime = aPermission.iOriginalInsertTime;
-    
+
     // Top level constraint
     if( !iTopLevel )
         {
         iTopLevel = CDRMConstraint::NewL();
         }
     iTopLevel->DuplicateL( *(aPermission.iTopLevel ) );
-    
+
     // Play constraint
     if( !iPlay )
         {
         iPlay = CDRMConstraint::NewL();
         }
     iPlay->DuplicateL( *(aPermission.iPlay ) );
-    
+
     // Display constraint
     if( !iDisplay )
         {
         iDisplay = CDRMConstraint::NewL();
         }
     iDisplay->DuplicateL( *(aPermission.iDisplay ) );
-    
+
     // Execute constraint
     if( !iExecute )
         {
         iExecute = CDRMConstraint::NewL();
         }
     iExecute->DuplicateL( *(aPermission.iExecute ) );
-    
+
     // Print constraint
     if( !iPrint )
         {
         iPrint = CDRMConstraint::NewL();
         }
     iPrint->DuplicateL( *(aPermission.iPrint ) );
-    
+
     // Export constraint
     if( !iExport )
         {
         iExport = CDRMConstraint::NewL();
         }
-    iExport->DuplicateL( *(aPermission.iExport ) ); 
-    
+    iExport->DuplicateL( *(aPermission.iExport ) );
+
     // Export mode
     iExportMode = aPermission.iExportMode;
-    
+
     // Content id of the parent rights object
     if( iParentUID )
         {
@@ -990,52 +990,52 @@ EXPORT_C void CDRMPermission::DuplicateL( const CDRMPermission& aPermission )
         {
         iParentUID = aPermission.iParentUID->AllocL();
         }
-        
+
     // Rights Object if of the rights delivery container
     if( iRoID )
         {
         delete iRoID;
         iRoID = NULL;
         }
-        
+
     if( aPermission.iRoID )
         {
         iRoID = aPermission.iRoID->AllocL();
         }
-        
+
     // Domain identifier
     if( iDomainID )
         {
         delete iDomainID;
         iDomainID = NULL;
         }
-        
-    if( aPermission.iDomainID )   
+
+    if( aPermission.iDomainID )
         {
         iDomainID = aPermission.iDomainID->AllocL();
         }
     // Available rights
-    iAvailableRights  = aPermission.iAvailableRights;	// Bitmask
-    
+    iAvailableRights  = aPermission.iAvailableRights;   // Bitmask
+
     // Version number of the rights object
     iRightsObjectVersion.iVersionMain = aPermission.iRightsObjectVersion.iVersionMain;
     iRightsObjectVersion.iVersionSub = aPermission.iRightsObjectVersion.iVersionSub;
-    
+
     // info bits
     iInfoBits = aPermission.iInfoBits;
-    
+
     // OnExpiredUrl
     if ( iOnExpiredUrl )
         {
         delete iOnExpiredUrl;
         iOnExpiredUrl = NULL;
         }
-        
-    if ( aPermission.iOnExpiredUrl )    
+
+    if ( aPermission.iOnExpiredUrl )
         {
         iOnExpiredUrl = aPermission.iOnExpiredUrl->AllocL();
         }
-    
+
     };
 
 
@@ -1044,57 +1044,57 @@ EXPORT_C void CDRMPermission::DuplicateL( const CDRMPermission& aPermission )
 // -----------------------------------------------------------------------------
 //
 EXPORT_C TBool CDRMPermission::Expired( const TTime& aTime )
-	{
-	if( iTopLevel && iAvailableRights & ERightsTopLevel )
-		{
-		if( iTopLevel->Expired( aTime ) )
-			{
-			return ETrue;	
-			}	
-		}
+    {
+    if( iTopLevel && iAvailableRights & ERightsTopLevel )
+        {
+        if( iTopLevel->Expired( aTime ) )
+            {
+            return ETrue;
+            }
+        }
 
-	if( iPlay && iAvailableRights & ERightsPlay)
-		{
-		if( !iPlay->Expired( aTime ) )
-			{
-			return EFalse;
-			}	
-		}
+    if( iPlay && iAvailableRights & ERightsPlay)
+        {
+        if( !iPlay->Expired( aTime ) )
+            {
+            return EFalse;
+            }
+        }
 
-	if( iDisplay && iAvailableRights & ERightsDisplay )
-		{
-		if( !iDisplay->Expired( aTime ) )
-			{
-			return EFalse;	
-			}	
-		}
+    if( iDisplay && iAvailableRights & ERightsDisplay )
+        {
+        if( !iDisplay->Expired( aTime ) )
+            {
+            return EFalse;
+            }
+        }
 
-	if( iExecute && iAvailableRights & ERightsExecute )
-		{
-		if( !iExecute->Expired( aTime ) )
-			{
-			return EFalse;
-			}	
-		}
+    if( iExecute && iAvailableRights & ERightsExecute )
+        {
+        if( !iExecute->Expired( aTime ) )
+            {
+            return EFalse;
+            }
+        }
 
-	if( iPrint && iAvailableRights & ERightsPrint )
-		{
-		if( !iPrint->Expired( aTime ) )
-			{
-			return EFalse;	
-			}	
-		}
+    if( iPrint && iAvailableRights & ERightsPrint )
+        {
+        if( !iPrint->Expired( aTime ) )
+            {
+            return EFalse;
+            }
+        }
 
-	if( iExport && iAvailableRights & ERightsExport )
-		{
-		if( !iExport->Expired( aTime ) )
-			{
-			return EFalse;	
-			}	
-		}
-		
-	return ETrue;									
-	};
+    if( iExport && iAvailableRights & ERightsExport )
+        {
+        if( !iExport->Expired( aTime ) )
+            {
+            return EFalse;
+            }
+        }
+
+    return ETrue;
+    };
 
 
 // -----------------------------------------------------------------------------
@@ -1103,15 +1103,15 @@ EXPORT_C TBool CDRMPermission::Expired( const TTime& aTime )
 //
 EXPORT_C TBool CDRMPermission::Valid( const TTime& aTime,
                                       const RPointerArray<HBufC8>& aIndividual,
-                                      TUint32& aRejection, 
+                                      TUint32& aRejection,
                                       const TRightsType aType ) const
-	{
-	// Always check that if the top level rights are present
-	// that they are valid
+    {
+    // Always check that if the top level rights are present
+    // that they are valid
     if( iTopLevel && !iTopLevel->Valid( aTime, aIndividual, aRejection ) )
         {
         aRejection |= aRejection;
-        return EFalse;	
+        return EFalse;
         }
 
     switch( aType )
@@ -1119,90 +1119,90 @@ EXPORT_C TBool CDRMPermission::Valid( const TTime& aTime,
         case ERightsTopLevel:
             if( !iTopLevel )
                 {
-                return EFalse;	
+                return EFalse;
                 }
-            break;            
+            break;
         case ERightsPlay:
             if( !iPlay )
                 {
-                return EFalse;	
+                return EFalse;
                 }
-    		else if( iPlay && !iPlay->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;	
-    			}	
-    		break;    	
-    	case ERightsDisplay:
-    	    if( !iDisplay )
-    	    	{
-    	    	return EFalse;	
-    	    	}
-    		else if( iDisplay && !iDisplay->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;
-    		    }
-    		break;      	
-    	case ERightsExecute:
-    	    if( !iExecute )
-    	    	{
-    	    	return EFalse;	
-    	        }
-    		else if( iExecute && !iExecute->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;	
-    			}
-    		break;      	
-    	case ERightsPrint:
-    	    if( !iPrint )
-    	    	{
-    	    	return EFalse;	
-    	    	}
-    		else if( iPrint && !iPrint->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;	
-    			}
-    		break;      	
-    	case ERightsExport:
-    	    if( !iExport )
-    	    	{
-    	    	return EFalse;	
-    	    	}
-    		else if( iExport && !iExport->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;	
-    			}
-    		break;      	
+            else if( iPlay && !iPlay->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            break;
+        case ERightsDisplay:
+            if( !iDisplay )
+                {
+                return EFalse;
+                }
+            else if( iDisplay && !iDisplay->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            break;
+        case ERightsExecute:
+            if( !iExecute )
+                {
+                return EFalse;
+                }
+            else if( iExecute && !iExecute->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            break;
+        case ERightsPrint:
+            if( !iPrint )
+                {
+                return EFalse;
+                }
+            else if( iPrint && !iPrint->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            break;
+        case ERightsExport:
+            if( !iExport )
+                {
+                return EFalse;
+                }
+            else if( iExport && !iExport->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            break;
         default:
-    	  	// No constraints are defined, top level doesn't work
-    	  	// on it's own, the permission is invalid
-    	  	if( !iPrint && !iDisplay && !iExecute && !iPrint )
-    	  		{
-    	  		return EFalse;	
-    	  		}
-			else if( iPlay && !iPlay->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;	
-    			}
-    		else if( iDisplay && !iDisplay->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;	
-    			}    			   	  		    	
-			else if( iPrint && !iPrint->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;	
-    			}
-    		else if( iExecute && !iExecute->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;	
-    			}
-    		else if( iExport && !iExport->Valid( aTime, aIndividual, aRejection ) )
-    			{
-    			return EFalse;	
-    			}
-    		break;		    			   	  
-    	}
-    return ETrue;                                  		
-    }; 
+            // No constraints are defined, top level doesn't work
+            // on it's own, the permission is invalid
+            if( !iPrint && !iDisplay && !iExecute && !iPrint )
+                {
+                return EFalse;
+                }
+            else if( iPlay && !iPlay->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            else if( iDisplay && !iDisplay->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            else if( iPrint && !iPrint->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            else if( iExecute && !iExecute->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            else if( iExport && !iExport->Valid( aTime, aIndividual, aRejection ) )
+                {
+                return EFalse;
+                }
+            break;
+        }
+    return ETrue;
+    };
 
 
 
@@ -1217,11 +1217,11 @@ void CDRMPermission::ConstructL()
     iPlay = CDRMConstraint::NewL();
     iDisplay = CDRMConstraint::NewL();
     iExecute = CDRMConstraint::NewL();
-    iPrint = CDRMConstraint::NewL();                
+    iPrint = CDRMConstraint::NewL();
     iExport = CDRMConstraint::NewL();
-    
+
     iRightsObjectVersion.iVersionMain = EOma1Rights;
-    iRightsObjectVersion.iVersionSub = 0;                
+    iRightsObjectVersion.iVersionSub = 0;
     };
 
 
@@ -1231,9 +1231,9 @@ void CDRMPermission::ConstructL()
 //
 void CDRMPermission::WriteInt64L( const TInt64& aWrite, RWriteStream& aStream ) const
     {
-    TPtr8 output( reinterpret_cast<TUint8*>(const_cast<TInt64*>(&aWrite)), 
+    TPtr8 output( reinterpret_cast<TUint8*>(const_cast<TInt64*>(&aWrite)),
                   sizeof(TInt64), sizeof(TInt64) );
-        
+
     aStream.WriteL( output, sizeof(TInt64) );
     }
 
@@ -1244,8 +1244,8 @@ void CDRMPermission::WriteInt64L( const TInt64& aWrite, RWriteStream& aStream ) 
 void CDRMPermission::ReadInt64L( TInt64& aRead, RReadStream& aStream )
     {
     TPtr8 input( reinterpret_cast<TUint8*>(&aRead), 0, sizeof(TInt64) );
-    
-    aStream.ReadL( input, sizeof(TInt64) );    
+
+    aStream.ReadL( input, sizeof(TInt64) );
     };
 
 
@@ -1254,15 +1254,15 @@ void CDRMPermission::ReadInt64L( TInt64& aRead, RReadStream& aStream )
 // -----------------------------------------------------------------------------
 //
 EXPORT_C void CDRMPermission::Merge( const CDRMPermission& aPermission )
-	{
-	iTopLevel->Merge( *( aPermission.iTopLevel ) );
-	iPlay->Merge( *( aPermission.iPlay ) );
-	iDisplay->Merge( *( aPermission.iDisplay ) );
-	iExecute->Merge( *( aPermission.iExecute ) );
-	iPrint->Merge( *( aPermission.iPrint ) );
-	iExport->Merge( *( aPermission.iExport ) );
-	iAvailableRights |= aPermission.iAvailableRights;
-	iInfoBits |= aPermission.iInfoBits;
-	}
-	
+    {
+    iTopLevel->Merge( *( aPermission.iTopLevel ) );
+    iPlay->Merge( *( aPermission.iPlay ) );
+    iDisplay->Merge( *( aPermission.iDisplay ) );
+    iExecute->Merge( *( aPermission.iExecute ) );
+    iPrint->Merge( *( aPermission.iPrint ) );
+    iExport->Merge( *( aPermission.iExport ) );
+    iAvailableRights |= aPermission.iAvailableRights;
+    iInfoBits |= aPermission.iInfoBits;
+    }
+
 // End of File

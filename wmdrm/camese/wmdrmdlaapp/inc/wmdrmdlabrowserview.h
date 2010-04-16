@@ -20,7 +20,7 @@
 #define C_WMDRMDLABROWSERVIEW_H
 
 #include <aknview.h>
-#include <brctlspecialloadobserver.h>
+#include <BrCtlSpecialLoadObserver.h>
 
 class CWmDrmDlaBrowserContainer;
 class CInternetConnectionManager;
@@ -30,13 +30,13 @@ class CInternetConnectionManager;
  */
 class MBrowserViewLicenseReceivedCallback
     {
-    public: 
-        
+    public:
+
         virtual void LicenseReceived() = 0;
 
     };
 
-class CWmDrmDlaBrowserView : public CAknView, 
+class CWmDrmDlaBrowserView : public CAknView,
                              public MBrCtlSpecialLoadObserver
     {
 
@@ -49,16 +49,16 @@ class CWmDrmDlaBrowserView : public CAknView,
          * Destructor.
          */
         virtual ~CWmDrmDlaBrowserView();
-        
+
         /**
          * Set the IAP that is used in network connection
-         * @param aIap - IAP to be used 
+         * @param aIap - IAP to be used
          */
         void SetIAP( TInt aIap );
-        
+
         /**
          * Make a POST-request
-         * @param aCallback - Callback used to inform when license 
+         * @param aCallback - Callback used to inform when license
          *                    response is received
          * @param aPostUrl - Post URL
          * @param aPostContentType - Post content type
@@ -70,7 +70,7 @@ class CWmDrmDlaBrowserView : public CAknView,
                     const TDesC8& aPostContentType,
                     const TDesC8& aPostData,
                     const TDesC8& aPostContentBoundary );
-        
+
         /**
          * Get the license response
          * @return License response or NULL
@@ -89,7 +89,7 @@ class CWmDrmDlaBrowserView : public CAknView,
         */
         void HandleCommandL( TInt aCommand );
 
-        /** 
+        /**
         * @see CAknView
         */
         void DoActivateL( const TVwsViewId& aPrevViewId,
@@ -103,26 +103,26 @@ class CWmDrmDlaBrowserView : public CAknView,
         /**
         * @see CAknView
         */
-        void HandleClientRectChange();    
-    
+        void HandleClientRectChange();
+
     public: // From MBrCtlSpecialLoadObserver
 
-        void NetworkConnectionNeededL( TInt* aConnectionPtr, 
-                                       TInt* aSockSvrHandle, 
-                                       TBool* aNewConn, 
+        void NetworkConnectionNeededL( TInt* aConnectionPtr,
+                                       TInt* aSockSvrHandle,
+                                       TBool* aNewConn,
                                        TApBearerType* aBearerType );
 
-        TBool HandleRequestL( RArray<TUint>* aTypeArray, 
+        TBool HandleRequestL( RArray<TUint>* aTypeArray,
                               CDesCArrayFlat* aDesArray );
 
-        TBool HandleDownloadL( RArray<TUint>* aTypeArray, 
-                               CDesCArrayFlat* aDesArray );    
-        
+        TBool HandleDownloadL( RArray<TUint>* aTypeArray,
+                               CDesCArrayFlat* aDesArray );
+
     private:
 
         CWmDrmDlaBrowserView();
         void ConstructL();
-        
+
         void CreateContainerL();
         void RemoveContainer();
         void BrCtlHandleCommandL( TInt aCommand );
@@ -131,7 +131,7 @@ class CWmDrmDlaBrowserView : public CAknView,
 
         //Not Owned
         MBrowserViewLicenseReceivedCallback* iCallback;
-        
+
         CWmDrmDlaBrowserContainer* iContainer;
         HBufC8* iLicenseResponse;
         CInternetConnectionManager* iConMgr;

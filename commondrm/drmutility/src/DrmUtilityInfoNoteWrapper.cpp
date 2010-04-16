@@ -17,18 +17,18 @@
 
 
 // INCLUDE FILES
-#include <stringloader.h>
-#include <aknglobalconfirmationquery.h>
+#include <StringLoader.h>
+#include <AknGlobalConfirmationQuery.h>
 #include <avkon.hrh> // EAknSoftkeyNo
-#include <aknglobalnote.h>
+#include <AknGlobalNote.h>
 
-#include <aknmediatorfacade.h>
+#include <AknMediatorFacade.h>
 #include <featmgr.h>
-#include <aknsddata.h>
+#include <aknSDData.h>
 #include <drmutility.rsg>
 
 #include "drmutilitysecondarydisplay.h"
-#include "drmutilityinfonotewrapper.h"
+#include "DrmUtilityInfoNoteWrapper.h"
 
 // ============================= LOCAL FUNCTIONS ===============================
 
@@ -40,7 +40,7 @@
 // might leave.
 // -----------------------------------------------------------------------------
 //
-DRM::CDrmUtilityInfoNoteWrapper::CDrmUtilityInfoNoteWrapper() 
+DRM::CDrmUtilityInfoNoteWrapper::CDrmUtilityInfoNoteWrapper()
     : CActive( EPriorityStandard )
     {
     CActiveScheduler::Add( this );
@@ -63,7 +63,7 @@ void DRM::CDrmUtilityInfoNoteWrapper::ConstructL()
 //
 DRM::CDrmUtilityInfoNoteWrapper* DRM::CDrmUtilityInfoNoteWrapper::NewLC()
     {
-    DRM::CDrmUtilityInfoNoteWrapper* self( 
+    DRM::CDrmUtilityInfoNoteWrapper* self(
                                 new (ELeave) CDrmUtilityInfoNoteWrapper() );
     CleanupStack::PushL( self );
     self->ConstructL();
@@ -82,7 +82,7 @@ DRM::CDrmUtilityInfoNoteWrapper* DRM::CDrmUtilityInfoNoteWrapper::NewL()
     return self;
     }
 
-    
+
 // Destructor
 DRM::CDrmUtilityInfoNoteWrapper::~CDrmUtilityInfoNoteWrapper()
     {
@@ -95,7 +95,7 @@ DRM::CDrmUtilityInfoNoteWrapper::~CDrmUtilityInfoNoteWrapper()
 // CDrmUtilityInfoNoteWrapper::ShowNoteL
 // -----------------------------------------------------------------------------
 //
-void DRM::CDrmUtilityInfoNoteWrapper::ShowNoteL( TAknGlobalNoteType aType , 
+void DRM::CDrmUtilityInfoNoteWrapper::ShowNoteL( TAknGlobalNoteType aType ,
                                                  const TDesC& aNoteText,
                                                  TInt aResourceId,
                                                  const TDesC& aString,
@@ -103,20 +103,20 @@ void DRM::CDrmUtilityInfoNoteWrapper::ShowNoteL( TAknGlobalNoteType aType ,
     {
     RProcess myProcess;
     TUid myProcessUid( KNullUid );
-        
+
     // Convert primary display resource ID to Cover Ui
-    // do nothing if not found 
+    // do nothing if not found
     if ( FeatureManager::FeatureSupported( KFeatureIdCoverDisplay ) &&
          EvaluateCoverResourceId( aResourceId ) )
-        {  
+        {
         RThread().Process( myProcess );
-        myProcessUid = myProcess.Identity();             
-            
+        myProcessUid = myProcess.Identity();
+
         TUtilitySDData utilityData;
         // First field is DrmUtility's Uid
         utilityData.iUtilityUid = KUidCoverUiCategoryDrmUtility;
         // ProcessId which uses DrmUtility
-        utilityData.iHandlerProcessId = myProcessUid; 
+        utilityData.iHandlerProcessId = myProcessUid;
         if ( aNoteText.Compare( KNullDesC ) )
             {
             // If there is filename given, it's always in the PrimaryString
@@ -126,13 +126,13 @@ void DRM::CDrmUtilityInfoNoteWrapper::ShowNoteL( TAknGlobalNoteType aType ,
             {
             // If there is filename given, it's always in the PrimaryString
             utilityData.iStringParam.Append( aValue );
-            }            
+            }
 
-        TUtilitySDDataPckg pckg( utilityData );                   
-        CAknSDData* sd( CAknSDData::NewL( KUidCoverUiCategoryDrmUtility, 
-                                          aResourceId, 
+        TUtilitySDDataPckg pckg( utilityData );
+        CAknSDData* sd( CAknSDData::NewL( KUidCoverUiCategoryDrmUtility,
+                                          aResourceId,
                                           pckg ) );
-        iNote->SetSecondaryDisplayData( sd ); // ownership to notifier client          
+        iNote->SetSecondaryDisplayData( sd ); // ownership to notifier client
         }
 
     iNote->ShowNoteL( iStatus , aType , aNoteText );
@@ -158,10 +158,10 @@ void DRM::CDrmUtilityInfoNoteWrapper::RunL()
 // ---------------------------------------------------------
 // CDrmUtilityInfoNoteWrapper::EvaluateCoverResourceId
 // ---------------------------------------------------------
-//     
-TBool DRM::CDrmUtilityInfoNoteWrapper::EvaluateCoverResourceId( 
+//
+TBool DRM::CDrmUtilityInfoNoteWrapper::EvaluateCoverResourceId(
     TInt& aResourceId )
-    { 
+    {
     switch ( aResourceId )
         {
         case R_DRMUTILITY_CONFIRMATION_QUERY:
@@ -386,9 +386,9 @@ TBool DRM::CDrmUtilityInfoNoteWrapper::EvaluateCoverResourceId(
             }
             break;
         */
-        
-#ifdef RD_DRM_PREVIEW_RIGHT_FOR_AUDIO        
-        
+
+#ifdef RD_DRM_PREVIEW_RIGHT_FOR_AUDIO
+
         case R_DRMUTILITY_PREV_AUDIO_GET_LIST_QUERY:
             {
             aResourceId = ECover_prev_audio_get_list_query;
@@ -429,13 +429,13 @@ TBool DRM::CDrmUtilityInfoNoteWrapper::EvaluateCoverResourceId(
             aResourceId = ECover_video_prev_play_list;
             }
             break;
-            
+
 #endif // RD_DRM_PREVIEW_RIGHT_FOR_AUDIO
-            
+
         default:
             return EFalse; // No proper dialog found, skipping
-        }    
+        }
     return ETrue; // Dialog found
     }
 
-//  End of File  
+//  End of File

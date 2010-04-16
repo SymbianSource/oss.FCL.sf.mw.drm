@@ -19,7 +19,7 @@
 #undef _ROAP_TESTING
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 // INCLUDE FILES
@@ -30,7 +30,7 @@ using namespace Roap;
 
 // EXTERNAL DATA STRUCTURES
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 
 // CONSTANTS
 
@@ -68,7 +68,7 @@ void CRoapResponse::ConstructL()
     iPdu = HBufC8::NewL( 0 );
     iMultipartState = EOther;
     iMaxSize = -1;
-    }    
+    }
 
 // -----------------------------------------------------------------------------
 // CRoapResponse::NewL()
@@ -101,7 +101,7 @@ const TDesC8& CRoapResponse::ProtocolUnit() const
     {
     return *iPdu;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CRoapResponse::PduFileName()
 // -----------------------------------------------------------------------------
@@ -110,7 +110,7 @@ const TFileName& CRoapResponse::DcfFileName() const
     {
     return iDcfFileName;
     }
-    
+
 // -----------------------------------------------------------------------------
 // CRoapResponse::SetPduFileName()
 // -----------------------------------------------------------------------------
@@ -119,48 +119,48 @@ void CRoapResponse::SetDcfPathL(
     const TPath& aPath )
     {
     LOG( _L("CRoapResponse::SetDcfPathL->") );
-    
+
     RFs fs;
     RFile file;
     User::LeaveIfError( fs.Connect() );
     CleanupClosePushL( fs );
-    
+
     if ( aPath.Length() > 3 )
         {
         User::LeaveIfError( file.Temp( fs, aPath, iDcfFileName,
                             EFileShareExclusive | EFileWrite ) );
         }
-    else 
+    else
         {
-        
+
 #ifndef RD_MULTIPLE_DRIVE
-        
+
         User::LeaveIfError( file.Temp( fs, KMultipartPduTempPath(), iDcfFileName,
                             EFileShareExclusive | EFileWrite ) );
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
         _LIT( KDriveRoot, "%c:\\");
         TInt driveNumber( -1 );
         TChar driveLetter;
         DriveInfo::GetDefaultDrive( DriveInfo::EDefaultSystem, driveNumber );
-	    fs.DriveToChar( driveNumber, driveLetter );
-    
-	    TFileName multipartTemp;
-	    multipartTemp.Format( KDriveRoot, (TUint)driveLetter );
-        
+        fs.DriveToChar( driveNumber, driveLetter );
+
+        TFileName multipartTemp;
+        multipartTemp.Format( KDriveRoot, (TUint)driveLetter );
+
         User::LeaveIfError( file.Temp( fs, multipartTemp, iDcfFileName,
                             EFileShareExclusive | EFileWrite ) );
-    
+
 #endif
         }
-    LOG2( _L("iDcfFileName: %S"), &iDcfFileName );    
-        
+    LOG2( _L("iDcfFileName: %S"), &iDcfFileName );
+
     file.Close();
     CleanupStack::PopAndDestroy();
     LOG( _L("CRoapResponse::SetDcfFileName <-") );
     }
-    
+
 // -----------------------------------------------------------------------------
 // CRoapResponse::AppendPduFileDataL()
 // -----------------------------------------------------------------------------
@@ -170,7 +170,7 @@ void CRoapResponse::AppendMultipartDataL(
     {
     WriteL( aData );
     }
-    
+
 // ---------------------------------------------------------
 // CRoapResponse::DataType()
 // ---------------------------------------------------------
@@ -182,7 +182,7 @@ const TDataType& CRoapResponse::DataType() const
 
 // -----------------------------------------------------------------------------
 // CRoapResponse::HandleBodyDataL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void CRoapResponse::HandleBodyDataL(
@@ -200,7 +200,7 @@ void CRoapResponse::HandleBodyDataL(
         {
         RFs fs;
         RFile file;
-        
+
         LOG( _L("  saving DCF data") );
         User::LeaveIfError( fs.Connect() );
         CleanupClosePushL( fs );
@@ -215,7 +215,7 @@ void CRoapResponse::HandleBodyDataL(
 
 // -----------------------------------------------------------------------------
 // CRoapResponse::StartBodyPartL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void CRoapResponse::StartBodyPartL()
@@ -240,7 +240,7 @@ void CRoapResponse::StartBodyPartL()
 
 // -----------------------------------------------------------------------------
 // CRoapResponse::EndBodyPartL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void CRoapResponse::EndBodyPartL()
@@ -248,32 +248,32 @@ void CRoapResponse::EndBodyPartL()
     LOG( _L("CRoapResponse::EndBodyPartL ->") );
     LOG( _L("CRoapResponse::EndBodyPartL <-") );
     }
-    
+
 // -----------------------------------------------------------------------------
 // CRoapResponse::SetContentNameL
-// 
+//
 // -----------------------------------------------------------------------------
-//    
+//
 void CRoapResponse::SetContentNameL( const TDes& aName )
     {
     LOG( _L("CRoapResponse::SetContentNameL") );
-    
+
     delete iContentName;
     iContentName = NULL;
-    
+
     iContentName = aName.AllocL();
     }
 
 
 // -----------------------------------------------------------------------------
 // CRoapResponse::GetContentNameLC
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void CRoapResponse::GetContentNameLC( HBufC*& aName ) const
     {
     LOG( _L("CRoapResponse::GetContentName") );
-        
+
     if ( iContentName )
         aName = iContentName->AllocLC();
     else
@@ -281,25 +281,25 @@ void CRoapResponse::GetContentNameLC( HBufC*& aName ) const
     }
 // -----------------------------------------------------------------------------
 // CRoapResponse::SetMaxSize
-// 
+//
 // -----------------------------------------------------------------------------
-//    
+//
 void CRoapResponse::SetMaxSize( const TInt& aSize )
     {
     LOG( _L("CRoapResponse::SetMaxSize") );
-    
+
     iMaxSize = aSize;
     }
 
 
 // -----------------------------------------------------------------------------
 // CRoapResponse::MaxSize
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt CRoapResponse::MaxSize() const
     {
     LOG( _L("CRoapResponse::MaxSize") );
-        
+
     return iMaxSize;
     }

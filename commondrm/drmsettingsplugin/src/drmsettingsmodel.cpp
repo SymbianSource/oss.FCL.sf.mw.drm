@@ -23,7 +23,7 @@
 
 #include "drmsettingsmodel.h"
 #include "drmsettingsplugininternalcrkeys.h"
-#include "drmricontext.h"
+#include "DRMRIContext.h"
 
 // CONSTANTS
 #ifdef _DEBUG

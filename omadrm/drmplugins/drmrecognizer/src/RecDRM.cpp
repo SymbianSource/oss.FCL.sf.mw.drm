@@ -22,7 +22,7 @@
 #include <ecom/ecom.h>
 #include <ecom/implementationproxy.h>
 
-#include "recdrm.h"
+#include "RecDRM.h"
 
 #define RECOGNIZE_KEY_CHAIN
 
@@ -47,14 +47,14 @@ const TInt KLengthFlags = 3;
 
 _LIT8(KFTypPrefix, "ftyp");
 _LIT8(KODFPrefix, "odcf");
-_LIT8(KRoapTriggerElement, "roap-trigger:roapTrigger"); // before OMA spec CR, ROAP Trigger namespace prefix was roap-trigger 
+_LIT8(KRoapTriggerElement, "roap-trigger:roapTrigger"); // before OMA spec CR, ROAP Trigger namespace prefix was roap-trigger
 _LIT8(KRoapTriggerElement2, "roap:roapTrigger");
 _LIT8(KRoapTriggerType, "application/vnd.oma.drm.roap-trigger+xml");
 
-const TImplementationProxy ImplementationTable[] = 
-	    {
-	    IMPLEMENTATION_PROXY_ENTRY(0x101F6DB8, CApaDRMRecognizer::CreateRecognizerL)
-	    };
+const TImplementationProxy ImplementationTable[] =
+        {
+        IMPLEMENTATION_PROXY_ENTRY(0x101F6DB8, CApaDRMRecognizer::CreateRecognizerL)
+        };
 
 #ifdef DRM_OMA2_ENABLED
 TUint32 ReadUint32FromBlock(const TDesC8& aBlock, TInt aOffset)
@@ -80,11 +80,11 @@ TUint16 ReadUint16FromBlock(const TDesC8& aBlock, TInt aOffset)
 #endif
 
 CApaDRMRecognizer::CApaDRMRecognizer():
-	CApaDataRecognizerType( KUidDRMRecognizer,CApaDataRecognizerType::ENormal )
+    CApaDataRecognizerType( KUidDRMRecognizer,CApaDataRecognizerType::ENormal )
 {
-	
-	iCountDataTypes = 0;
-	return;
+
+    iCountDataTypes = 0;
+    return;
 }
 
 CApaDRMRecognizer::~CApaDRMRecognizer()
@@ -94,13 +94,13 @@ CApaDRMRecognizer::~CApaDRMRecognizer()
 
 CApaDataRecognizerType* CApaDRMRecognizer::CreateRecognizerL()
 {
-	return new (ELeave) CApaDRMRecognizer ();
+    return new (ELeave) CApaDRMRecognizer ();
 }
-	
+
 
 TUint CApaDRMRecognizer::PreferredBufSize()
 {
-	return KMaxBufferLength;
+    return KMaxBufferLength;
 }
 
 #ifdef _DEBUG
@@ -110,68 +110,68 @@ TDataType CApaDRMRecognizer::SupportedDataTypeL( TInt /*aIndex*/ ) const
 #endif
 {
 __ASSERT_DEBUG( aIndex >= 0 && aIndex < iCountDataTypes, User::Invariant() );
-	return TDataType( _L8("application/vdn.omd.drm.content") ); // this should never be run
+    return TDataType( _L8("application/vdn.omd.drm.content") ); // this should never be run
 }
 
 void CApaDRMRecognizer::DoRecognizeL( const TDesC& aName, const TDesC8& aBuffer )
 {
-	if ( aBuffer.Size() < 3) 
+    if ( aBuffer.Size() < 3)
         {
         return;
         }
-	
-#ifdef RECOGNIZE_KEY_CHAIN	
-	// Recognize device key chain
-	if ( aName.Length() > 3 && aName.Right(4).CompareF(_L(".dkc")) == 0)
+
+#ifdef RECOGNIZE_KEY_CHAIN
+    // Recognize device key chain
+    if ( aName.Length() > 3 && aName.Right(4).CompareF(_L(".dkc")) == 0)
         {
         iConfidence = ECertain;
         iDataType = TDataType( _L8("application/x-device-key-chain") );
         return;
         }
-#endif        
-	
+#endif
+
 #ifdef DRM_OMA2_ENABLED
-	// Recognize ROAP Trigger
-	if ( RecognizeRoapTrigger( aBuffer ) )
+    // Recognize ROAP Trigger
+    if ( RecognizeRoapTrigger( aBuffer ) )
         {
         return;
         }
-	
-	// Recognize DCFv2    
-	if ( RecognizeODF( aBuffer ) )
+
+    // Recognize DCFv2
+    if ( RecognizeODF( aBuffer ) )
         {
         return;
-        }   
-#endif	
-	// Recognize DCFv1
-	TUint8 version = aBuffer[0];
-	TUint8 contentTypeLen = aBuffer[1];
-	TUint8 contentURILen = aBuffer[2];
+        }
+#endif
+    // Recognize DCFv1
+    TUint8 version = aBuffer[0];
+    TUint8 contentTypeLen = aBuffer[1];
+    TUint8 contentURILen = aBuffer[2];
 
-	if ( contentTypeLen < KMinContentTypeLen || contentURILen == 0 ) 
-	{
-		return;
-	}
-	if ( version != KDCFVersionSupported ) 
-	{
-		return;
-	}
+    if ( contentTypeLen < KMinContentTypeLen || contentURILen == 0 )
+    {
+        return;
+    }
+    if ( version != KDCFVersionSupported )
+    {
+        return;
+    }
 
-	// Too little data received
-	if ( aBuffer.Size() < ( contentTypeLen + KDCFHeaderLength ) ) 
-	{
-		return;
-	}
+    // Too little data received
+    if ( aBuffer.Size() < ( contentTypeLen + KDCFHeaderLength ) )
+    {
+        return;
+    }
 
-	TPtrC8 mimeType = aBuffer.Mid( KDCFHeaderLength, contentTypeLen );
-	if ( mimeType.Locate( '/' ) != KErrNotFound )
-	{
-		iConfidence = ECertain;
-		iDataType=TDataType( mimeType );	
-	}
-	
-	
-	return;
+    TPtrC8 mimeType = aBuffer.Mid( KDCFHeaderLength, contentTypeLen );
+    if ( mimeType.Locate( '/' ) != KErrNotFound )
+    {
+        iConfidence = ECertain;
+        iDataType=TDataType( mimeType );
+    }
+
+
+    return;
 }
 
 #ifdef DRM_OMA2_ENABLED
@@ -184,59 +184,59 @@ TBool CApaDRMRecognizer::RecognizeRoapTrigger( const TDesC8& aBuffer )
             iDataType=TDataType( KRoapTriggerType() );
             return ETrue;
         }
-	return EFalse;
+    return EFalse;
 }
 
 TBool CApaDRMRecognizer::RecognizeODF( const TDesC8& aBuffer )
 {
-	if ( aBuffer.Size() < 24 ) return EFalse;
-	TPtrC8 ftypPrefix = aBuffer.Mid( 4, KFTypPrefix().Length() );
-	if ( KFTypPrefix().CompareF( ftypPrefix ) == KErrNone )
-	{
-		TPtrC8 odfPrefix = aBuffer.Mid( 8, KODFPrefix().Length() );
-		if ( KODFPrefix().CompareF( odfPrefix ) == KErrNone )
-		{
-			TBuf8<4> buffer;
-    		TUint32 size;
-    		TPtr8 ptr(NULL, 0);
-    		TUint32 offset(20);
-    
-    		// ODRM box header
-    		buffer.Zero();
-    		buffer.Copy( aBuffer.Mid( offset, 4 ));
-    		size = ReadUint32FromBlock( buffer, 0 );
-    		offset += KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
-    		
-    		if (size == 1)
-        	{
-        		offset += KLengthBoxSize64;
-        	}
-    		if ( aBuffer.Size() < offset+4 ) return EFalse;
-    		
-    		// Discrete headers box header
-    		buffer.Zero();
-    		buffer.Copy( aBuffer.Mid( offset, 4 ));
-    		size = ReadUint32FromBlock( buffer, 0 );
-    		offset += KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
-    		if ( size == 1 )
-        	{
-        		offset += KLengthBoxSize64;
-        	}
-    		if ( aBuffer.Size() < offset+1 ) return EFalse;
-    		
-    		// Content type
-    		buffer.Zero();
-    		buffer.Copy( aBuffer.Mid( offset, 1 ));
-    		if ( aBuffer.Size() < offset + 1 + buffer[0] ) return EFalse;
-    		TPtrC8 mimeType = aBuffer.Mid( offset+1, buffer[0] );
-   			
-   			iConfidence = ECertain;
-			iDataType=TDataType( mimeType );
-			return ETrue;
-		}
-		
-	}
-	return EFalse;
+    if ( aBuffer.Size() < 24 ) return EFalse;
+    TPtrC8 ftypPrefix = aBuffer.Mid( 4, KFTypPrefix().Length() );
+    if ( KFTypPrefix().CompareF( ftypPrefix ) == KErrNone )
+    {
+        TPtrC8 odfPrefix = aBuffer.Mid( 8, KODFPrefix().Length() );
+        if ( KODFPrefix().CompareF( odfPrefix ) == KErrNone )
+        {
+            TBuf8<4> buffer;
+            TUint32 size;
+            TPtr8 ptr(NULL, 0);
+            TUint32 offset(20);
+
+            // ODRM box header
+            buffer.Zero();
+            buffer.Copy( aBuffer.Mid( offset, 4 ));
+            size = ReadUint32FromBlock( buffer, 0 );
+            offset += KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
+
+            if (size == 1)
+            {
+                offset += KLengthBoxSize64;
+            }
+            if ( aBuffer.Size() < offset+4 ) return EFalse;
+
+            // Discrete headers box header
+            buffer.Zero();
+            buffer.Copy( aBuffer.Mid( offset, 4 ));
+            size = ReadUint32FromBlock( buffer, 0 );
+            offset += KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
+            if ( size == 1 )
+            {
+                offset += KLengthBoxSize64;
+            }
+            if ( aBuffer.Size() < offset+1 ) return EFalse;
+
+            // Content type
+            buffer.Zero();
+            buffer.Copy( aBuffer.Mid( offset, 1 ));
+            if ( aBuffer.Size() < offset + 1 + buffer[0] ) return EFalse;
+            TPtrC8 mimeType = aBuffer.Mid( offset+1, buffer[0] );
+
+            iConfidence = ECertain;
+            iDataType=TDataType( mimeType );
+            return ETrue;
+        }
+
+    }
+    return EFalse;
 }
 #endif
 

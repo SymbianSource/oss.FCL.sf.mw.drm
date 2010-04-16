@@ -17,7 +17,7 @@
 
 
 // INCLUDE FILES
-#include <E32SVR.H>
+#include <e32svr.h>
 
 // ----------------------------------------------------------------------------
 // Write a string to the log - 16 bit version
@@ -35,7 +35,7 @@ inline void CameseLog::Printf1(const TDesC& aFmt)
             EFileLoggingModeAppend, msgPtr.Left(100));
         offSet += 100;  //set to 100
         };
-    RDebug::Print(aFmt);        
+    RDebug::Print(aFmt);
     }
 
 // ----------------------------------------------------------------------------
@@ -71,11 +71,11 @@ inline void CameseLog::Printf1(const TDesC8& aFmt)
             EFileLoggingModeAppend, msgPtr.Left(100));
         offSet += 100;  //set to 100
         };
-    
+
     HBufC* buf16 = HBufC::NewLC(aFmt.Length());
     buf16->Des().Copy(aFmt);
     RDebug::Print(*buf16);
-    CleanupStack::PopAndDestroy(buf16);    
+    CleanupStack::PopAndDestroy(buf16);
     }
 
 // ----------------------------------------------------------------------------

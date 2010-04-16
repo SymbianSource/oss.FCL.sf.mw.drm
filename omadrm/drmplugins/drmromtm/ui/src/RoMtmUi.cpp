@@ -19,7 +19,7 @@
 // INCLUDE FILES
 
 #include <txtrich.h>//CRichText
-#include <eikrted.h> //	CEikRichTextEditor
+#include <eikrted.h> // CEikRichTextEditor
 #include <eikenv.h>//CEikonEnv
 
 #include <AiwGenericParam.h>
@@ -27,18 +27,18 @@
 
 #include <eikon.rsg>
 // Messaging includes
-#include <MSVUIDS.H>
+#include <msvuids.h>
 #include <msvids.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include <eikproc.h>
 #include <eikdoc.h>
-#include <akndialog.h>
+#include <AknDialog.h>
 #include "RoMtmUi.h"
-#include "RoMtmUiC.h"
+#include "RoMTMUiC.h"
 
 
 #include <DocumentHandler.h> // document handler
@@ -48,10 +48,10 @@
 #include <data_caging_path_literals.hrh> // KDC_RESOURCE_FILES_DIR
 #include <AknQueryDialog.h> // CAknQueryDialog
 #include <StringLoader.h> //StringLoader
-#include <coneresloader.h> //rconeresloader
+#include <ConeResLoader.h> //rconeresloader
 #include <RoMtmUi.rsg> // test
 // EXTERNAL DATA STRUCTURES
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 // CONSTANTS
 _LIT(KRoAcquisitionPrefix, "ROA:");
 _LIT(KTriggerPrefix, "TRI:");
@@ -59,7 +59,7 @@ _LIT(KTriggerPrefix, "TRI:");
 #ifndef RD_MULTIPLE_DRIVE
 _LIT( KDriveZ, "z:" );
 #endif
-                                      
+
 _LIT( KRoMtmUiResFileName,"RoMtmUi.rsc" );
 // MACROS
 // LOCAL CONSTANTS AND MACROS
@@ -145,7 +145,7 @@ LOCAL_C void WriteL( const TDesC8& aText )
     CleanupStack::PopAndDestroy(); //fs
     WriteCurrentTimeL();
     }
-    
+
 LOCAL_C void WriteL( const TDesC8& aText , TInt aErr )
     {
     _LIT8(KErr,": %d");
@@ -158,7 +158,7 @@ LOCAL_C void WriteL( const TDesC8& aText , TInt aErr )
     WriteL(textptr);
     CleanupStack::PopAndDestroy(text);
     }
-    
+
 LOCAL_C void WriteL( const TDesC& aText , TInt aErr )
     {
     _LIT8(KErr,": %d");
@@ -200,15 +200,15 @@ LOCAL_C void WriteCurrentTimeL()
 #endif
 /*************************************
 *
-*		Global function declarations
+*       Global function declarations
 *
 **************************************/
 
 EXPORT_C CBaseMtmUi* NewMtmUiL( CBaseMtm& aMtm , CRegisteredMtmDll& aRegisteredDll )
 // Factory function
-	{
-	return CRightsObjectMtmUi::NewL( aMtm , aRegisteredDll );
-	}
+    {
+    return CRightsObjectMtmUi::NewL( aMtm , aRegisteredDll );
+    }
 //
 // CRightsObjectMtmUi: User Interface MTM
 //
@@ -217,7 +217,7 @@ EXPORT_C CBaseMtmUi* NewMtmUiL( CBaseMtm& aMtm , CRegisteredMtmDll& aRegisteredD
 
 /*************************************
 *
-*		Construction and destruction 
+*       Construction and destruction
 *
 **************************************/
 
@@ -228,13 +228,13 @@ EXPORT_C CBaseMtmUi* NewMtmUiL( CBaseMtm& aMtm , CRegisteredMtmDll& aRegisteredD
 // -----------------------------------------------------------------------------
 //
 CRightsObjectMtmUi::CRightsObjectMtmUi( CBaseMtm& aBaseMtm , CRegisteredMtmDll& aRegisteredMtmDll )
-	:	CBaseMtmUi( aBaseMtm , aRegisteredMtmDll )
-	{
-	iOpenService = NULL;
-	iDocHandler = NULL;
-	iHostProcess = NULL;
-	iType = ERo;
-	}
+    :   CBaseMtmUi( aBaseMtm , aRegisteredMtmDll )
+    {
+    iOpenService = NULL;
+    iDocHandler = NULL;
+    iHostProcess = NULL;
+    iType = ERo;
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::ConstructL
@@ -242,14 +242,14 @@ CRightsObjectMtmUi::CRightsObjectMtmUi( CBaseMtm& aBaseMtm , CRegisteredMtmDll& 
 // -----------------------------------------------------------------------------
 //
 void CRightsObjectMtmUi::ConstructL()
-	{
+    {
 #ifdef _DRM_TESTING
-	CreateLogL();
-	WriteL(_L8("ConstructL"));
+    CreateLogL();
+    WriteL(_L8("ConstructL"));
 #endif
-	CBaseMtmUi::ConstructL();
-	User::LeaveIfError(iFs.Connect());
-	}
+    CBaseMtmUi::ConstructL();
+    User::LeaveIfError(iFs.Connect());
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::NewL
@@ -257,32 +257,32 @@ void CRightsObjectMtmUi::ConstructL()
 // -----------------------------------------------------------------------------
 //
 CRightsObjectMtmUi* CRightsObjectMtmUi::NewL( CBaseMtm& aBaseMtm , CRegisteredMtmDll& aRegisteredMtmDll )
-	{
-	CRightsObjectMtmUi* self=new ( ELeave ) CRightsObjectMtmUi( aBaseMtm , aRegisteredMtmDll );
-	CleanupStack::PushL( self );
-	self->ConstructL();
-	CleanupStack::Pop();
-	return self;
-	}
+    {
+    CRightsObjectMtmUi* self=new ( ELeave ) CRightsObjectMtmUi( aBaseMtm , aRegisteredMtmDll );
+    CleanupStack::PushL( self );
+    self->ConstructL();
+    CleanupStack::Pop();
+    return self;
+    }
 
 // Destructor
 CRightsObjectMtmUi::~CRightsObjectMtmUi()
-	{
+    {
 #ifdef _DRM_TESTING
-	TRAP(err,WriteL(_L8("~CRightsObjectMtmUi")));
+    TRAP(err,WriteL(_L8("~CRightsObjectMtmUi")));
 #endif
-	iFs.Close();
+    iFs.Close();
 
   delete iOpenService;
-	delete iDocHandler;
-	}
+    delete iDocHandler;
+    }
 
 
 
 
 /*************************************
 *
-*		from CBaseMtm
+*       from CBaseMtm
 *
 **************************************/
 
@@ -294,56 +294,56 @@ CRightsObjectMtmUi::~CRightsObjectMtmUi()
 // -----------------------------------------------------------------------------
 //
 CMsvOperation* CRightsObjectMtmUi::CancelL( TRequestStatus& /*aStatus*/ , const CMsvEntrySelection& /*aSelection*/ )
-	{
+    {
 #ifdef _DRM_TESTING
-	WriteL(_L8("CancelL"));
+    WriteL(_L8("CancelL"));
 #endif
-	
-	User::Leave( KErrNotSupported ); // no cancelling
-	return NULL;
-	}
+
+    User::Leave( KErrNotSupported ); // no cancelling
+    return NULL;
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::GetResourceFileName
 //
-// Implementations provide this function to set the full path 
-// and name of the resource file associated with the User Interface MTM. 
+// Implementations provide this function to set the full path
+// and name of the resource file associated with the User Interface MTM.
 //
 // -----------------------------------------------------------------------------
 //
 void CRightsObjectMtmUi::GetResourceFileName( TFileName& aFileName ) const
-// Resource file loading 
-	{ 
+// Resource file loading
+    {
 #ifdef _DRM_TESTING
-	TRAPD(err,WriteL(_L8("GetResourceFileName")));
-#endif	
-	aFileName = KRoMtmResourceFile; 
-	}
+    TRAPD(err,WriteL(_L8("GetResourceFileName")));
+#endif
+    aFileName = KRoMtmResourceFile;
+    }
 
 //
-//	Entry manipulation 
+//  Entry manipulation
 //
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::OpenL
 //
-// Opens an entry. 
+// Opens an entry.
 //
 // -----------------------------------------------------------------------------
 //
 CMsvOperation* CRightsObjectMtmUi::OpenL( TRequestStatus& aStatus )
-// Open 
-	{
+// Open
+    {
 #ifdef _DRM_TESTING
-	WriteL(_L8("OpenL(1)"));
-#endif	
+    WriteL(_L8("OpenL(1)"));
+#endif
 
     TMsvEntry tEntry = BaseMtm().Entry().Entry();
     TMsvEntry newEntry( tEntry );
 
-	const TUid type( tEntry.iType );
-    CMsvOperation* operation = NULL;	
-	if ( type == KUidMsvMessageEntry )
+    const TUid type( tEntry.iType );
+    CMsvOperation* operation = NULL;
+    if ( type == KUidMsvMessageEntry )
         {
         operation = ViewL( aStatus );
         newEntry.SetUnread( EFalse );
@@ -353,25 +353,25 @@ CMsvOperation* CRightsObjectMtmUi::OpenL( TRequestStatus& aStatus )
         {
         User::Leave( KErrNotSupported );
         }
-	return operation;
-	}
+    return operation;
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::OpenL
 //
-// Opens the first entry in the selections. 
+// Opens the first entry in the selections.
 //
 // -----------------------------------------------------------------------------
 //
 CMsvOperation* CRightsObjectMtmUi::OpenL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection )
 // Open selection
-	{
+    {
 #ifdef _DRM_TESTING
-	WriteL(_L8("OpenL(2)"));
-#endif	
+    WriteL(_L8("OpenL(2)"));
+#endif
     BaseMtm().SwitchCurrentEntryL( aSelection.At( 0 ) );
     return OpenL( aStatus );
-	}
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::CloseL
@@ -381,14 +381,14 @@ CMsvOperation* CRightsObjectMtmUi::OpenL( TRequestStatus& aStatus , const CMsvEn
 // -----------------------------------------------------------------------------
 //
 CMsvOperation* CRightsObjectMtmUi::CloseL( TRequestStatus& /*aStatus*/ )
-	{
-// Close 
+    {
+// Close
 #ifdef _DRM_TESTING
-	WriteL(_L8("CloseL(1)"));
-#endif	
+    WriteL(_L8("CloseL(1)"));
+#endif
     User::Leave( KErrNotSupported );
     return NULL;
-	}
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::CloseL
@@ -398,15 +398,15 @@ CMsvOperation* CRightsObjectMtmUi::CloseL( TRequestStatus& /*aStatus*/ )
 // -----------------------------------------------------------------------------
 //
 CMsvOperation* CRightsObjectMtmUi::CloseL( TRequestStatus& /*aStatus*/ , const CMsvEntrySelection& /*aSelection*/ )
-	{
+    {
 // Close selection
 #ifdef _DRM_TESTING
-	WriteL(_L8("CloseL(2)"));
-#endif	
+    WriteL(_L8("CloseL(2)"));
+#endif
 
     User::Leave( KErrNotSupported );
     return NULL;
-	}
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::EditL
@@ -416,14 +416,14 @@ CMsvOperation* CRightsObjectMtmUi::CloseL( TRequestStatus& /*aStatus*/ , const C
 // -----------------------------------------------------------------------------
 //
 CMsvOperation* CRightsObjectMtmUi::EditL( TRequestStatus& /*aStatus*/ )
-// Edit 
-	{
+// Edit
+    {
 #ifdef _DRM_TESTING
-	WriteL(_L8("EditL(1)"));
-#endif		
-    User::Leave( KErrNotSupported );	
-	return NULL;
-	}
+    WriteL(_L8("EditL(1)"));
+#endif
+    User::Leave( KErrNotSupported );
+    return NULL;
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::EditL
@@ -434,13 +434,13 @@ CMsvOperation* CRightsObjectMtmUi::EditL( TRequestStatus& /*aStatus*/ )
 //
 CMsvOperation* CRightsObjectMtmUi::EditL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection )
 // Edit selection
-	{
+    {
 #ifdef _DRM_TESTING
-	WriteL(_L8("EditL(2)"));
-#endif	
-	iBaseMtm.SwitchCurrentEntryL( aSelection.At( 0 ) );
-	return EditL( aStatus );
-	}
+    WriteL(_L8("EditL(2)"));
+#endif
+    iBaseMtm.SwitchCurrentEntryL( aSelection.At( 0 ) );
+    return EditL( aStatus );
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::ViewL
@@ -451,14 +451,14 @@ CMsvOperation* CRightsObjectMtmUi::EditL( TRequestStatus& aStatus , const CMsvEn
 //
 CMsvOperation* CRightsObjectMtmUi::ViewL( TRequestStatus& aStatus )
 // View
-	{
+    {
 #ifdef _DRM_TESTING
-	WriteL(_L8("ViewL(1)"));
+    WriteL(_L8("ViewL(1)"));
 #endif
-	
-    CheckMessageTypeL();                                       
-	return LaunchEditorApplicationL( aStatus , iBaseMtm.Entry().Entry().Id() , ETrue );
-	}
+
+    CheckMessageTypeL();
+    return LaunchEditorApplicationL( aStatus , iBaseMtm.Entry().Entry().Id() , ETrue );
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::ViewL
@@ -469,18 +469,18 @@ CMsvOperation* CRightsObjectMtmUi::ViewL( TRequestStatus& aStatus )
 //
 CMsvOperation* CRightsObjectMtmUi::ViewL( TRequestStatus& aStatus , const CMsvEntrySelection& aSelection )
 // View selection
-	{
+    {
 #ifdef _DRM_TESTING
-	WriteL(_L8("ViewL(2)"));
+    WriteL(_L8("ViewL(2)"));
 #endif
-	
-	iBaseMtm.SwitchCurrentEntryL( aSelection.At( 0 ) );
-	return ViewL( aStatus );
-	}
+
+    iBaseMtm.SwitchCurrentEntryL( aSelection.At( 0 ) );
+    return ViewL( aStatus );
+    }
 
 
 //
-//	Message responding
+//  Message responding
 //
 
 // -----------------------------------------------------------------------------
@@ -492,10 +492,10 @@ CMsvOperation* CRightsObjectMtmUi::ViewL( TRequestStatus& aStatus , const CMsvEn
 //
 CMsvOperation* CRightsObjectMtmUi::ReplyL( TMsvId /*aDestination*/ , TMsvPartList /*aPartlist*/ , TRequestStatus& /*aCompletionStatus*/ )
 // Reply to message - no UI support
-	{
-	User::Leave( KErrNotSupported );
-	return NULL;
-	}
+    {
+    User::Leave( KErrNotSupported );
+    return NULL;
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::ForwardL
@@ -506,10 +506,10 @@ CMsvOperation* CRightsObjectMtmUi::ReplyL( TMsvId /*aDestination*/ , TMsvPartLis
 //
 CMsvOperation* CRightsObjectMtmUi::ForwardL( TMsvId /*aDestination*/ , TMsvPartList /*aPartlist*/ , TRequestStatus& /*aCompletionStatus*/ )
 // Forwarded message - no UI support
-	{
-	User::Leave( KErrNotSupported );
-	return NULL;
-	}
+    {
+    User::Leave( KErrNotSupported );
+    return NULL;
+    }
 
 
 //
@@ -525,31 +525,31 @@ CMsvOperation* CRightsObjectMtmUi::ForwardL( TMsvId /*aDestination*/ , TMsvPartL
 // -----------------------------------------------------------------------------
 //
 void CRightsObjectMtmUi::CheckMessageTypeL()
-	{
+    {
 #ifdef _DRM_TESTING
-		WriteL(_L8("CheckMessageTypeL"));
-#endif	
-	BaseMtm().LoadMessageL(); 
-	CRichText& body = BaseMtm().Body();
-	TPtrC ptr16( body.Read(0) );
+        WriteL(_L8("CheckMessageTypeL"));
+#endif
+    BaseMtm().LoadMessageL();
+    CRichText& body = BaseMtm().Body();
+    TPtrC ptr16( body.Read(0) );
 
 #ifdef _DRM_TESTING
-		WriteL(ptr16);
-#endif		
-	if ( ptr16.Length()>4 && ptr16.Left(4).Compare(KRoAcquisitionPrefix())==0 )
-		{
-		iType = ERoapTriggerRoAcquisition;
-		}
-	else if ( ptr16.Length()>4 && ptr16.Left(4).Compare(KTriggerPrefix())==0 )
-		{
-		iType = ERoapTrigger;
-		}
-	else
-		{
-		iType = ERo;	
-		}
-		
-	}
+        WriteL(ptr16);
+#endif
+    if ( ptr16.Length()>4 && ptr16.Left(4).Compare(KRoAcquisitionPrefix())==0 )
+        {
+        iType = ERoapTriggerRoAcquisition;
+        }
+    else if ( ptr16.Length()>4 && ptr16.Left(4).Compare(KTriggerPrefix())==0 )
+        {
+        iType = ERoapTrigger;
+        }
+    else
+        {
+        iType = ERo;
+        }
+
+    }
 
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::LaunchEditorApplicationL
@@ -558,123 +558,123 @@ void CRightsObjectMtmUi::CheckMessageTypeL()
 //
 // -----------------------------------------------------------------------------
 //
-CMsvOperation* CRightsObjectMtmUi::LaunchEditorApplicationL( TRequestStatus& aStatus , TMsvId /*aId*/ , 
-													TBool /*aReadOnly*/ )
-	{
+CMsvOperation* CRightsObjectMtmUi::LaunchEditorApplicationL( TRequestStatus& aStatus , TMsvId /*aId*/ ,
+                                                    TBool /*aReadOnly*/ )
+    {
 #ifdef _DRM_TESTING
-	WriteL(_L8("LaunchEditorApplicationL-Start"));
-#endif	
-	// get message context
-	BaseMtm().LoadMessageL(); 
-	CRichText& body = BaseMtm().Body();
-	TPtrC ptr16( body.Read(0) );
+    WriteL(_L8("LaunchEditorApplicationL-Start"));
+#endif
+    // get message context
+    BaseMtm().LoadMessageL();
+    CRichText& body = BaseMtm().Body();
+    TPtrC ptr16( body.Read(0) );
     const TUid KUidDRMUI = { 0x101f85c7 };
 
-	if ( iType == ERoapTrigger || iType == ERoapTriggerRoAcquisition )
-		{
-		
+    if ( iType == ERoapTrigger || iType == ERoapTriggerRoAcquisition )
+        {
+
 #ifdef _DRM_TESTING
-		WriteL(_L8("LaunchEditorApplicationL-iDocHandler"));
+        WriteL(_L8("LaunchEditorApplicationL-iDocHandler"));
 #endif
-        
+
         _LIT8( KRoapTriggerMimeType, "application/vnd.oma.drm.roap-trigger+xml" );
         TDataType type = TDataType( KRoapTriggerMimeType );
         HBufC* filename = NULL;
-		TPtr ptr(NULL,0);
-		TBool show;
-		filename = HBufC::NewLC(ptr16.Length()-4);
-		ptr.Set(filename->Des());
-		ptr.Append(ptr16.Right(ptr16.Length()-4));
-		
-		show = ShowQueryL(ptr);
-		if (!show)
-		    {
-		    CleanupStack::PopAndDestroy(filename);
-		    return CompletedOperationL( aStatus );
-		    }
-		
-#ifdef _DRM_TESTING
-		WriteL(ptr,ptr.Length());
-#endif		
-		if (iDocHandler)
-			{
-			delete iDocHandler;
-			iDocHandler = NULL;
-			}
-#ifdef _DRM_TESTING
-		WriteL(_L8("LaunchEditorApplicationL-iDocHandler-NewL"));
-#endif			
-		iDocHandler = CDocumentHandler::NewL();
-#ifdef _DRM_TESTING
-		WriteL(_L8("LaunchEditorApplicationL-iDocHandler-SetExitObserver"));
-#endif		
-		iDocHandler->SetExitObserver(this);
-#ifdef _DRM_TESTING
-		WriteL(_L8("LaunchEditorApplicationL-iDocHandler-OpenFileEmbeddedL"));
-#endif			
-		iDocHandler->OpenFileEmbeddedL(ptr,type);
-		CleanupStack::PopAndDestroy(filename);
-#ifdef _DRM_TESTING
-		WriteL(_L8("LaunchEditorApplicationL-iDocHandler-End"));
-#endif		
-		}
-	else
-		{
-	    if ( iOpenService )
-	        {
-	        delete iOpenService;
-	        iOpenService = NULL;
-	        }
-#ifdef _DRM_TESTING
-		WriteL(_L8("LaunchEditorApplicationL-CAknOpenFileService::NewL"));
-#endif           
+        TPtr ptr(NULL,0);
+        TBool show;
+        filename = HBufC::NewLC(ptr16.Length()-4);
+        ptr.Set(filename->Des());
+        ptr.Append(ptr16.Right(ptr16.Length()-4));
 
-		CAiwGenericParamList* paramList = CAiwGenericParamList::NewLC();
-		TAiwVariant variantObject( ptr16 );
-		TAiwGenericParam param( EGenericParamFile, variantObject );
-		paramList->AppendL( param );
-		
-    	TRAPD( err, iOpenService = CAknLaunchAppService::NewL( KUidDRMUI, this, paramList ) );
-    	if (err != KErrNone)
-    		{
-    		// just return to Inbox
-    		}
-
-		CleanupStack::PopAndDestroy( paramList ); // paramList			
-		}	
+        show = ShowQueryL(ptr);
+        if (!show)
+            {
+            CleanupStack::PopAndDestroy(filename);
+            return CompletedOperationL( aStatus );
+            }
 
 #ifdef _DRM_TESTING
-	WriteL(_L8("LaunchEditorApplicationL-End"));
-#endif    
+        WriteL(ptr,ptr.Length());
+#endif
+        if (iDocHandler)
+            {
+            delete iDocHandler;
+            iDocHandler = NULL;
+            }
+#ifdef _DRM_TESTING
+        WriteL(_L8("LaunchEditorApplicationL-iDocHandler-NewL"));
+#endif
+        iDocHandler = CDocumentHandler::NewL();
+#ifdef _DRM_TESTING
+        WriteL(_L8("LaunchEditorApplicationL-iDocHandler-SetExitObserver"));
+#endif
+        iDocHandler->SetExitObserver(this);
+#ifdef _DRM_TESTING
+        WriteL(_L8("LaunchEditorApplicationL-iDocHandler-OpenFileEmbeddedL"));
+#endif
+        iDocHandler->OpenFileEmbeddedL(ptr,type);
+        CleanupStack::PopAndDestroy(filename);
+#ifdef _DRM_TESTING
+        WriteL(_L8("LaunchEditorApplicationL-iDocHandler-End"));
+#endif
+        }
+    else
+        {
+        if ( iOpenService )
+            {
+            delete iOpenService;
+            iOpenService = NULL;
+            }
+#ifdef _DRM_TESTING
+        WriteL(_L8("LaunchEditorApplicationL-CAknOpenFileService::NewL"));
+#endif
+
+        CAiwGenericParamList* paramList = CAiwGenericParamList::NewLC();
+        TAiwVariant variantObject( ptr16 );
+        TAiwGenericParam param( EGenericParamFile, variantObject );
+        paramList->AppendL( param );
+
+        TRAPD( err, iOpenService = CAknLaunchAppService::NewL( KUidDRMUI, this, paramList ) );
+        if (err != KErrNone)
+            {
+            // just return to Inbox
+            }
+
+        CleanupStack::PopAndDestroy( paramList ); // paramList
+        }
+
+#ifdef _DRM_TESTING
+    WriteL(_L8("LaunchEditorApplicationL-End"));
+#endif
     return CompletedOperationL( aStatus );
-	}
+    }
 
 
 void CRightsObjectMtmUi::HandleServerAppExit(TInt aReason)
-	{
+    {
 #ifdef _DRM_TESTING
-	TRAP(err,WriteL(_L8("HandleServerAppExit")));
-#endif	
-	MAknServerAppExitObserver::HandleServerAppExit(aReason);
-	}
-	
+    TRAP(err,WriteL(_L8("HandleServerAppExit")));
+#endif
+    MAknServerAppExitObserver::HandleServerAppExit(aReason);
+    }
+
 // -----------------------------------------------------------------------------
 // CRightsObjectMtmUi::CompletedOperationL
 //
-// return completed operation to UI  
+// return completed operation to UI
 //
 // -----------------------------------------------------------------------------
 //
 CMsvOperation* CRightsObjectMtmUi::CompletedOperationL( TRequestStatus& aObserverStatus )
     {
 #ifdef _DRM_TESTING
-	WriteL(_L8("CompletedOperationL"));
-#endif      
-	//return completed operation pointer
+    WriteL(_L8("CompletedOperationL"));
+#endif
+    //return completed operation pointer
     TPckgBuf<TMsvLocalOperationProgress> progress;
     SetProgressSuccess( progress, BaseMtm().Entry().Entry().Id() );
-    CMsvCompletedOperation* operation = 
-        CMsvCompletedOperation::NewL( Session() , Type() , progress , 
+    CMsvCompletedOperation* operation =
+        CMsvCompletedOperation::NewL( Session() , Type() , progress ,
         KMsvLocalServiceIndexEntryId , aObserverStatus );
     return operation;
     }
@@ -690,31 +690,31 @@ void CRightsObjectMtmUi::SetProgressSuccess
 TBool CRightsObjectMtmUi::ShowQueryL( TDesC16& aFile )
     {
 #ifdef _DRM_TESTING
-	WriteL(_L8("ShowQueryL"));
-#endif       
+    WriteL(_L8("ShowQueryL"));
+#endif
     TBool show = ETrue;
     TInt type = 0;
     HBufC* msgText = NULL;
-    type = CheckTriggerTypeL(aFile);    
-    
+    type = CheckTriggerTypeL(aFile);
+
 #ifndef RD_MULTIPLE_DRIVE
-    
+
     TFileName fileName( KDriveZ );
-    
+
 #else //RD_MULTIPLE_DRIVE
-    
+
     _LIT( KDrive, "%c:");
     TInt driveNumber( -1 );
     TChar driveLetter;
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
-	iFs.DriveToChar( driveNumber, driveLetter );
-	
-	TFileName fileName;
-	
+    iFs.DriveToChar( driveNumber, driveLetter );
+
+    TFileName fileName;
+
     fileName.Format( KDrive, (TUint)driveLetter );
-    
+
 #endif
-    
+
     fileName.Append( KDC_MTM_RESOURCE_DIR );
     fileName.Append( KRoMtmUiResFileName );
     RConeResourceLoader loader( *iCoeEnv );
@@ -724,60 +724,60 @@ TBool CRightsObjectMtmUi::ShowQueryL( TDesC16& aFile )
         case Roap::ERegistrationTrigger:
             {
 #ifdef _DRM_TESTING
-	WriteL(_L8("ShowQueryL->ERegistrationTrigger"));
-#endif             
+    WriteL(_L8("ShowQueryL->ERegistrationTrigger"));
+#endif
             loader.Close();
-            return ETrue;              
+            return ETrue;
             }
         case Roap::ERoAcquisitionTrigger:
             {
 #ifdef _DRM_TESTING
-	WriteL(_L8("ShowQueryL->ERoAcquisitionTrigger"));
+    WriteL(_L8("ShowQueryL->ERoAcquisitionTrigger"));
 #endif
-            msgText = StringLoader::LoadLC( R_ROMTMUI_QUERY_RIGHTS_ACQ_MSG , iCoeEnv ); 
+            msgText = StringLoader::LoadLC( R_ROMTMUI_QUERY_RIGHTS_ACQ_MSG , iCoeEnv );
             }break;
         case Roap::EJoinDomainTrigger:
             {
 #ifdef _DRM_TESTING
-	WriteL(_L8("ShowQueryL->EJoinDomainTrigger"));
-#endif            
-            msgText = StringLoader::LoadLC( R_ROMTMUI_QUERY_JOIN_DOMAIN_MSG , iCoeEnv ); 
+    WriteL(_L8("ShowQueryL->EJoinDomainTrigger"));
+#endif
+            msgText = StringLoader::LoadLC( R_ROMTMUI_QUERY_JOIN_DOMAIN_MSG , iCoeEnv );
             }break;
         case Roap::ELeaveDomainTrigger:
             {
 #ifdef _DRM_TESTING
-	WriteL(_L8("ShowQueryL->ELeaveDomainTrigger"));
-#endif            
-            msgText = StringLoader::LoadLC( R_ROMTMUI_QUERY_LEAVE_DOMAIN_MSG , iCoeEnv ); 
+    WriteL(_L8("ShowQueryL->ELeaveDomainTrigger"));
+#endif
+            msgText = StringLoader::LoadLC( R_ROMTMUI_QUERY_LEAVE_DOMAIN_MSG , iCoeEnv );
             }break;
         default:
             {
 #ifdef _DRM_TESTING
-	WriteL(_L8("ShowQueryL->default"));
-#endif            
+    WriteL(_L8("ShowQueryL->default"));
+#endif
             loader.Close();
-            return EFalse;    
+            return EFalse;
             }
         }
 #ifdef _DRM_TESTING
-	WriteL(*msgText);
-#endif           
+    WriteL(*msgText);
+#endif
     loader.Close();
     CAknQueryDialog* dlg = new (ELeave) CAknQueryDialog( *msgText,
         CAknQueryDialog::ENoTone );
-    show = dlg->ExecuteLD( R_ROMTMUI_TRIGGER_CONFIRMATION_QUERY ); 
+    show = dlg->ExecuteLD( R_ROMTMUI_TRIGGER_CONFIRMATION_QUERY );
     CleanupStack::PopAndDestroy( msgText );
 #ifdef _DRM_TESTING
-	WriteL(_L8("ShowQueryL->End"),show);
-#endif   
+    WriteL(_L8("ShowQueryL->End"),show);
+#endif
     return show;
     }
 
 TInt CRightsObjectMtmUi::CheckTriggerTypeL( TDesC16& aFile )
     {
 #ifdef _DRM_TESTING
-	WriteL(_L8("CheckTriggerTypeL"));
-#endif    
+    WriteL(_L8("CheckTriggerTypeL"));
+#endif
     Roap::CRoapEng* roap = NULL;
     RFile file;
     TInt size = 0;
@@ -785,7 +785,7 @@ TInt CRightsObjectMtmUi::CheckTriggerTypeL( TDesC16& aFile )
     Roap::TRiContextStatus status;
     Roap::TDomainOperation op;
     RPointerArray<HBufC8> array;
-    
+
     HBufC8* buf =NULL;
     TPtr8 ptr(NULL,0);
     User::LeaveIfError(file.Open(iFs, aFile, EFileShareReadersOrWriters));
@@ -804,13 +804,13 @@ TInt CRightsObjectMtmUi::CheckTriggerTypeL( TDesC16& aFile )
     array.Close();
     CleanupStack::PopAndDestroy(roap);
     CleanupStack::PopAndDestroy(buf);
-    
+
 #ifdef _DRM_TESTING
-	WriteL(_L8("CheckTriggerTypeL-End"),type);
-#endif     
+    WriteL(_L8("CheckTriggerTypeL-End"),type);
+#endif
     return type;
     }
-    
+
 
 
 

@@ -20,8 +20,8 @@
 // INCLUDE FILES
 #include <e32std.h>
 #include <e32math.h>
-#include "drmhelpercommon.h"
-#include "drmhelperserver.h"
+#include "DRMHelperCommon.h"
+#include "DRMHelperServer.h"
 #include "rdrmhelperclient.h"
 
 // LOCAL CONSTANTS AND MACROS
@@ -81,7 +81,7 @@ TInt RDrmHelperClient::Connect()
 
     if ( !error )
         {
-        error = CreateSession( KDRMHelperServerName, 
+        error = CreateSession( KDRMHelperServerName,
                                Version(),
                                KDefaultMessageSlots );
         }
@@ -96,7 +96,7 @@ TInt RDrmHelperClient::Connect()
 //
 TVersion RDrmHelperClient::Version() const
     {
-    return ( TVersion( KDRMHSMajorVersionNumber, 
+    return ( TVersion( KDRMHSMajorVersionNumber,
                        KDRMHSMinorVersionNumber,
                        KDRMHSBuildVersionNumber ) );
     }
@@ -115,7 +115,7 @@ TInt RDrmHelperClient::SetAutomated(
     {
     TInt ret( KErrNone );
     TInt drmHsServiceType( 0 );
-    
+
     ret = AutomatedServiceTypeToHs( aServiceType, drmHsServiceType );
     if ( ret )
         {
@@ -130,10 +130,10 @@ TInt RDrmHelperClient::SetAutomated(
 
     // This call waits for the server to complete the request before
     // proceeding.
-    return SendReceive( ERegister, 
-                        TIpcArgs( aIntent, 
-                                  drmHsServiceType, 
-                                  aAutomatedType, 
+    return SendReceive( ERegister,
+                        TIpcArgs( aIntent,
+                                  drmHsServiceType,
+                                  aAutomatedType,
                                   &descriptor ) );
     }
 
@@ -151,13 +151,13 @@ TInt RDrmHelperClient::RemoveAutomated(
     {
     TInt ret( KErrNone );
     TInt drmHsServiceType( 0 );
-    
+
     ret = AutomatedServiceTypeToHs( aServiceType, drmHsServiceType );
     if( ret )
         {
         return ret;
         }
-    
+
     // Create descriptor to enable copying data between
     // client and server. Note: This can be local since
     // this is a synchronous call.
@@ -166,10 +166,10 @@ TInt RDrmHelperClient::RemoveAutomated(
 
     // This call waits for the server to complete the request before
     // proceeding.
-    ret = SendReceive( ERemove, 
-                       TIpcArgs( aIntent, 
-                                 drmHsServiceType, 
-                                 aAutomatedType, 
+    ret = SendReceive( ERemove,
+                       TIpcArgs( aIntent,
+                                 drmHsServiceType,
+                                 aAutomatedType,
                                  &descriptor ) );
 
     if ( ret == KErrNotFound )
@@ -195,38 +195,38 @@ TInt RDrmHelperClient::RemoveAutomatedAll(
     TPtrC8 descriptor( aUri );
     TInt ret( KErrNone );
     TInt drmHsServiceType( 0 );
-    
+
     ret = AutomatedServiceTypeToHs( aServiceType, drmHsServiceType );
     if ( ret )
         {
         return ret;
         }
-    
+
     TBool automated( EFalse );
 
     // This call waits for the server to complete the request before
     // proceeding.
-    ret = SendReceive( ERemove, 
-                       TIpcArgs( aIntent, 
+    ret = SendReceive( ERemove,
+                       TIpcArgs( aIntent,
                                  drmHsServiceType,
-                                 aAutomatedType, 
+                                 aAutomatedType,
                                  &descriptor ) );
-    
-    ret = IsAutomated( aUri, 
-                       aAutomatedType, 
-                       aIntent, 
-                       aServiceType, 
+
+    ret = IsAutomated( aUri,
+                       aAutomatedType,
+                       aIntent,
+                       aServiceType,
                        automated );
-                       
+
     while ( automated )
         {
         // unregister all
-        ret = SendReceive( ERemove, 
-                           TIpcArgs( aIntent, 
-                                     drmHsServiceType, 
-                                     aAutomatedType, 
+        ret = SendReceive( ERemove,
+                           TIpcArgs( aIntent,
+                                     drmHsServiceType,
+                                     aAutomatedType,
                                      &descriptor ) );
-                                     
+
         IsAutomated( aUri, aAutomatedType, aIntent, aServiceType, automated );
         }
 
@@ -260,13 +260,13 @@ TInt RDrmHelperClient::IsAutomated(
     TPtr8 flag( reinterpret_cast< TUint8* >( &aAutomated ), 0, sizeof( TInt ) );
     TInt ret( KErrNone );
     TInt drmHsServiceType( 0 );
-    
+
     ret = AutomatedServiceTypeToHs( aServiceType, drmHsServiceType );
     if ( ret )
         {
         return ret;
         }
-    
+
     TInt type( CDRMHelperServer::EActive );
 
     // Create descriptor to enable copying data between
@@ -278,18 +278,18 @@ TInt RDrmHelperClient::IsAutomated(
     // This call waits for the server to complete the request before
     // proceeding.
     ret = SendReceive( EIsRegistered,
-                       TIpcArgs( aIntent, 
-                                 type, 
-                                 aAutomatedType, 
+                       TIpcArgs( aIntent,
+                                 type,
+                                 aAutomatedType,
                                  &descriptor ) );
     if ( !ret )
         {
         type = CDRMHelperServer::EPassive;
-        
+
         ret = SendReceive( EIsRegistered,
-                           TIpcArgs( aIntent, 
-                                     type, 
-                                     aAutomatedType, 
+                           TIpcArgs( aIntent,
+                                     type,
+                                     aAutomatedType,
                                      &descriptor ) );
         }
     aAutomated = ret ? ETrue : EFalse;
@@ -341,7 +341,7 @@ TInt RDrmHelperClient::CreateServerProcess()
     {
     TInt result( 0 );
     const TUidType serverUid( KNullUid, KNullUid, KServerUid3 );
-    
+
     RProcess server;
     result = server.Create( KDRMHSServerFileName, _L(""), serverUid );
     if ( result )

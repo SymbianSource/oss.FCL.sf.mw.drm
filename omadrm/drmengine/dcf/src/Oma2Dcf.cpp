@@ -24,8 +24,9 @@
 #include <f32file.h>
 #include <utf.h>
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include "Oma2Agent.h"
-#include "Oma2Dcf.h"
+#include "oma2dcf.h"
 #include "Oma2DcfPartInfo.h"
 
 // LOCAL CONSTANTS AND MACROS

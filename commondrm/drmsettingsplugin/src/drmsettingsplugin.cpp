@@ -22,8 +22,8 @@
 #include <bautils.h>
 #include <eikfrlbd.h>
 #include <featmgr.h>
-#include <stringloader.h>
-#include <aknviewappui.h>
+#include <StringLoader.h>
+#include <aknViewAppUi.h>
 #include <aknradiobuttonsettingpage.h>
 #include <gsfwviewuids.h>
 #include <gsprivatepluginproviderids.h>
@@ -651,7 +651,8 @@ void CDRMSettingsPlugin::UpdateUsageReportingSettingL()
             new (ELeave) CDrmSettingUsageCheckBox(
                 R_DRM_SETTINGS_METERING_CHECKBOX_PAGE,
                 usageList,
-                model ) );
+                model,
+                this ) );
 
         isValueUpdated =
             usageCheckBox->ExecuteLD( CAknSettingPage::EUpdateWhenAccepted );

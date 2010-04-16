@@ -22,7 +22,7 @@
 
 // INCLUDES
 #include <aknview.h>
-#include "drmrightsmgrdetailscontainer.h"
+#include "DRMRightsMgrDetailsContainer.h"
 
 // FORWARD DECLARATIONS
 class CDRMRightsMgrDetailsContainer;

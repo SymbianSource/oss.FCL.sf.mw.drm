@@ -19,12 +19,13 @@
 
 // INCLUDE FILES
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <utf.h>
-#include "drmrights.h"
-#include "oma2agentrightsmanager.h"
-#include "drmrightsclient.h"
-#include "dcfrep.h"
-#include "dcfentry.h"
+#include "DRMRights.h"
+#include "Oma2AgentRightsManager.h"
+#include "DRMRightsClient.h"
+#include "DcfRep.h"
+#include "DcfEntry.h"
 
 using namespace ContentAccess;
 
@@ -39,7 +40,7 @@ void DoDeleteAllRightsObjectsL( const TVirtualPathPtr& aVirtualPath )
     User::LeaveIfError(client.Connect());
     CleanupClosePushL(client);
     User::LeaveIfError(fs.Connect());
-    User::LeaveIfError(fs.ShareAuto());    
+    User::LeaveIfError(fs.ShareAuto());
     CleanupClosePushL(fs);
     dcf = CDcfCommon::NewL(aVirtualPath.URI(), &fs);
     CleanupStack::PushL(dcf);
@@ -50,7 +51,7 @@ void DoDeleteAllRightsObjectsL( const TVirtualPathPtr& aVirtualPath )
 
 void DoDeleteAllRightsObjects( const TVirtualPathPtr& aVirtualPath )
     {
-    TRAP_IGNORE( DoDeleteAllRightsObjectsL( aVirtualPath ) );    
+    TRAP_IGNORE( DoDeleteAllRightsObjectsL( aVirtualPath ) );
     }
 
 void DoDeleteRightsObjectL(
@@ -83,11 +84,11 @@ void DoDeleteRightsObjectL(
         }
     CleanupStack::PopAndDestroy(2); // contentId, client
     }
-    
+
 void DoDeleteRightsObject(
     const CRightsInfo& aRightsInfo)
     {
-    TRAP_IGNORE( DoDeleteRightsObjectL( aRightsInfo ) );    
+    TRAP_IGNORE( DoDeleteRightsObjectL( aRightsInfo ) );
     }
 
 
@@ -105,7 +106,7 @@ TBool IsValid(
     {
     TBool r = EFalse;
     CDRMConstraint* constraint;
-    
+
     constraint = aPermission->ConstraintForIntent(aIntent);
     if (constraint != NULL && !constraint->Expired(aTime))
         {
@@ -119,13 +120,13 @@ TRightsStatus PermissionStatus(
     {
     TRightsStatus r = ERightsStatusNone;
     TTime time;
-    
+
     time.HomeTime();
     if ((!(aPermission->iAvailableRights & ERightsTopLevel) ||
         !aPermission->iTopLevel->Expired(time))
-        
+
         &&
-        
+
         (IsValid(aPermission, EPlay, time) ||
         IsValid(aPermission, EView, time) ||
         IsValid(aPermission, EPrint, time) ||
@@ -144,7 +145,7 @@ CRightsInfo* ConvertToRightsInfoL(
     TPtr ptr(NULL, 0);
     HBufC* id = NULL;
     CRightsInfo* r = NULL;
-    
+
     id = HBufC::NewLC(aContentId.Length() + 20);
     ptr.Set(id->Des());
     ptr.Copy(aContentId);
@@ -193,7 +194,7 @@ void COma2AgentRightsManager::ConstructL()
 COma2AgentRightsManager* COma2AgentRightsManager::NewL()
     {
     COma2AgentRightsManager* self = new( ELeave ) COma2AgentRightsManager;
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop();
@@ -201,7 +202,7 @@ COma2AgentRightsManager* COma2AgentRightsManager::NewL()
     return self;
     }
 
-    
+
 // Destructor
 COma2AgentRightsManager::~COma2AgentRightsManager()
     {
@@ -240,12 +241,12 @@ void COma2AgentRightsManager::ListAllRightsL(
             {
             aArray.AppendL(ConvertToRightsInfoL(permissions[i], *idList[j]));
             }
-        
+
         CleanupStack::PopAndDestroy(1); // permCleanup
         }
     CleanupStack::PopAndDestroy(2); // idCleanup, client
     }
-    
+
 void COma2AgentRightsManager::ListRightsL(
     RStreamablePtrArray<CRightsInfo>& aArray,
     const TDesC& aUri) const
@@ -253,9 +254,9 @@ void COma2AgentRightsManager::ListRightsL(
     TVirtualPathPtr ptr(aUri, KDefaultContentObject);
     ListRightsL(aArray, ptr);
     }
-    
+
 void COma2AgentRightsManager::ListRightsL(
-    RStreamablePtrArray<CRightsInfo>& aArray, 
+    RStreamablePtrArray<CRightsInfo>& aArray,
     TVirtualPathPtr& aVirtualPath) const
     {
     RPointerArray<CDRMPermission> permissions;
@@ -272,7 +273,7 @@ void COma2AgentRightsManager::ListRightsL(
     User::LeaveIfError(client.Connect());
     CleanupClosePushL(client);
     User::LeaveIfError(fs.Connect());
-    User::LeaveIfError(fs.ShareAuto());    
+    User::LeaveIfError(fs.ShareAuto());
     CleanupClosePushL(fs);
     dcf = CDcfCommon::NewL(aVirtualPath.URI(), &fs);
     if (dcf == NULL)
@@ -281,7 +282,7 @@ void COma2AgentRightsManager::ListRightsL(
         }
     CleanupStack::PushL(dcf);
     User::LeaveIfError(dcf->OpenPart(aVirtualPath.UniqueId()));
-    
+
     TRAP(error, permission = client.GetActiveRightsL(EUnknown, *dcf->iContentID, reason));
     if (permission != NULL)
         {
@@ -289,7 +290,7 @@ void COma2AgentRightsManager::ListRightsL(
         aArray.AppendL(ConvertToRightsInfoL(permission, *dcf->iContentID));
         CleanupStack::PopAndDestroy(); // permission
         }
-    
+
     TRAP(error, client.GetDBEntriesL(*dcf->iContentID, permissions));
     CleanupStack::PushL(listCleanup);
 
@@ -297,10 +298,10 @@ void COma2AgentRightsManager::ListRightsL(
         {
         aArray.AppendL(ConvertToRightsInfoL(permissions[i], *dcf->iContentID));
         }
-    
+
     CleanupStack::PopAndDestroy(4); // listCleanup, dcf, fs, client
     }
-    
+
 void COma2AgentRightsManager::ListContentL(
     RStreamablePtrArray<CVirtualPath>& aArray,
     CRightsInfo& aRightsInfo) const
@@ -323,7 +324,7 @@ void COma2AgentRightsManager::ListContentL(
         aRightsInfo.UniqueId().Left(n));
     CleanupStack::PushL(contentId);
     rep = CDcfRep::NewL();
-    CleanupStack::PushL(rep);    
+    CleanupStack::PushL(rep);
     rep->OrderListL();
     entry = rep->NextL();
     while (entry != NULL)
@@ -335,10 +336,10 @@ void COma2AgentRightsManager::ListContentL(
         CleanupStack::PopAndDestroy(); // entry
         entry = rep->NextL();
         }
-    
+
     CleanupStack::PopAndDestroy(3); // rep, contentId, client
     }
-    
+
 MAgentRightsBase* COma2AgentRightsManager::GetRightsDataL(
     const CRightsInfo& aRightsInfo) const
     {
@@ -378,26 +379,26 @@ MAgentRightsBase* COma2AgentRightsManager::GetRightsDataL(
         }
     CleanupStack::Pop(); // rights
     CleanupStack::PopAndDestroy(2); // contentId, client
-    
+
     return rights;
     }
-    
+
 TInt COma2AgentRightsManager::DeleteRightsObject(
     const CRightsInfo& aRightsInfo)
     {
     TInt error = KErrNone;
-		TRAP( error, DoDeleteRightsObject(aRightsInfo));
-		return error;
+        TRAP( error, DoDeleteRightsObject(aRightsInfo));
+        return error;
     }
-    
+
 TInt COma2AgentRightsManager::DeleteAllRightsObjects(
     const TVirtualPathPtr& aVirtualPath)
     {
     TInt error = KErrNone;
-		TRAP( error, DoDeleteAllRightsObjectsL(aVirtualPath));
-		return error;
+        TRAP( error, DoDeleteAllRightsObjectsL(aVirtualPath));
+        return error;
     }
-    
+
 TInt COma2AgentRightsManager::SetProperty(
     TAgentProperty /*aProperty*/,
     TInt /*aValue*/)

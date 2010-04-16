@@ -21,9 +21,9 @@
 #define RESPPARSER_H
 
 //  INCLUDES
-#include <Xml/Parser.h>
-#include <Xml/ContentHandler.h>
-#include <Xml/XmlParserErrors.h>
+#include <xml/parser.h>
+#include <xml/contenthandler.h>
+#include <xml/xmlparsererrors.h>
 
 using namespace Xml;
 
@@ -73,6 +73,6 @@ class MRespParser
     };
 }
 
-#endif      // ROAPPARSER_H   
-            
+#endif      // ROAPPARSER_H
+
 // End of File

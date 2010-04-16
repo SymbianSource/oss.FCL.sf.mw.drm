@@ -22,7 +22,7 @@
 #include    <caf/data.h>
 #include    <drmautomatedusage.h>
 
-#include    "drmautomatedusageimpl.h"
+#include    "DrmAutomatedUsageImpl.h"
 #include    "drmautomatedusageerrorhandling.h"
 
 // ============================ MEMBER FUNCTIONS ===============================
@@ -164,9 +164,9 @@ EXPORT_C void DRM::CDrmAutomatedUsage::SetAutomatedL(
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
     iUtility->CheckFileHandleL( aFile );
-    iImplementation->SetAutomatedL( aFile, 
-                                    aIntent, 
-                                    aAutomatedType, 
+    iImplementation->SetAutomatedL( aFile,
+                                    aIntent,
+                                    aAutomatedType,
                                     aServiceType );
     }
 
@@ -184,10 +184,10 @@ EXPORT_C TInt DRM::CDrmAutomatedUsage::SetAutomatedAsyncL(
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
     iUtility->CheckFileHandleL( aFile );
-    return iImplementation->SetAutomatedAsyncL( aFile, 
-                                                aIntent, 
-                                                aAutomatedType, 
-                                                aObserver, 
+    return iImplementation->SetAutomatedAsyncL( aFile,
+                                                aIntent,
+                                                aAutomatedType,
+                                                aObserver,
                                                 aServiceType );
     }
 
@@ -203,8 +203,8 @@ EXPORT_C void DRM::CDrmAutomatedUsage::SetAutomatedL(
     const DRM::TDrmAutomatedType aAutomatedType,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    iImplementation->SetAutomatedL( aData, 
-                                    aIntent, 
+    iImplementation->SetAutomatedL( aData,
+                                    aIntent,
                                     aAutomatedType,
                                     aServiceType );
     }
@@ -222,10 +222,10 @@ EXPORT_C TInt DRM::CDrmAutomatedUsage::SetAutomatedAsyncL(
     DRM::MDrmAsyncObserver& aObserver,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    return iImplementation->SetAutomatedAsyncL( aData, 
-                                                aIntent, 
-                                                aAutomatedType, 
-                                                aObserver, 
+    return iImplementation->SetAutomatedAsyncL( aData,
+                                                aIntent,
+                                                aAutomatedType,
+                                                aObserver,
                                                 aServiceType );
     }
 
@@ -242,9 +242,9 @@ EXPORT_C void DRM::CDrmAutomatedUsage::RemoveAutomatedL(
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
     iUtility->CheckFileHandleL( aFile );
-    iImplementation->RemoveAutomatedL( aFile, 
-                                       aIntent, 
-                                       aAutomatedType, 
+    iImplementation->RemoveAutomatedL( aFile,
+                                       aIntent,
+                                       aAutomatedType,
                                        aServiceType );
     }
 
@@ -262,10 +262,10 @@ EXPORT_C TInt DRM::CDrmAutomatedUsage::RemoveAutomatedAsyncL(
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
     iUtility->CheckFileHandleL( aFile );
-    return iImplementation->RemoveAutomatedAsyncL( aFile, 
-                                                   aIntent, 
-                                                   aAutomatedType, 
-                                                   aObserver, 
+    return iImplementation->RemoveAutomatedAsyncL( aFile,
+                                                   aIntent,
+                                                   aAutomatedType,
+                                                   aObserver,
                                                    aServiceType );
     }
 
@@ -281,9 +281,9 @@ EXPORT_C void DRM::CDrmAutomatedUsage::RemoveAutomatedL(
     const DRM::TDrmAutomatedType aAutomatedType,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    iImplementation->RemoveAutomatedL( aData, 
-                                       aIntent, 
-                                       aAutomatedType, 
+    iImplementation->RemoveAutomatedL( aData,
+                                       aIntent,
+                                       aAutomatedType,
                                        aServiceType );
     }
 
@@ -300,10 +300,10 @@ EXPORT_C TInt DRM::CDrmAutomatedUsage::RemoveAutomatedAsyncL(
     DRM::MDrmAsyncObserver& aObserver,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    return iImplementation->RemoveAutomatedAsyncL( aData, 
-                                                   aIntent, 
-                                                   aAutomatedType, 
-                                                   aObserver, 
+    return iImplementation->RemoveAutomatedAsyncL( aData,
+                                                   aIntent,
+                                                   aAutomatedType,
+                                                   aObserver,
                                                    aServiceType );
     }
 
@@ -319,9 +319,9 @@ EXPORT_C void DRM::CDrmAutomatedUsage::RemoveAutomatedL(
     const DRM::TDrmAutomatedType aAutomatedType,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    iImplementation->RemoveAutomatedL( aUniqueId, 
-                                       aIntent, 
-                                       aAutomatedType, 
+    iImplementation->RemoveAutomatedL( aUniqueId,
+                                       aIntent,
+                                       aAutomatedType,
                                        aServiceType );
     }
 
@@ -338,10 +338,10 @@ EXPORT_C TInt DRM::CDrmAutomatedUsage::RemoveAutomatedAsyncL(
     DRM::MDrmAsyncObserver& aObserver,
     const DRM::TDrmAutomatedServiceType aServiceType )
     {
-    return iImplementation->RemoveAutomatedAsyncL( aUniqueId, 
-                                                   aIntent, 
-                                                   aAutomatedType, 
-                                                   aObserver, 
+    return iImplementation->RemoveAutomatedAsyncL( aUniqueId,
+                                                   aIntent,
+                                                   aAutomatedType,
+                                                   aObserver,
                                                    aServiceType );
     }
 

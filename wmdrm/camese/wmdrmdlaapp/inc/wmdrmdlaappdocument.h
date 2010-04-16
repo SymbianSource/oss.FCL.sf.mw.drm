@@ -20,7 +20,7 @@
 #define C_WMDRMDLAAPPDOCUMENT_H
 
 // INCLUDES
-#include <akndoc.h>
+#include <AknDoc.h>
 
 class CWmDrmDlaAppDocument : public CAknDocument
     {
@@ -46,7 +46,7 @@ class CWmDrmDlaAppDocument : public CAknDocument
         * @return Pointer to App Ui.
         */
         CEikAppUi* CreateAppUiL();
-    
+
     public: // Constructors
 
         /**

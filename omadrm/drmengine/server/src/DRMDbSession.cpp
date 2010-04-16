@@ -24,21 +24,21 @@
 #include <caf/caf.h>
 #include <x509keys.h>
 #include <asn1dec.h>
-#include <dcfrep.h>
+#include <DcfRep.h>
 
 #include <e32math.h>
 #include <utf.h>
 
-#include <SysUtil.h>    // Disk space checking
+#include <sysutil.h>    // Disk space checking
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "Oma2Agent.h"
-#include "DRMPermission.h"
+#include "DrmPermission.h"
 #include "DRMDbSession.h"
-#include "drmengineclientserver.h"
+#include "DRMEngineClientServer.h"
 #include "DRMRightsServer.h"
 #include "RoapStorageClient.h"
 #include "OmaCrypto.h"
@@ -46,8 +46,8 @@
 #include "DrmKeyStorage.h"
 #include "drmrightsdb.h"
 #include "drmparentstorage.h"
-#include "DrmDomainContext.h"
-#include "DrmRiContext.h"
+#include "DRMDomainContext.h"
+#include "DRMRIContext.h"
 #include "drmenginetypedefs.h"
 #include "DRMXOma.h"
 
@@ -58,8 +58,8 @@
 #include "DRMActiveOperation.h"
 #include "drmconsume.h"
 #include "drmlog.h"
-#include "drmpointerarray.h"
-#include "base64.h"
+#include "DRMPointerArray.h"
+#include "Base64.h"
 
 #ifdef RD_DRM_METERING
 #include "drmmeteringdbdata.h"

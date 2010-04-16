@@ -19,14 +19,15 @@
 
 // INCLUDE FILES
 #include <caf/caf.h>
-#include "oma2agentfactory.h"
+#include <caf/cafplatform.h>
+#include "Oma2AgentFactory.h"
 
 using namespace ContentAccess;
 
 // EXTERNAL DATA STRUCTURES
 //extern  ?external_data;
 
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 //extern ?external_function( ?arg_type,?arg_type );
 
 // CONSTANTS
@@ -101,7 +102,7 @@ void COma2AgentFactory::ConstructL()
 COma2AgentFactory* COma2AgentFactory::NewL()
     {
     COma2AgentFactory* self = new( ELeave ) COma2AgentFactory;
-    
+
     CleanupStack::PushL( self );
     self->ConstructL();
     CleanupStack::Pop();
@@ -109,7 +110,7 @@ COma2AgentFactory* COma2AgentFactory::NewL()
     return self;
     }
 
-    
+
 // Destructor
 COma2AgentFactory::~COma2AgentFactory()
     {
@@ -123,42 +124,42 @@ COma2AgentFactory::~COma2AgentFactory()
 // -----------------------------------------------------------------------------
 //
 CAgentContent* COma2AgentFactory::CreateContentBrowserL(const TDesC& aURI, TContentShareMode aShareMode)
-	{
-	return COma2AgentContent::NewL(aURI, aShareMode);
-	}
+    {
+    return COma2AgentContent::NewL(aURI, aShareMode);
+    }
 
 CAgentContent* COma2AgentFactory::CreateContentBrowserL(RFile& aFile)
-	{
-	return COma2AgentContent::NewL(aFile);
-	}
+    {
+    return COma2AgentContent::NewL(aFile);
+    }
 
 CAgentData* COma2AgentFactory::CreateDataConsumerL(const TVirtualPathPtr& aVirtualPath, TContentShareMode aShareMode)
-	{
-	return COma2AgentData::NewL(aVirtualPath, aShareMode);
-	}
+    {
+    return COma2AgentData::NewL(aVirtualPath, aShareMode);
+    }
 
 CAgentData* COma2AgentFactory::CreateDataConsumerL(RFile& aFile, const TDesC& aUniqueId)
-	{
-	return COma2AgentData::NewL(aFile, aUniqueId);
-	}
+    {
+    return COma2AgentData::NewL(aFile, aUniqueId);
+    }
 
 CAgentManager*  COma2AgentFactory::CreateManagerL()
-	{
-	return COma2AgentManager::NewL();
-	}
+    {
+    return COma2AgentManager::NewL();
+    }
 
 CAgentImportFile* COma2AgentFactory::CreateImporterL(const TDesC8& aMimeType, const CMetaDataArray& aMetaDataArray, const TDesC& aOutputDirectory, const TDesC& aSuggestedFileName)
-	{
-	return COma2AgentImportFile::NewL(aMimeType, aMetaDataArray, aOutputDirectory, aSuggestedFileName);
-	}
+    {
+    return COma2AgentImportFile::NewL(aMimeType, aMetaDataArray, aOutputDirectory, aSuggestedFileName);
+    }
 
 CAgentImportFile* COma2AgentFactory::CreateImporterL(const TDesC8& aMimeType, const CMetaDataArray& aMetaDataArray)
-	{
-	return COma2AgentImportFile::NewL(aMimeType, aMetaDataArray);
-	}
+    {
+    return COma2AgentImportFile::NewL(aMimeType, aMetaDataArray);
+    }
 
 CAgentRightsManager* COma2AgentFactory::CreateRightsManagerL()
-	{
-	return COma2AgentRightsManager::NewL();
-	}
+    {
+    return COma2AgentRightsManager::NewL();
+    }
 

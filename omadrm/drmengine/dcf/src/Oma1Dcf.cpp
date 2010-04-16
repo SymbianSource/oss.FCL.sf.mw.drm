@@ -21,11 +21,10 @@
 #include <e32base.h>
 #include <f32file.h>
 #include <utf.h>
-#include <WSPDecoder.h>
+#include <wspdecoder.h>
 #include "Oma1Dcf.h"
 #include "DRMRightsClient.h"
 #include <centralrepository.h>
-#include <UTF.h>
 
 #include "DrmUtilityInternalcrkeys.h"      // Cenrep extension for OmaBased
 
@@ -87,8 +86,8 @@ HBufC8* COma1Dcf::FetchOmaBasedInfoL()
     HBufC8* mimetype = NULL;
 
     CleanupClosePushL(bOmaBasedMimeType);
-    bOmaBasedMimeType.CreateL( KCenRepDataLength );    
-    
+    bOmaBasedMimeType.CreateL( KCenRepDataLength );
+
     repository = CRepository::NewL( KCRUidOmaBased );
 
     CleanupStack::PushL( repository );
@@ -96,11 +95,11 @@ HBufC8* COma1Dcf::FetchOmaBasedInfoL()
     User::LeaveIfError(repository->Get( KOmaBasedMimeType, bOmaBasedMimeType ));
     mimetype = CnvUtfConverter::ConvertFromUnicodeToUtf8L( bOmaBasedMimeType );
     CleanupStack::PopAndDestroy( repository );
-    
+
     CleanupStack::PopAndDestroy();
-    
+
     return mimetype;
-    
+
     }
 
 // -----------------------------------------------------------------------------
@@ -111,7 +110,7 @@ HBufC8* COma1Dcf::FetchOmaBasedInfoL()
 EXPORT_C COma1Dcf* COma1Dcf::NewL(const RFile& aFile)
     {
     COma1Dcf* self = new(ELeave) COma1Dcf;
-    
+
     CleanupStack::PushL(self);
     self->ConstructL(aFile);
     CleanupStack::Pop();
@@ -121,13 +120,13 @@ EXPORT_C COma1Dcf* COma1Dcf::NewL(const RFile& aFile)
 
 // -----------------------------------------------------------------------------
 // COma1Dcf::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 EXPORT_C COma1Dcf* COma1Dcf::NewL(const TDesC8& aMemoryBlock)
     {
     COma1Dcf* self = new(ELeave) COma1Dcf;
-    
+
     CleanupStack::PushL(self);
     self->ConstructL(aMemoryBlock);
     CleanupStack::Pop();
@@ -137,7 +136,7 @@ EXPORT_C COma1Dcf* COma1Dcf::NewL(const TDesC8& aMemoryBlock)
 
 // -----------------------------------------------------------------------------
 // COma1Dcf::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 EXPORT_C COma1Dcf::~COma1Dcf()
@@ -147,7 +146,7 @@ EXPORT_C COma1Dcf::~COma1Dcf()
 
 // -----------------------------------------------------------------------------
 // COma1Dcf::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma1Dcf::ReadHeaderL(const TDesC8& aMemoryBlock)
@@ -159,29 +158,29 @@ TInt COma1Dcf::ReadHeaderL(const TDesC8& aMemoryBlock)
     TBuf8<10> lengthFields;
     TUint32 length;
     TPtr8 ptr(NULL,0,0);
-    
+
     if (aMemoryBlock.Length()<3)
         {
         User::Leave(KErrArgument);
         }
-        
+
     iVersion = aMemoryBlock[0];
-    
+
     if (iVersion!=1)
         {
         // for OMA Version 1, DCF version must be 1
         User::Leave(KErrArgument);
         }
-        
+
     mimeLength = aMemoryBlock[1];
     cidLength = aMemoryBlock[2];
-    
+
     if (mimeLength + cidLength + 3 + 5 + 5 > aMemoryBlock.Length())
         {
         User::Leave(KErrArgument);
         }
 
-    
+
     if (mimeLength!=0)
         {
         iMimeType = aMemoryBlock.Mid(3, mimeLength).AllocL();
@@ -196,22 +195,22 @@ TInt COma1Dcf::ReadHeaderL(const TDesC8& aMemoryBlock)
         {
         User::Leave(KErrArgument);
         }
-    
-    
+
+
     if (cidLength!=0)
         {
         iContentID = aMemoryBlock.Mid(3 + mimeLength, cidLength).AllocL();
         }
     else
         {
-        User::Leave(KErrArgument);    
+        User::Leave(KErrArgument);
         }
 
 
     lengthFields.Copy(aMemoryBlock.Mid(3 + mimeLength + cidLength, 10));
     TWspPrimitiveDecoder decoder(lengthFields);
     fieldLength = decoder.UintVar(length);
-    if( fieldLength < 0 ) 
+    if( fieldLength < 0 )
         {
         User::Leave(KErrArgument);
         }
@@ -221,7 +220,7 @@ TInt COma1Dcf::ReadHeaderL(const TDesC8& aMemoryBlock)
         {
         User::Leave(KErrArgument);
         }
-    
+
     iDataLength = length;
     iOffset = 3 + mimeLength + cidLength + fieldLength + iHeaderLength;
     if (iDataLength == 0)
@@ -244,13 +243,13 @@ TInt COma1Dcf::ReadHeaderL(const TDesC8& aMemoryBlock)
 
 // -----------------------------------------------------------------------------
 // COma1Dcf::ReadHeaderValuesL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void COma1Dcf::ReadHeaderValuesL(void)
     {
     TPtrC8 ptr(NULL, 0);
-    
+
     if (GetHeaderL(KRightsIssuer, ptr) == KErrNone)
         {
         if( iRightsIssuerURL )
@@ -262,11 +261,11 @@ void COma1Dcf::ReadHeaderValuesL(void)
         }
     if (GetHeaderL(KContentName, ptr) == KErrNone)
         {
-        if( iTitle ) 
+        if( iTitle )
             {
             delete iTitle;
             iTitle = NULL;
-            }        
+            }
         iTitle = ptr.AllocL();
         }
     if (GetHeaderL(KContentDescription, ptr) == KErrNone)
@@ -275,7 +274,7 @@ void COma1Dcf::ReadHeaderValuesL(void)
             {
             delete iDescription;
             iDescription = NULL;
-            }          
+            }
         iDescription = ptr.AllocL();
         }
     if (GetHeaderL(KIconURI, ptr) == KErrNone)
@@ -284,14 +283,14 @@ void COma1Dcf::ReadHeaderValuesL(void)
             {
             delete iIconUri;
             iIconUri = NULL;
-            }         
+            }
         iIconUri = ptr.AllocL();
         }
     }
 
 // -----------------------------------------------------------------------------
 // COma1Dcf::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma1Dcf::ReadHeaderL(void)
@@ -351,7 +350,7 @@ TInt COma1Dcf::ReadHeaderL(void)
     User::LeaveIfNull(iContentID);
     p.Set(iContentID->Des());
     iFile.Read(p, cidLength);
-    
+
     pos = 0;
     iFile.Seek(ESeekCurrent, pos);
     iFile.Read(lengthFields);
@@ -367,7 +366,7 @@ TInt COma1Dcf::ReadHeaderL(void)
         {
         User::Leave(KErrArgument);
         }
-    
+
     iDataLength = length;
     iOffset = pos + fieldLength + iHeaderLength;
     if (iDataLength == 0)
@@ -390,7 +389,7 @@ TInt COma1Dcf::ReadHeaderL(void)
 
 // -----------------------------------------------------------------------------
 // COma1Dcf::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 EXPORT_C TBool COma1Dcf::IsValidDcf(const TDesC8& aDcfFragment)
@@ -419,15 +418,15 @@ EXPORT_C TBool COma1Dcf::IsValidDcf(const TDesC8& aDcfFragment)
                 {
                 r = ETrue;
                 // Check for specific mimetype
-                
+
                 TRAP( error, omaBasedBuf = FetchOmaBasedInfoL() );
-                
+
                 if( !error )
                     {
-                    mimeType.Set(aDcfFragment.Mid(3, 
+                    mimeType.Set(aDcfFragment.Mid(3,
                             omaBasedBuf->Length()));
-                    
-                
+
+
                     if (mimeType.CompareF( *omaBasedBuf ) == 0)
                         {
                         r = EFalse;
@@ -442,63 +441,63 @@ EXPORT_C TBool COma1Dcf::IsValidDcf(const TDesC8& aDcfFragment)
 
 // -----------------------------------------------------------------------------
 // COma1Dcf::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma1Dcf::CheckUniqueId(const TDesC& aUniqueId)
-	{
-	TInt r = CDcfCommon::CheckUniqueId(aUniqueId);
-	
-	if (r == KErrNotFound)
-	    {
-	    HBufC8* id = NULL;
-    	TRAPD(err, id = CnvUtfConverter::ConvertFromUnicodeToUtf8L(aUniqueId));
-    	if (err == KErrNone)
-    	    {
-    	    if (iContentID->Compare(*id) == 0)
-    		    {
-    		    r = 0;
-    		    }
+    {
+    TInt r = CDcfCommon::CheckUniqueId(aUniqueId);
+
+    if (r == KErrNotFound)
+        {
+        HBufC8* id = NULL;
+        TRAPD(err, id = CnvUtfConverter::ConvertFromUnicodeToUtf8L(aUniqueId));
+        if (err == KErrNone)
+            {
+            if (iContentID->Compare(*id) == 0)
+                {
+                r = 0;
+                }
             }
         else
             {
             r = err;
             }
-    	delete id;
-    	}
-	return r;
-	}
-	
+        delete id;
+        }
+    return r;
+    }
+
 // -----------------------------------------------------------------------------
 // COma1Dcf::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma1Dcf::OpenPart(const TDesC& aUniqueId)
-	{
-	return OpenPart(CheckUniqueId(aUniqueId));
-	}
-	
+    {
+    return OpenPart(CheckUniqueId(aUniqueId));
+    }
+
 // -----------------------------------------------------------------------------
 // COma1Dcf::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 TInt COma1Dcf::OpenPart(TInt aPart)
-	{
-	if (aPart == 0)
-		{
-		return KErrNone;
-		}
-	else
-		{
-		return KErrNotFound;
-		}
-	}
-	
+    {
+    if (aPart == 0)
+        {
+        return KErrNone;
+        }
+    else
+        {
+        return KErrNotFound;
+        }
+    }
+
 // -----------------------------------------------------------------------------
 // COma1Dcf::
-// 
+//
 // -----------------------------------------------------------------------------
 //
 void COma1Dcf::GetPartIdsL(RPointerArray<HBufC8>& aPartList)
@@ -506,10 +505,10 @@ void COma1Dcf::GetPartIdsL(RPointerArray<HBufC8>& aPartList)
     aPartList.ResetAndDestroy();
     aPartList.AppendL(iContentID->Des().AllocL());
     }
-	
+
 // -----------------------------------------------------------------------------
 // COma1Dcf::GetHeaderL
-// 
+//
 // -----------------------------------------------------------------------------
 //
 EXPORT_C TInt COma1Dcf::GetHeaderL(
@@ -519,22 +518,22 @@ EXPORT_C TInt COma1Dcf::GetHeaderL(
     TInt i;
     TInt j;
     TPtrC8 ptr( iHeaders->Des() );
-    
+
     // Add Room for CRLF and Semicolon:
-    HBufC8* buffer = HBufC8::NewMaxLC( aHeaderName.Length() + 3 );  
-    TPtr8 searchBuf( const_cast<TUint8*>(buffer->Ptr()), 0, buffer->Des().MaxSize() );  
+    HBufC8* buffer = HBufC8::NewMaxLC( aHeaderName.Length() + 3 );
+    TPtr8 searchBuf( const_cast<TUint8*>(buffer->Ptr()), 0, buffer->Des().MaxSize() );
 
     searchBuf.Copy(aHeaderName);
     searchBuf.Append(KColon);
-    
-    // First see if the     
+
+    // First see if the
     i = ptr.Find(searchBuf);
     if( i < 0 )
         {
         CleanupStack::PopAndDestroy(); // buffer
-        return KErrNotFound; 
+        return KErrNotFound;
         }
-        
+
    if( i > 0 )
         {
         // if it's not the first one, use the search buffer:
@@ -542,29 +541,29 @@ EXPORT_C TInt COma1Dcf::GetHeaderL(
         searchBuf.Copy(KEndLine);
         searchBuf.Append(aHeaderName);
         searchBuf.Append(KColon);
-    
-        // First see if the     
+
+        // First see if the
         i = ptr.Find(searchBuf);
         if ( i < 0 )
             {
-            CleanupStack::PopAndDestroy(); // buffer            
+            CleanupStack::PopAndDestroy(); // buffer
             return KErrNotFound;
-            }        
+            }
         }
-    // Move search buffer    
-    i += searchBuf.Length();  
-    
+    // Move search buffer
+    i += searchBuf.Length();
+
     j = ptr.Mid(i).Find(KEndLine);
     if( j < 0 )
         {
-        CleanupStack::PopAndDestroy(); // buffer        
+        CleanupStack::PopAndDestroy(); // buffer
         return KErrNotFound;
         }
-        
-    aHeaderValue.Set( ptr.Mid(i, j) );  
-    
+
+    aHeaderValue.Set( ptr.Mid(i, j) );
+
     CleanupStack::PopAndDestroy(); // buffer
     return KErrNone;
     }
 
-//  End of File  
+//  End of File

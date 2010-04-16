@@ -26,19 +26,20 @@
 #include <s32strm.h>
 #include <s32file.h>
 #include <caf/caf.h>
+#include <caf/cafplatform.h>
 #include <symmetric.h>  // AES128CBC
-#include <dcfrep.h>
+#include <DcfRep.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include <DriveInfo.h>
+#include <driveinfo.h>
 #endif
 
 #include "DRMCommon.h"  // DRM Error messages
-#include "DRMRightsDB.h"
+#include "drmrightsdb.h"
 #include "DRMRightsData.h"
 #include "DRMCommonData.h"
-#include "DRMPermission.h"
-#include "DRMConstraint.h"
+#include "DrmPermission.h"
+#include "DrmConstraint.h"
 #include "DRMRightsCleaner.h"
 #include "DRMRightsServer.h"
 #include "DrmKeyStorage.h"
@@ -46,7 +47,7 @@
 #include "drmlog.h"
 
 #ifdef RD_DRM_RIGHTS_MANAGER_REMOVAL
-#include "drmclockclient.h"
+#include "DRMClockClient.h"
 #endif // RD_DRM_RIGHTS_MANAGER_REMOVAL
 
 /*
@@ -292,9 +293,9 @@ void CDRMRightsDB::GetDBEntryByContentIDL(
     TInt timeZone = 0;
     DRMClock::ESecurityLevel securityLevel;
 #endif // RD_DRM_RIGHTS_MANAGER_REMOVAL
-    
+
     GetRightsFileNameL( aContentID, path);
-    
+
 #ifdef RD_DRM_RIGHTS_MANAGER_REMOVAL
     // Get the secure time:
     RDRMClockClient client;
@@ -315,13 +316,13 @@ void CDRMRightsDB::GetDBEntryByContentIDL(
 
     // Delete expired:
     TRAP_IGNORE( deleteAllowed = DeleteExpiredL( path, time ) );
-        
-    // Check if it's possible to delete the file as well    
+
+    // Check if it's possible to delete the file as well
     if( deleteAllowed )
         {
         iFileServer.Delete( path );
         }
-    
+
     error = KErrNone;
 #endif // RD_DRM_RIGHTS_MANAGER_REMOVAL
 
@@ -419,7 +420,7 @@ void CDRMRightsDB::AddDBEntryL( const TDesC8& aContentID,
         {
         User::Leave(KErrArgument);
         }
-        
+
     TBuf8<16> keyStore = aEncryptionKey;
     // TBuf8<16> authStore = aAuthenticationSeed
 

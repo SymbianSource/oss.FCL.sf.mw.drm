@@ -21,7 +21,7 @@
 #define DCFCACHE_H
 
 //  INCLUDES
-#include <dcfcommon.h>
+#include <DcfCommon.h>
 #include <mode.h>
 #include <symmetric.h>
 #include <rijndael.h>

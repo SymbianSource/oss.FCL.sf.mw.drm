@@ -11,7 +11,7 @@
 *
 * Contributors:
 *
-* Description:  
+* Description:
 *
 */
 
@@ -20,8 +20,8 @@
 #define DRMEncryptorDOCUMENT_H
 
 // INCLUDES
-#include <akndoc.h>
-   
+#include <AknDoc.h>
+
 // CONSTANTS
 
 // FORWARD DECLARATIONS

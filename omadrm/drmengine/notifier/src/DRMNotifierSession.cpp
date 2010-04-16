@@ -19,7 +19,7 @@
 // INCLUDE FILES
 #include <s32file.h>
 #include <f32file.h>
-#include "drmcommon.h"
+#include "DRMCommon.h"
 #include "DRMNotifierSession.h"
 #include "DRMNotifierServer.h"
 #include "drmnotifierclientserver.h"
@@ -29,7 +29,7 @@
 using namespace DRMNotifier;
 
 // EXTERNAL DATA STRUCTURES
-// EXTERNAL FUNCTION PROTOTYPES  
+// EXTERNAL FUNCTION PROTOTYPES
 // CONSTANTS
 
 
@@ -70,7 +70,7 @@ LOCAL_C void SanitizeL( TInt aParam )
 // Two-phased constructor.
 // -----------------------------------------------------------------------------
 //
-CDRMNotifierSession* CDRMNotifierSession::NewL( CDRMMessageStorage* aStorage) 
+CDRMNotifierSession* CDRMNotifierSession::NewL( CDRMMessageStorage* aStorage)
     {
     CDRMNotifierSession* self = new( ELeave ) CDRMNotifierSession( aStorage );
     CleanupStack::PushL( self );
@@ -102,7 +102,7 @@ CDRMNotifierSession::~CDRMNotifierSession()
     for( i = 0; i < iMessageQueue.Count(); i++ )
         {
         if( this->iStorage ) // coverity check
-            {    
+            {
             iStorage->UpdateMessage(iMessageQueue[i]);
             }
         }
@@ -159,9 +159,9 @@ void CDRMNotifierSession::ServiceL( const RMessage2& aMessage )
     {
     LOG( _L8( "ServiceL called" ) );
     // Trap possible errors...
-    
+
     TRAPD( error, DispatchL( aMessage ) );
-    
+
     if ( error )
         {
         LOG( _L8( "DispatcL threw an exception" ) );
@@ -179,7 +179,7 @@ void CDRMNotifierSession::ServiceL( const RMessage2& aMessage )
 // Default constructor.
 // -----------------------------------------------------------------------------
 //
-CDRMNotifierSession::CDRMNotifierSession( CDRMMessageStorage* aStorage ) : 
+CDRMNotifierSession::CDRMNotifierSession( CDRMMessageStorage* aStorage ) :
     // Base class' constructor is called first.
     iStorage( aStorage )
     {
@@ -197,13 +197,16 @@ void CDRMNotifierSession::ConstructL()
 
 // -----------------------------------------------------------------------------
 // CDRMNotifierSession::DispatchL
-// Checks which command the user requested, and forwards the request to 
+// Checks which command the user requested, and forwards the request to
 // appropriate private method. This helps to keep the code more readable.
 // -----------------------------------------------------------------------------
 //
-void CDRMNotifierSession::DispatchL( const RMessage2& aMessage ) 
+void CDRMNotifierSession::DispatchL( const RMessage2& aMessage )
     {
-		RDebug::Printf(">>> [%s] %d", _S8(__PRETTY_FUNCTION__), aMessage.Function());
+    #ifdef _DEBUG
+    RDebug::Printf(">>> [%s] %d", _S8(__PRETTY_FUNCTION__), aMessage.Function());
+    #endif
+
     switch ( aMessage.Function() )
         {
         case ENotifyClients:
@@ -280,7 +283,7 @@ void CDRMNotifierSession::RecieveNotificationL( const RMessage2& aMessage )
         {
         NotifyL( iMessageQueue[0], ETrue );
         }
- 
+
     // Message complete will be set elsewhere.
     // All done.
     }
@@ -321,18 +324,18 @@ void CDRMNotifierSession::CancelNotificationL( const RMessage2& aMessage )
 
     iIsInStorage = EFalse;
 
-	iIsListening = EFalse;
-	
-	if ( !iListener.IsNull() )
-		{
-		iListener.Complete( KErrCancel );
-		}
-	
+    iIsListening = EFalse;
+
+    if ( !iListener.IsNull() )
+        {
+        iListener.Complete( KErrCancel );
+        }
+
     aMessage.Complete( KErrNone );
     }
 // -----------------------------------------------------------------------------
 // CDRMNotifierSession::RegisterURIL
-// Get the information from the client, construct a rights object, and add 
+// Get the information from the client, construct a rights object, and add
 // it to the database.
 // -----------------------------------------------------------------------------
 //
@@ -358,7 +361,7 @@ void CDRMNotifierSession::RegisterL( const RMessage2& aMessage )
 
 // -----------------------------------------------------------------------------
 // CDRMNotifierSession::UnRegisterURIL
-// Get the information from the client, construct a rights object, and add 
+// Get the information from the client, construct a rights object, and add
 // it to the database.
 // -----------------------------------------------------------------------------
 //
@@ -484,7 +487,7 @@ void CDRMNotifierSession::NotifyL( CDRMMessageStorage::TMessageData *aMessage, T
     TPtr8 data( reinterpret_cast<TUint8*>(&aMessage->iEventType),
                 sizeof(TDRMEventType),
                 sizeof(TDRMEventType));
-    TPtr8 event( aMessage->iMessageData, DRMNotifier::KDRMSizeOfMessage, 
+    TPtr8 event( aMessage->iMessageData, DRMNotifier::KDRMSizeOfMessage,
                  DRMNotifier::KDRMSizeOfMessage );
 
     iListener.WriteL(0, event);
@@ -521,4 +524,4 @@ TBool CDRMNotifierSession::CanNotify( CDRMMessageStorage::TMessageData *aMessage
     }
 
 // ========================== OTHER EXPORTED FUNCTIONS =========================
-//  End of File  
+//  End of File

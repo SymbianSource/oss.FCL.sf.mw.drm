@@ -29,12 +29,12 @@ template < class T > NONSHARABLE_CLASS( RDRMPointerArray ) : public RPointerArra
         inline RDRMPointerArray( TInt aMinGrowBy, TInt aFactor );
         inline RDRMPointerArray();
         virtual ~RDRMPointerArray();
-        
-        // If set to ETrue, RPointerArray::ResetAndDestroy() is called 
+
+        // If set to ETrue, RPointerArray::ResetAndDestroy() is called
         // automatically in destructor. Otherwise only RPointerArrary::Close()
         // is called.
         inline void SetAutoCleanup( const TBool aCleanup );
-                
+
     protected:
         TBool iDoResetAndDestroy;
     };
@@ -48,21 +48,21 @@ template < class T > NONSHARABLE_CLASS( CDRMPointerArray ) : public CBase, publi
         static CDRMPointerArray* NewL( TInt aMinGrowBy, TInt aFactor );
         static CDRMPointerArray* NewLC();
         static CDRMPointerArray* NewL();
-        
-        // Note: Does not do ResetAndDestroy() by default. 
+
+        // Note: Does not do ResetAndDestroy() by default.
         // Use SetAutoCleanup to do reallyclean.
         ~CDRMPointerArray();
-        
-        
+
+
     protected:
         explicit CDRMPointerArray( TInt aGranularity );
         CDRMPointerArray( TInt aMinGrowBy, TInt aFactor );
-        CDRMPointerArray();        
-        
+        CDRMPointerArray();
+
     private:
     };
 
 
-#include "drmpointerarray.inl"
+#include "DRMPointerArray.inl"
 
 #endif // DRMPOINTERARRAY_H

@@ -28,13 +28,13 @@
 #include    <caf/data.h>
 #include    <caf/content.h>
 #include    <Oma2Agent.h> // oma2agent
-#include    "Oma2Dcf.h"
+#include    "oma2dcf.h"
 #include    "Oma1Dcf.h"
 #include    "drmlog.h"
 #include <starterclient.h>
 
 #ifdef RD_MULTIPLE_DRIVE
-#include    <DriveInfo.h>
+#include    <driveinfo.h>
 #endif
 
 // EXTERNAL DATA STRUCTURES
@@ -205,7 +205,7 @@ LOCAL_C TParse DataFile()
 #endif
     {
 #ifdef _DRM_TESTING
-    TRAP_IGNORE( WriteL(_L8("DataFile")) ); 
+    TRAP_IGNORE( WriteL(_L8("DataFile")) );
 #endif
 
     TParse p;

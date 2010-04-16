@@ -21,14 +21,14 @@
 #define DRMRIGHTSMGRAPPUI_H
 
 // INCLUDES
-#include <aknviewappui.h>
-#include <aknprogressdialog.h>
+#include <aknViewAppUi.h>
+#include <AknProgressDialog.h>
 #include <apparc.h>
-#include <drmrightsclient.h>
+#include <DRMRightsClient.h>
 
-#include "drmviewitems.h"
+#include "DrmViewItems.h"
 
-#include "drmrightsmanager.hrh"
+#include "DRMRightsManager.hrh"
 
 
 // FORWARD DECLARATIONS
@@ -347,7 +347,7 @@ class CDRMRightsMgrAppUi :  public  CAknViewAppUi,
 
     public: // From MCoeForegroundObserver
         /**
-        * Handles the application coming to the foreground 
+        * Handles the application coming to the foreground
         *
         */
         void HandleGainingForeground();
@@ -379,13 +379,13 @@ class CDRMRightsMgrAppUi :  public  CAknViewAppUi,
 
         // The DRM protection of the given file.
         TInt iDrmScheme;
-        
+
         // The local ID of the rights
         TUint32 iLocalID;
-        
+
         // Content URI of the file for which the details view has been opened
-        HBufC8* iContentURI;  
-        
+        HBufC8* iContentURI;
+
         // The details view has been opened once. This information is used to
         // update the details view when returning to details view from another
         // application
@@ -394,7 +394,7 @@ class CDRMRightsMgrAppUi :  public  CAknViewAppUi,
     };
 
 // Include inline functions
-#include "drmrightsmgrappui.inl"
+#include "DRMRightsMgrAppUi.inl"
 
 
 #endif

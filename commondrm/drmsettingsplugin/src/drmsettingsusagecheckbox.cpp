@@ -17,14 +17,15 @@
 
 
 // INCLUDE FILES
-#include <stringloader.h>
-#include <aknquerydialog.h>
-#include <akninfopopupnotecontroller.h>
+#include <StringLoader.h>
+#include <AknQueryDialog.h>
+#include <AknInfoPopupNoteController.h>
 #include <drmsettingspluginrsc.rsg>
 
 #include "drmsettingsusagecheckbox.h"
 #include "drmsettingsusagelist.h"
 #include "drmsettingsmodel.h"
+#include "drmsettingsplugin.h"
 
 // ================= MEMBER FUNCTIONS =======================
 
@@ -33,14 +34,16 @@
 // Default constructor.
 // -----------------------------------------------------------------------------
 //
-CDrmSettingUsageCheckBox::CDrmSettingUsageCheckBox( 
+CDrmSettingUsageCheckBox::CDrmSettingUsageCheckBox(
     TInt aResourceId,
     CDRMSettingUsageList* aList,
-    CDRMSettingsModel* aModel ) : CAknCheckBoxSettingPage( aResourceId, aList ),
+    CDRMSettingsModel* aModel,
+    CDRMSettingsPlugin* aPlugin ) : CAknCheckBoxSettingPage( aResourceId, aList ),
                                   iList( aList ),
-                                  iModel( aModel )
+                                  iModel( aModel ),
+                                  iDrmSettingsPlugin( aPlugin )
     {
-	}
+    }
 
 // ----------------------------------------------------------------------------
 // CDrmSettingUsageCheckBox::~CDrmSettingUsageCheckBox
@@ -57,7 +60,7 @@ CDrmSettingUsageCheckBox::~CDrmSettingUsageCheckBox()
 // CDrmSettingUsageCheckBox::OfferKeyEventL
 // -----------------------------------------------------------------------------
 //
-TKeyResponse CDrmSettingUsageCheckBox::OfferKeyEventL( 
+TKeyResponse CDrmSettingUsageCheckBox::OfferKeyEventL(
     const TKeyEvent& aKeyEvent,
     TEventCode aType )
     {
@@ -66,12 +69,17 @@ TKeyResponse CDrmSettingUsageCheckBox::OfferKeyEventL(
         {
         response = this->ListBoxControl()->OfferKeyEventL( aKeyEvent, aType );
         }
-    
+
     if ( aType == EEventKeyUp )
         {
         ShowInfoPopupL();
         }
-    
+
+    if ( ( aType == EEventKey ) && ( aKeyEvent.iCode == EKeyEscape ) )
+        {
+        iDrmSettingsPlugin->HandleCommandL( EEikCmdExit );
+        }
+
     return response;
     }
 
@@ -83,9 +91,9 @@ void CDrmSettingUsageCheckBox::DynamicInitL()
     {
     HBufC* emptyText( StringLoader::LoadLC( R_USAGE_REPORTING_LIST_EMPTY,
                                             iEikonEnv ) );
-	this->ListBoxControl()->View()->SetListEmptyTextL( *emptyText );
-	CleanupStack::PopAndDestroy( emptyText );
-	}
+    this->ListBoxControl()->View()->SetListEmptyTextL( *emptyText );
+    CleanupStack::PopAndDestroy( emptyText );
+    }
 
 // -----------------------------------------------------------------------------
 // CDrmSettingUsageCheckBox::OkToExitL
@@ -94,29 +102,29 @@ void CDrmSettingUsageCheckBox::DynamicInitL()
 TBool CDrmSettingUsageCheckBox::OkToExitL( TBool aAccept )
     {
     TBool exit( ETrue );
-    
+
     if ( aAccept )
         {
         iList->UpdateContexts();
-    
+
         if ( !iModel->IsMeteringAllowedForAll() )
             {
             HBufC* query( StringLoader::LoadLC( R_DRM_CONF_QUERY_METERING,
                                                 iEikonEnv ) );
-        
+
             CAknQueryDialog* queryDialog( CAknQueryDialog::NewL() );
-        
+
             TBool retVal( queryDialog->ExecuteLD( R_DRM_CONFIRMATION_QUERY_METERING,
                                                   *query ) );
             CleanupStack::PopAndDestroy( query );
-            
+
             if ( !retVal )
                 {
                 exit = EFalse;
                 }
             }
         }
-    
+
     return exit;
     }
 
@@ -143,7 +151,7 @@ void CDrmSettingUsageCheckBox::ShowInfoPopupL()
     if ( index != -1 )
         {
         iPopupController->SetTextL( iList->At(index)->ItemText() );
-        iPopupController->ShowInfoPopupNote();    
+        iPopupController->ShowInfoPopupNote();
         }
     }
 

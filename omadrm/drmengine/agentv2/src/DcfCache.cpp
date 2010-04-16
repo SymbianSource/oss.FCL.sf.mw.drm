@@ -22,7 +22,7 @@
 #include <rijndael.h>
 #include "DcfCache.h"
 #include "DcfCommon.h"
-#include "DrmRightsClient.h"
+#include "DRMRightsClient.h"
 
 // ============================ MEMBER FUNCTIONS ===============================
 
