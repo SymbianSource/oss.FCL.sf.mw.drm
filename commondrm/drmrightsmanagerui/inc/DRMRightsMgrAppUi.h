@@ -25,7 +25,9 @@
 #include <AknProgressDialog.h>
 #include <apparc.h>
 #include <DRMRightsClient.h>
+#include <drmconstraint.h>
 
+#include "drmclockclient.h"
 #include "DrmViewItems.h"
 
 #include "DRMRightsManager.hrh"
@@ -173,9 +175,42 @@ class CDRMRightsMgrAppUi :  public  CAknViewAppUi,
         void CheckIndividualConstraint( const TDesC8& aContentURI,
                                         TBool& aIndividualConstraint,
                                         TBool& aUsageAllowed );
+        
+        /**
+        * Checks the composition of best rights to be shown in the details view.
+        * Leaves with KErrNotFound if no rights are found.
+        * @param aContentURI            ContentURI for object to be opened when
+        *                               application is launched
+        * @param aRights                Pointer to instance of CDRMRights for
+        *                               storing the rights                                                            
+        */                               
+        void FindBestCompositionRightsL( const TDesC8& aContentURI,
+                                         CDRMRights*& aRights ); 
 
-
-
+        /**
+        * Compares the permissions in the the permission list one by one and 
+        * constraint by constraint and stores the best constraint to the given 
+        * composition permission. The function should be called only for a list of 
+        * valid permissions. Puts the composition permission to cleanup stack. 
+        * @param aCompositionPermission Permission which includes a composition of best 
+        *                               constraints (or full rights information) from 
+        *                               the given permission list.                                 
+        * @param aPermissionList        List which includes permissions to be checked
+        *                               constraint by constraint in order to create the
+        *                               best composition permission.                                                                                          
+        */                  
+        void CheckBetterPermissionsAndStoreCompositionLC( 
+                CDRMPermission*& aCompositionPermission,
+                RPointerArray<CDRMPermission>& aList );
+        /**
+        * Compares two permissions, and returns ETrue if aNewOne is more suitable
+        * for the usage. Assumes both are valid, i.e. not expired.
+        * @param aNewOne                New constraint to be compared to the old one                             
+        * @param aOldOne                Old constraint to be compared to the new one 
+        */
+        TBool BetterPermission( const CDRMConstraint& aNewOne,
+                                const CDRMConstraint& aOldOne );
+                                                    
     public: // New functions
         /**
         * @param aContentURI    ContentURI for object to be opened when
@@ -390,7 +425,10 @@ class CDRMRightsMgrAppUi :  public  CAknViewAppUi,
         // update the details view when returning to details view from another
         // application
         TBool iForegroundHasBeenActive;
-
+        
+        // Drm clock client
+        RDRMClockClient iClockClient;
+        
     };
 
 // Include inline functions

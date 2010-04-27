@@ -841,9 +841,7 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                                     TInt aIntYrs, TInt aIntMon, TInt aIntDay,
                                     TInt aIntHrs, TInt aIntMin, TInt aIntSec )
     {
-    // Only the first meaningful data will be shown
-    TInt numOfData = 0;
-
+    
     CDesCArrayFlat* strings = new ( ELeave ) CDesCArrayFlat( 1 );
     CleanupStack::PushL( strings );
 

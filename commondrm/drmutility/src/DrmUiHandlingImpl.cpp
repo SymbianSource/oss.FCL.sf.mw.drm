@@ -3828,21 +3828,8 @@ void DRM::CDrmUiHandlingImpl::CreateLaunchParamL(
             KDRMUtilityDebugPanicCode ) );
     _LIT( KMarker, "\x00" );
 
-    RPointerArray<CDRMPermission> uriList;
     TPtr ptr( NULL, 0 );
-
     TInt localId( 0 );
-    TInt err( KErrNone );
-
-        TRAP( err, iOmaClient.GetDBEntriesL( *aUrl, uriList ) );
-
-    if ( uriList.Count() == 1 )
-        {
-        localId = ( uriList[0] )->iUniqueID;
-        }
-
-    uriList.ResetAndDestroy();
-    uriList.Close();
 
     // MaxInt will fit into 10 characters
     HBufC* localIDBuf( HBufC::NewLC( KIntegerMaxLen ) );
