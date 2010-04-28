@@ -13,29 +13,36 @@
 # Description: DRM Crypto Library build configuration
 #
 
+ifeq ($(_CRYPTOPREP_FLM_),)
+# first instance of this FLM
+_CRYPTOPREP_FLM_:= 1
+
 TMPROOT:=$(subst \,/,$(EPOCROOT))
 EPOCROOT:=$(patsubst %/,%,$(TMPROOT))/
 
-CREATABLEPATH:=$(EXTENSION_ROOT)/../drmengine/drmcrypto/build
-CLEANTARGETS:=$(CREATABLEPATH)/cmlacrypto.cpp $(CREATABLEPATH)/omacrypto.cpp
+# NB: abspath doesn't like Windows drive letters
+CRYPTO_SOURCE_DRIVE:=$(firstword $(subst :, ,$(EXTENSION_ROOT)))
+ifeq ($(CRYPTO_SOURCE_DRIVE),$(EXTENSION_ROOT))
+CREATABLEPATH:=$(abspath $(EXTENSION_ROOT)/../drmengine/drmcrypto/build))
+else
+CRYPTO_ABSPATH:=$(abspath $(subst $(CRYPTO_SOURCE_DRIVE):,,$(EXTENSION_ROOT)/../drmengine/drmcrypto/build))
+CREATABLEPATH:=$(CRYPTO_SOURCE_DRIVE):$(CRYPTO_ABSPATH)
+endif
 
 crypto_files:=$(wildcard $(EXTENSION_ROOT)/../drmengine/drmcrypto/CMLA/*.cpp)
-
 
 GUARD:=done_$(call sanitise,$(CLEANTARGETS))
 ifeq ($($(GUARD)),)
 $(GUARD):=1
 
-BITMAP :: $(CREATABLEPATH)
-
 ifeq ($(crypto_files),)
-	$(GNUCP) $(CREATABLEPATH)/../stub/CmlaCryptoStub.cpp $(CREATABLEPATH)/cmlacrypto.cpp
+CMLA_CRYPTO_SOURCE:=$(CREATABLEPATH)/../stub/CmlaCryptoStub.cpp
 else
-	$(GNUCP) $(CREATABLEPATH)/../CMLA/CmlaCrypto.cpp $(CREATABLEPATH)/cmlacrypto.cpp
+CMLA_CRYPTO_SOURCE:=$(CREATABLEPATH)/../CMLA/CmlaCrypto.cpp
 endif
-	$(GNUCP) $(CREATABLEPATH)/../src/OmaCrypto.cpp $(CREATABLEPATH)/omacrypto.cpp
-	$(GNUCHMOD) u+w $(CREATABLEPATH)/cmlacrypto.cpp
-	$(GNUCHMOD) u+w $(CREATABLEPATH)/omacrypto.cpp
+
+$(CREATABLEPATH)/cmlacrypto.cpp: $(CMLA_CRYPTO_SOURCE)
+	$(GNUCP) $< $@
 
 # Create dirs
 $(call makepath,$(CREATABLEPATH))
@@ -43,11 +50,10 @@ $(call makepath,$(CREATABLEPATH))
 ## Clean up
 $(eval $(call GenerateStandardCleanTarget,$(CLEANTARGETS)))
 
-## What
-$(eval $(call whatmacro,$(CLEANTARGETS)))
-
+$(info <debug>$(PLATFORM) $(CFG), selecting $(CMLA_CRYPTO_SOURCE)</debug>)
 
 else
-$(info <debug>$(PLATFORM) $(CFG), up-to-date $(CLEANTARGETS)</debug>)
+$(info <debug>$(PLATFORM) $(CFG), already handled $(CMLA_CRYPTO_SOURCE)</debug>)
+# FLM already included - don't duplicate the targets
 
 endif
