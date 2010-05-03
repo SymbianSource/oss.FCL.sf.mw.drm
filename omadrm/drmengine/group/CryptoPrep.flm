@@ -31,10 +31,6 @@ endif
 
 crypto_files:=$(wildcard $(EXTENSION_ROOT)/../drmengine/drmcrypto/CMLA/*.cpp)
 
-GUARD:=done_$(call sanitise,$(CLEANTARGETS))
-ifeq ($($(GUARD)),)
-$(GUARD):=1
-
 ifeq ($(crypto_files),)
 CMLA_CRYPTO_SOURCE:=$(CREATABLEPATH)/../stub/CmlaCryptoStub.cpp
 else
