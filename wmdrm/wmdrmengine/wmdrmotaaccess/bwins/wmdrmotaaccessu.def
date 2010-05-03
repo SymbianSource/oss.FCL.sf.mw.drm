@@ -1,0 +1,9 @@
+EXPORTS
+	??1CWmDrmOtaAccess@@UAE@XZ @ 1 NONAME ; CWmDrmOtaAccess::~CWmDrmOtaAccess(void)
+	?NewL@CWmDrmOtaAccess@@SAPAV1@XZ @ 2 NONAME ; class CWmDrmOtaAccess * CWmDrmOtaAccess::NewL(void)
+	?NewLC@CWmDrmOtaAccess@@SAPAV1@XZ @ 3 NONAME ; class CWmDrmOtaAccess * CWmDrmOtaAccess::NewLC(void)
+	?HandleLicenseResponseL@CWmDrmOtaAccess@@QAEXABVTDesC8@@@Z @ 4 NONAME ; void CWmDrmOtaAccess::HandleLicenseResponseL(class TDesC8 const &)
+	?GetLicenseChallengeL@CWmDrmOtaAccess@@QAEXABVTDesC8@@AAPAVHBufC8@@AAVTRequestStatus@@@Z @ 5 NONAME ; void CWmDrmOtaAccess::GetLicenseChallengeL(class TDesC8 const &, class HBufC8 * &, class TRequestStatus &)
+	?HandleLicenseResponseL@CWmDrmOtaAccess@@QAEXABVTDesC8@@AAVTRequestStatus@@@Z @ 6 NONAME ; void CWmDrmOtaAccess::HandleLicenseResponseL(class TDesC8 const &, class TRequestStatus &)
+	?GetLicenseChallengeL@CWmDrmOtaAccess@@QAEXABVTDesC8@@AAPAVHBufC8@@@Z @ 7 NONAME ; void CWmDrmOtaAccess::GetLicenseChallengeL(class TDesC8 const &, class HBufC8 * &)
+

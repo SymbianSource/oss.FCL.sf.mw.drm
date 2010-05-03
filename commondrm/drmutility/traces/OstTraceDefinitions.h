@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2005-2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -11,14 +11,13 @@
 *
 * Contributors:
 *
-* Description:  IBY file
+* Description: 
 *
 */
-
-
-#ifndef __DRMHELPER_IBY__
-#define __DRMHELPER_IBY__
-
-file=ABI_DIR\BUILD_DIR\DRMHelper.dll            SHARED_LIB_DIR\DRMHelper.dll
-
+#ifndef __OSTTRACEDEFINITIONS_H__
+#define __OSTTRACEDEFINITIONS_H__
+// OST_TRACE_COMPILER_IN_USE flag has been added by Trace Compiler
+// REMOVE BEFORE CHECK-IN TO VERSION CONTROL
+// #define OST_TRACE_COMPILER_IN_USE
+#include <OpenSystemTrace.h>
 #endif

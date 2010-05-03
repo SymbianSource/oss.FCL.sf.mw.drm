@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2005-2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -11,14 +11,19 @@
 *
 * Contributors:
 *
-* Description:  IBY file
+* Description:
+*  bld.inf
 *
 */
 
+#include <platform_paths.hrh>
 
-#ifndef __DRMHELPER_IBY__
-#define __DRMHELPER_IBY__
+PRJ_EXPORTS
+../rom/wmdrmotaaccess.iby      CORE_MW_LAYER_IBY_EXPORT_PATH( wmdrmotaaccess.iby )
 
-file=ABI_DIR\BUILD_DIR\DRMHelper.dll            SHARED_LIB_DIR\DRMHelper.dll
+PRJ_PLATFORMS
+DEFAULT
 
-#endif
+PRJ_MMPFILES
+wmdrmotaaccess.mmp
+

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2004-2006 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2004-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -22,7 +22,7 @@
 #include <e32base.h>
 #include <ConeResLoader.h>
 
-class CDRMHelperDMgrWrapper;
+class CDrmUtilityDmgrWrapper;
 
 /**
  *  This class encapsulates Download manager functionality.
@@ -33,7 +33,7 @@ class CDRMHelperDMgrWrapper;
 NONSHARABLE_CLASS(CDrmHelperDownloadManager) : public CBase
     {
 public:
-    
+
     static CDrmHelperDownloadManager* NewL();
     virtual ~CDrmHelperDownloadManager();
 
@@ -46,12 +46,12 @@ public:
     void DownloadAndHandleRoapTriggerL( const HBufC8* aUrl, CCoeEnv& aCoeEnv );
 
     void DownloadAndHandleRoapTriggerL( const HBufC8* aUrl );
-    
+
     HBufC8* GetErrorUrlL();
 
 
 protected:
-            
+
 private:
 
     CDrmHelperDownloadManager();
@@ -60,10 +60,10 @@ private:
 private:
 
     /**
-	 * Download manager handler
-	 */
+     * Download manager handler
+     */
     RLibrary iDMgrDll;
-    CDRMHelperDMgrWrapper* iDMgrHandler;
+    CDrmUtilityDmgrWrapper* iDMgrHandler;
     };
 
-#endif      // CDRMHELPERDOWNLOADMANAGER_H   
+#endif      // CDRMHELPERDOWNLOADMANAGER_H

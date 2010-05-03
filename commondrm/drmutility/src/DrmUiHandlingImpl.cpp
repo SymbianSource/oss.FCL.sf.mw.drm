@@ -17,13 +17,6 @@
 
 // INCLUDE FILES
 
-// connection
-#include <cmconnectionmethod.h>
-#include <cmdestination.h>
-#include <cmconnectionmethoddef.h>
-#include <cmmanager.h>
-#include <sacls.h>
-#include <utf.h>
 
 // publish & subscribe
 #include <e32property.h>
@@ -35,11 +28,6 @@
 #include <apgtask.h>
 #include <avkon.hrh>
 #include <aknenv.h>
-
-// browser
-#ifdef __SERIES60_NATIVE_BROWSER
-#include <BrowserUiSDKCRKeys.h>
-#endif
 
 // caf
 #include <caf/data.h>
@@ -70,6 +58,13 @@
 #include <drmutilitytypes.h>
 #include <drmasyncobserver.h>
 #include <drmhandleerrorobserver.h>
+
+//connectivity logic
+#include <cmconnectionmethod.h> // RCmConnectionMethod
+#include <cmdestination.h> // RCmDestination
+#include <cmmanager.h> // RCmManager
+
+
 
 #ifdef _DEBUG
 #include <e32debug.h>
@@ -104,14 +99,6 @@ const TInt KCommandHandleUrlFile( 7 );
 const TInt KCommandHandleUrlData( 8 );
 const TInt KCommandAvailableUrlsFile( 9 );
 const TInt KCommandAvailableUrlsData( 10 );
-// browser
-#ifndef __SERIES60_NATIVE_BROWSER
-const TUid KCRUidBrowser =
-    {0x10008D39};
-const TUint32 KBrowserDefaultAccessPoint = 0x0000000E;
-const TUint32 KBrowserAccessPointSelectionMode = 0x0000001E;
-const TUint32 KBrowserNGDefaultSnapId = 0x00000053;
-#endif
 
 _LIT( KEncryptedRightsIssuerMatchString, "flk*" );
 
@@ -140,6 +127,67 @@ const TInt KDRMUtilityDebugPanicCode( 1 );
 
 // ============================= LOCAL FUNCTIONS ===============================
 // -----------------------------------------------------------------------------
+// HasDefaultConnectionL
+// Finds default IAP id
+// @return Etrue: valid AP found
+//         EFalse: valid AP not found
+// @leave system wide error codes
+// -----------------------------------------------------------------------------
+//
+LOCAL_C TBool HasDefaultConnectionL()
+    {
+    TBool hasDefault(EFalse);
+    TCmDefConnValue defConn;
+    RCmManager cmManager;
+    cmManager.OpenLC();
+    cmManager.ReadDefConnL(defConn);
+    if (defConn.iType == ECmDefConnConnectionMethod)
+        {
+        cmManager.GetConnectionMethodInfoIntL(defConn.iId,
+                CMManager::ECmIapId);
+        hasDefault = ETrue;
+        }
+    else if (defConn.iType == ECmDefConnDestination)
+        {
+        RCmDestination dest(cmManager.DestinationL(defConn.iId));
+        CleanupClosePushL(dest);
+
+        if (dest.ConnectionMethodCount() <= 0)
+            {
+            User::Leave(KErrNotFound);
+            }
+
+        RCmConnectionMethod cMeth(dest.ConnectionMethodL(0));
+        CleanupClosePushL(cMeth);
+
+        cMeth.GetIntAttributeL(CMManager::ECmIapId);
+        CleanupStack::PopAndDestroy(&cMeth);
+        CleanupStack::PopAndDestroy(&dest);
+        hasDefault = ETrue;
+        }
+    CleanupStack::PopAndDestroy(&cmManager);
+    return hasDefault;
+    }
+
+// -----------------------------------------------------------------------------
+// HasAccessPointsL
+// -----------------------------------------------------------------------------
+//
+LOCAL_C TBool HasAccessPointsL()
+    {
+    TInt apCount(0);
+    RCmManager cmManager;
+    CleanupClosePushL(cmManager);
+    cmManager.OpenL();
+    RArray<TUint32> aps;
+    CleanupClosePushL(aps);
+    cmManager.ConnectionMethodL(aps, EFalse, EFalse, ETrue);
+    apCount = aps.Count();
+    CleanupStack::PopAndDestroy(2, &cmManager); //aps, cmManager
+    return apCount > 0;
+    }
+
+// -----------------------------------------------------------------------------
 // MapToCallError
 // -----------------------------------------------------------------------------
 //
@@ -154,31 +202,18 @@ LOCAL_C inline TInt CheckAndMapToCallError(
     }
 
 // -----------------------------------------------------------------------------
-// IapIdOfDefaultSnapL
-// for trapping purposes only
+// HasDefConn
 // -----------------------------------------------------------------------------
 //
-LOCAL_C TUint32 IapIdOfDefaultSnapL(
-    RCmManager& aCmManager,
-    const TUint32 aDefaultSnap )
+inline TBool HasDefConn()
     {
-    RCmDestination dest( aCmManager.DestinationL( aDefaultSnap ) );
-    CleanupClosePushL( dest );
-    TUint32 iapIdOfDest( 0 );
+    TBool found( EFalse );
 
-    if ( dest.ConnectionMethodCount() <= 0 )
-        {
-        User::Leave( KErrNotFound );
-        }
+    TRAP_IGNORE( found = HasDefaultConnectionL() );
 
-    RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
-    CleanupClosePushL( cMeth );
-
-    iapIdOfDest = cMeth.GetIntAttributeL( CMManager::ECmIapId );
-    CleanupStack::PopAndDestroy( &cMeth );
-    CleanupStack::PopAndDestroy( &dest );
-    return iapIdOfDest;
+    return found;
     }
+
 
 // ============================ MEMBER FUNCTIONS ===============================
 
@@ -3828,21 +3863,8 @@ void DRM::CDrmUiHandlingImpl::CreateLaunchParamL(
             KDRMUtilityDebugPanicCode ) );
     _LIT( KMarker, "\x00" );
 
-    RPointerArray<CDRMPermission> uriList;
     TPtr ptr( NULL, 0 );
-
     TInt localId( 0 );
-    TInt err( KErrNone );
-
-        TRAP( err, iOmaClient.GetDBEntriesL( *aUrl, uriList ) );
-
-    if ( uriList.Count() == 1 )
-        {
-        localId = ( uriList[0] )->iUniqueID;
-        }
-
-    uriList.ResetAndDestroy();
-    uriList.Close();
 
     // MaxInt will fit into 10 characters
     HBufC* localIDBuf( HBufC::NewLC( KIntegerMaxLen ) );
@@ -4034,7 +4056,7 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
                 R_DRMUTILITY_CONFIRMATION_QUERY );
             }
         }
-    else if ( !BrowserAPDefinedL() )
+    else if ( !(HasDefConn()) )
         {
         buttonCode = EAknSoftkeyNo;
         if ( aShowNotes )
@@ -4047,7 +4069,7 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
 
     if ( buttonCode == EAknSoftkeyYes || buttonCode == EAknSoftkeyOk )
         {
-        TInt APs( APCountL() );
+        TBool APs( HasAccessPointsL() );
         if ( !APs )
             {
             // No AP defined
@@ -4144,68 +4166,6 @@ TBool DRM::CDrmUiHandlingImpl::SilentRightsAllowedL()
     repository->Get( KDRMSettingsSilentRightsAcquisition, value );
     delete repository;
     return !value ? EFalse : ETrue;
-    }
-
-// -----------------------------------------------------------------------------
-// CDrmUiHandlingImpl::BrowserAPDefinedL
-// -----------------------------------------------------------------------------
-//
-TBool DRM::CDrmUiHandlingImpl::BrowserAPDefinedL()
-    {
-    const TInt KDestinationSelectionMode( 2 );
-    TInt err( KErrNone );
-    TInt ap( 0 );
-    TInt alwaysAsk( 0 );
-    TInt defaultSnap( 0 );
-
-    CRepository* repository( CRepository::NewL( KCRUidBrowser ) );
-    repository->Get( KBrowserDefaultAccessPoint, ap );
-    repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
-    repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
-    delete repository;
-    if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
-        {
-        alwaysAsk = ETrue;
-        }
-    else
-        {
-        RCmManager cmManager;
-        CleanupClosePushL( cmManager );
-        cmManager.OpenL();
-        if ( !alwaysAsk )
-            {
-                TRAP( err, cmManager.GetConnectionMethodInfoIntL(
-                        ap, CMManager::ECmIapId ) );
-            }
-        else if ( alwaysAsk == KDestinationSelectionMode )
-            {
-                TRAP( err, IapIdOfDefaultSnapL( cmManager, defaultSnap ) );
-            }
-        CleanupStack::PopAndDestroy( &cmManager );
-        if ( !err && ( !alwaysAsk || alwaysAsk == KDestinationSelectionMode ) )
-            {
-            return ETrue;
-            }
-        }
-    return EFalse;
-    }
-
-// -----------------------------------------------------------------------------
-// CDrmUiHandlingImpl::APCountL
-// -----------------------------------------------------------------------------
-//
-TInt DRM::CDrmUiHandlingImpl::APCountL()
-    {
-    TInt apCount( 0 );
-    RCmManager cmManager;
-    CleanupClosePushL( cmManager );
-    cmManager.OpenL();
-    RArray<TUint32> aps;
-    CleanupClosePushL( aps );
-    cmManager.ConnectionMethodL( aps, EFalse, EFalse, ETrue );
-    apCount = aps.Count();
-    CleanupStack::PopAndDestroy( 2, &cmManager ); //aps, cmManager
-    return apCount;
     }
 
 // -----------------------------------------------------------------------------

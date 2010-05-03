@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2005-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2005-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -31,7 +31,7 @@ PRJ_EXPORTS
 ../conf/drmutility_20022D51.crml        MW_LAYER_CRML(drmutility_20022D51.crml)
 ../drmengine/group/CryptoPrep.flm       /epoc32/tools/makefile_templates/s60/CryptoPrep.flm
 ../drmengine/group/CryptoPrep.xml       /epoc32/tools/makefile_templates/s60/CryptoPrep.xml
-../drmengine/server/data/101F51F2.exc		/epoc32/data/Z/private/102073ea/excludes/101F51F2.exc
+../drmengine/server/data/101F51F2.exc   /epoc32/data/Z/private/102073ea/excludes/101F51F2.exc
 
 //Loc files
 // Ro Handler (only used if OMA DRM 1.0 Full is enabled)
@@ -40,37 +40,6 @@ PRJ_EXPORTS
 #endif
 ../drmplugins/drmromtm/loc/RoMtmUi.loc MW_LAYER_LOC_EXPORT_PATH( romtmui.loc )
 
-
-// CMLA RnD keys
-../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/winscw/c/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
-
-../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
-
-../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
-
-../drmengine/keystorage/data/CMLA/DevicePrivateKey.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
-../drmengine/keystorage/data/CMLA/DeviceCert.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
-../drmengine/keystorage/data/CMLA/SigningCert00.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
-../drmengine/keystorage/data/CMLA/SigningCert01.der /epoc32/data/z/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert01.der
-
-// Default UDT Key
-#ifdef __DRM_USER_DATA_TRANSFER
-../drmengine/keystorage/data/UdtCertificate.der /epoc32/winscw/c/private/101F51F2/PKI/UdtCertificate.der
-
-../drmengine/keystorage/data/UdtCertificate.der /epoc32/release/winscw/udeb/z/private/101F51F2/PKI/UdtCertificate.der
-../drmengine/keystorage/data/UdtCertificate.der /epoc32/release/winscw/urel/z/private/101F51F2/PKI/UdtCertificate.der
-
-../drmengine/keystorage/data/UdtCertificate.der /epoc32/data/z/private/101F51F2/PKI/UdtCertificate.der
-#endif
 
 // backup_registration.xml
 ../drmengine/group/backup_registration.xml /epoc32/winscw/c/private/101F51F2/backup_registration.xml
@@ -127,10 +96,6 @@ gnumakefile ../drmengine/group/CryptoPrep.mak // Copy the appropriate DRM crypto
 ../drmengine/group/DcfRepSrv.mmp
 ../drmengine/group/ROAPHandler.mmp
 
-#ifdef __DRM_USER_DATA_TRANSFER
-../drmplugins/drmudtmodule/group/DrmUdtModule.mmp
-#endif
-
 
 // DRMService API
 ../drmengine/group/DrmServiceAPI.mmp
@@ -156,7 +121,6 @@ gnumakefile ../drmengine/group/CryptoPrep.mak // Copy the appropriate DRM crypto
 
 // DRMHelper
 ../drmhelper/group/Drmhelper.mmp
-../drmhelper/group/drmhelperdmgrwrapper.mmp
 
 #ifdef SBSV2
 PRJ_EXTENSIONS

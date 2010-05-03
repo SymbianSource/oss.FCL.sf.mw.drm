@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2007-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -11,41 +11,70 @@
 *
 * Contributors:
 *
-* Description:  Wrapper class for ROAP trigger download via DL mananger
+* Description:
 *
 */
 
 
-#ifndef ROHANDLERDMGRWRAPPER_H
-#define ROHANDLERDMGRWRAPPER_H
+#ifndef CDRMUTILITYDMGRWRAPPER_H
+#define CDRMUTILITYDMGRWRAPPER_H
+
+#include <f32file.h> // RFs
+#include <DownloadMgrClient.h>
+#include <RoapObserver.h> // Roap::MRoapObserver
+#include <AknProgressDialog.h> // MAknProgressDialogCallback CAknProgressDialog
+
 
 namespace Roap
     {
-    class MRoapObserver;
+    class CRoapEng;
     }
 
-class CDRMRights;
-
-class MHttpDownloadMgrObserver;
-
-class MRoHandlerDMgrWrapper
+namespace DRM
     {
+    class CDrmUtilityConnection;
+    }
+class CDRMRights;
+class CEikProgressInfo;
+
+
+/**
+* Environment gate function
+*
+* @since S60 v5.0
+* @return pointer to DMgr handler
+*/
+IMPORT_C TAny* GateFunctionDMgr();
+
+class MDrmUtilityDmgrWrapper
+    {
+
 public:
-    virtual void HandleRoapTriggerL( const TDesC8& aTrigger ) = 0;
+    virtual void DownloadAndHandleRoapTriggerL( const HBufC8* aUrl ) = 0;
+
+    virtual void DownloadAndHandleRoapTriggerL( const HBufC8* aUrl,
+        CCoeEnv& aCoeEnv ) = 0;
+
+    virtual HBufC8* GetErrorUrlL() = 0;
+
     };
 
 /**
 *  Class for downloading ROAP triggers
 *
+*  @lib DrmUtilityDmgrWrapper
+*  @since S60 v5.0
 */
-class CRoHandlerDMgrWrapper:
-    public CActive, // Now active
+class CDrmUtilityDmgrWrapper :
+    public CActive,
     public MHttpDownloadMgrObserver,
     public Roap::MRoapObserver,
-    public MRoHandlerDMgrWrapper
+    public MDrmUtilityDmgrWrapper,
+    public MProgressDialogCallback
     {
 private:
-    enum TMeterState
+
+    enum TDownloadState
         {
         EInit,
         EGetMeteringTrigger,
@@ -58,28 +87,31 @@ private:
         };
 public:
 
-    static CRoHandlerDMgrWrapper* NewL();
+    static CDrmUtilityDmgrWrapper* NewL();
 
-    static CRoHandlerDMgrWrapper* NewLC();
+    static CDrmUtilityDmgrWrapper* NewLC();
 
-    virtual ~CRoHandlerDMgrWrapper();
+    virtual ~CDrmUtilityDmgrWrapper();
 
     /**
     * Download a ROAP trigger from URL and handle it
     *
-    * @since S60 3.2
     * @param aUrl  URL of ROAP trigger
     */
-    void HandleRoapTriggerL( const TDesC8& aTrigger );
+    void DownloadAndHandleRoapTriggerL( const HBufC8* aUrl );
+
+    void DownloadAndHandleRoapTriggerL( const HBufC8* aUrl,
+        CCoeEnv& aCoeEnv );
+
+    HBufC8* GetErrorUrlL();
 
 
-// from base class MHttpDownloadMgrObserver
+    // from base class MHttpDownloadMgrObserver
 
     /**
     * From MHttpDownloadMgrObserver.
     * Handle download manager events
     *
-    * @since S60 3.2
     * @param aDownload the download
     * @param aEvent the event
     */
@@ -211,6 +243,16 @@ public:
     * @leave  System wide error code */
     void PostResponseUrlL( const TDesC8& aPostResponseUrl );
 
+public: // Call back methods of MAknProgressDialogCallback
+
+    /**
+    * ProgressDialog call back method.
+    * Get's called when a dialog is dismissed.
+    *
+    * @param aButtonId ID of the button pressed
+    */
+    void DialogDismissedL( TInt aButtonId );
+
 protected:
     //from Cactive
     virtual void DoCancel();
@@ -223,24 +265,29 @@ private:
     /**
     * C++ default constructor.
     */
-    CRoHandlerDMgrWrapper();
+    CDrmUtilityDmgrWrapper();
 
     void ConstructL();
 
     /**
     * Set the browser default access point to be used
-    *
-    * @since S60 3.0
     */
-    void SetDefaultAccessPointL();
 
-    void DoDownloadRoapTriggerL( TMeterState aNextState );
 
-    void DoSaveRoapTriggerL( TMeterState aNextState );
+    void ShowProgressNoteL( );
 
-    void DoHandleRoapTriggerL( TMeterState aNextState );
+    void RemoveProgressNoteL( );
 
-    void Continue( TMeterState aNextState, TInt aError );
+    void DoConnectL( TDownloadState aNextState );
+
+    void DoDownloadRoapTriggerL( TDownloadState aNextState );
+
+    void DoSaveRoapTriggerL( TDownloadState aNextState );
+
+    void DoHandleRoapTriggerL( TDownloadState aNextState );
+
+    void CompleteToState( TDownloadState aNextState, TInt aError );
+
 private: // data
 
     /**
@@ -260,23 +307,59 @@ private: // data
     TBool iConnectionError;
 
     /**
-    * Post response url for ROAP prUrl, ()
+    * trigger URL
     */
     HBufC8* iTriggerUrl;
 
+    /**
+    * trigger buffer
+    */
     HBufC8* iTriggerBuf;
+
+    TBool iDialogDismissed;
+
+    /**
+    * Progess note dialog and progress info
+    */
+    CAknProgressDialog* iProgressNoteDialog;        // owned
+    CEikProgressInfo* iProgressInfo;                // not owned
+    TInt iCurrentProgressValue;                     // owned
+    TInt iProgressIncrement;                        // owned
+
+    /**
+    * Control environment
+    */
+    CCoeEnv* iCoeEnv;
+
+    /**
+    * Is CoeEnv given
+    */
+    TBool iUseCoeEnv;
+
+    /**
+    * Error url for ROAP temporary error
+    */
+    HBufC8* iErrorUrl;
+
+    /**
+    * Post response url for ROAP prUrl
+    */
+    HBufC8* iPostResponseUrl;
+
     /**
     * IAP (from ROAP or from UI)
     */
     TUint32 iIapId;
 
-    TMeterState iState;
+    TDownloadState iState;
 
     Roap::CRoapEng* iRoapEng;
 
     RFs iFs;
 
     HBufC* iFileName;
+
+    DRM::CDrmUtilityConnection* iConnection;
     };
 
-#endif // ROHANDLERDMGRWRAPPER_H
+#endif // CDRMUTILITYDMGRWRAPPER_H

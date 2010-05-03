@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2004 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -211,7 +211,7 @@ void CDrmStdKeyStorage::ConstructL()
     iFileMan = CFileMan::NewL(iFs);
 
 #ifdef __DRM_OMA2
-    SelectDefaultRootL();
+    TRAP_IGNORE( SelectDefaultRootL() ); // Allow startup anyway.
 #endif
 
     iDeviceSpecificKey.Copy(KDefaultKey);

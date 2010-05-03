@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2005 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2005-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -57,16 +57,11 @@ file=ABI_DIR\BUILD_DIR\DrmRights.DLL                SHARED_LIB_DIR\DrmRights.DLL
 file=ABI_DIR\BUILD_DIR\DrmServerInterfaces.DLL      SHARED_LIB_DIR\DrmServerInterfaces.DLL
 file=ABI_DIR\BUILD_DIR\DrmParsers.DLL               SHARED_LIB_DIR\DrmParsers.DLL
 
-// DRM Rights server 
+// DRM Rights server
 file=ABI_DIR\BUILD_DIR\RightsServer.EXE             PROGRAMS_DIR\RightsServer.EXE
 
 // DRM Service API
 file=ABI_DIR\BUILD_DIR\DrmServiceAPI.dll            SHARED_LIB_DIR\DrmServiceAPI.dll
-
-// DRM UDT Module
-#ifdef __DRM_USER_DATA_TRANSFER
-file=ABI_DIR\BUILD_DIR\DRMUDTMODULE.DLL                SHARED_LIB_DIR\DRMUDTMODULE.DLL
-#endif
 
 // DRM recognizer for protected contents
 #ifdef __DRM
@@ -76,7 +71,7 @@ file=ABI_DIR\BUILD_DIR\DRMUDTMODULE.DLL                SHARED_LIB_DIR\DRMUDTMODU
 ECOM_PLUGIN(RECDRM.DLL,101F51F4.RSC)
 
 // RFS exclude list
-data=DATAZ_\private\102073ea\excludes\101F51F2.exc	private\102073ea\excludes\101F51F2.exc
+data=DATAZ_\private\102073ea\excludes\101F51F2.exc      private\102073ea\excludes\101F51F2.exc
 
 #endif
 
@@ -142,23 +137,11 @@ ECOM_PLUGIN(HTTPFilterDRM.dll,101F9710.rsc)
 // #include <DRMEncryptor.iby>
 // #include <DRMEncryptorResources.iby>
 
-// Default CMLA RnD Test Keys
-
-data=ZPRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\DevicePrivateKey.der PRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\DevicePrivateKey.der
-data=ZPRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\DeviceCert.der PRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\DeviceCert.der
-data=ZPRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\SigningCert00.der PRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\SigningCert00.der
-data=ZPRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\SigningCert01.der PRIVATE\101F51F2\PKI\96b7db19a4d05a4bc8e3a51c885088e679354469\SigningCert01.der
-
-// Default UDT key
-#ifdef __DRM_USER_DATA_TRANSFER
-data=ZPRIVATE\101F51F2\PKI\UdtCertificate.der	PRIVATE\101F51F2\PKI\UdtCertificate.der
-#endif
-
 // Backup registration
-data=ZPRIVATE\101F51F2\backup_registration.xml	PRIVATE\101F51F2\backup_registration.xml
+data=ZPRIVATE\101F51F2\backup_registration.xml  PRIVATE\101F51F2\backup_registration.xml
 
-// SIS stub for agent upgrades	
-data=ZSYSTEM\Install\OmaDrm_Stub.SIS			\system\install\OmaDrm_Stub.SIS
+// SIS stub for agent upgrades
+data=ZSYSTEM\Install\OmaDrm_Stub.SIS                    \system\install\OmaDrm_Stub.SIS
 
 #endif // DRM
 #endif // __DRM5_IBY__

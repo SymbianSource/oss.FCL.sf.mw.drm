@@ -113,8 +113,9 @@ LIBRARY     DrmServerInterfaces.lib
 LIBRARY     DcfRep.lib
 LIBRARY     caf.lib                     // Embedding domain ROs
 LIBRARY     cafutils.lib                // Embedding domain ROs
-LIBRARY     centralrepository.lib       // Browser default AP
+LIBRARY     centralrepository.lib       // CRepository
 LIBRARY     cmmanager.lib
+LIBRARY     extendedconnpref.lib netmeta.lib // TExtendedConnPref
 
 LIBRARY     SysUtil.lib
 LIBRARY     HttpFilterCommon.lib

@@ -69,3 +69,5 @@ END
 #endif // __WINDOWS_MEDIA_DRM
 
 #include "../wmdrmengine/wmdrmaccess/group/bld.inf"
+
+#include "../wmdrmengine/wmdrmotaaccess/group/bld.inf"

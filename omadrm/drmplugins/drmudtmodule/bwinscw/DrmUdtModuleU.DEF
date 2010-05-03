@@ -1,6 +1,0 @@
-EXPORTS
-	??1CDrmUdtHandler@@UAE@XZ @ 1 NONAME ; CDrmUdtHandler::~CDrmUdtHandler(void)
-	?DoUserDataTransferL@CDrmUdtHandler@@QAEXABVTDesC8@@0PAVMDrmUdtObserver@@AAVTRequestStatus@@@Z @ 2 NONAME ; void CDrmUdtHandler::DoUserDataTransferL(class TDesC8 const &, class TDesC8 const &, class MDrmUdtObserver *, class TRequestStatus &)
-	?NewL@CDrmUdtHandler@@SAPAV1@XZ @ 3 NONAME ; class CDrmUdtHandler * CDrmUdtHandler::NewL(void)
-	?SetPreferredIap@CDrmUdtHandler@@QAEXK@Z @ 4 NONAME ; void CDrmUdtHandler::SetPreferredIap(unsigned long)
-

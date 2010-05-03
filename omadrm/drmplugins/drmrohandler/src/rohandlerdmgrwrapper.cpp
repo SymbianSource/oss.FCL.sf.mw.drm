@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2008 - 2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2008 - 2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -20,10 +20,6 @@
 #endif
 #include <centralrepository.h>
 #include <cdblen.h>
-
-#ifdef __SERIES60_NATIVE_BROWSER
-#include <BrowserUiSDKCRKeys.h>
-#endif
 
 #include <cmconnectionmethod.h>
 #include <cmdestination.h>
@@ -46,6 +42,8 @@
 #include "RoapSyncWrapper.h"
 
 #include "rohandlerdmgrwrapper.h"
+#include "cleanupresetanddestroy.h"
+#include "buffercontainers.h"
 
 #ifdef _DEBUG
 #define DRMDEBUG( a ) RDebug::Print( a )
@@ -93,9 +91,6 @@ namespace RoHdlrDMgrWrDebugLiterals
     _LIT( KMethConstructL, "ConstructL" );
     _LIT( KMethNewL, "NewL" );
     _LIT( KMethNewLC, "NewLC" );
-    _LIT( KMethDownloadAndHandleRoapTriggerL, "DownloadAndHandleRoapTriggerL" );
-    _LIT( KMethDownloadAndHandleRoapTriggerFromPrUrlL,
-        "DownloadAndHandleRoapTriggerFromPrUrlL" );
     _LIT( KMethDoDownloadAndHandleRoapTriggerL,
         "DoDownloadAndHandleRoapTriggerL" );
     _LIT( KFormatDoDlHdlRoapTrigL, "DoDownloadAndHandleRoapTriggerL: %S" );
@@ -103,7 +98,6 @@ namespace RoHdlrDMgrWrDebugLiterals
     _LIT( KStrDlFinished, "download finished" );
 
     _LIT( KMethSetDefaultAccessPointL, "SetDefaultAccessPointL" );
-    _LIT( KMiIapId, "iIapId" );
 
     _LIT( KMethHandleDMgrEventL, "HandleDMgrEventL" );
     _LIT( KFormatMethHandleDMgrEventL, "HandleDMgrEventL %S" );
@@ -135,32 +129,12 @@ namespace RoHdlrDMgrWrDebugLiterals
 //#define LOG2( a, b )
 #endif
 
-#ifndef __SERIES60_NATIVE_BROWSER
-const TUid KCRUidBrowser =
-    {0x10008D39};
-const TUint32 KBrowserDefaultAccessPoint = 0x0000000E;
-const TUint32 KBrowserAccessPointSelectionMode = 0x0000001E;
-const TUint32 KBrowserNGDefaultSnapId = 0x00000053;
-#endif
-
 // CONSTANTS
 #ifndef RD_MULTIPLE_DRIVE
 _LIT( KHelperTriggerFilePath, "d:\\" );
 #endif
 
 // ============================== LOCAL FUNCTIONS ==============================
-
-// ---------------------------------------------------------------------------
-// DoResetAndDestroy
-// Does RPointerArray< typename >->ResetAndDestroy() for the given array aPtr.
-// ---------------------------------------------------------------------------
-//
-template< typename elemType >
-LOCAL_C void DoResetAndDestroy( TAny* aPtr )
-    {
-    ( reinterpret_cast< RPointerArray< elemType >* >( aPtr ) )->
-        ResetAndDestroy();
-    }
 
 // ---------------------------------------------------------------------------
 // DeleteHttpDowload
@@ -188,34 +162,6 @@ LOCAL_C void UpdateBufferL( bufType*& aTargetBuf, const descType& aSourceBuf )
         aTargetBuf = aSourceBuf.AllocL();
         }
     }
-
-// ---------------------------------------------------------------------------
-// IapIdOfDefaultSnapL
-// for trapping purposes only
-// ---------------------------------------------------------------------------
-//
-LOCAL_C TUint32 IapIdOfDefaultSnapL(
-    RCmManager& aCmManager,
-    const TUint32 aDefaultSnap )
-    {
-    RCmDestination dest( aCmManager.DestinationL( aDefaultSnap ) );
-    CleanupClosePushL( dest );
-    TUint32 iapIdOfDest( 0 );
-
-    if ( dest.ConnectionMethodCount() <= 0 )
-        {
-        User::Leave( KErrNotFound );
-        }
-
-    RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
-    CleanupClosePushL( cMeth );
-
-    iapIdOfDest = cMeth.GetIntAttributeL( CMManager::ECmIapId );
-    CleanupStack::PopAndDestroy( &cMeth );
-    CleanupStack::PopAndDestroy( &dest );
-    return iapIdOfDest;
-    }
-
 
 // ============================= MEMBER FUNCTIONS ==============================
 
@@ -301,7 +247,7 @@ CRoHandlerDMgrWrapper::~CRoHandlerDMgrWrapper()
     }
 
 // ---------------------------------------------------------------------------
-// CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerL
+// CRoHandlerDMgrWrapper::HandleRoapTriggerL
 // ---------------------------------------------------------------------------
 //
 void CRoHandlerDMgrWrapper::HandleRoapTriggerL( const TDesC8& aTrigger )
@@ -317,42 +263,6 @@ void CRoHandlerDMgrWrapper::HandleRoapTriggerL( const TDesC8& aTrigger )
     }
 
 // ---------------------------------------------------------------------------
-// CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerL
-// ---------------------------------------------------------------------------
-//
-void CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerL( const HBufC8* aUrl )
-    {
-    DRMDEBUGMETHOD(
-        RoHdlrDMgrWrDebugLiterals::KMethDownloadAndHandleRoapTriggerL() );
-    if ( iState != EInit || iWait.IsStarted() )
-        {
-        User::Leave( KErrNotReady );
-        }
-
-    UpdateBufferL< HBufC8, TDesC8 >( iTriggerUrl, *aUrl );
-    Continue( EGetMeteringTrigger, KErrNone );
-    iWait.Start();
-    }
-
-// ---------------------------------------------------------------------------
-// CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerFromPrUrlL
-// ---------------------------------------------------------------------------
-//
-void CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerFromPrUrlL(
-        const HBufC8* aUrl )
-    {
-    DRMDEBUGMETHOD( RoHdlrDMgrWrDebugLiterals::KMethDownloadAndHandleRoapTriggerFromPrUrlL() );
-    if ( iState != EInit || iWait.IsStarted() )
-        {
-        User::Leave( KErrNotReady );
-        }
-
-    UpdateBufferL< HBufC8, TDesC8 >( iTriggerUrl, *aUrl );
-    Continue( EGetPrUrlTrigger, KErrNone );
-    iWait.Start();
-    }
-
-// ---------------------------------------------------------------------------
 // CRoHandlerDMgrWrapper::DoDownloadRoapTriggerL
 // ---------------------------------------------------------------------------
 //
@@ -360,7 +270,7 @@ void CRoHandlerDMgrWrapper::DoDownloadRoapTriggerL( TMeterState aNextState )
     {
     RFile roapTrigger;
     TBool result( EFalse );
-    TFileName triggerFileName;
+    DRM::CFileNameContainer* triggerFileName(NULL);
 
     DRMDEBUGMETHOD( RoHdlrDMgrWrDebugLiterals::KMethDoDownloadAndHandleRoapTriggerL() );
     // If no Trigger URL then nothing to download. So finish transaction
@@ -370,10 +280,11 @@ void CRoHandlerDMgrWrapper::DoDownloadRoapTriggerL( TMeterState aNextState )
         return;
         }
 
+    triggerFileName=DRM::CFileNameContainer::NewLC();
 #ifndef RD_MULTIPLE_DRIVE
 
     User::LeaveIfError( roapTrigger.Temp(
-            iFs, KHelperTriggerFilePath, triggerFileName, EFileWrite ) );
+            iFs, KHelperTriggerFilePath, triggerFileName->iBuffer, EFileWrite ) );
 
 #else //RD_MULTIPLE_DRIVE
     _LIT( KDrive, "%c:\\" );
@@ -382,15 +293,20 @@ void CRoHandlerDMgrWrapper::DoDownloadRoapTriggerL( TMeterState aNextState )
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRam, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
 
-    TFileName helperTriggerFilePath;
+    DRM::CFileNameContainer*
+        helperTriggerFilePath( DRM::CFileNameContainer::NewLC() );
 
-    helperTriggerFilePath.Format( KDrive, ( TUint )driveLetter );
+    helperTriggerFilePath->iBuffer.Format( KDrive, ( TUint )driveLetter );
 
-    User::LeaveIfError( roapTrigger.Temp( iFs, helperTriggerFilePath,
-            triggerFileName, EFileWrite ) );
+    User::LeaveIfError( roapTrigger.Temp( iFs, helperTriggerFilePath->iBuffer,
+                triggerFileName->iBuffer, EFileWrite ) );
+    CleanupStack::PopAndDestroy( helperTriggerFilePath );
+    helperTriggerFilePath=NULL;
 
 #endif
-    UpdateBufferL< HBufC, TFileName >( iFileName, triggerFileName );
+    UpdateBufferL< HBufC, TFileName >( iFileName, triggerFileName->iBuffer );
+    CleanupStack::PopAndDestroy( triggerFileName );
+    triggerFileName=NULL;
 
     // create and start download
     RHttpDownload& download = iDlMgr.CreateDownloadL( *iTriggerUrl, result );
@@ -504,9 +420,7 @@ void CRoHandlerDMgrWrapper::DoHandleRoapTriggerL( TMeterState aNextState )
     Roap::TDomainOperation domainOperation;
 
     RPointerArray< HBufC8 > contentIds;
-
-    TCleanupItem cleanup( DoResetAndDestroy< HBufC8 >, &contentIds );
-    CleanupStack::PushL( cleanup );
+    CleanupResetAndDestroyPushL( contentIds );
 
     iRoapEng = Roap::CRoapEng::NewL();
 
@@ -535,55 +449,11 @@ void CRoHandlerDMgrWrapper::DoHandleRoapTriggerL( TMeterState aNextState )
 //
 void CRoHandlerDMgrWrapper::SetDefaultAccessPointL()
     {
-    const TInt KDestinationSelectionMode( 2 );
-    CRepository* repository( NULL );
-    TInt ap( 0 );
-    TInt alwaysAsk( 0 );
-    TUint32 iapd32( 0 );
-    TInt defaultSnap( 0 );
-    TInt err( KErrNone );
-
     DRMDEBUGMETHOD( RoHdlrDMgrWrDebugLiterals::KMethSetDefaultAccessPointL() );
 
-    if ( !iIapId )
+    if ( iIapId )
         {
-        repository = CRepository::NewL( KCRUidBrowser );
-        CleanupStack::PushL( repository );
-        repository->Get( KBrowserDefaultAccessPoint, ap );
-        repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
-        repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
-        if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
-            {
-            alwaysAsk = ETrue;
-            }
-        else
-            {
-            RCmManager cmManager;
-            cmManager.OpenLC();
-            if ( !alwaysAsk )
-                {
-                TRAP( err, iapd32 = cmManager.GetConnectionMethodInfoIntL(
-                        ap, CMManager::ECmIapId ) );
-                }
-            else if ( alwaysAsk == KDestinationSelectionMode )
-                {
-                TRAP( err, iapd32 = IapIdOfDefaultSnapL(
-                        cmManager, defaultSnap ) );
-                }
-            CleanupStack::PopAndDestroy( &cmManager );
-            }
-        if ( !err && ( !alwaysAsk || alwaysAsk == KDestinationSelectionMode ) )
-            {
-            iIapId = iapd32;
-            DRMDEBUG3( RoHdlrDMgrWrDebugLiterals::KFormatMembValInt(),
-                &RoHdlrDMgrWrDebugLiterals::KMiIapId(), iIapId );
-            err = iDlMgr.SetIntAttribute( EDlMgrIap, iapd32 );
-            }
-        CleanupStack::PopAndDestroy( repository );
-        }
-    else
-        {
-        err = iDlMgr.SetIntAttribute( EDlMgrIap, iIapId );
+        iDlMgr.SetIntAttribute( EDlMgrIap, iIapId );
         }
     }
 

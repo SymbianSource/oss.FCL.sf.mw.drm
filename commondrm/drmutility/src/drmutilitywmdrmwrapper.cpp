@@ -31,15 +31,12 @@
 #include <avkon.hrh>
 
 // access point utils
-#include <centralrepository.h>
+
 #include <cdblen.h>
 #include <cmconnectionmethod.h>
 #include <cmdestination.h>
 #include <cmconnectionmethoddef.h>
 #include <cmmanager.h>
-#ifdef __SERIES60_NATIVE_BROWSER
-#include <BrowserUiSDKCRKeys.h>
-#endif
 
 #include    <wmdrmagent.h> // for WMDRM file details view
 #include    <drmutilitytypes.h>
@@ -62,12 +59,6 @@
 // CONSTANTS
 const TInt KMaxUrlLength( 1024 );
 const TInt KMaxUrlSanityLength( 102400 );
-
-#ifndef __SERIES60_NATIVE_BROWSER
-const TUid KCRUidBrowser = {0x10008D39};
-const TUint32 KBrowserDefaultAccessPoint = 0x0000000E;
-const TUint32 KBrowserAccessPointSelectionMode = 0x0000001E;
-#endif
 
 #ifdef _DEBUG
 // debug panic
@@ -797,56 +788,38 @@ void DRM::CDrmUtilityWMDrmWrapper::SilentDlaLicenseAcquisitionL(
 //
 TInt DRM::CDrmUtilityWMDrmWrapper::DefaultAccessPointL()
     {
-    const TInt KDestinationSelectionMode( 2 );
-    CRepository* repository( NULL );
-    TInt ap( 0 );
-    TInt alwaysAsk( 0 );
+    //Fetch default connection
     TUint32 iapd32( 0 );
-    TInt defaultSnap( 0 );
-
-    repository = CRepository::NewL( KCRUidBrowser );
-    CleanupStack::PushL( repository );
-    repository->Get( KBrowserDefaultAccessPoint, ap );
-    repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
-    repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
-    CleanupStack::PopAndDestroy( repository );
-
-    if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
+    TCmDefConnValue defConn;
+    RCmManager cmManager;
+    cmManager.OpenLC();
+    cmManager.ReadDefConnL(defConn);
+    if (defConn.iType == ECmDefConnConnectionMethod)
         {
-        alwaysAsk = ETrue;
+        iapd32=defConn.iId;
+        }
+    else if (defConn.iType == ECmDefConnDestination)
+        {
+        RCmDestination dest( cmManager.DestinationL( defConn.iId ) );
+        CleanupClosePushL( dest );
+
+        if ( dest.ConnectionMethodCount() <= 0 )
+            {
+            User::Leave( KErrNotFound );
+            }
+
+        RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
+        CleanupClosePushL( cMeth );
+
+        iapd32 = cMeth.GetIntAttributeL( CMManager::ECmIapId );
+        CleanupStack::PopAndDestroy( 2, &dest ); //cMeth, dest
         }
     else
         {
-        RCmManager cmManager;
-        cmManager.OpenLC();
-        if ( !alwaysAsk )
-            {
-            iapd32 =
-                cmManager.GetConnectionMethodInfoIntL( ap,
-                                                       CMManager::ECmIapId );
-            }
-        else if ( alwaysAsk == KDestinationSelectionMode )
-            {
-            RCmDestination dest( cmManager.DestinationL( defaultSnap ) );
-            CleanupClosePushL( dest );
-
-            if ( dest.ConnectionMethodCount() <= 0 )
-                {
-                User::Leave( KErrNotFound );
-                }
-
-            RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
-            CleanupClosePushL( cMeth );
-
-            iapd32 = cMeth.GetIntAttributeL( CMManager::ECmIapId );
-            CleanupStack::PopAndDestroy( 2, &dest ); //cMeth, dest
-            }
-        CleanupStack::PopAndDestroy( &cmManager );
-        }
-    if ( alwaysAsk && alwaysAsk != KDestinationSelectionMode )
-        {
         User::Leave( KErrAccessDenied );
         }
+    CleanupStack::PopAndDestroy(&cmManager);
+    // End of fetch default connection
     return iapd32;
     }
 

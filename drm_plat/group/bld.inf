@@ -30,6 +30,7 @@
 #include "../drm_agents_api/group/bld.inf"
 #include "../wmdrm_core_api/group/bld.inf"
 #include "../wmdrm_access_api/group/bld.inf"
+#include "../wmdrm_ota_access_api/group/bld.inf"
 
 #if (defined __WINDOWS_MEDIA_DRM)
 #include "../camese_utility_api/group/bld.inf"

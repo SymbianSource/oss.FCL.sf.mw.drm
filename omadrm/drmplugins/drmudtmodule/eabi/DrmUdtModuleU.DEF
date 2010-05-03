@@ -1,9 +1,0 @@
-EXPORTS
-	_ZN14CDrmUdtHandler15SetPreferredIapEm @ 1 NONAME
-	_ZN14CDrmUdtHandler19DoUserDataTransferLERK6TDesC8S2_P15MDrmUdtObserverR14TRequestStatus @ 2 NONAME
-	_ZN14CDrmUdtHandler4NewLEv @ 3 NONAME
-	_ZTI11CDrmUdtConn @ 4 NONAME ; #<TI>#
-	_ZTI14CDrmUdtHandler @ 5 NONAME ; #<TI>#
-	_ZTV11CDrmUdtConn @ 6 NONAME ; #<VT>#
-	_ZTV14CDrmUdtHandler @ 7 NONAME ; #<VT>#
-

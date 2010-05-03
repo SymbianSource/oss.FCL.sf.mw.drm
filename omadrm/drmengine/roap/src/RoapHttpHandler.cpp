@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -21,15 +21,19 @@
 #include <http/thttphdrval.h>
 #include <httpfiltercommonstringsext.h>
 
-#include "RoapHttpHandler.h"
-#include "RoapObserver.h"
-#include "RoapDef.h"
-#include "RoapLog.h"
-
 //#include <CookieFilterInterface.h>
 //#include <uaproffilter_interface.h>
 //#include <HttpFilterProxyInterface.h>
 #include <httpfilteriopinterface.h>
+
+#include "RoapHttpHandler.h"
+#include "RoapConnection.h"
+#include "RoapResponse.h"
+#include "RoapObserver.h"
+#include "RoapDef.h"
+#include "RoapLog.h"
+
+#include "buffercontainers.h"
 
 
 using namespace Roap;
@@ -39,12 +43,8 @@ using namespace Roap;
 // The time out value in HTTP, 30 sec
 LOCAL_D const TInt KRoapTimeoutValue = 60000000;
 
-_LIT8( KTestUserName, "iopvf" );
-_LIT8( KTestPassword, "r72005" );
-/*
-_LIT8( KTestUserName, "moria" );
-_LIT8( KTestPassword, "mellon" );
-*/
+_LIT8( KTestUserName, "" );
+_LIT8( KTestPassword, "" );
 
 // ================= MEMBER FUNCTIONS =======================
 
@@ -564,6 +564,7 @@ void CRoapHttpHandler::MHFRunL( RHTTPTransaction  /* aTransaction */,
             {
             LOG( _L("HTTP event ERedirectRequiresConfirmation received") );
             iTransaction.SubmitL();
+            break;
             }
 
         default:
@@ -641,13 +642,13 @@ void CRoapHttpHandler::HandleResponseHeadersL( RHTTPResponse aHttpResponse )
 
         if ( iResponse->iDataType == TDataType( KMultipartRelatedType ) )
             {
-            TPath tempPath;
-            TFileName fileName;
+            DRM::CPathContainer* tempPath( DRM::CPathContainer::NewLC() );
+            DRM::CFileNameContainer* fileName( DRM::CFileNameContainer::NewLC() );
             TInt maxSize( 0 );
 
             if ( iObserver )
                 {
-                iObserver->ContentDownloadInfoL( tempPath, fileName, maxSize );
+                iObserver->ContentDownloadInfoL( tempPath->iBuffer, fileName->iBuffer, maxSize );
                 }
 
             boundaryStr = srtPool.StringF( HttpFilterCommonStringsExt::EBoundary,
@@ -666,8 +667,10 @@ void CRoapHttpHandler::HandleResponseHeadersL( RHTTPResponse aHttpResponse )
                 LOG( _L("Error: multipart boundary missing") );
                    User::Leave( KErrRoapGeneral );
                 }
-            iResponse->SetDcfPathL( tempPath );
-            iResponse->SetContentNameL( fileName );
+            iResponse->SetDcfPathL( tempPath->iBuffer );
+            iResponse->SetContentNameL( fileName->iBuffer );
+            CleanupStack::PopAndDestroy( fileName );
+            CleanupStack::PopAndDestroy( tempPath );
             iReportBytes = ETrue;
 
             if ( iObserver )

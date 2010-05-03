@@ -39,7 +39,7 @@ template < class T > NONSHARABLE_CLASS( RDRMPointerArray ) : public RPointerArra
         TBool iDoResetAndDestroy;
     };
 
-template < class T > NONSHARABLE_CLASS( CDRMPointerArray ) : public CBase, public RDRMPointerArray< class T >
+template < class T > NONSHARABLE_CLASS( CDRMPointerArray ) : public CBase, public RDRMPointerArray< T >
     {
     public:
         static CDRMPointerArray* NewLC( TInt aGranularity );
