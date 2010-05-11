@@ -56,6 +56,7 @@ LIBRARY         drmserverinterfaces.lib
 LIBRARY         euser.lib efsrv.lib charconv.lib
 LIBRARY         apmime.lib bafl.lib estor.lib InetProtUtil.lib
 LIBRARY         caf.lib
+LIBRARY		featmgr.lib 
 
 #ifdef RD_MULTIPLE_DRIVE
 LIBRARY         platformenv.lib

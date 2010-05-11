@@ -42,7 +42,17 @@ void CDRMSettingsPluginContainer::ConstructL( const TRect& aRect )
     {
     iListBox = new( ELeave ) CAknSettingStyleListBox;
     iModel = CDRMSettingsModel::NewL();
-    BaseConstructL( aRect, R_DRM_SETTINGS_VIEW_TITLE, R_DRM_SETTINGS_LBX );
+    
+    if( iOmadrm2Supported )
+        {
+        BaseConstructL( aRect, R_DRM_SETTINGS_VIEW_TITLE, 
+                R_DRM_SETTINGS_LBX );
+        }
+    else
+        {
+        BaseConstructL( aRect, R_DRM_SETTINGS_VIEW_TITLE, 
+                R_DRM_SETTINGS_LBX_NO_OMA2 );
+        }
     }
 
 // ---------------------------------------------------------------------------
@@ -51,9 +61,11 @@ void CDRMSettingsPluginContainer::ConstructL( const TRect& aRect )
 // Constructor
 // ---------------------------------------------------------------------------
 //
-CDRMSettingsPluginContainer::CDRMSettingsPluginContainer(
-    TBool aWmdrmSupported ) : iWmdrmSupported( aWmdrmSupported )
-    {
+CDRMSettingsPluginContainer::CDRMSettingsPluginContainer( 
+    TBool aWmdrmSupported, 
+    TBool aOmadrm2Supported ) : iWmdrmSupported( aWmdrmSupported ),
+                                iOmadrm2Supported( aOmadrm2Supported )
+    {                         
     }
 
 // ---------------------------------------------------------------------------
@@ -104,8 +116,10 @@ void CDRMSettingsPluginContainer::ConstructListBoxL( TInt aResLbxId )
 void CDRMSettingsPluginContainer::CreateListBoxItemsL()
     {
 #ifdef __DRM_OMA2
-    MakeTransactionTrackingItemL();
-
+    if( iOmadrm2Supported )
+        {
+        MakeTransactionTrackingItemL();
+        
 #ifdef RD_DRM_SILENT_RIGHTS_ACQUISITION
     MakeAutomaticActivationItemL();
 #endif // RD_DRM_SILENT_RIGHTS_ACQUISITION
@@ -113,6 +127,7 @@ void CDRMSettingsPluginContainer::CreateListBoxItemsL()
 #ifdef RD_DRM_METERING
     MakeUsageReportingItemL();
 #endif // RD_DRM_METERING
+        }
 #endif // __DRM_OMA2
 
 
@@ -132,18 +147,27 @@ void CDRMSettingsPluginContainer::UpdateListBoxL( TInt aFeatureId )
         {
 #ifdef __DRM_OMA2
         case EDRMSettingsIdTransactionTracking:
-            MakeTransactionTrackingItemL();
+            if( iOmadrm2Supported )
+                {
+                MakeTransactionTrackingItemL();
+                }
             break;
 
 #ifdef RD_DRM_SILENT_RIGHTS_ACQUISITION
         case EDRMSettingsIdAutomaticActivation:
-            MakeAutomaticActivationItemL();
-            break;
+            if( iOmadrm2Supported )
+                {
+                MakeAutomaticActivationItemL();
+                }
+            break; 
 #endif // RD_DRM_SILENT_RIGHTS_ACQUISITION
 
 #ifdef RD_DRM_METERING
         case EDRMSettingsIdUsageReporting:
-            MakeUsageReportingItemL();
+            if( iOmadrm2Supported )
+                {
+                MakeUsageReportingItemL();
+                }
             break;
 #endif // RD_DRM_METERING
 #endif // __DRM_OMA2

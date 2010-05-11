@@ -148,6 +148,7 @@ LIBRARY         flogger.lib
 LIBRARY         featmgr.lib                 // Feature Manager
 LIBRARY         wmdrmfileserverclient.lib
 LIBRARY         lbs.lib                     // GPS libraries
+LIBRARY         eposindicator.lib           // GPS positioner indicator lib
 #ifdef RD_DRM_METERING
 LIBRARY         random.lib
 #endif

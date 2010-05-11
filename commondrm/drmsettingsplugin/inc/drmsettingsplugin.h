@@ -181,6 +181,10 @@ class CDRMSettingsPlugin : public CGSBaseView
         RConeResourceLoader iResourceLoader;
 
         TBool iWmdrmSupported;
+        
+        // Oma drm 2 run-time support
+        TBool iOmadrm2Supported;
+        
     };
 
 #endif //DRMSETTINGSPLUGIN_H

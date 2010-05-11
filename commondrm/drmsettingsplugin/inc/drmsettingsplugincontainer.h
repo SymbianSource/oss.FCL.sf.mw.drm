@@ -45,7 +45,8 @@ class CDRMSettingsPluginContainer : public CGSBaseContainer
         */
         void ConstructL( const TRect& aRect );
 
-        CDRMSettingsPluginContainer( TBool aWmdrmSupported );
+        CDRMSettingsPluginContainer( TBool aWmdrmSupported,
+                                     TBool aOmadrmSupported );
         
         /**
         * Destructor.
@@ -100,7 +101,12 @@ class CDRMSettingsPluginContainer : public CGSBaseContainer
         
         // Model for DRMSettingsPlugin.
         CDRMSettingsModel* iModel;
+        
         TBool iWmdrmSupported;
+        
+        // Oma drm 2 is configured to be supported.
+        TBool iOmadrm2Supported;
+        
     };
 
 #endif //DRMSETTINGSPLUGINCONTAINER_H

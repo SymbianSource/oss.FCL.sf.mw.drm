@@ -42,6 +42,7 @@
 #include <PushMtmUi.rsg>                    // for R_PUSHMISC_UNK_SENDER
 #include <RoHandler.rsg>                    // for R_QTN_DRM_MGR_INB_TITLE
 #include <sysutil.h>                        // Disk space checking
+#include <featmgr.h>                        // Feature Manager
 
 #include "CRoHandler.h"
 #include "RoMtmCli.h"                       // for CRightsObjectMtmClient
@@ -398,7 +399,7 @@ CRoHandler::CRoHandler
         )
     : CPushHandlerBase(),
     iFirstTime( ETrue ), iPushMsg( NULL ), iMsvId( NULL ),
-    iPutRightsToInbox( ETrue )
+    iPutRightsToInbox( ETrue ), iFeatureManagerFound( EFalse )
     {
     }
 
@@ -428,7 +429,14 @@ void CRoHandler::ConstructL
 
     CRepository* repository( NULL );
     TInt err( KErrNone );
+    TInt ret( KErrNone );
 
+    TRAP( ret, FeatureManager::InitializeLibL() );
+    if ( !ret )
+        {
+        iFeatureManagerFound = ETrue;
+        }   
+    
     User::LeaveIfError( iFs.Connect() );
 
     // create drm
@@ -510,7 +518,12 @@ CRoHandler::~CRoHandler
 
     // session must be deleted last (and constructed first)
     delete iSession;
-
+    
+    if ( iFeatureManagerFound )
+        {
+        FeatureManager::UnInitializeLib();
+        }
+        
 #ifdef _DRM_TESTING
     TRAP( r, WriteL( _L8( "~CRoHandler-End" ) ) );
 #endif
@@ -657,26 +670,36 @@ void CRoHandler::HandleMessageL
         {
         case EOma1Ro:
             {
-            HandleRightsMessageL();
+            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
+                    KFeatureIdFfOmadrm1FullSupport ) )
+                {
+                HandleRightsMessageL();
+                }
             break;
             }
 #ifdef __DRM_OMA2
         case EOma2RoapTrigger:
         case EOma2RoapTriggerRoAcquisition:
-            {
-            HandleRoapTriggerL();
-            break;
-            }
+            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
+                    KFeatureIdFfOmadrm2Support ) )
+                {
+                HandleRoapTriggerL();
+                }
+            break;    
         case EOma2RoapTriggerMetering:
-            {
-            HandleMeteringTriggerSilentlyL();
+            if ( iFeatureManagerFound && FeatureManager::FeatureSupported( 
+                    KFeatureIdFfOmadrm2Support ) )
+                {
+                HandleMeteringTriggerSilentlyL();
+                }
             break;
-            }
         case EOma2RoapPdu:
-            {
-            HandleRoapPduL();
+            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
+                    KFeatureIdFfOmadrm2Support ) )
+                {
+                HandleRoapPduL();
+                }
             break;
-            }
 #endif
         default:
             {
@@ -1400,22 +1423,30 @@ void CRoHandler::RunL
     switch( iMsgType )
         {
         case EOma1Ro:
-            {
-            HandleRightsMessageL();
+            {            
+            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
+                    KFeatureIdFfOmadrm1FullSupport ) )
+                {
+                HandleRightsMessageL();
+                }
             break;
             }
 #ifdef __DRM_OMA2
         case EOma2RoapTrigger:
         case EOma2RoapTriggerRoAcquisition:
-            {
-            HandleRoapTriggerL();
+            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
+                    KFeatureIdFfOmadrm2Support ) )
+                {
+                HandleRoapTriggerL();
+                }
             break;
-            }
         case EOma2RoapPdu:
-            {
-            HandleRoapPduL();
+            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
+                    KFeatureIdFfOmadrm2Support ) )
+                {
+                HandleRoapPduL();
+                }
             break;
-            }
 #endif
         default:
             {

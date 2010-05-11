@@ -47,5 +47,6 @@ MACRO       DRM_OMA2_ENABLED
 
 library		EUSER.LIB	
 library		APMIME.LIB
+library		featmgr.lib
 
 SMPSAFE

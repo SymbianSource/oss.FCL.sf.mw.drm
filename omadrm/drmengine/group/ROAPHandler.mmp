@@ -115,6 +115,7 @@ LIBRARY     caf.lib                     // Embedding domain ROs
 LIBRARY     cafutils.lib                // Embedding domain ROs
 LIBRARY     centralrepository.lib       // Browser default AP
 LIBRARY     cmmanager.lib
+LIBRARY	    featmgr.lib
 
 LIBRARY     SysUtil.lib
 LIBRARY     HttpFilterCommon.lib

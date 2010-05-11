@@ -29,8 +29,7 @@ class CGPSTimeUpdater : public CActive
 	{
 public:
 	~CGPSTimeUpdater();
-	static CGPSTimeUpdater* New( RPositionServer &aPosServer, 
-	                             const TPositionModuleId& aModuleId,
+	static CGPSTimeUpdater* New( const TPositionModuleId& aModuleId,
 	                             CDRMClock* aClock );
 	
 	inline const TPositionModuleId& ModuleId() { return iModuleId; }
@@ -38,8 +37,7 @@ public:
 	inline const TBool TimeReceived() { return iTimeReceived; }
 	
 private:
-	CGPSTimeUpdater( RPositionServer &aPosServer, 
-	                 const TPositionModuleId& aModuleId, 
+	CGPSTimeUpdater( const TPositionModuleId& aModuleId, 
 	                 CDRMClock* aClock );
 	void ConstructL();
 	
@@ -48,7 +46,7 @@ private:
 	TInt RunError( TInt aError );
 	
 private:
-	RPositionServer &iPosServer;
+	RPositionServer iPosServer;
 	RPositioner iPositioner;
 	TPositionModuleId iModuleId;
 	

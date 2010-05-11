@@ -19,6 +19,7 @@
 // INCLUDE FILES
 #include <s32file.h>
 #include <etelmm.h>
+#include <featmgr.h>
 #include "DRMRightsClient.h"
 #include "DRMEngineClientServer.h"
 #include "DrmPermission.h"
@@ -157,11 +158,23 @@ EXPORT_C TInt RDRMRightsClient::Connect()
         }
 
 #ifdef __DRM_FULL
-    // startup code, if it starts it starts if not it will be tried again.
-    RDRMHelper helper;
-    TInt ignore = helper.Connect(); // Start HelperServer
-    helper.Close();
-#endif
+    
+    TRAP( ret, FeatureManager::InitializeLibL() );
+    
+    if ( !ret && FeatureManager::FeatureSupported( KFeatureIdFfOmadrm1FullSupport ) )
+        {
+        // startup code, if it starts it starts if not it will be tried again.        
+        RDRMHelper helper;
+        TInt ignore = helper.Connect(); // Start HelperServer
+        helper.Close();
+        }
+    
+    if ( !ret )
+        {
+        FeatureManager::UnInitializeLib();
+        }
+    
+#endif        
 
     DRMLOG2( _L( "RDRMRightsClient::Connect(): Result: %d" ), ret );
 

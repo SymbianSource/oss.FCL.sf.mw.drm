@@ -47,6 +47,7 @@ LIBRARY         pkixcert.lib
 LIBRARY         random.lib
 LIBRARY         hash.lib
 LIBRARY         flogger.lib
+LIBRARY		featmgr.lib
 
 #if defined(ARMCC)
 deffile ../eabi/ 

@@ -7033,21 +7033,27 @@ EXPORT_C TInt CDRMHelper::UnRegisterDataType(
 EXPORT_C TInt CDRMHelper::SupportedDRMMethods2(
     TInt& aDRMMethod, TDRMHelperOMALevel& aOMALevel)
     {
-#ifndef __DRM_FULL
-    aDRMMethod = CDRMHelper::EForwardLock;
-#else
-    aDRMMethod =
-        CDRMHelper::EForwardLock |
-        CDRMHelper::ECombinedDelivery |
-        CDRMHelper::ESeparateDelivery |
-        CDRMHelper::ESuperDistribution;
+    if ( !( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm1FullSupport ) ) )
+        {
+        aDRMMethod = CDRMHelper::EForwardLock;
+        }
+    else
+        {
+        aDRMMethod =
+                CDRMHelper::EForwardLock |
+                CDRMHelper::ECombinedDelivery |
+                CDRMHelper::ESeparateDelivery |
+                CDRMHelper::ESuperDistribution;
+        aOMALevel = EOMA_1_0;
+        }
+    
 #ifdef __DRM_OMA2
-    aOMALevel = EOMA_2_0;
-#else
-    aOmaLevel = EOMA_1_0;
+    if ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) )
+        {
+        aOMALevel = EOMA_2_0;
+        }
 #endif // __DRM_OMA2
 
-#endif // __DRM_FULL
     return KErrNone;
     }
 

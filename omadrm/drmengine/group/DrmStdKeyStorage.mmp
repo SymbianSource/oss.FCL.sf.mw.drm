@@ -49,6 +49,7 @@ LIBRARY         hash.lib
 LIBRARY         etel.lib
 LIBRARY	        etelmm.lib
 LIBRARY         flogger.lib
+LIBRARY		featmgr.lib
 
 #ifdef RD_MULTIPLE_DRIVE
 LIBRARY       platformenv.lib

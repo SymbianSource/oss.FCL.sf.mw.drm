@@ -250,6 +250,27 @@ RESOURCE DRM_SETTINGS_FEATURE_ARRAY r_drm_settings_lbx
         };
     }
 
+//----------------------------------------------------
+//
+//    r_drm_settings_lbx_no_oma2
+//    DRM Settings view's listbox when OMA DRM version
+//    2 is configured not to be supported.
+//
+//----------------------------------------------------
+//
+RESOURCE DRM_SETTINGS_FEATURE_ARRAY r_drm_settings_lbx_no_oma2
+    {
+    items =
+        {        
+        DRM_SETTINGS_FEATURE
+            {
+            txt = " \t"qtn_drm_set_license_deletion"\t\t";
+            item = EDRMSettingsIdWMDRMLicenseDeletion;
+            }
+        };    
+    }
+
+
 
 //----------------------------------------------------
 //

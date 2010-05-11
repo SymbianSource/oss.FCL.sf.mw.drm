@@ -29,6 +29,7 @@
 #include <caf/caferr.h>
 #include <utf.h>
 #include <drmagents.h>
+#include <featmgr.h>
 #include "Oma2Agent.h"
 #include "Oma2AgentAttributes.h"
 #include "Oma1Dcf.h"
@@ -71,6 +72,20 @@ _LIT16(KOma1DcfContentType16, "application/vnd.oma.drm.content");
 _LIT16(KOma2DcfContentType16, "application/vnd.oma.drm.dcf");
 const TInt KMaxAlbumTrack = 3;
 const TInt KMaxRecordingYear = 6;
+
+const TInt KAllowAllDefined =  
+    DRM::EDrmAllowAudioAnalog |
+    DRM::EDrmAllowAudioFmTransmitter |
+    DRM::EDrmAllowAudioBluetooth |
+    DRM::EDrmAllowAudioUplink |
+    DRM::EDrmAllowVideoAnalog |
+    DRM::EDrmAllowVideoMacroVision |
+    DRM::EDrmAllowAudioUsb |   
+    DRM::EDrmAllowAudioHdmiHdcpRequired |
+    DRM::EDrmAllowAudioHdmi |
+    DRM::EDrmAllowVideoHDMI  |
+    DRM::EDrmAllowVideoHdmiHdcpRequested |
+    DRM::EDrmAllowVideoHdmiHdcpRequired;
 
 // ============================= LOCAL FUNCTIONS ===============================
 
@@ -451,7 +466,14 @@ TInt TOma2AgentAttributes::GetAttribute(
                     }
                 break;
             case DRM::EDrmAllowedOutputs:
-                value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                if( dcf2 )
+                    {
+                    value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                    }
+                else
+                    {
+                    value = KAllowAllDefined;
+                    }
                 break;
             default:
                 value = KErrCANotSupported;
@@ -683,7 +705,14 @@ TInt TOma2AgentAttributes::GetAttribute(
                      }
                 break;
             case DRM::EDrmAllowedOutputs:
-                value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                if( dcf2 )
+                    {
+                    value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                    }
+                else
+                    {
+                    value = KAllowAllDefined;
+                    }
                 break;
             case ERightsNone:
                 if (aRightsClient == NULL)
@@ -817,6 +846,7 @@ TInt TOma2AgentAttributes::GetStringAttribute(
     RDRMRightsClient* aRightsClient)
     {
     TInt err = KErrCANotSupported;
+    TInt ret = KErrNone;
     HBufC* b = NULL;
     COma1Dcf* dcf1 = NULL;
     COma2Dcf* dcf2 = NULL;
@@ -986,14 +1016,26 @@ TInt TOma2AgentAttributes::GetStringAttribute(
                     }
                 break;
             case ERightsIssuerUrl:
-#ifndef __DRM_FULL
-                err = KErrNotSupported;
-#else
-                if (aDcfFile.iRightsIssuerURL != NULL)
+                TRAP(ret, FeatureManager::InitializeLibL());
+                
+                if (!ret && FeatureManager::FeatureSupported(KFeatureIdFfOmadrm1FullSupport))
                     {
-                    TRAP(err, b = CnvUtfConverter::ConvertToUnicodeFromUtf8L(*aDcfFile.iRightsIssuerURL));
+                    if (aDcfFile.iRightsIssuerURL != NULL)
+                        {
+                        TRAP(err, b = CnvUtfConverter::ConvertToUnicodeFromUtf8L(
+                                *aDcfFile.iRightsIssuerURL));
+                        }
                     }
-#endif
+                else
+                    {
+                    err = KErrNotSupported;
+                    }
+                
+                if (!ret)
+                    {
+                    FeatureManager::UnInitializeLib();
+                    }
+                
                 break;
             case ETransactionTrackingId:
                 if (dcf2 != NULL && dcf2->iTransactionTracking)

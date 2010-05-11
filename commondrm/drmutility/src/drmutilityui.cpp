@@ -32,6 +32,7 @@
 #include <AknGlobalNote.h>
 #include <AknQueryDialog.h>
 #include <aknlistquerydialog.h>
+#include <aknmessagequerydialog.h> 
 
 // secondary display support
 #include <AknMediatorFacade.h>
@@ -231,6 +232,8 @@ DRM::CDrmUtilityUI::~CDrmUtilityUI()
     iNoteList.Close();
 
     FeatureManager::UnInitializeLib();
+    delete iNoteWrapper;	
+    	
     }
 
 // -----------------------------------------------------------------------------
@@ -768,6 +771,39 @@ EXPORT_C TInt DRM::CDrmUtilityUI::DisplayPopupWindowsForPreviewL(
     }
 
 #endif  // RD_DRM_PREVIEW_RIGHT_FOR_AUDIO
+
+EXPORT_C TInt DRM::CDrmUtilityUI::DisplayMessageQueryL( TInt aMessage, TInt aHeader, const TDesC& aString)
+    {
+    TInt buttonCode = 0;
+		if ( iCoeEnv )
+	    	{
+		    CAknMessageQueryDialog* messageQuery = new (ELeave) CAknMessageQueryDialog();
+		    messageQuery->PrepareLC(R_DRMUTILITY_SYNC_DIALOG);
+		    		    
+		    HBufC* headerStringholder ( StringLoader::LoadLC( aHeader, iCoeEnv ) );
+        
+		    messageQuery->QueryHeading()->SetTextL(*headerStringholder);
+ 				CleanupStack::PopAndDestroy(); // headerStringholder
+ 				 				
+ 				HBufC* messageStringholder ( StringLoader::LoadLC( aMessage, aString, iCoeEnv ) );
+ 				
+ 				messageQuery->SetMessageTextL(*messageStringholder);
+ 				CleanupStack::PopAndDestroy(); // messageStringholder
+		    
+		    buttonCode =  messageQuery->RunLD();
+		    }
+		else
+		  	{
+		  	if(!iNoteWrapper)
+		  			{
+		    		iNoteWrapper = DRM::CDrmUtilityGlobalNoteWrapper::NewL( iUtilityStringResourceReader );
+        		}
+        		
+        iNoteWrapper->ShowMessageQueryL(aMessage, aHeader, aString);
+				}
+		return buttonCode;
+    }
+
 
 // -----------------------------------------------------------------------------
 // CDrmUtilityUI::CreateNoteForResourceL

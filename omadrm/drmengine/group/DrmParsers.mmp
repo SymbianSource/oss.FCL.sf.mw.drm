@@ -57,6 +57,7 @@ LIBRARY         drmcrypto.lib drmserverinterfaces.lib drmrights.lib dcfrep.lib
 LIBRARY         drmdcf.lib euser.lib XmlFramework.lib hash.lib
 LIBRARY         estor.lib efsrv.lib apmime.lib InetProtUtil.lib bnf.lib
 LIBRARY         cryptography.lib bafl.lib charconv.lib drmkeystorage.lib
+LIBRARY		featmgr.lib
 
 #ifdef RD_MULTIPLE_DRIVE
 LIBRARY       platformenv.lib

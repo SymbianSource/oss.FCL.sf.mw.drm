@@ -82,6 +82,21 @@ CDRMSettingsPlugin* CDRMSettingsPlugin::NewL( TAny* /*aInitParams*/ )
 void CDRMSettingsPlugin::ConstructL()
     {
     FeatureManager::InitializeLibL();
+    
+    if ( FeatureManager::FeatureSupported( KFeatureIdWindowsMediaDrm ) )
+        {
+        iWmdrmSupported = ETrue;
+        }
+        
+    if ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) )
+        {
+        iOmadrm2Supported = ETrue;
+        }
+    else 
+        {
+        iOmadrm2Supported = EFalse;
+        }
+    
     // Find the resource file
     TParse parse;
     parse.Set( KDRMSettingsPluginResourceFileName,
@@ -97,10 +112,6 @@ void CDRMSettingsPlugin::ConstructL()
 
     BaseConstructL( R_DRM_SETTINGS_VIEW );
 
-    if ( FeatureManager::FeatureSupported( KFeatureIdWindowsMediaDrm ) )
-        {
-        iWmdrmSupported = ETrue;
-        }
     }
 
 
@@ -195,24 +206,27 @@ void CDRMSettingsPlugin::HandleCommandL( TInt aCommand )
                 {
 #ifdef __DRM_OMA2
                 case EDRMSettingsIdTransactionTracking:
-
-                    UpdateTransactionTrackingSettingL( EFalse );
-
+                    if ( iOmadrm2Supported )
+                        {
+                        UpdateTransactionTrackingSettingL( EFalse );
+                        }
                     break;
 
 #ifdef RD_DRM_SILENT_RIGHTS_ACQUISITION
                 case EDRMSettingsIdAutomaticActivation:
-
-                    UpdateAutomaticActivationSettingL( EFalse );
-
+                    if ( iOmadrm2Supported )
+                        {
+                        UpdateAutomaticActivationSettingL( EFalse );
+                        }
                     break;
 #endif // RD_DRM_SILENT_RIGHTS_ACQUISITION
 
 #ifdef RD_DRM_METERING
                 case EDRMSettingsIdUsageReporting:
-
-                    UpdateUsageReportingSettingL();
-
+                    if ( iOmadrm2Supported )
+                        {
+                        UpdateUsageReportingSettingL();
+                        }
                     break;
 #endif // RD_DRM_METERING
 #endif // __DRM_OMA2
@@ -241,24 +255,26 @@ void CDRMSettingsPlugin::HandleCommandL( TInt aCommand )
                 {
 #ifdef __DRM_OMA2
                 case EDRMSettingsIdTransactionTracking:
-
-                    UpdateTransactionTrackingSettingL( ETrue );
-
+                    if ( iOmadrm2Supported )
+                        {
+                        UpdateTransactionTrackingSettingL( ETrue );
+                        }
                     break;
-
 #ifdef RD_DRM_SILENT_RIGHTS_ACQUISITION
                 case EDRMSettingsIdAutomaticActivation:
-
-                    UpdateAutomaticActivationSettingL( ETrue );
-
+                    if ( iOmadrm2Supported )
+                        {
+                        UpdateAutomaticActivationSettingL( ETrue );
+                        }
                     break;
 #endif // RD_DRM_SILENT_RIGHTS_ACQUISITION
 
 #ifdef RD_DRM_METERING
                 case EDRMSettingsIdUsageReporting:
-
-                    UpdateUsageReportingSettingL();
-
+                    if ( iOmadrm2Supported )
+                        {
+                        UpdateUsageReportingSettingL();
+                        }
                     break;
 #endif // RD_DRM_METERING
 #endif // __DRM_OMA2
@@ -338,14 +354,16 @@ CDRMSettingsPluginContainer* CDRMSettingsPlugin::Container()
 //
 void CDRMSettingsPlugin::NewContainerL()
     {
-    iContainer = new( ELeave ) CDRMSettingsPluginContainer( iWmdrmSupported );
+    iContainer = new( ELeave ) CDRMSettingsPluginContainer( iWmdrmSupported,
+            iOmadrm2Supported );
     }
 
 
 // ---------------------------------------------------------------------------
 // CDRMSettingsPlugin::HandleListBoxSelectionL()
 //
-// Handles events raised through a rocker key.
+// Handles events raised through a rocker key. Checks the run-time support of
+// Oma Drm 2 when needed.
 // ---------------------------------------------------------------------------
 void CDRMSettingsPlugin::HandleListBoxSelectionL()
     {
@@ -355,24 +373,26 @@ void CDRMSettingsPlugin::HandleListBoxSelectionL()
         {
 #ifdef __DRM_OMA2
         case EDRMSettingsIdTransactionTracking:
-
-            UpdateTransactionTrackingSettingL( EFalse );
-
+            if ( iOmadrm2Supported )
+                {
+                UpdateTransactionTrackingSettingL( EFalse );
+                }
             break;
-
 #ifdef RD_DRM_SILENT_RIGHTS_ACQUISITION
         case EDRMSettingsIdAutomaticActivation:
-
-            UpdateAutomaticActivationSettingL( EFalse );
-
+            if ( iOmadrm2Supported )
+                {
+                UpdateAutomaticActivationSettingL( EFalse );
+                }
             break;
 #endif // RD_DRM_SILENT_RIGHTS_ACQUISITION
 
 #ifdef RD_DRM_METERING
         case EDRMSettingsIdUsageReporting:
-
-            UpdateUsageReportingSettingL();
-
+            if ( iOmadrm2Supported )
+                {
+                UpdateUsageReportingSettingL();
+                }
             break;
 #endif // RD_DRM_METERING
 #endif // __DRM_OMA2
@@ -707,20 +727,21 @@ void CDRMSettingsPlugin::DynInitMenuPaneL(
         {
         User::LeaveIfNull( aMenuPane );
 
-#ifdef __DRM_OMA2
-        if ( FeatureManager::FeatureSupported( KFeatureIdHelp ) )
+        if( FeatureManager::FeatureSupported( KFeatureIdDrmOma2 ) )
             {
-            aMenuPane->SetItemDimmed( EAknCmdHelp, EFalse );
+            if ( FeatureManager::FeatureSupported( KFeatureIdHelp ) )
+                {
+                aMenuPane->SetItemDimmed( EAknCmdHelp, EFalse );
+                }
+            else
+                {
+                aMenuPane->SetItemDimmed( EAknCmdHelp, ETrue );
+                }
             }
         else
             {
             aMenuPane->SetItemDimmed( EAknCmdHelp, ETrue );
             }
-#else
-
-        aMenuPane->SetItemDimmed( EAknCmdHelp, ETrue );
-
-#endif // __DRM_OMA2
         }
     }
 

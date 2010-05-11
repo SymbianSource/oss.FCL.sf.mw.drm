@@ -160,3 +160,10 @@
 //r: 9.1
 //
 #define qtn_drm_msg_qry_head_no_license "No license"
+
+//d: Text in message query to notify user that the DRM license needs to be acquired with PC sync.
+//l: popup_note_window
+//w:
+//r: 9.2
+//
+#define qtn_drm_sync_with_pc "You must have valid license to play %U. Please sync your phone with your PC to update license."

@@ -23,6 +23,7 @@
 //  INCLUDES
 #include <e32base.h>
 #include <stringresourcereader.h>
+#include <AknGlobalMsgQuery.h>
 
 namespace DRM 
 {
@@ -102,6 +103,16 @@ NONSHARABLE_CLASS ( CDrmUtilityGlobalNoteWrapper ) : public CActive
         	            TInt aValuePos = -1 );
         	            
         /**
+        * Asynchronous wrapper for showing global message query.
+        * @param aMessageResourceId resource id of string to be displayed
+        * @param aHeaderResourceId resource id of header to be displayed in the query
+        * @param aString string that replaces %U in resource string        
+        */            
+        void ShowMessageQueryL(TInt aMessageResourceId,
+    													TInt aHeaderResourceId,
+    													const TDesC& aString);
+        	            
+        /**
         * Synchronous wrapper for showing global  preview list query.
         * @param aTextResourceId resource id of preview structure to be
         *        displayed
@@ -147,6 +158,13 @@ NONSHARABLE_CLASS ( CDrmUtilityGlobalNoteWrapper ) : public CActive
         
         // Resource id of buttons in confirmation query
         TInt iButtonsId;
+        
+        // AVKON Global message query, used in method ShowMessageQueryL, activated asynchronously so needs to be owned
+        CAknGlobalMsgQuery* iGlobalMsgQuery;
+        // Message buffer for the global message query, contains dialog text with replaced string
+        TBuf<KDRMNoteBufferMaxSize + KMaxFileName> iFinalMessageBuffer;
+        // Message buffer for the global message query header text
+        TBuf<KDRMNoteBufferMaxSize> iHeaderBuffer;
     };
 
 }

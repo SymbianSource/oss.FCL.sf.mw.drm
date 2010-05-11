@@ -75,6 +75,7 @@ LIBRARY         bafl.lib // RResourceFile
 LIBRARY         flogger.lib
 LIBRARY         sysutil.lib // SysUtil
 LIBRARY         esock.lib
+LIBRARY		featmgr.lib // Feature Manager
 
 #ifdef RD_MULTIPLE_DRIVE
 LIBRARY         platformenv.lib

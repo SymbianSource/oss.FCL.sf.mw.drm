@@ -76,6 +76,7 @@ LIBRARY		    drmcrypto.lib drmrights.lib flogger.lib
 LIBRARY         euser.lib XmlFramework.lib hash.lib
 LIBRARY         estor.lib efsrv.lib apmime.lib InetProtUtil.lib bnf.lib
 LIBRARY         cryptography.lib random.lib bafl.lib charconv.lib
+LIBRARY		featmgr.lib
 
 #if defined(ARMCC)
 deffile ../eabi/ 

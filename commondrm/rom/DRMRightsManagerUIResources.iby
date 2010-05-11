@@ -20,11 +20,11 @@
 #define __DRMRIGHTSMANAGERUIRESOURCES_IBY__
 
 
-#ifdef __DRM_FULL
+#if ( (defined __DRM_FULL) || (defined __WINDOWS_MEDIA_DRM) )
 
 S60_APP_RESOURCE(DRMRightsManager)
 
-#endif	// __DRM_FULL
+#endif	// __DRM_FULL || __WINDOWS_MEDIA_DRM
 
 
 #endif	// __DRMRIGHTSMANAGERUIRESOURCES_IBY__
