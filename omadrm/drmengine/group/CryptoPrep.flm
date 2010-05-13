@@ -17,8 +17,11 @@ ifeq ($(_CRYPTOPREP_FLM_),)
 # first instance of this FLM
 _CRYPTOPREP_FLM_:= 1
 
-TMPROOT:=$(subst \,/,$(EPOCROOT))
-EPOCROOT:=$(patsubst %/,%,$(TMPROOT))/
+# darios: changing the value of EPOCROOT while make is running
+# messes up the target dependecies
+# also these two lines are not needed for this flm
+#TMPROOT:=$(subst \,/,$(EPOCROOT))
+#EPOCROOT:=$(patsubst %/,%,$(TMPROOT))/
 
 # NB: abspath doesn't like Windows drive letters
 CRYPTO_SOURCE_DRIVE:=$(firstword $(subst :, ,$(EXTENSION_ROOT)))
