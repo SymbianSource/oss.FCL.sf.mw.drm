@@ -59,7 +59,7 @@
 
 #include <utf.h>
 
-#include <schemehandler.h> // for handling URLs
+#include <SchemeHandler.h> // for handling URLs
 #include "DRMHelperServer.h"
 #include "ConsumeData.h"
 #include "DRMTypes.h"

@@ -39,8 +39,6 @@ PRJ_EXPORTS
 ../rom/DRMEncryptorResources.iby        LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmencryptorresources.iby )
 ../rom/DRMRightsManagerUI.iby           CORE_MW_LAYER_IBY_EXPORT_PATH( drmrightsmanagerui.iby )
 ../rom/DRMRightsManagerUIResources.iby  LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmrightsmanageruiresources.iby )
-../rom/drmsettingsplugin.iby            CORE_MW_LAYER_IBY_EXPORT_PATH( drmsettingsplugin.iby )
-../rom/drmsettingspluginresources.iby   LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmsettingspluginresources.iby )
 ../rom/drmutility.iby                   CORE_MW_LAYER_IBY_EXPORT_PATH( drmutility.iby )
 ../rom/drmutility_resources.iby         LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmutility_resources.iby )
 ../rom/drmserviceapiwrapper.iby         CORE_MW_LAYER_IBY_EXPORT_PATH( drmserviceapiwrapper.iby )
@@ -50,9 +48,6 @@ PRJ_MMPFILES
 
 // DRMEncryptor
 ../drmencryptor/group/DRMEncryptor.mmp
-
-// DRMSettingsPlugin
-../drmsettingsplugin/group/drmsettingsplugin.mmp
 
 // DRMRightsManagerUi
 ../drmrightsmanagerui/group/DRMRightsManager.mmp

@@ -21,7 +21,7 @@
 #define C_CDRMSERVICEAPI_H
 
 #include <e32base.h>
-#include "drmtypes.h"
+#include "DRMTypes.h"
 
 // Forward declarations
 class RDRMClockClient;

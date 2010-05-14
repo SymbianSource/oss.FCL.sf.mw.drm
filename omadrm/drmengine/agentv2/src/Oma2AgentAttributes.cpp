@@ -72,6 +72,20 @@ _LIT16(KOma2DcfContentType16, "application/vnd.oma.drm.dcf");
 const TInt KMaxAlbumTrack = 3;
 const TInt KMaxRecordingYear = 6;
 
+const TInt KAllowAllDefined =  
+    DRM::EDrmAllowAudioAnalog |
+    DRM::EDrmAllowAudioFmTransmitter |
+    DRM::EDrmAllowAudioBluetooth |
+    DRM::EDrmAllowAudioUplink |
+    DRM::EDrmAllowVideoAnalog |
+    DRM::EDrmAllowVideoMacroVision |
+    DRM::EDrmAllowAudioUsb |   
+    DRM::EDrmAllowAudioHdmiHdcpRequired |
+    DRM::EDrmAllowAudioHdmi |
+    DRM::EDrmAllowVideoHDMI  |
+    DRM::EDrmAllowVideoHdmiHdcpRequested |
+    DRM::EDrmAllowVideoHdmiHdcpRequired;
+
 // ============================= LOCAL FUNCTIONS ===============================
 
 // -----------------------------------------------------------------------------
@@ -451,7 +465,14 @@ TInt TOma2AgentAttributes::GetAttribute(
                     }
                 break;
             case DRM::EDrmAllowedOutputs:
-                value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                if( dcf2 )
+                    {
+                    value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                    }
+                else
+                    {
+                    value = KAllowAllDefined;
+                    }
                 break;
             default:
                 value = KErrCANotSupported;
@@ -683,7 +704,14 @@ TInt TOma2AgentAttributes::GetAttribute(
                      }
                 break;
             case DRM::EDrmAllowedOutputs:
-                value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                if( dcf2 )
+                    {
+                    value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                    }
+                else
+                    {
+                    value = KAllowAllDefined;
+                    }
                 break;
             case ERightsNone:
                 if (aRightsClient == NULL)
@@ -817,6 +845,7 @@ TInt TOma2AgentAttributes::GetStringAttribute(
     RDRMRightsClient* aRightsClient)
     {
     TInt err = KErrCANotSupported;
+    TInt ret = KErrNone;
     HBufC* b = NULL;
     COma1Dcf* dcf1 = NULL;
     COma2Dcf* dcf2 = NULL;

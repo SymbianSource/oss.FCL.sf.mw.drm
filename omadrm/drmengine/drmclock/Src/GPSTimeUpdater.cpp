@@ -26,6 +26,10 @@
 
 _LIT(KDRMClockServerName, "DRMClockServer");
 
+const TInt KGPSUpdateInterval   = 1000000;  // One second
+const TInt KGPSUpdateAge        = 500000;   // Half a second
+const TInt KGPSUpdateTimeOut    = 30000000; // Thirty seconds
+
 // ============================ MEMBER FUNCTIONS ===============================
 
 
@@ -35,11 +39,9 @@ _LIT(KDRMClockServerName, "DRMClockServer");
 // might leave.
 // -----------------------------------------------------------------------------
 //   
-CGPSTimeUpdater::CGPSTimeUpdater( RPositionServer &aPosServer, 
-                                  const TPositionModuleId& aModuleId,
+CGPSTimeUpdater::CGPSTimeUpdater( const TPositionModuleId& aModuleId,
                                   CDRMClock* aClock ) : 
 	CActive(EPriorityHigh),
-	iPosServer(aPosServer),
 	iModuleId(aModuleId),
 	iClock( aClock ),
 	iTimeReceived( EFalse )
@@ -58,6 +60,7 @@ CGPSTimeUpdater::~CGPSTimeUpdater()
 	Cancel();
 	
 	iPositioner.Close();
+	iPosServer.Close();
 	}
 
 // -----------------------------------------------------------------------------
@@ -65,11 +68,10 @@ CGPSTimeUpdater::~CGPSTimeUpdater()
 // Two-phased constructor
 // -----------------------------------------------------------------------------
 //
-CGPSTimeUpdater* CGPSTimeUpdater::New( RPositionServer &aPosServer, 
-                                       const TPositionModuleId& aModuleId,
+CGPSTimeUpdater* CGPSTimeUpdater::New( const TPositionModuleId& aModuleId,
                                        CDRMClock* aClock )
 	{
-	CGPSTimeUpdater* self = new CGPSTimeUpdater(aPosServer, aModuleId, aClock);
+	CGPSTimeUpdater* self = new CGPSTimeUpdater(aModuleId, aClock);
 	if(self)
 		{
 		TRAPD(err, self->ConstructL());
@@ -92,6 +94,8 @@ void CGPSTimeUpdater::ConstructL()
 	{
 	DRMLOG(_L("CGPSTimeUpdater::ConstructL >>"));
 	
+	User::LeaveIfError( iPosServer.Connect() );
+	
 	// Open positioner
 	User::LeaveIfError(iPositioner.Open(iPosServer, iModuleId));
 	User::LeaveIfError(iPositioner.SetRequestor(CRequestor::ERequestorService,
@@ -101,9 +105,9 @@ void CGPSTimeUpdater::ConstructL()
 	// Set update options
 	TPositionUpdateOptions updateOptions;
 	updateOptions.SetAcceptPartialUpdates(ETrue);
-	updateOptions.SetMaxUpdateAge(0);
-	updateOptions.SetUpdateInterval(TTimeIntervalMicroSeconds(0));
-	updateOptions.SetUpdateTimeOut(TTimeIntervalMicroSeconds(30*1000*1000));
+	updateOptions.SetMaxUpdateAge(KGPSUpdateAge);
+	updateOptions.SetUpdateInterval(TTimeIntervalMicroSeconds(KGPSUpdateInterval));
+	updateOptions.SetUpdateTimeOut(TTimeIntervalMicroSeconds(KGPSUpdateTimeOut));
 	User::LeaveIfError(iPositioner.SetUpdateOptions(updateOptions));
 	
 	// Request position update
@@ -124,7 +128,9 @@ void CGPSTimeUpdater::RunL()
 	
 	DRMLOG2(_L("CGPSTimeUpdater::RunL: iStatus=%d"), iStatus.Int());
 	
-	if( iStatus == KErrNone || iStatus == KPositionPartialUpdate )
+	// We got some kind of an update:
+	if( iStatus == KErrNone || 
+	    iStatus == KPositionPartialUpdate )
 		{
 		DRMLOG(_L("CGPSTimeUpdater::RunL: position updated!"));
 		
@@ -140,18 +146,9 @@ void CGPSTimeUpdater::RunL()
 		// Mark time as received
 		iTimeReceived = ETrue;
 		}
-		
-    // if the call timed out try again		
-    if( iStatus == KErrTimedOut ) 
-	    {
-	    // Request position update
-	    iPositioner.NotifyPositionUpdate(iSatelliteInfo, iStatus);
-	    SetActive();
-	    }	
-	else 	
-	    {    	
-	    iPositioner.Close();
-        }
+
+    // We only try once, if it fails it fails and we will try again when it is activated the next time.
+	iPositioner.Close();
         
 	DRMLOG(_L("CGPSTimeUpdater::RunL <<"));
 	}

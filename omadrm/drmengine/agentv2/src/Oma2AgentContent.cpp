@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -26,7 +26,7 @@
 #include <utf.h>
 
 
-#include <schemehandler.h>
+#include <SchemeHandler.h>
 
 
 #include "Oma2AgentContent.h"
@@ -545,7 +545,6 @@ void COma2AgentContent::NotifyStatusChangeL(
 
 // -----------------------------------------------------------------------------
 // COma2AgentContent::NotifyStatusChange
-//
 // -----------------------------------------------------------------------------
 //
 void COma2AgentContent::NotifyStatusChange(
