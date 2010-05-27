@@ -26,7 +26,7 @@
 #include <StringLoader.h>
 #include <data_caging_path_literals.hrh>
 
-#include <downloadmgrclient.h> //download manager
+#include <DownloadMgrClient.h> //download manager
 #include <es_enum.h> // tconnectioninfo
 #include <es_enum_partner.h> // TConnectionInfoV2
 #include <es_sock.h> // rconnection rsocket

@@ -467,7 +467,11 @@ TInt TOma2AgentAttributes::GetAttribute(
             case DRM::EDrmAllowedOutputs:
                 if( dcf2 )
                     {
-                    value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                    value = DRM::EDrmAllowAudioAnalog | 
+                            DRM::EDrmAllowAudioBluetooth | 
+                            DRM::EDrmAllowVideoMacroVision | 
+                            DRM::EDrmAllowAudioFmTransmitter | 
+                            DRM::EDrmAllowAudioUsb;
                     }
                 else
                     {
@@ -706,7 +710,11 @@ TInt TOma2AgentAttributes::GetAttribute(
             case DRM::EDrmAllowedOutputs:
                 if( dcf2 )
                     {
-                    value = DRM::EDrmAllowAudioAnalog | DRM::EDrmAllowAudioBluetooth | DRM::EDrmAllowVideoMacroVision | DRM::EDrmAllowAudioFmTransmitter;
+                    value = DRM::EDrmAllowAudioAnalog | 
+                            DRM::EDrmAllowAudioBluetooth | 
+                            DRM::EDrmAllowVideoMacroVision | 
+                            DRM::EDrmAllowAudioFmTransmitter | 
+                            DRM::EDrmAllowAudioUsb;
                     }
                 else
                     {
