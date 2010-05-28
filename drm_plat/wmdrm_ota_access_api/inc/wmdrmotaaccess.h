@@ -28,7 +28,9 @@ class CWmDrmOtaAccessEcomInterface;
 *  Functionality
 *
 *  @code
-*  // Way to use CWmDrmOtaAccess
+*  Only one asynchronous operation can be happening at a time.
+*  If another call for async operation is received, this will result in
+*  KErrInUse leave code.
 *
 *  CWmDrmOtaAccess* access( CWmDrmOtaAccess::NewL() );
 *  delete access;
@@ -104,6 +106,17 @@ public:
     */
     IMPORT_C void HandleLicenseResponseL( const TDesC8& aResponse, 
                                           TRequestStatus& aStatus );
+                                          
+                                          
+    /**
+    *  CancelAllAsync
+    *
+    *  Cancel all async methods        
+    *
+    *  @return  None    
+    */
+    IMPORT_C void CancelAllAsync();                              
+                                          
 
 private:
     /** Default constructor */
@@ -116,3 +129,4 @@ private:
 
     };
 #endif // _WMDRM_OTA_ACCESS_API_H_
+

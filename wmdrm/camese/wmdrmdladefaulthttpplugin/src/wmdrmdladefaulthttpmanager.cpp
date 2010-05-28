@@ -162,6 +162,8 @@ void CWmDrmDlaDefaultHttpManager::Stop()
             HandleDownloadComplete( KErrCancel );
             }
         }
+	// Close the HTTP session in use
+    iHttpSession.Close();
 
     CleanupConnection();
     DeleteUsernamePassword();
@@ -565,6 +567,9 @@ void CWmDrmDlaDefaultHttpManager::SubmitL()
     GetConnectionInfoL( info );
     iIapNumber = info.iIapId;
 
+    // Close old session:
+    iHttpSession.Close();    
+
     // Open session
     iHttpSession.OpenL();
     RStringPool pool = iHttpSession.StringPool();
@@ -730,7 +735,6 @@ void CWmDrmDlaDefaultHttpManager::CleanupTransaction()
     iHdrFields.Reset();
 
     iHttpTransaction.Close();
-    iHttpSession.Close();
 
     if ( !iKeepAlive )
         {

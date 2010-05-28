@@ -8,4 +8,5 @@ EXPORTS
 	_ZN15CWmDrmOtaAccess20GetLicenseChallengeLERK6TDesC8RP6HBufC8R14TRequestStatus @ 7 NONAME
 	_ZN15CWmDrmOtaAccess22HandleLicenseResponseLERK6TDesC8 @ 8 NONAME
 	_ZN15CWmDrmOtaAccess22HandleLicenseResponseLERK6TDesC8R14TRequestStatus @ 9 NONAME
+	_ZN15CWmDrmOtaAccess14CancelAllAsyncEv @ 10 NONAME
 

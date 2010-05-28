@@ -35,7 +35,7 @@ class CClock : public CTimer
 public:
 	static const TInt KClockInterval = 15 * 60 * 1000000;
 
-    static CClock* CClock::NewL( CWmDrmServer* aServer );
+    static CClock* NewL( CWmDrmServer* aServer );
 	~CClock();
 	CClock( CWmDrmServer* aServer );
 

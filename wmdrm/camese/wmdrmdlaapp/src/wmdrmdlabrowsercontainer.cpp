@@ -107,6 +107,10 @@ CWmDrmDlaBrowserContainer* CWmDrmDlaBrowserContainer::NewLC(
 //
 CWmDrmDlaBrowserContainer::~CWmDrmDlaBrowserContainer()
     {
+    if(iBrCtlInterface != NULL)
+    {
+    TRAP_IGNORE( iBrCtlInterface->HandleCommandL( (TInt)TBrCtlDefs::ECommandCancelFetch + (TInt)TBrCtlDefs::ECommandIdBase ));	
+    }	
     delete iBrCtlInterface;
     }
 
