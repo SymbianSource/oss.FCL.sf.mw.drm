@@ -224,6 +224,13 @@ public:
      */
     void GetTimeL( const RMessage2& aMessage );    
     
+    
+    /* Commits the database
+     *
+     * @param aMessage  IPC message (not used)
+     */
+    void CommitDataL( const RMessage2& aMessage );    
+    
 private:
     /* Desctructor.
      */

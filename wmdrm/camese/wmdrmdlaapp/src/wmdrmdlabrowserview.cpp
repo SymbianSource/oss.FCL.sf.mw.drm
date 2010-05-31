@@ -155,6 +155,8 @@ void CWmDrmDlaBrowserView::HandleCommandL(
         }
     else
         {
+        iContainer->BrCtlInterface()->HandleCommandL( (TInt)TBrCtlDefs::ECommandCancelFetch + 
+                                                      (TInt)TBrCtlDefs::ECommandIdBase );            
         AppUi()->HandleCommandL( aCommand );
         }
     }

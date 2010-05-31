@@ -24,4 +24,5 @@ EXPORTS
 	_ZN12RWmDrmClient12DeleteRightsEv @ 23 NONAME
 	_ZN12RWmDrmClient10StoreStateER16TWmDrmStoreState @ 24 NONAME
 	_ZN12RWmDrmClient7GetTimeER5TTimeRi @ 25 NONAME
+	_ZN12RWmDrmClient10CommitDataEv @ 26 NONAME
 
