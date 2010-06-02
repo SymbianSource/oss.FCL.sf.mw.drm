@@ -1,0 +1,30 @@
+/*
+* Copyright (c) 2010 Symbian Foundation Ltd.
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of the License "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Symbian Foundation - Initial contribution
+* 
+* Description:
+* Component to install dummy key & certificate to keep DRM engine alive
+*/
+
+PRJ_EXPORTS
+
+/*
+ * 96b7db19a4d05a4bc8e3a51c885088e679354469 - this directory name should be the SHA1 checksum
+ * of the active part of the certificate public key (see CDrmStdKeyStorage::ImportDataL), but
+ * hasn't been recalculated for this certificate 
+ */
+ 
+../data/devicekey1024.der  z:/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DevicePrivateKey.der
+../data/dummycert.der      z:/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/DeviceCert.der
+../data/dummycert.der      z:/private/101F51F2/PKI/96b7db19a4d05a4bc8e3a51c885088e679354469/SigningCert00.der
+
+#ifdef __DRM_USER_DATA_TRANSFER
+../data/dummycert.der      z:/private/101F51F2/PKI/UdtCertificate.der
+#endif
