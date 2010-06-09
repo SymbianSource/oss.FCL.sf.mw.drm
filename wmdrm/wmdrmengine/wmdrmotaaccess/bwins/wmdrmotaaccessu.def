@@ -6,4 +6,5 @@ EXPORTS
 	?GetLicenseChallengeL@CWmDrmOtaAccess@@QAEXABVTDesC8@@AAPAVHBufC8@@AAVTRequestStatus@@@Z @ 5 NONAME ; void CWmDrmOtaAccess::GetLicenseChallengeL(class TDesC8 const &, class HBufC8 * &, class TRequestStatus &)
 	?HandleLicenseResponseL@CWmDrmOtaAccess@@QAEXABVTDesC8@@AAVTRequestStatus@@@Z @ 6 NONAME ; void CWmDrmOtaAccess::HandleLicenseResponseL(class TDesC8 const &, class TRequestStatus &)
 	?GetLicenseChallengeL@CWmDrmOtaAccess@@QAEXABVTDesC8@@AAPAVHBufC8@@@Z @ 7 NONAME ; void CWmDrmOtaAccess::GetLicenseChallengeL(class TDesC8 const &, class HBufC8 * &)
+	?CancelAllAsync@CWmDrmOtaAccess@@QAEXXZ @ 8 NONAME ; void CWmDrmOtaAccess::CancelAllAsync(void)
 

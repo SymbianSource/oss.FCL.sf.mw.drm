@@ -21,7 +21,7 @@
 #define DRMCOMMON_H
 
 #include <e32base.h>
-#include <DrmRights.h>
+#include <DRMRights.h>
 #include <caf/caf.h>
 
 const TUint KDrmMaxContentInfoSize = 512;

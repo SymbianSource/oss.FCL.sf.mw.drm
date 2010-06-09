@@ -23,8 +23,8 @@
 //  INCLUDES
 #include <e32base.h>
 #include <f32file.h>
-#include <D32DBMS.H>
-#include "dcfrepcli.h"
+#include <d32dbms.h>
+#include "DcfRepCli.h"
 // CONSTANTS
 // MACROS
 // DATA TYPES

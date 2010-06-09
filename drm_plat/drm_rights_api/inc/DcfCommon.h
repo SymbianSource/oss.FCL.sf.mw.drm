@@ -23,8 +23,8 @@
 //  INCLUDES
 #include <apmstd.h>
 #include <f32file.h>
-#include <oma2agent.h>
-#include <drmtypes.h>
+#include <Oma2Agent.h>
+#include <DRMTypes.h>
 
 using namespace ContentAccess;
 // CONSTANTS

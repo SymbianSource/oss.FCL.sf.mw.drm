@@ -13,9 +13,6 @@
 # Description: DRM Crypto Library build configuration
 #
 
-TMPROOT:=$(subst \,/,$(EPOCROOT))
-EPOCROOT:=$(patsubst %/,%,$(TMPROOT))/
-
 CREATABLEPATH:=$(EXTENSION_ROOT)/../drmengine/drmcrypto/build
 CLEANTARGETS:=$(CREATABLEPATH)/cmlacrypto.cpp $(CREATABLEPATH)/omacrypto.cpp
 

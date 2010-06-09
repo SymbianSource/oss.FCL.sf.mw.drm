@@ -981,27 +981,7 @@ void COma2AgentManager::HandleEventL(
 //
 void COma2AgentManager::DisplayManagementInfoL()
     {
-    TUid KRightsManagerUid = TUid::Uid(0x101F85C7);
-    RWsSession wsSession;
-    RApaLsSession appArcSession;
-    TThreadId id;
-
-    User::LeaveIfError(wsSession.Connect());
-    CleanupClosePushL(wsSession);
-    TApaTaskList tasklist(wsSession);
-    TApaTask task = tasklist.FindApp(KRightsManagerUid);
-    if (task.Exists())
-        {
-        task.SendMessage(TUid::Uid(KUidApaMessageSwitchOpenFileValue),
-            KNullDesC8);
-        }
-    else
-        {
-        User::LeaveIfError(appArcSession.Connect());
-        appArcSession.StartDocument(_L("0"), KRightsManagerUid, id);
-        appArcSession.Close();
-        }
-    CleanupStack::PopAndDestroy();
-    }
+    User::Leave(KErrCANotSupported);
+  	}
 
 //  End of File
