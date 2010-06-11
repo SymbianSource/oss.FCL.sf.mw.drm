@@ -121,6 +121,7 @@ EXPORT_C void CWmDrmOtaAccess::HandleLicenseResponseL( const TDesC8& aResponse )
     
     iWmDrmOtaAccessEcomInterface->HandleLicenseResponseL( aResponse );                                
     }    
+    
 // ---------------------------------------------------------------------------
 // CWmDrmOtaAccess::HandleLicenseResponseL
 // ---------------------------------------------------------------------------
@@ -137,7 +138,19 @@ EXPORT_C void CWmDrmOtaAccess::HandleLicenseResponseL( const TDesC8& aResponse,
                                                           aStatus );                                 
     }                                                           
 
-
+// ---------------------------------------------------------------------------
+// CWmDrmOtaAccess::CancelAllAsync
+// ---------------------------------------------------------------------------
+EXPORT_C void CWmDrmOtaAccess::CancelAllAsync()
+    {
+    // Ecom interface not available    
+    if( !iWmDrmOtaAccessEcomInterface )
+        {
+        return;   
+        }   
+    
+    iWmDrmOtaAccessEcomInterface->CancelAllAsync();                                 
+    } 
 
     
 // End of file

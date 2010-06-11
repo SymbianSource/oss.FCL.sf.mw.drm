@@ -74,7 +74,7 @@ RESOURCE LOCALISABLE_APP_INFO r_drmui_localisable_app_info
     caption_and_icon =
     CAPTION_AND_ICON_INFO
         {
-        caption = qtn_drm_mgr;
+        caption = " ";
 
 #ifdef __SCALABLE_ICONS
         number_of_icons = 1;

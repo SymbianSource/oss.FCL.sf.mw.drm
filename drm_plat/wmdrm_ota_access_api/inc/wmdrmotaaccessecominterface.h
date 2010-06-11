@@ -22,9 +22,9 @@
 #include <e32base.h>
 
 // Class declaration
-// CWmDrmAccessEcomInterface
-// ecom plugin interface for WM DRM access implementation
-// @see CWmDrmAccess
+// CWmDrmOtaAccessEcomInterface
+// ecom plugin interface for WM DRM ota access implementation
+// @see CWmDrmOtaAccess
 NONSHARABLE_CLASS( CWmDrmOtaAccessEcomInterface ) : public CBase
     {
 public:
@@ -94,6 +94,16 @@ public:
     */
     virtual void HandleLicenseResponseL( const TDesC8& aResponse, 
                                          TRequestStatus& aStatus ) = 0;
+                                              
+    /**
+    *  CancelAllAsync
+    *
+    *  Cancel all async methods        
+    *
+    *  @return  None    
+    */
+    virtual void CancelAllAsync() = 0;                                              
+                                         
 
 private:
     // internal variable used on freeing ecom related resources
@@ -101,4 +111,6 @@ private:
     };
 
 #include "wmdrmotaaccessecominterface.inl"
+
 #endif _WMDRMOTAACCESSECOMINTERFACE_H_
+
