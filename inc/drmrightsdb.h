@@ -57,6 +57,7 @@ class CLogFile;
 class CDRMRightsCleaner;
 class CDRMRightsServer;
 class CDcfRep;
+class CDRMRightsServer;
 
 // FUNCTION PROTOTYPES
 
@@ -91,7 +92,8 @@ NONSHARABLE_CLASS( CDRMRightsDB ) : public CBase ,
         static CDRMRightsDB* NewLC( RFs& aFs,
                                     const TDesC& aDatabasePath,
                                     const TDesC8& aKey,
-                                    const TDesC& aImei );
+                                    const TDesC& aImei,
+                                    CDRMRightsServer* aServer );
         
         /**
         * NewL
@@ -110,7 +112,8 @@ NONSHARABLE_CLASS( CDRMRightsDB ) : public CBase ,
         static CDRMRightsDB* NewL( RFs& aFs,
                                    const TDesC& aDatabasePath,
                                     const TDesC8& aKey,
-                                    const TDesC& aImei );
+                                    const TDesC& aImei,
+                                    CDRMRightsServer* aServer );
           
         /**
         * Destructor
@@ -327,6 +330,7 @@ NONSHARABLE_CLASS( CDRMRightsDB ) : public CBase ,
         */      
         CDRMRightsCleaner* DeleteExpiredPermissionsL( const TTime& aTime,
                                                       TRequestStatus& aStatus );
+
         
         /**
         * NameContentL
@@ -369,6 +373,21 @@ NONSHARABLE_CLASS( CDRMRightsDB ) : public CBase ,
         */         
         TBool DeleteExpiredL( const TFileName& aFileName,
                              const TTime& aTime );     
+
+        /**
+        * DeleteExpiredL
+        * 
+        * Delete expired from the current file store
+        *
+        * @since    3.0
+        * @param    aFileName : name of the permission file store
+        * @param    aTime : current time.
+        * @return   TBool : ETrue if the file can be deleted
+        *                   EFalse if the file can't be deleted
+        */         
+        TBool DeleteExpiredL( const TFileName& aFileName,
+                             const TTime& aTime,
+                             const TDesC8& aContentId );  
   
         /**
         * GetUdtDataL
@@ -507,7 +526,7 @@ NONSHARABLE_CLASS( CDRMRightsDB ) : public CBase ,
         /**
         * Default Constructor - First phase.
         */
-        CDRMRightsDB( RFs& aFs ); 
+        CDRMRightsDB( RFs& aFs, CDRMRightsServer* aServer ); 
         
         /**
         * ConstructL
@@ -675,6 +694,8 @@ NONSHARABLE_CLASS( CDRMRightsDB ) : public CBase ,
         
         // Time stamp of the last update operation
         TTime iLastUpdate;
+        
+        CDRMRightsServer* iRightsServer;
     };
 
 #endif      // DRMRIGHTSDB_H   

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2003-2009 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -11,15 +11,17 @@
 *
 * Contributors:
 *
-* Description:  
+* Description:  DRM Encryption tool.
 *
 */
 
+#include <QtGui/QApplication>
+#include "drmencryptor.h"
 
-#include <apcaptionfile.rh>
-
-RESOURCE CAPTION_DATA
-    {
-    caption = "DRMEncryptor";
-    shortcaption = "DRM";
-    }
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    DRMEncryptor w;
+    w.showMaximized();
+    return a.exec();
+}

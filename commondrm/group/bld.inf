@@ -35,7 +35,7 @@ PRJ_EXPORTS
 ../drmsettingsplugin/loc/drmsettingsplugin.loc MW_LAYER_LOC_EXPORT_PATH( drmsettingsplugin.loc )
 
 // IBY files
-../rom/DRMEncryptor.iby                 CORE_MW_LAYER_IBY_EXPORT_PATH( drmencryptor.iby )
+//../rom/DRMEncryptor.iby                 CORE_MW_LAYER_IBY_EXPORT_PATH( drmencryptor.iby )
 ../rom/DRMEncryptorResources.iby        LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmencryptorresources.iby )
 ../rom/DRMRightsManagerUI.iby           CORE_MW_LAYER_IBY_EXPORT_PATH( drmrightsmanagerui.iby )
 ../rom/DRMRightsManagerUIResources.iby  LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmrightsmanageruiresources.iby )
@@ -45,9 +45,6 @@ PRJ_EXPORTS
 ../rom/drmrightsstoringlocation.iby     CORE_MW_LAYER_IBY_EXPORT_PATH( drmrightsstoringlocation.iby )
 
 PRJ_MMPFILES
-
-// DRMEncryptor
-../drmencryptor/group/DRMEncryptor.mmp
 
 // DRMRightsManagerUi
 ../drmrightsmanagerui/group/DRMRightsManager.mmp
@@ -70,19 +67,6 @@ PRJ_TESTMMPFILES
 
 
 PRJ_EXTENSIONS
-
-START EXTENSION s60/mifconv
-OPTION TARGETFILE drmencryptor.mif
-OPTION HEADERFILE drmencryptor.mbg
-OPTION SOURCES -c8,8 qgn_menu_DRMEncryptor_cxt -c8 icon
-OPTION SOURCEDIR ../drmencryptor/group
-END
-
-START EXTENSION s60/mifconv
-OPTION TARGETFILE drmencryptor_aif.mif
-OPTION SOURCES -c8,8 qgn_menu_drmencryptor -c8 icon
-OPTION SOURCEDIR ../drmencryptor/group
-END
 
 START EXTENSION s60/mifconv
 OPTION TARGETFILE drmrightsmanager.mif

@@ -45,6 +45,7 @@
 #include "DrmKeyStorage.h"
 #include "utf.h" // charconv, ConvertFromUnicodeToUtf8L
 #include "drmlog.h"
+#include "DRMRightsServer.h"
 
 #ifdef RD_DRM_RIGHTS_MANAGER_REMOVAL
 #include "DRMClockClient.h"
@@ -161,10 +162,11 @@ LOCAL_C void DeleteObject( TAny* aObject )
 // might leave.
 // -----------------------------------------------------------------------------
 //
-CDRMRightsDB::CDRMRightsDB( RFs& aFs ) :
+CDRMRightsDB::CDRMRightsDB( RFs& aFs, CDRMRightsServer* aServer ) :
     iFileServer( aFs ),
     iImei( NULL ),
-    iLastUpdate( Time::NullTTime() )
+    iLastUpdate( Time::NullTTime() ),
+    iRightsServer( aServer )    
     {
     };
 
@@ -215,9 +217,10 @@ void CDRMRightsDB::ConstructL( const TDesC& aDatabasePath,
 CDRMRightsDB* CDRMRightsDB::NewLC( RFs& aFs,
                                    const TDesC& aDatabasePath,
                                    const TDesC8& aKey,
-                                   const TDesC& aImei )
+                                   const TDesC& aImei,
+                                   CDRMRightsServer* aServer )
     {
-    CDRMRightsDB* self = new( ELeave ) CDRMRightsDB( aFs );
+    CDRMRightsDB* self = new( ELeave ) CDRMRightsDB( aFs, aServer );
     CleanupStack::PushL( self );
     self->ConstructL( aDatabasePath, aKey, aImei );
 
@@ -232,9 +235,10 @@ CDRMRightsDB* CDRMRightsDB::NewLC( RFs& aFs,
 CDRMRightsDB* CDRMRightsDB::NewL( RFs& aFs,
                                   const TDesC& aDatabaseFile,
                                   const TDesC8& aKey,
-                                  const TDesC& aImei )
+                                  const TDesC& aImei,
+                                  CDRMRightsServer* aServer )
     {
-    CDRMRightsDB* self = NewLC( aFs, aDatabaseFile, aKey, aImei );
+    CDRMRightsDB* self = NewLC( aFs, aDatabaseFile, aKey, aImei, aServer );
     CleanupStack::Pop();
 
     return self;
@@ -315,7 +319,7 @@ void CDRMRightsDB::GetDBEntryByContentIDL(
         }
 
     // Delete expired:
-    TRAP_IGNORE( deleteAllowed = DeleteExpiredL( path, time ) );
+    TRAP_IGNORE( deleteAllowed = DeleteExpiredL( path, time, aContentID ) );
 
     // Check if it's possible to delete the file as well
     if( deleteAllowed )
@@ -1068,6 +1072,77 @@ TBool CDRMRightsDB::DeleteExpiredL( const TFileName& aFileName,
     CleanupStack::PopAndDestroy(); // rights
 
     DRMLOG( _L( "CDRMRightsDB::DeleteExpiredL <-" ) );
+
+    return retVal;
+    }
+
+
+// -----------------------------------------------------------------------------
+// CDRMRightsDB::DeleteExpiredL
+// -----------------------------------------------------------------------------
+//
+TBool CDRMRightsDB::DeleteExpiredL( const TFileName& aFileName,
+                                   const TTime& aTime,
+                                   const TDesC8& aContentId )
+    {
+    CDRMRightsData* rights = NULL;
+    TInt amountLeft = -1;
+    TBool retVal = EFalse;
+    TBool parents = EFalse;
+
+    DRMLOG( _L( "CDRMRightsDB::DeleteExpiredL(2) ->" ) );
+
+    // if there is a consumption session ongoing, we can't delete it at all
+    // or the decryption will not function properly after pause etc
+    if( iRightsServer->IsAccessingUrl( aContentId ) != KErrNotFound )
+        {
+        return EFalse;    
+        }
+
+    // Indicate that the DB is updated
+    iLastUpdate.HomeTime();
+
+    // Open the rights file
+    DRMLOG( _L("Opening the file"));
+    rights = CDRMRightsData::OpenLC( aFileName, iFileServer );
+
+    DRMLOG( _L("Running Delete"));
+    amountLeft = rights->DeleteExpiredPermissionsL( aTime, parents );
+
+    DRMLOG2( _L("Checking for left RO:s %d"), amountLeft );
+
+    // See if any permissions are left if not check if the whole file
+    // can be proposed to be deleted or not, Java files require uninstallation
+    // so those need to be checked
+    if( !amountLeft && !parents )
+        {
+        // get the common data
+        const CDRMCommonData* common= rights->GetCommonDataL();
+
+        // If it is a java file, dont allow deletion
+        if( !common->ContentName().Right(4).CompareF(KJavaExtension) )
+            {
+            DRMLOG( _L("Is java file, do not delete"));
+            retVal = EFalse;
+            }
+        else if( !common->ContentName().Right(4).CompareF(KSISExtension) )
+            {
+            DRMLOG( _L("Is an installation package, do not delete"));
+            retVal = EFalse;
+            }
+        else
+            {
+            retVal = ETrue;
+            }
+        }
+    CleanupStack::PopAndDestroy(); // rights
+
+    DRMLOG( _L( "CDRMRightsDB::DeleteExpiredL <-" ) );
+
+    if( iRightsServer->HasActiveCountConstraint( aContentId ))
+        {
+        retVal = EFalse;    
+        }
 
     return retVal;
     }
