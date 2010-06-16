@@ -49,7 +49,7 @@ LIBRARY         DRMCommon.lib
 LIBRARY         sysutil.lib // SysUtil
 
 
-#if defined(ARMCC)
+#if defined(EABI)
 deffile ../eabi/
 #elif defined( WINSCW )
 deffile ../BWINSCW/

@@ -64,7 +64,7 @@ END
 START MARM
 END
 
-#if defined(ARMCC)
+#if defined(EABI)
 deffile ../eabi/
 #elif defined( WINSCW )
 deffile ../bwinscw/

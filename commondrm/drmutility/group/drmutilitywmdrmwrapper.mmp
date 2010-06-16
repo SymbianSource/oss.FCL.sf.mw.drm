@@ -55,7 +55,7 @@ LIBRARY         drmrights.lib
 
 DOCUMENT    bld.inf
 
-#if defined(ARMCC)
+#if defined(EABI)
 deffile ../eabi/
 #elif defined( WINSCW )
 deffile ../bwinscw/

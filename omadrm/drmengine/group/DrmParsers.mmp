@@ -64,7 +64,7 @@ LIBRARY       platformenv.lib
 
 LIBRARY    flogger.lib
 
-#if defined( ARMCC )
+#if defined( EABI )
 deffile ../eabi/
 #elif defined( WINSCW )
 deffile ../bwinscw/

@@ -53,7 +53,7 @@ LIBRARY         euser.lib XmlFramework.lib hash.lib
 LIBRARY         estor.lib efsrv.lib apmime.lib InetProtUtil.lib bnf.lib
 LIBRARY         cryptography.lib random.lib bafl.lib charconv.lib
 
-#if defined(ARMCC)
+#if defined(EABI)
 deffile ../eabi/ 
 #elif defined( WINSCW )
 deffile ../bwinscw/ 

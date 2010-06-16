@@ -108,7 +108,7 @@ public: // from base class MDrmErrorHandling
     * @see ContentAccess::TIntent
     * @see MDrmErrorHandling
     */
-    virtual TInt HandleErrorAsyncL(
+    IMPORT_C virtual TInt HandleErrorAsyncL(
         RFile& aFile,
         ContentAccess::TIntent aIntent,
         TInt aError,
@@ -135,7 +135,7 @@ public: // from base class MDrmErrorHandling
     * @see ContentAccess::TIntent
     * @see MDrmErrorHandling
     */
-    virtual void HandleErrorL(
+    IMPORT_C virtual void HandleErrorL(
         RFile& aFile,
         ContentAccess::TIntent aIntent,
         TInt aError,
@@ -164,7 +164,7 @@ public: // from base class MDrmErrorHandling
     * @see ContentAccess::TIntent
     * @see MDrmErrorHandling
     */
-    virtual TInt HandleErrorAsyncL(
+    IMPORT_C virtual TInt HandleErrorAsyncL(
         ContentAccess::CData& aFile,
         ContentAccess::TIntent aIntent,
         TInt aError,
@@ -191,7 +191,7 @@ public: // from base class MDrmErrorHandling
     * @see ContentAccess::TIntent
     * @see MDrmErrorHandling
     */
-    virtual void HandleErrorL(
+    IMPORT_C virtual void HandleErrorL(
         ContentAccess::CData& aFile,
         ContentAccess::TIntent aIntent,
         TInt aError,

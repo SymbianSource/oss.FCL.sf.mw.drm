@@ -57,7 +57,7 @@ LIBRARY     centralrepository.lib // central repository
 LIBRARY       platformenv.lib
 #endif
 
-#if defined(ARMCC)
+#if defined(EABI)
 deffile ../eabi/ 
 #elif defined( WINSCW )
 deffile ../bwinscw/ 

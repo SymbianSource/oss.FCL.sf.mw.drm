@@ -99,7 +99,7 @@ LIBRARY         platformenv.lib
 #endif
 
 
-#if defined(ARMCC)
+#if defined(EABI)
 deffile ../EABI/
 #elif defined( WINSCW )
 deffile ../BWINSCW/

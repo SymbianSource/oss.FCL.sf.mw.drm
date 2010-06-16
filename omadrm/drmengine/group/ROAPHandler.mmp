@@ -128,7 +128,7 @@ LIBRARY     drmroapwbxmlparser.lib
 macro      _ROAP_TESTING
 LIBRARY    flogger.lib
 
-#if defined(ARMCC)
+#if defined(EABI)
 deffile ../eabi/
 #elif defined( WINSCW )
 deffile ../bwinscw/

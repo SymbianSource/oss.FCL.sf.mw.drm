@@ -35,7 +35,7 @@ SOURCE          drmserviceapi.cpp
 LIBRARY         drmserverinterfaces.lib
 LIBRARY         euser.lib
 
-#if defined(ARMCC)
+#if defined(EABI)
 deffile ../eabi/ 
 #elif defined( WINSCW )
 deffile ../bwinscw/ 
