@@ -686,6 +686,21 @@ void CWmDrmSession::GetTimeL( const RMessage2& aMessage )
     aMessage.WriteL(1, validityPckg);
     }
 
+
+//---------------------------------------------------------------------------
+// CWmDrmSession::CommitDataL
+//---------------------------------------------------------------------------
+//
+void CWmDrmSession::CommitDataL( const RMessage2& aMessage )
+    {
+    
+    LOGFN( "CWmDrmSession::CommitDataL" );
+    
+    // Force a commit on the database
+    Server().Db()->CheckDatabaseCommitL( ETrue );
+    }
+
+
  
 //---------------------------------------------------------------------------
 // CWmDrmSession::ServiceL
@@ -787,7 +802,10 @@ void CWmDrmSession::ServiceL( const RMessage2& aMessage )
                 break;
             case EGetTime:
                 TRAP( trap, GetTimeL( aMessage ) );
-                break;              
+                break;      
+            case ECommitData:
+                TRAP( trap, CommitDataL( aMessage ) );
+                break;            
             default:
                 r = KErrArgument;
                 break;

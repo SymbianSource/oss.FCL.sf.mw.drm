@@ -109,6 +109,12 @@ public:
 
     TInt DataBaseSize( TBool aConfiguredDrive );
 
+    // Checks how many SQL statements are prepared (buffered) currently and if either the maximum 
+    // amount of buffered statements is exceeded or an enforced commit is needed, COMMITs the 
+    // statements. The method also starts a new BEGIN statement after the commit operation to 
+    // start a new buffering round of SQL statements. This method also controls a timer for 
+    // triggering enforced commit after a predefined idle period without any prepared SQL statements. 
+    void CheckDatabaseCommitL( TBool aEnforcedCommit );
 
 protected: // from base class CActive
     void RunL();
@@ -131,12 +137,7 @@ private:
     
     void ConvertOldLicenseStoreL();
     
-    // Checks how many SQL statements are prepared (buffered) currently and if either the maximum 
-    // amount of buffered statements is exceeded or an enforced commit is needed, COMMITs the 
-    // statements. The method also starts a new BEGIN statement after the commit operation to 
-    // start a new buffering round of SQL statements. This method also controls a timer for 
-    // triggering enforced commit after a predefined idle period without any prepared SQL statements. 
-    void CheckDatabaseCommitL( TBool aEnforcedCommit );
+
     void Activate();
 
 private: // data
