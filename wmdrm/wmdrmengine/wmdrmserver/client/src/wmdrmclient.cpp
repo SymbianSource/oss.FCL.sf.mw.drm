@@ -542,4 +542,17 @@ EXPORT_C TInt RWmDrmClient::GetTime( TTime& aTime, TBool& aValid )
     return r;    
     };
     
+//---------------------------------------------------------------------------
+// RWmDrmClient::CommitData
+//---------------------------------------------------------------------------
+//
+EXPORT_C TInt RWmDrmClient::CommitData()
+    {
+    TInt r = KErrNone;
+    
+	LOGFNR( "RWmDrmClient::CommitData", r );    
+    r = SendReceive( ECommitData );
+    return r;    
+    };
+
     

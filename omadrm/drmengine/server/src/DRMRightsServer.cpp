@@ -294,6 +294,29 @@ void PointerArrayResetDestroyAndClose(TAny* aPtr)
 
 // ============================ MEMBER FUNCTIONS ===============================
 
+// CUsageUrl:
+
+//--------------------------------------------------------------------------
+// CUsageUrl::CUsageUrl
+// Storage class default constructor
+//--------------------------------------------------------------------------
+//
+CUsageUrl::CUsageUrl()
+    {
+    }
+
+//--------------------------------------------------------------------------
+// CUsageUrl::~CUsageUrl
+// Storage class destructor
+//--------------------------------------------------------------------------
+//
+CUsageUrl::~CUsageUrl()
+    {
+    delete iUrl;    
+    }
+
+// CDRMRightsServer:
+
 // -----------------------------------------------------------------------------
 // CDRMRightsServer::NewLC
 // Two-phased constructor.
@@ -353,6 +376,8 @@ CDRMRightsServer::~CDRMRightsServer()
         {
         delete iNotifier; iNotifier = NULL;
         }
+
+    iActiveUrls.ResetAndDestroy();
 
     //An empty semaphore
     RSemaphore semaphore;
@@ -599,13 +624,13 @@ void CDRMRightsServer::ConstructL()
 
 #ifndef RD_MULTIPLE_DRIVE
 
-    iDb = CDRMRightsDB::NewL( iFs, KRightsDir, key, *iIMEI );
+    iDb = CDRMRightsDB::NewL( iFs, KRightsDir, key, *iIMEI, const_cast<CDRMRightsServer*>(this) );
 
 #else //RD_MULTIPLE_DRIVE
 
     tempPath.Format( KRightsDir, (TUint)driveLetter );
 
-    iDb = CDRMRightsDB::NewL( iFs, tempPath, key, *iIMEI );
+    iDb = CDRMRightsDB::NewL( iFs, tempPath, key, *iIMEI, const_cast<CDRMRightsServer*>(this) );
 
 #endif
 
@@ -1337,6 +1362,85 @@ void CDRMRightsServer::AddActiveCountConstraintL( const TDesC8& aContentId )
         }
     }
 
+
+
+// -----------------------------------------------------------------------------
+// CDRMRightsServer::IsAccessingUrl
+// Add ID to count constraint list
+// -----------------------------------------------------------------------------
+//
+TInt CDRMRightsServer::IsAccessingUrl( const TDesC8& aContentId )
+    {
+    for( TInt i = 0; i < iActiveUrls.Count(); i++ )
+        {
+        if( !iActiveUrls[i]->iUrl->Compare( aContentId ) ) 
+            {
+            return i;
+            }    
+        }
+    return KErrNotFound;        
+    }
+
+// -----------------------------------------------------------------------------
+// CDRMRightsServer::RemoveAccessingUrl
+// Add ID to count constraint list
+// -----------------------------------------------------------------------------
+//
+void CDRMRightsServer::RemoveAccessingUrl( const TDesC8& aContentId )
+    {
+    CUsageUrl* usage = NULL;    
+    TInt index = KErrNotFound;
+    
+    index = IsAccessingUrl( aContentId );
+    
+    if( index != KErrNotFound )
+        {
+        // If there are negative or 0 values in the list for some reason
+        // remove them    
+        if( iActiveUrls[index]->iRefCounter <= 1 )
+            {
+            usage = iActiveUrls[index];    
+            iActiveUrls.Remove( index );    
+            delete usage;
+            }
+        else
+            {
+            iActiveUrls[index]->iRefCounter--;
+            }           
+        }
+    }
+
+// -----------------------------------------------------------------------------
+// CDRMRightsServer::AddAccessingUrlL
+// Add ID to count constraint list
+// -----------------------------------------------------------------------------
+//
+void CDRMRightsServer::AddAccessingUrlL( const TDesC8& aContentId )
+    {
+    CUsageUrl* usage = NULL;
+    TInt index = KErrNotFound;
+    
+    index = IsAccessingUrl( aContentId );
+    
+    if( index == KErrNotFound )
+        {
+        usage = new ( ELeave ) CUsageUrl();
+        CleanupStack::PushL( usage );
+        usage->iUrl = aContentId.AllocL();
+        usage->iRefCounter = 1;
+        iActiveUrls.AppendL( usage );
+        CleanupStack::Pop( usage );
+        }
+    else
+        {
+        usage = iActiveUrls[index];
+        usage->iRefCounter++;    
+        }           
+    }
+
+
+
+
 // -----------------------------------------------------------------------------
 // CDRMRightsServer::StopWatchingL
 // Delete the watchers
@@ -1424,6 +1528,8 @@ void CDRMRightsServer::ImportRightsObjectsL( const TDesC& aImportDir )
     DRMLOG( _L( "CDRMRightsServer::ImportRightsObjectsL done" ) );
     }
 #endif
+
+
 
 // ========================== OTHER EXPORTED FUNCTIONS =========================
 
