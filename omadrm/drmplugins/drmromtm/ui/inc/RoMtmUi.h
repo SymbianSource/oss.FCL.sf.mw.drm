@@ -207,12 +207,12 @@ class CRightsObjectMtmUi : public CBaseMtmUi , public MAknServerAppExitObserver 
         CMsvOperation* CompletedOperationL( TRequestStatus& aObserverStatus );
         TBool ShowQueryL( TDesC16& aFile );
         TInt CheckTriggerTypeL( TDesC16& aFile );
+
     private:
         TMessageType iType;
-        CDocumentHandler* iDocHandler;
         RFs iFs;
         CEikProcess* iHostProcess;
-    CAknLaunchAppService* iOpenService;
+    
     };
 
 #endif      // RIGHTSOBJECTMTMUI_H

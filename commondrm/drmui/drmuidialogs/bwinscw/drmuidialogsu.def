@@ -1,0 +1,5 @@
+EXPORTS
+	?NewL@CDrmUIDialogs@@SAPAV1@XZ @ 1 NONAME ; class CDrmUIDialogs * CDrmUIDialogs::NewL(void)
+	?ShowNoteL@CDrmUIDialogs@@QAEHHABVTDesC16@@H@Z @ 2 NONAME ; int CDrmUIDialogs::ShowNoteL(int, class TDesC16 const &, int)
+	?NewLC@CDrmUIDialogs@@SAPAV1@XZ @ 3 NONAME ; class CDrmUIDialogs * CDrmUIDialogs::NewLC(void)
+

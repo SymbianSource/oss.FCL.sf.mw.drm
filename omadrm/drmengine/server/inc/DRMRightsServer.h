@@ -22,7 +22,7 @@
 //  INCLUDES
 #include <e32base.h>
 #include <f32file.h>
-#include <abclient.h>
+#include <connect/abclient.h>
 #include "drmcommonclientserver.h"
 #include "DRMReplayCache.h"
 #include "drmmeteringdb.h"

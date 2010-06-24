@@ -33,12 +33,8 @@ DEFFILE         DRM_CAF.def
 
 USERINCLUDE     ../inc 
 
-#if defined(__S60_)
-    MW_LAYER_SYSTEMINCLUDE
-#else // __S60_ not defined
-    SYSTEMINCLUDE   /epoc32/include 
-    SYSTEMINCLUDE   /epoc32/include/internal
-#endif // __S60_
+MW_LAYER_SYSTEMINCLUDE
+
 
 SOURCEPATH      ../src
 
@@ -54,10 +50,6 @@ LIBRARY         stiftestengine.lib
 
 LANG            SC
 
-
-SYSTEMINCLUDE /epoc32/include/libc
-SYSTEMINCLUDE /epoc32/include/ecom
-SYSTEMINCLUDE /epoc32/include/caf
 		
 LIBRARY         apparc.lib
 LIBRARY         avkon.lib

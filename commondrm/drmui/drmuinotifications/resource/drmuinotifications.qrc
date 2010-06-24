@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RCC>
+    <qresource prefix="/xml">
+        <file alias="norightsobjectquery.docml" >norightsobjectquery.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="rightsobjectexpiredquery.docml" >rightsobjectexpiredquery.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="simnotallowedquery.docml" >simnotallowedquery.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="waitingforrightsobjconf.docml" >waitingforrightsobjconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="copyobjectsquery.docml" >copyobjectsquery.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="filedeletedconf.docml" >filedeletedconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="deletedrmfilequery.docml" >deletedrmfilequery.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="moveobjectsquery.docml" >moveobjectsquery.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="nocountquery.docml" >nocountquery.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="nousagequery.docml" >nousagequery.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="objectlockedconf.docml" >objectlockedconf.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="unabletocopyconf.docml" >unabletocopyconf.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="unabletomoveconf.docml" >unabletomoveconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="unsupportedconf.docml" >unsupportedconf.docml</file>
+    </qresource>
+   
+     <qresource prefix="/xml">
+        <file alias="noconnectiondefinednote.docml" >noconnectiondefinednote.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="invalidornoapnote.docml" >invalidornoapnote.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="openingfailpermnote.docml" >openingfailpermnote.docml</file>
+    </qresource>
+    
+     <qresource prefix="/xml">
+        <file alias="deregisteredconf.docml" >deregisteredconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="forwardprotectedconf.docml" >forwardprotectedconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="licenceexpiredconf.docml" >licenceexpiredconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="notrecognizedconf.docml" >notrecognizedconf.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="registeredconf.docml" >registeredconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="registerfailureconf.docml" >registerfailureconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="unabletoderegisterconf.docml" >unabletoderegisterconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="unabletosendconf.docml" >unabletosendconf.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="updatedconf.docml" >updatedconf.docml</file>
+    </qresource>
+    
+      <qresource prefix="/xml">
+        <file alias="updatefailureconf.docml" >updatefailureconf.docml</file>
+    </qresource>
+    
+      <qresource prefix="/xml">
+        <file alias="viewrestrictionconf.docml" >viewrestrictionconf.docml</file>
+    </qresource>
+    
+      <qresource prefix="/xml">
+        <file alias="accountupdatequery.docml" >accountupdatequery.docml</file>
+    </qresource>
+
+      <qresource prefix="/xml">
+        <file alias="getnewlicencequery.docml" >getnewlicencequery.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="retryforlicencequery.docml" >retryforlicencequery.docml</file>
+    </qresource>
+    
+       <qresource prefix="/xml">
+        <file alias="unabletosendquery.docml" >unabletosendquery.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="rightsobjectsrecievednote.docml" >rightsobjectsrecievednote.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="waitingforlicenceconf.docml" >waitingforlicenceconf.docml</file>
+    </qresource>
+    
+        <qresource prefix="/xml">
+        <file alias="acquiringlicenceprog.docml" >acquiringlicenceprog.docml</file>
+    </qresource>
+    
+   <qresource prefix="/xml">
+        <file alias="deregisteringprog.docml" >deregisteringprog.docml</file>
+    </qresource>
+    
+      <qresource prefix="/xml">
+        <file alias="Registeringprog.docml" >Registeringprog.docml</file>
+    </qresource>
+    
+    <qresource prefix="/xml">
+        <file alias="updatingprog.docml" >updatingprog.docml</file>
+    </qresource>
+</RCC>

@@ -32,7 +32,6 @@
 //*** forward declarations go here:
 class CCoeEnv;
 class CDRMConstraint;
-class CSchemeHandler;
 
 namespace ContentAccess
     {
@@ -855,9 +854,6 @@ private: // data
 
     // Wait for the notes and queries
     CActiveSchedulerWait iWait;
-
-    // Schemehandler for url handling
-    CSchemeHandler* iSchemeHandler;
 
     // Operation Queue:
     CDrmUiHandlingData* iFirst;

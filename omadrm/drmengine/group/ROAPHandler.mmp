@@ -39,8 +39,6 @@ USERINCLUDE     ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 APP_LAYER_SYSTEMINCLUDE
-SYSTEMINCLUDE   /epoc32/include/libc
-SYSTEMINCLUDE   /epoc32/include/ecom
 
 SOURCEPATH  ../roap/src
 

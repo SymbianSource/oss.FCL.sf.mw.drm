@@ -36,7 +36,7 @@ USERINCLUDE	    ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
-SYSTEMINCLUDE  	/epoc32/include/ecom
+
 
 SOURCEPATH      ../agentv2/src
 SOURCE          Oma2Agent.cpp

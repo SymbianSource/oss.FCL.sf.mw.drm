@@ -142,7 +142,7 @@ TBool CDRMNotifierSession::SendNotificationL( CDRMMessageStorage::TMessageData* 
 
     if( !iIsListening || iMessageQueue.Count() )
         {
-        iMessageQueue.Append( aMessage );
+        iMessageQueue.AppendL ( aMessage );
         return ETrue;
         }
     NotifyL( aMessage, EFalse );
@@ -274,8 +274,9 @@ void CDRMNotifierSession::RecieveNotificationL( const RMessage2& aMessage )
 
     if( !iIsInStorage )
         {
-        iIsInStorage = ETrue;
-        iStorage->AddSession( this );
+
+        User::LeaveIfError( iStorage->AddSession( this ) );
+        iIsInStorage = ETrue;        
         }
 
     // Check if there are any notifications in queue if so process first one
@@ -354,7 +355,7 @@ void CDRMNotifierSession::RegisterL( const RMessage2& aMessage )
     content->iContentID = NULL;
     content->iEventType = eventType;
 
-    iContentIDList.Append( content );
+    iContentIDList.AppendL ( content );
 
     aMessage.Complete( KErrNone );
     }
@@ -422,7 +423,7 @@ void CDRMNotifierSession::RegisterURIL( const RMessage2& aMessage )
     content->iContentID = contentID;
     content->iEventType = eventType;
 
-    iContentIDList.Append( content );
+    iContentIDList.AppendL ( content );
 
     CleanupStack::Pop();
     aMessage.Complete( KErrNone );

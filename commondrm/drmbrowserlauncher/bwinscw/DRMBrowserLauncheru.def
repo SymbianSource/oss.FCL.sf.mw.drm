@@ -1,0 +1,5 @@
+EXPORTS
+	?LaunchUrlL@CDrmBrowserLauncher@DRM@@QAEXAAVTDesC16@@@Z @ 1 NONAME ; void DRM::CDrmBrowserLauncher::LaunchUrlL(class TDesC16 &)
+	?NewLC@CDrmBrowserLauncher@DRM@@SAPAV12@XZ @ 2 NONAME ; class DRM::CDrmBrowserLauncher * DRM::CDrmBrowserLauncher::NewLC(void)
+	?NewL@CDrmBrowserLauncher@DRM@@SAPAV12@XZ @ 3 NONAME ; class DRM::CDrmBrowserLauncher * DRM::CDrmBrowserLauncher::NewL(void)
+
