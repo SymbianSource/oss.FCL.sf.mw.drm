@@ -30,7 +30,6 @@
 #include <centralrepository.h>          // link against centralrepository.lib
 #include <msvuids.h>
 #include <msvids.h>
-#include <DownloadMgrClient.h>
 
 #ifdef RD_MULTIPLE_DRIVE
 #include <driveinfo.h>
@@ -46,7 +45,7 @@
 #include "RoMtmCli.h"                       // for CRightsObjectMtmClient
 #include "RoapSyncWrapper.h"
 
-#include "StringResourceReader.h"
+#include "RoHandlerStringResourceReader.h"
 #include "rohandlerdmgrwrapper.h"
 #include "rohandlerinternalcrkeys.h"
 
@@ -99,7 +98,6 @@ _LIT( KDriveZ, "z:" );
 _LIT( KRoHandlerTriggerFilePath, "c:\\system\\data\\" );
 #endif
 
-_LIT( KPushMtmRes, "PushMtmUi.rsc" );
 _LIT( KRoHandlerResourceFile, "RoHandler.rsc" );
 
 _LIT8( KRoapTriggerElement, "roapTrigger" );
@@ -1188,10 +1186,10 @@ void CRoHandler::ReadFromResourceLC(
     TRAP( r, WriteL( _L8( "ReadFromResourceLC-fs.Connect" ) ) );
 #endif
     CleanupClosePushL( fs );
-    CStringResourceReader* reader(
-        new ( ELeave ) CStringResourceReader( fs, aFile ) );
+    CRoHandlerStringResourceReader* reader(
+        new ( ELeave ) CRoHandlerStringResourceReader( fs, aFile ) );
 #ifdef _DRM_TESTING
-    TRAP( r, WriteL( _L8( "ReadFromResourceLC-CStringResourceReader" ) ) );
+    TRAP( r, WriteL( _L8( "ReadFromResourceLC-CRoHandlerStringResourceReader" ) ) );
 #endif
     CleanupStack::PushL( reader );
     aBuf = reader->AllocReadResourceL( aIndex );

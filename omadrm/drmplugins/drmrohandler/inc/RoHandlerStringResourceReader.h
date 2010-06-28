@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -11,15 +11,15 @@
 *
 * Contributors:
 *
-* Description: 
-*      Declaration of CStringResourceReader.
-*      
+* Description:
+*      Declaration of CRoHandlerStringResourceReader.
+*
 *
 */
 
 
-#ifndef STRINGRESOURCEREADER_H
-#define STRINGRESOURCEREADER_H
+#ifndef ROHANDLERSTRINGRESOURCEREADER_H
+#define ROHANDLERSTRINGRESOURCEREADER_H
 
 // INCLUDE FILES
 
@@ -37,13 +37,13 @@ class RFs;
 * Utility class that helps reading string resources without CONE.
 * Not intended for derivation.
 */
-class CStringResourceReader : public CBase
+class CRoHandlerStringResourceReader : public CBase
     {
     public: // Constructors and destructor
 
-        CStringResourceReader( RFs& aFs, const TDesC& aRscFileWithPathAndDrive );
+        CRoHandlerStringResourceReader( RFs& aFs, const TDesC& aRscFileWithPathAndDrive );
 
-        ~CStringResourceReader();
+        ~CRoHandlerStringResourceReader();
 
     public: // New functions
 
@@ -66,6 +66,6 @@ class CStringResourceReader : public CBase
         TBool iInitialized;
     };
 
-#endif // STRINGRESOURCEREADER_H
+#endif // ROHANDLERSTRINGRESOURCEREADER_H
 
 // End of file.

@@ -16,12 +16,12 @@
 
 # Input
 HEADERS +=	../inc/CRoHandler.h \
-			../inc/StringResourceReader.h \
+			../inc/RoHandlerStringResourceReader.h \
 			../inc/rohandlerdmgrwrapper.h \
 			../inc/qrohandlerdmgreventhandler.h
 
 SOURCES +=	../src/CRoHandler.cpp \
-			../src/StringResourceReader.cpp \
+			../src/RoHandlerStringResourceReader.cpp \
 			../src/rohandlerdmgrwrapper.cpp \
 			../src/qrohandlerdmgreventhandler.cpp
-	
+
