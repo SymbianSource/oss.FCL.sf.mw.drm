@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -11,8 +11,8 @@
 *
 * Contributors:
 *
-* Description: 
-*     Implementation of CStringResourceReader
+* Description:
+*     Implementation of CRoHandlerStringResourceReader
 *
 *
 */
@@ -20,7 +20,7 @@
 
 // INCLUDE FILES
 
-#include "StringResourceReader.h"
+#include "RoHandlerStringResourceReader.h"
 #include <f32file.h>
 #include <barsread.h>
 #include <bautils.h>
@@ -148,54 +148,54 @@ LOCAL_C void WriteCurrentTimeL()
 
 
 // ---------------------------------------------------------
-// CStringResourceReader::CStringResourceReader
+// CRoHandlerStringResourceReader::CRoHandlerStringResourceReader
 // ---------------------------------------------------------
 //
-CStringResourceReader::CStringResourceReader
+CRoHandlerStringResourceReader::CRoHandlerStringResourceReader
     ( RFs& aFs, const TDesC& aRscFileWithPathAndDrive )
 :   CBase(), iFs( aFs ), iInitialized( EFalse )
     {
 #ifdef _DRM_TESTING
-	TRAPD(r,CreateLogL());   
-	TRAP(r,WriteL(_L8("CStringResourceReader")));
-#endif 
+    TRAPD(r,CreateLogL());
+    TRAP(r,WriteL(_L8("CRoHandlerStringResourceReader")));
+#endif
     iRscFileName.Copy( aRscFileWithPathAndDrive );
     }
 
 // ---------------------------------------------------------
-// CStringResourceReader::~CStringResourceReader
+// CRoHandlerStringResourceReader::~CRoHandlerStringResourceReader
 // ---------------------------------------------------------
 //
-CStringResourceReader::~CStringResourceReader()
+CRoHandlerStringResourceReader::~CRoHandlerStringResourceReader()
     {
     iResourceFile.Close();
 #ifdef _DRM_TESTING
-	TRAPD(r,WriteL(_L8("~CStringResourceReader")));
-#endif 
+    TRAPD(r,WriteL(_L8("~CRoHandlerStringResourceReader")));
+#endif
     }
 
 // ---------------------------------------------------------
-// CStringResourceReader::AllocReadResourceL
+// CRoHandlerStringResourceReader::AllocReadResourceL
 // ---------------------------------------------------------
 //
-HBufC* CStringResourceReader::AllocReadResourceL( TInt aResId )
+HBufC* CRoHandlerStringResourceReader::AllocReadResourceL( TInt aResId )
     {
 #ifdef _DRM_TESTING
-	TRAPD(r,WriteL(_L8("AllocReadResourceL"),aResId));
-#endif 
+    TRAPD(r,WriteL(_L8("AllocReadResourceL"),aResId));
+#endif
 
     InitializeL();
 
 #ifdef _DRM_TESTING
-	TRAP(r,WriteL(_L8("AllocReadResourceL-InitializeL")));
-#endif 
+    TRAP(r,WriteL(_L8("AllocReadResourceL-InitializeL")));
+#endif
 
     HBufC8* buf8 = iResourceFile.AllocReadLC( aResId );
 
 #ifdef _DRM_TESTING
-	TRAP(r,WriteL(_L8("AllocReadResourceL-iResourceFile.AllocReadLC")));
-#endif     
-    
+    TRAP(r,WriteL(_L8("AllocReadResourceL-iResourceFile.AllocReadLC")));
+#endif
+
 #ifdef _UNICODE
     const TPtrC buf( (const TUint16*)buf8->Ptr(), buf8->Size()/2 );
 #else
@@ -205,49 +205,49 @@ HBufC* CStringResourceReader::AllocReadResourceL( TInt aResId )
     CleanupStack::PopAndDestroy( buf8 );
 
 #ifdef _DRM_TESTING
-	TRAP(r,WriteL(_L8("AllocReadResourceL-End")));
-#endif 
+    TRAP(r,WriteL(_L8("AllocReadResourceL-End")));
+#endif
     return retBuf;
     }
 
 // ---------------------------------------------------------
-// CStringResourceReader::InitializeL
+// CRoHandlerStringResourceReader::InitializeL
 // ---------------------------------------------------------
 //
-void CStringResourceReader::InitializeL()
+void CRoHandlerStringResourceReader::InitializeL()
     {
 #ifdef _DRM_TESTING
-	TRAPD(r,WriteL(_L8("InitializeL")));
-#endif 
+    TRAPD(r,WriteL(_L8("InitializeL")));
+#endif
     if ( !iInitialized )
         {
         TFileName resourceFileName( iRscFileName );
 #ifdef _DRM_TESTING
-	TRAP(r,WriteL(_L8("InitializeL-NearestLanguageFile")));
-#endif 
+    TRAP(r,WriteL(_L8("InitializeL-NearestLanguageFile")));
+#endif
 
 #ifdef _DRM_TESTING
-	TRAP(r,WriteL(resourceFileName));
-#endif 
+    TRAP(r,WriteL(resourceFileName));
+#endif
         BaflUtils::NearestLanguageFile( iFs, resourceFileName );
 #ifdef _DRM_TESTING
-	TRAP(r,WriteL(_L8("InitializeL-NearestLanguageFile-End")));
-#endif 
+    TRAP(r,WriteL(_L8("InitializeL-NearestLanguageFile-End")));
+#endif
 
         iResourceFile.OpenL( iFs, resourceFileName );
 #ifdef _DRM_TESTING
-	TRAP(r,WriteL(_L8("InitializeL-OpenL-End")));
-#endif 
+    TRAP(r,WriteL(_L8("InitializeL-OpenL-End")));
+#endif
 
         iResourceFile.ConfirmSignatureL( iResourceFile.SignatureL() );
 #ifdef _DRM_TESTING
-	TRAP(r,WriteL(_L8("InitializeL-ConfirmSignatureL-End")));
-#endif 
+    TRAP(r,WriteL(_L8("InitializeL-ConfirmSignatureL-End")));
+#endif
         iInitialized = ETrue;
         }
 #ifdef _DRM_TESTING
-	TRAP(r,WriteL(_L8("InitializeL-End")));
-#endif 
+    TRAP(r,WriteL(_L8("InitializeL-End")));
+#endif
     }
 
 // End of file.

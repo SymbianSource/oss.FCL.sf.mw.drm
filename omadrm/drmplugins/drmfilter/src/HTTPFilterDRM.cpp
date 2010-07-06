@@ -518,8 +518,11 @@ void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
                 /**
                  *
                  */
-                iDataSups.Append( drmData );
+                CleanupStack::PushL( drmData );
+                iDataSups.AppendL ( drmData );
+                CleanupStack::Pop( drmData );
                 response.SetBody( *drmData );
+                
 
                 // change the mime type to "application/vnd.oma.drm.content"
                 headers.RemoveField( fieldNameStr );
@@ -566,7 +569,9 @@ void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
                         = CHTTPFilterDRMDataSupplier::NewL( aTrans.Id(),
                             response.Body(),
                             const_cast<CHTTPFilterDRM*> ( this ) );
-                    iDataSups.Append( drmData );
+                    CleanupStack::PushL( drmData );
+                    iDataSups.AppendL ( drmData );
+                    CleanupStack::Pop( drmData );
                     }
 
                 }
@@ -662,7 +667,10 @@ void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
                 User::Leave( KErrUnknown );
                 }
 
-            iDataSups.Append( drmData );
+            CleanupStack::PushL( drmData );
+            iDataSups.AppendL ( drmData );
+            CleanupStack::Pop( drmData );
+                
             response.SetBody( *drmData );
 
             ///

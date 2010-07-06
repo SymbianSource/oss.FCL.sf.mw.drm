@@ -41,8 +41,11 @@
 #include <DRMMessageParser.h>
 #include <DcfRep.h>
 #include <DcfEntry.h>
+#include <DRMRights.h>
+//#include <drmbrowserlauncher.h>
 
 #include "drmserviceapi.h"
+#include "DRMTypes.h"
 
 const TInt KBufferSize = 20000;
 
@@ -74,6 +77,9 @@ DRMEncryptor::DRMEncryptor()
     iEncryptAct = new QAction(tr("&Encrypt"), this);
     iEncryptAct->setStatusTip(tr("Encrypt"));
     
+    iLaunchBrowserAct = new QAction(tr("&Launch Browser"), this);
+    iLaunchBrowserAct->setStatusTip(tr("Launch Browser"));
+        
     iDeleteWMDRMDBAct = new QAction(tr("&Delete WMDRM DB"), this);
     iDeleteWMDRMDBAct->setStatusTip(tr("Delete WMDRM Database rights."));
     
@@ -81,11 +87,13 @@ DRMEncryptor::DRMEncryptor()
     menuBar()->addAction(iGetDRMClockAct);
     menuBar()->addAction(iEncryptAct);
     menuBar()->addAction(iDeleteWMDRMDBAct);
+    menuBar()->addAction(iLaunchBrowserAct);
     
     connect(iSetDRMClockAct, SIGNAL(triggered()), this, SLOT(setDRMClock()));
     connect(iGetDRMClockAct, SIGNAL(triggered()), this, SLOT(getDRMClock()));
     connect(iEncryptAct, SIGNAL(triggered()), this, SLOT(startEncrypt()));
     connect(iDeleteWMDRMDBAct, SIGNAL(triggered()), this, SLOT(deleteWmDrmDB()));
+    connect(iLaunchBrowserAct, SIGNAL(triggered()), this, SLOT(launchBrowser()));
     
     //setDRMClockButton = new QPushButton("Set DRM Clock", this);
     //connect(setDRMClockButton, SIGNAL(clicked()), this, SLOT(setDRMClock()));
@@ -116,17 +124,37 @@ void DRMEncryptor::setDRMClock()
 
 void DRMEncryptor::getDRMClock()
 {
-    TTime time;
+	TTime time;
     TInt timeZone;
     TDateTime date;
     DRMClock::ESecurityLevel level;
     TInt error( KErrNone );
     TBuf< 80 > buf;
     
-    DRM::CDrmServiceApi* service = DRM::CDrmServiceApi::NewLC();
+    DRM::CDrmServiceApi* service = NULL;
+    
+    TRAPD(err, service = DRM::CDrmServiceApi::NewL());
+    if(err!=KErrNone)
+    	{
+    	QMessageBox::information(this, tr("DRM Clock"),tr("Error creating CDrmServiceApi."));
+    	buf.AppendNum(error);
+        QString string((QChar*)buf.Ptr(),buf.Length());
+        QMessageBox::information(this, tr("DRM Clock"),string);
+    	delete service; // service
+    	return;
+    	}
+    
     error = service->GetSecureTime( time, timeZone, level );
-       
-    CleanupStack::PopAndDestroy(); // service
+    if(!error==KErrNone)
+        {
+        QMessageBox::information(this, tr("DRM Clock"),tr("Error getting secure time."));
+        
+        buf.AppendNum(error);
+        QString string((QChar*)buf.Ptr(),buf.Length());
+        QMessageBox::information(this, tr("DRM Clock"),string);
+        delete service;
+        return;
+        }
     
     date = time.DateTime();
     
@@ -163,7 +191,6 @@ void DRMEncryptor::getDRMClock()
     QMessageBox *drmClockTime = new QMessageBox(this);
     drmClockTime->setWindowTitle(tr("DRM Clock"));
     drmClockTime->setText(datetimeString);
-    
     
     layout->addWidget(drmClockTime);
     drmClockTime->show();
@@ -581,6 +608,38 @@ void DRMEncryptor::deleteWmDrmDB()
         QMessageBox::information(this, tr("WMDRM DB"),tr("Error deleting WMDRM rights."));
         }
     }
+
+void DRMEncryptor::launchBrowser()
+    {
+    /*_LIT( KTestDrmFile, "c:\\data\\others\\sd_water003.dcf" );
+    TInt urlLength = 256;
+    TFileName fileName(KTestDrmFile);
+    RFile file;
+    RFs fs;
+    
+    User::LeaveIfError(fs.Connect());
+    TInt result = 0;
+    
+    result = file.Open(fs, fileName, EFileRead | EFileShareReadersOrWriters);    
+    
+    CData* content = CData::NewLC( file, KDefaultContentObject, EPeek );
+    
+    HBufC* rightsIssuerBuf = HBufC::NewLC( urlLength ); // Content issuer max URL length
+    TPtr rightsIssuer(const_cast<TUint16*>(rightsIssuerBuf->Ptr()), 0, urlLength);
+    
+    // Get value of rights-issuer header field
+    TInt error = content->GetStringAttribute( ERightsIssuerUrl, rightsIssuer );
+    rightsIssuer.TrimAll();
+    
+    rightsIssuer.Insert(0, _L("http://"));
+    
+    HBufC* finalUrl = rightsIssuer.AllocLC();
+    
+    DRM::CDrmBrowserLauncher::LaunchUrlL(*finalUrl);
+
+    CleanupStack::PopAndDestroy(3); // finalUrl, rightsIssuerBuf, content;*/
+    }
+
 /*
 void DRMEncryptorsetDRMClock()
 {
@@ -646,7 +705,6 @@ DateTimeDialog::DateTimeDialog()
     okButton->show();
     cancelButton->show();
     this->show();
-    this->raise();
     }
 
 DateTimeDialog::~DateTimeDialog()
@@ -656,7 +714,19 @@ DateTimeDialog::~DateTimeDialog()
 
 void DateTimeDialog::setDRMClock()
     {
-    DRM::CDrmServiceApi* service = DRM::CDrmServiceApi::NewLC();
+    DRM::CDrmServiceApi* service = NULL;
+    TBuf<5> buf;
+    TRAPD(err, service = DRM::CDrmServiceApi::NewL());
+    if(err!=KErrNone)
+        {
+        QMessageBox::information(this, tr("DRM Clock"),tr("Error creating CDrmServiceApi."));
+        buf.AppendNum(err);
+        QString string((QChar*)buf.Ptr(),buf.Length());
+        QMessageBox::information(this, tr("DRM Clock"),string);
+        delete service; // service
+        return;
+        }
+       
     QString datetimeString = iDateEdit->dateTime().toString("yyyy.mm.dd hh.mm.ss");
     
     // datetime in format YYYYMMDD:HHMMSS for TTime
@@ -665,10 +735,24 @@ void DateTimeDialog::setDRMClock()
     datetimeString.append(".000000");
     
     TPtrC datetimePtr(reinterpret_cast<const TText*>(datetimeString.constData()));
-    HBufC *datetimeBuf = datetimePtr.AllocLC();
+    HBufC *datetimeBuf = NULL;
+    TBuf<5> errorBuf;
+    TRAPD(errorCode, datetimeBuf = datetimePtr.AllocL());
+    if(errorCode!=KErrNone)
+        {
+        QMessageBox::information(this, tr("DRM Clock"),tr("Error in datetimePtr.AllocL."));
+        errorBuf.AppendNum(errorCode);
+        QString string((QChar*)buf.Ptr(),buf.Length());
+        QMessageBox::information(this, tr("DRM Clock"),string);
+        delete service;
+        delete datetimeBuf;
+        return;
+        }
+        
     
     TTime inputTime(*datetimeBuf);
     TInt timezone = 0;
+    delete datetimeBuf;
     
     // Get secure time from service api to get timezone
     DRMClock::ESecurityLevel level;
@@ -689,20 +773,8 @@ void DateTimeDialog::setDRMClock()
         return;
         }
     
-    CleanupStack::PopAndDestroy(2); // datetimeBuf, service
+    delete service;
+    
     QMessageBox::information(this, tr("DRM Clock"),tr("DRM Clock Set"));
-    
-    /*
-    QGridLayout *layout = new QGridLayout;
-    layout->setAlignment(Qt::AlignTop);
-    QLabel *secureTimeSetComplete = new QLabel("DRM Clock Set");
-    layout->addWidget(secureTimeSetComplete);
-    QPushButton *button = new QPushButton("Ok");
-    layout->addWidget(button);
-    button->show();
-    secureTimeSetComplete->show();
-    connect(button, SIGNAL(clicked()), this, SLOT(close()));
-    */
-    
     }
 

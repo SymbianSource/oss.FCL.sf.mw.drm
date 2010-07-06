@@ -10,7 +10,7 @@
         <unit unitID="sedo.drm" mrp="" bldFile="&layer_real_source_path;/group" name="drm" />
       </module>
       <module name="">
-        <unit unitID="sedoQT.drm.commondrm.drmqtencryptor" bldFile="&layer_real_source_path;/commondrm/drmqtencryptor" mrp="" name="sedoQT_drm_commondrm_drmqtencryptor" proFile="qt_drmencryptor.pro" qmakeArgs="-r" />
+        <unit unitID="sedoQT.drm" bldFile="&layer_real_source_path;" mrp="" name="sedoQT_drm" proFile="drm.pro" qmakeArgs="-r" />
       </module>
     </layer>
     <layer name="api_test_layer">

@@ -59,12 +59,12 @@
 
 #include <utf.h>
 
-#include <SchemeHandler.h> // for handling URLs
 #include "DRMHelperServer.h"
 #include "ConsumeData.h"
 #include "DRMTypes.h"
 #include "DRMClockClient.h"
 #include "DRMPointerArray.h"
+#include <drmbrowserlauncher.h>
 
 #include <SecondaryDisplay/DRMHelperSecondaryDisplay.h> // for secondary display support
 #include <AknMediatorFacade.h>
@@ -862,7 +862,6 @@ EXPORT_C CDRMHelper::~CDRMHelper()
 
     FeatureManager::UnInitializeLib();
 
-    delete iSchemeHandler;
     delete iEventProvider;
     }
 
@@ -5549,25 +5548,14 @@ void CDRMHelper::LaunchBrowserL( HBufC* aUrl )
             i = 0;
             }
 
-        CSchemeHandler* schemeHandler( CSchemeHandler::NewL( ptr.Mid( i ) ) );
-        CleanupStack::PushL( schemeHandler );
-        if ( iUseCoeEnv )
-            {
-            // launch embedded
-            schemeHandler->Observer( this );
-            schemeHandler->HandleUrlEmbeddedL();
-            CleanupStack::Pop( schemeHandler );
-            iSchemeHandler = schemeHandler;
-            iWait.Start();
-            }
-        else
-            {
-            // no CoeEnv, launch standalone with scheme app
-            schemeHandler->HandleUrlStandaloneL();
-            CleanupStack::PopAndDestroy( schemeHandler );
-            }
-        schemeHandler = NULL;
+				// convert given URL to QUrl format
+				DRM::CDrmBrowserLauncher* browserLauncher = DRM::CDrmBrowserLauncher::NewLC();
+    	
+		    browserLauncher->LaunchUrlL(ptr);
+    
+    		CleanupStack::PopAndDestroy(); // browserLauncher
 
+        
         // delete newUrl if needed
         if ( newUrl )
             {
@@ -7048,15 +7036,9 @@ EXPORT_C TInt CDRMHelper::SupportedDRMMethods2(
 //
 void CDRMHelper::HandleServerAppExit( TInt aReason )
     {
-    if ( aReason == EAknCmdExit && !iSchemeHandler )
+    if ( aReason == EAknCmdExit )
         {
         CAknEnv::RunAppShutter();
-        }
-
-    if ( iSchemeHandler )
-        {
-        delete iSchemeHandler;
-        iSchemeHandler = NULL;
         }
 
     if ( iWait.IsStarted() )

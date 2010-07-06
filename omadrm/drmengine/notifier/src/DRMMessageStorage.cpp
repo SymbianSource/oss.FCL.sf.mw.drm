@@ -94,9 +94,9 @@ CDRMMessageStorage::~CDRMMessageStorage()
 // CDRMMessageStorage::AddSession
 // -----------------------------------------------------------------------------
 //
-void CDRMMessageStorage::AddSession( CDRMNotifierSession* aSession ) 
+TInt CDRMMessageStorage::AddSession( CDRMNotifierSession* aSession ) 
     {
-    iSessions.Append( aSession );
+    return iSessions.Append( aSession );
     };
 
 // -----------------------------------------------------------------------------
@@ -218,7 +218,9 @@ void CDRMMessageStorage::NotifyL(TDRMEventType& aEventType, const RMessage2& aMe
         }
     else
         {
-        iMessages.Append( message );
+        CleanupStack::PushL( message );
+        iMessages.AppendL ( message );
+        CleanupStack::Pop( message );
         CleanupStack::Pop(); // message->iData;
         CleanupStack::Pop(); // eventBuf
         CleanupStack::Pop(); // message

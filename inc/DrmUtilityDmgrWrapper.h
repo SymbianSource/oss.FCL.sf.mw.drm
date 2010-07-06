@@ -20,10 +20,13 @@
 #define CDRMUTILITYDMGRWRAPPER_H
 
 #include <f32file.h> // RFs
-#include <DownloadMgrClient.h>
 #include <RoapObserver.h> // Roap::MRoapObserver
 #include <AknProgressDialog.h> // MAknProgressDialogCallback CAknProgressDialog
 
+// download apis
+#include <downloadmanager.h>
+#include <download.h>
+#include <downloadevent.h>
 
 namespace Roap
     {
@@ -36,7 +39,8 @@ namespace DRM
     }
 class CDRMRights;
 class CEikProgressInfo;
-
+class DrmUtilityEventHandler;
+class QDrmUtilityDmgrEventHandler;
 
 /**
 * Environment gate function
@@ -67,7 +71,6 @@ public:
 */
 class CDrmUtilityDmgrWrapper :
     public CActive,
-    public MHttpDownloadMgrObserver,
     public Roap::MRoapObserver,
     public MDrmUtilityDmgrWrapper,
     public MProgressDialogCallback
@@ -104,18 +107,6 @@ public:
         CCoeEnv& aCoeEnv );
 
     HBufC8* GetErrorUrlL();
-
-
-    // from base class MHttpDownloadMgrObserver
-
-    /**
-    * From MHttpDownloadMgrObserver.
-    * Handle download manager events
-    *
-    * @param aDownload the download
-    * @param aEvent the event
-    */
-    void HandleDMgrEventL( RHttpDownload& aDownload, THttpDownloadEvent aEvent );
 
 // From Roap::MRoapObserver
     /**
@@ -252,6 +243,14 @@ public: // Call back methods of MAknProgressDialogCallback
     * @param aButtonId ID of the button pressed
     */
     void DialogDismissedL( TInt aButtonId );
+    
+    /**
+	* Handle download manager events
+	*
+	* @param aEvent the event
+	*/
+            
+    void HandleDownloadEventL( WRT::DownloadEvent* aEvent );
 
 protected:
     //from Cactive
@@ -287,14 +286,21 @@ private:
     void DoHandleRoapTriggerL( TDownloadState aNextState );
 
     void CompleteToState( TDownloadState aNextState, TInt aError );
+    
+    void ProcessDownloadEventL( WRT::Download& aDownload, WRT::DownloadEvent& aEvent );
 
 private: // data
 
     /**
     * Download manager session
     */
-    RHttpDownloadMgr iDlMgr;
+    WRT::DownloadManager* iDlMgr;
 
+    /**
+     * Download instance needs to be stored for handling signal slot mechanism
+     */
+    WRT::Download* iDownload;
+    
     /**
     * Used to make downloads synchronous
     */
@@ -360,6 +366,8 @@ private: // data
     HBufC* iFileName;
 
     DRM::CDrmUtilityConnection* iConnection;
+    
+    QDrmUtilityDmgrEventHandler* iDrmUtilityDmgrEventHandler; 
     };
 
 #endif // CDRMUTILITYDMGRWRAPPER_H

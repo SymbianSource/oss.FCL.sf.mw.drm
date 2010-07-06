@@ -560,8 +560,8 @@ void CRightsObjectMtmUiData::CreateSkinnedBitmapsL( TInt aNumZoomStates )
     {
     MAknsSkinInstance* skins = AknsUtils::SkinInstance();
     TAknsItemID id;
-    CFbsBitmap* bitmap;
-    CFbsBitmap* bitmapMask;
+    //CFbsBitmap* bitmap;
+    //CFbsBitmap* bitmapMask;
     CBitmapArray* array = NULL;
     TParse tp;
     tp.Set( KRoMtmUiDataBitmapFile, &KDC_APP_BITMAP_DIR, NULL );

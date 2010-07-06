@@ -30,7 +30,7 @@ SOURCEPATH      ../src
 SOURCE          wmdrmaccess.cpp
 
 MW_LAYER_SYSTEMINCLUDE
-SYSTEMINCLUDE   /epoc32/include/ecom
+
 
 USERINCLUDE     ../inc
 

@@ -31,10 +31,6 @@ VENDORID    VID_DEFAULT
 // Generic MW include paths
 MW_LAYER_SYSTEMINCLUDE
 
-SYSTEMINCLUDE   /epoc32/include/libc
-SYSTEMINCLUDE   /epoc32/include/caf
-SYSTEMINCLUDE   /epoc32/include/Ecom
-
 USERINCLUDE     ../inc
 USERINCLUDE     ../../../inc
 USERINCLUDE     ../../asf/inc

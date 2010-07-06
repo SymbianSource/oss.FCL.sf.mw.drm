@@ -18,4 +18,8 @@ TEMPLATE = subdirs
 
 SYMBIAN_PLATFORMS = WINSCW ARMV5
 
+SUBDIRS += drmbrowserlauncher/drmbrowserlauncher.pro
 SUBDIRS += drmqtencryptor/qt_drmencryptor.pro
+SUBDIRS += drmutility/group/qt/drmutilitydmgrwrapper.pro
+SUBDIRS += drmutility/group/qt/drmuihandlingimpl.pro
+SUBDIRS += drmui/drmuinotifications/drmuinotifications.pro

@@ -2366,7 +2366,7 @@ void CRoapEng::InsertTransactionIDL(
             TPair pair;
             pair.iCid = aContentIDs[i];
             pair.iTtid = aTransIDs[i];
-            array.Append( pair );
+            array.AppendL( pair );
             }
 
         iDcfRep->SetTtid( array, status );

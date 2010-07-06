@@ -11,10 +11,12 @@
 #
 # Contributors:
 # 
-# Description: DRM main level project file.
+# Description: qt changes for DRM 
 #
 
 TEMPLATE = subdirs
 
-SUBDIRS += commondrm/commondrm.pro
+CONFIG += ordered
 
+SUBDIRS += commondrm/commondrm.pro
+SUBDIRS += omadrm/omadrm.pro

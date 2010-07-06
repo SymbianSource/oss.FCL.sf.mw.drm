@@ -19,14 +19,18 @@
 #ifndef ROHANDLERDMGRWRAPPER_H
 #define ROHANDLERDMGRWRAPPER_H
 
-namespace Roap
-    {
-    class MRoapObserver;
-    }
+#include <e32base.h>
+#include <f32file.h>
+
+#include <RoapObserver.h>
+#include <RoapEng.h>
+
+#include <qobject.h>
+#include <downloadmanager.h>
+#include <download.h>
 
 class CDRMRights;
-
-class MHttpDownloadMgrObserver;
+class QRoHandlerDMgrEventHandler;
 
 class MRoHandlerDMgrWrapper
     {
@@ -40,7 +44,6 @@ public:
 */
 class CRoHandlerDMgrWrapper:
     public CActive, // Now active
-    public MHttpDownloadMgrObserver,
     public Roap::MRoapObserver,
     public MRoHandlerDMgrWrapper
     {
@@ -71,19 +74,6 @@ public:
     * @param aUrl  URL of ROAP trigger
     */
     void HandleRoapTriggerL( const TDesC8& aTrigger );
-
-
-// from base class MHttpDownloadMgrObserver
-
-    /**
-    * From MHttpDownloadMgrObserver.
-    * Handle download manager events
-    *
-    * @since S60 3.2
-    * @param aDownload the download
-    * @param aEvent the event
-    */
-    void HandleDMgrEventL( RHttpDownload& aDownload, THttpDownloadEvent aEvent );
 
 // From Roap::MRoapObserver
     /**
@@ -211,6 +201,13 @@ public:
     * @leave  System wide error code */
     void PostResponseUrlL( const TDesC8& aPostResponseUrl );
 
+    /**
+	* Handle download manager events
+	*
+	* @param aEvent the event
+	*/
+	void HandleDownloadEventL( WRT::DownloadEvent* aEvent );
+
 protected:
     //from Cactive
     virtual void DoCancel();
@@ -246,8 +243,9 @@ private: // data
     /**
     * Download manager session
     */
-    RHttpDownloadMgr iDlMgr;
+    WRT::DownloadManager* iDlMgr;
 
+    WRT::Download* iDownload;
     /**
     * Used to make downloads synchronous
     */
@@ -277,6 +275,9 @@ private: // data
     RFs iFs;
 
     HBufC* iFileName;
+    
+    QRoHandlerDMgrEventHandler* iRoHandlerDMgrEventHandler;
+    
     };
 
 #endif // ROHANDLERDMGRWRAPPER_H

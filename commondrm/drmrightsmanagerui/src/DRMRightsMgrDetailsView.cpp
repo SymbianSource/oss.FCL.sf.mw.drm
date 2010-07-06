@@ -184,7 +184,7 @@ void CDRMRightsMgrDetailsView::HandleCommandL( TInt aCommand )
 
     if ( aCommand == EAknSoftkeyOk )
         {
-            appUi.HandleCommandL( EEikCmdExit ); // Ok softkey was pressed
+            appUi.HandleCommandL( EAknSoftkeyClose ); // Ok softkey was pressed
         }
     else
         {
