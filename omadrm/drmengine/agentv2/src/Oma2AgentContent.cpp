@@ -25,9 +25,7 @@
 #include <e32test.h>
 #include <utf.h>
 
-
-//#include <SchemeHandler.h>
-
+#include <drmbrowserlauncher.h>
 
 #include "Oma2AgentContent.h"
 #include "Oma2AgentAttributes.h"
@@ -604,11 +602,9 @@ void COma2AgentContent::RequestRights(
     {
     TRequestStatus *ptr = &aStatus;
     TInt r;
-    //HBufC* b = NULL;
+    HBufC* b = NULL;
 
     r = KErrNotSupported;
-/*
-    CSchemeHandler* handler = NULL;
 
     r = iDcf->OpenPart(aUniqueId);
     if (r == KErrNone && iDcf->iRightsIssuerURL != NULL)
@@ -617,17 +613,17 @@ void COma2AgentContent::RequestRights(
             *iDcf->iRightsIssuerURL));
         if (b != NULL)
             {
-            TRAP(r, handler = CSchemeHandler::NewL(*b));
-            if (handler != NULL)
-                {
-                TRAP(r, handler->HandleUrlStandaloneL());
-                delete handler;
-                }
+    				DRM::CDrmBrowserLauncher* browserLauncher = DRM::CDrmBrowserLauncher::NewLC();
+    	
+				    browserLauncher->LaunchUrlL(*b);
+    
+    				CleanupStack::PopAndDestroy(); // browserLauncher
+   
             delete b;
             }
         }
-*/
-    User::RequestComplete(ptr, r);
+
+		User::RequestComplete(ptr, r);
     }
 
 // -----------------------------------------------------------------------------

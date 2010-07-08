@@ -77,5 +77,6 @@ LIBRARY         apgrfx.lib
 LIBRARY			ws32.lib
 LIBRARY			sysutil.lib
 LIBRARY         centralrepository.lib
+LIBRARY         drmbrowserlauncher.lib
 
 SMPSAFE

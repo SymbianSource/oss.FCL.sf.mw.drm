@@ -19,12 +19,10 @@
 #include <platform_paths.hrh>
 
 PRJ_PLATFORMS
-    DEFAULT -ARMI
+DEFAULT
 
 
 PRJ_EXPORTS
-../client/inc/romtmcli.h
-../server/inc/romtmser.h
 ../loc/romtmui.loc MW_LAYER_LOC_EXPORT_PATH( romtmui.loc )
 
 
@@ -35,4 +33,4 @@ RoMtmSer.mmp
 RoMtmUi.mmp
 RoMtmDat.mmp
 
-//  End of File  
+//  End of File
