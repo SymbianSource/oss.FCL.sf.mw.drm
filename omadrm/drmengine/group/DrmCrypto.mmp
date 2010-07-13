@@ -38,8 +38,10 @@ SOURCE          Base64.cpp
 SOURCE          drmaescrypto.cpp
 
 SOURCEPATH      ../drmcrypto/build
-SOURCE          omacrypto.cpp
 SOURCE          cmlacrypto.cpp
+
+SOURCEPATH      ../drmcrypto/src
+SOURCE          OmaCrypto.cpp
 
 LIBRARY         euser.lib
 LIBRARY         efsrv.lib
