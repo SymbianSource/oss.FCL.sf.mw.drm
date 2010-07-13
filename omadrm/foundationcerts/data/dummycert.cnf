@@ -1,0 +1,40 @@
+# Copyright (c) 2010 Symbian Foundation Ltd.
+# All rights reserved.
+# This component and the accompanying materials are made available
+# under the terms of the License "Eclipse Public License v1.0"
+# which accompanies this distribution, and is available
+# at the URL "http://www.eclipse.org/legal/epl-v10.html".
+#
+# Initial Contributors:
+# Symbian Foundation - Initial contribution
+# 
+# Description:
+# Config file for generating the dummy certificate
+
+
+# Steps to generate using OpenSSL
+#
+# 1. Generate key
+#
+# openssl genrsa -out devicekey1024.pem 1024
+# openssl rsa -inform pem -in devicekey1024.pem -outform der -out devicekey1024.der
+#
+# 2. Generate self-signed X509 certificate
+#
+# openssl req -new -x509 -keyform der -key devicekey1024.der -outform der -out dummycert.der -config dummycert.cnf
+#
+#
+ 
+
+distinguished_name = Symbian Foundation
+prompt = no
+
+[Symbian Foundation]
+ C                      = GB
+ ST                     = Test State or Province
+ L                      = Test Locality
+ O                      = Organization Name
+ OU                     = Organizational Unit Name
+ CN                     = Common Name
+ emailAddress           = noreply@symbian.org
+
