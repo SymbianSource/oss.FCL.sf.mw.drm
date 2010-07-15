@@ -33,6 +33,8 @@
 #include <barsread.h>  // for resource reader
 #include <centralrepository.h>
 #include <coeutils.h>
+#include <eikserverapp.h>
+
 
 #include <starterclient.h>
 
@@ -241,7 +243,8 @@ TKeyResponse CDRMRightsMgrAppUi::HandleKeyEventL( const TKeyEvent& aKeyEvent,
 //
 void CDRMRightsMgrAppUi::HandleCommandL( TInt aCommand )
     {
-
+    CEikAppServer* server = iEikonEnv->AppServer();
+ 
     switch ( aCommand )
         {
         case EEikCmdExit:
@@ -250,6 +253,17 @@ void CDRMRightsMgrAppUi::HandleCommandL( TInt aCommand )
             Exit();
             break;
             }
+        case EAknSoftkeyClose:
+            {
+
+            if (server)
+                {
+                server->NotifyServerExit(EAknSoftkeyClose);
+                }
+                
+            Exit();
+            break;
+            }    
         default:
             break;
         }

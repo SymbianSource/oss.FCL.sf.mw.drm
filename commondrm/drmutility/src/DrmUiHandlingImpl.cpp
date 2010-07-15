@@ -50,6 +50,10 @@
 #include <AiwGenericParam.h>
 #include <apgcli.h>
 
+// DCF repository
+#include <DcfRep.h>
+#include <DcfEntry.h>
+
 // character conversions
 #include <utf.h>
 
@@ -178,6 +182,70 @@ LOCAL_C TUint32 IapIdOfDefaultSnapL(
     CleanupStack::PopAndDestroy( &cMeth );
     CleanupStack::PopAndDestroy( &dest );
     return iapIdOfDest;
+    }
+
+// ---------------------------------------------------------
+// UpdateDCFRepositoryL()
+// Update saved file to DCFRepository
+// ---------------------------------------------------------
+
+LOCAL_C void UpdateDCFRepositoryL( TDesC& aFullFileName )
+    {
+    CDcfEntry* dcfEntry( NULL );
+    CDcfRep* dcfRep( NULL );
+    
+    dcfEntry = CDcfEntry::NewL();
+    CleanupStack::PushL( dcfEntry );
+
+    dcfRep = CDcfRep::NewL();
+    CleanupStack::PushL( dcfRep );
+
+    dcfEntry->SetLocationL( aFullFileName, 0 );
+    dcfRep->UpdateL( dcfEntry );
+    CleanupStack::PopAndDestroy( dcfRep );
+    CleanupStack::PopAndDestroy( dcfEntry );
+    }
+
+// ---------------------------------------------------------
+// FindFullFileNameAndUpdateDCFRepositoryL()
+// Find full file name for the content and update saved 
+// file to DCFRepository
+// ---------------------------------------------------------
+
+LOCAL_C void FindFullFileNameAndUpdateDCFRepositoryL(
+    const RFile& aFileHandle )
+    {
+    HBufC* fullPath( NULL );
+    TPtr fullPathPtr( NULL, 0 );
+        
+    fullPath = HBufC::NewLC( KUrlMaxLen );
+    fullPathPtr.Set( fullPath->Des() );
+    
+    aFileHandle.FullName( fullPathPtr );
+    UpdateDCFRepositoryL( fullPathPtr );
+    CleanupStack::PopAndDestroy( fullPath );
+    }
+
+// ---------------------------------------------------------
+// FindFullFileNameAndUpdateDCFRepositoryL()
+// Find full file name for the content and update saved 
+// file to DCFRepository
+// ---------------------------------------------------------
+
+LOCAL_C void FindFullFileNameAndUpdateDCFRepositoryL(
+    const ContentAccess::CData& aFileData  )
+    {
+    HBufC* fullPath( NULL );
+    TPtr fullPathPtr( NULL, 0 );
+    
+    fullPath = HBufC::NewLC( KUrlMaxLen );
+    fullPathPtr.Set( fullPath->Des() );
+                
+    aFileData.GetStringAttribute( DRM::EDrmFullName, 
+        fullPathPtr );
+    
+    UpdateDCFRepositoryL( fullPathPtr );
+    CleanupStack::PopAndDestroy( fullPath );    
     }
 
 // ============================ MEMBER FUNCTIONS ===============================
@@ -1420,6 +1488,9 @@ void DRM::CDrmUiHandlingImpl::PerformHandleErrorFileL(
     if ( ( !agent.Compare( DRM::KDrmOmaAgentName ) ) || ( iOmaBasedAgentName
         && !agent.Compare( *iOmaBasedAgentName ) ) )
         {
+        // To embed Domain RO in superdistribution case, register the content
+        TRAP_IGNORE( FindFullFileNameAndUpdateDCFRepositoryL( *aData.iFile ) );
+        
         HandleOmaErrorL( *content, aData.iIntent, aData.iError,
             aData.iErrorObserver, aData.iOperationId );
         }
@@ -1441,6 +1512,7 @@ void DRM::CDrmUiHandlingImpl::PerformHandleErrorFileL(
 void DRM::CDrmUiHandlingImpl::PerformHandleErrorDataL(
     DRM::CDrmUiHandlingData& aData )
     {
+    
     DRM::TDrmAgentUid agentUid( DRM::EDrmOmaAgent );
     IsProtectedL( aData.iFileData, agentUid );
     IsProperErrorL( aData.iError );
@@ -1449,7 +1521,11 @@ void DRM::CDrmUiHandlingImpl::PerformHandleErrorDataL(
     switch ( agentUid )
         {
         case DRM::EDrmOmaAgent:
-
+            
+            // To embed Domain RO in superdistribution case, register the content
+            TRAP_IGNORE( FindFullFileNameAndUpdateDCFRepositoryL( 
+                *aData.iFileData ) );
+            
             HandleOmaErrorL( *aData.iFileData, aData.iIntent, aData.iError,
                 aData.iErrorObserver, aData.iOperationId );
 
@@ -1557,7 +1633,10 @@ void DRM::CDrmUiHandlingImpl::CheckOmaRightsAmountL(
     HBufC* riUrl( NULL );
     HBufC* domainRiUrl( NULL );
     DRM::TDrmUiUrlType urlType( DRM::EUHRightsIssuerUrl );
-
+            
+    // To embed Domain RO in superdistribution case, register the content
+    TRAP_IGNORE( FindFullFileNameAndUpdateDCFRepositoryL( aContent ) );
+    
     User::LeaveIfError( GetContentIdLC( aContent, contentId ) );
     GetOmaSilentRightsUrlLC( aContent, silentUrl );
     GetOmaRightsIssuerLC( aContent, riUrl );
@@ -1714,7 +1793,7 @@ void DRM::CDrmUiHandlingImpl::HandleOmaErrorL(
     TInt previewType( ContentAccess::ENoPreview );
     TUint32 reason( 0 );
     TBool handled( EFalse );
-
+    
     User::LeaveIfError( GetContentIdLC( aContent, contentId ) );
 
     // Check that this really is an error situation

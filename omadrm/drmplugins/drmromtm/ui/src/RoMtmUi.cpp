@@ -50,6 +50,8 @@
 #include <StringLoader.h> //StringLoader
 #include <ConeResLoader.h> //rconeresloader
 #include <RoMtmUi.rsg> // test
+#include "drmmsgwatcherobserver.h"
+
 // EXTERNAL DATA STRUCTURES
 // EXTERNAL FUNCTION PROTOTYPES
 // CONSTANTS
@@ -230,8 +232,6 @@ EXPORT_C CBaseMtmUi* NewMtmUiL( CBaseMtm& aMtm , CRegisteredMtmDll& aRegisteredD
 CRightsObjectMtmUi::CRightsObjectMtmUi( CBaseMtm& aBaseMtm , CRegisteredMtmDll& aRegisteredMtmDll )
     :   CBaseMtmUi( aBaseMtm , aRegisteredMtmDll )
     {
-    iOpenService = NULL;
-    iDocHandler = NULL;
     iHostProcess = NULL;
     iType = ERo;
     }
@@ -272,9 +272,6 @@ CRightsObjectMtmUi::~CRightsObjectMtmUi()
     TRAP(err,WriteL(_L8("~CRightsObjectMtmUi")));
 #endif
     iFs.Close();
-
-  delete iOpenService;
-    delete iDocHandler;
     }
 
 
@@ -568,15 +565,11 @@ CMsvOperation* CRightsObjectMtmUi::LaunchEditorApplicationL( TRequestStatus& aSt
     BaseMtm().LoadMessageL();
     CRichText& body = BaseMtm().Body();
     TPtrC ptr16( body.Read(0) );
-    const TUid KUidDRMUI = { 0x101f85c7 };
+    //const TUid KUidDRMUI = { 0x101f85c7 };
+    CDrmMsgWatcherObserver* operation = NULL;
 
     if ( iType == ERoapTrigger || iType == ERoapTriggerRoAcquisition )
         {
-
-#ifdef _DRM_TESTING
-        WriteL(_L8("LaunchEditorApplicationL-iDocHandler"));
-#endif
-
         _LIT8( KRoapTriggerMimeType, "application/vnd.oma.drm.roap-trigger+xml" );
         TDataType type = TDataType( KRoapTriggerMimeType );
         HBufC* filename = NULL;
@@ -593,60 +586,33 @@ CMsvOperation* CRightsObjectMtmUi::LaunchEditorApplicationL( TRequestStatus& aSt
             return CompletedOperationL( aStatus );
             }
 
-#ifdef _DRM_TESTING
-        WriteL(ptr,ptr.Length());
-#endif
-        if (iDocHandler)
-            {
-            delete iDocHandler;
-            iDocHandler = NULL;
-            }
-#ifdef _DRM_TESTING
-        WriteL(_L8("LaunchEditorApplicationL-iDocHandler-NewL"));
-#endif
-        iDocHandler = CDocumentHandler::NewL();
-#ifdef _DRM_TESTING
-        WriteL(_L8("LaunchEditorApplicationL-iDocHandler-SetExitObserver"));
-#endif
-        iDocHandler->SetExitObserver(this);
-#ifdef _DRM_TESTING
-        WriteL(_L8("LaunchEditorApplicationL-iDocHandler-OpenFileEmbeddedL"));
-#endif
-        iDocHandler->OpenFileEmbeddedL(ptr,type);
-        CleanupStack::PopAndDestroy(filename);
-#ifdef _DRM_TESTING
-        WriteL(_L8("LaunchEditorApplicationL-iDocHandler-End"));
-#endif
+	operation = CDrmMsgWatcherObserver::NewL( 
+            Session(),
+            CActive::EPriorityStandard,
+            aStatus,
+            Type(),
+            ptr,
+            type );
         }
     else
         {
-        if ( iOpenService )
-            {
-            delete iOpenService;
-            iOpenService = NULL;
-            }
-#ifdef _DRM_TESTING
-        WriteL(_L8("LaunchEditorApplicationL-CAknOpenFileService::NewL"));
-#endif
 
         CAiwGenericParamList* paramList = CAiwGenericParamList::NewLC();
         TAiwVariant variantObject( ptr16 );
         TAiwGenericParam param( EGenericParamFile, variantObject );
         paramList->AppendL( param );
 
-        TRAPD( err, iOpenService = CAknLaunchAppService::NewL( KUidDRMUI, this, paramList ) );
-        if (err != KErrNone)
-            {
-            // just return to Inbox
-            }
+	operation = CDrmMsgWatcherObserver::NewL( 
+            Session(),
+            CActive::EPriorityStandard,
+            aStatus,
+            Type(),
+            paramList );
 
         CleanupStack::PopAndDestroy( paramList ); // paramList
         }
 
-#ifdef _DRM_TESTING
-    WriteL(_L8("LaunchEditorApplicationL-End"));
-#endif
-    return CompletedOperationL( aStatus );
+    return operation;
     }
 
 
