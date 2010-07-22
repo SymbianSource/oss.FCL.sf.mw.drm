@@ -55,6 +55,7 @@
 #include    "drmutilitywmdrmutilities.h"
 
 #include    "wmdrmdlawrapper.h"
+#include    "drmuidialogids.h"
 
 // CONSTANTS
 const TInt KMaxUrlLength( 1024 );
@@ -546,7 +547,7 @@ void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
     TRAPD( err, LoadDlaWrapperL() );
     if ( !err )
         {
-        TInt ret( EAknSoftkeyYes );
+        TInt ret( EOk );
         RFile file;
         GetRFileFromCDataL( aContent, file );
         CleanupClosePushL( file );
@@ -560,10 +561,11 @@ void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
                 }
             TFileName fileName;
             User::LeaveIfError( aContent.GetStringAttribute( DRM::EDrmFileName, fileName ) );
-            ret = iDrmUtilityUi->DisplayQueryL( R_DRM_QUERY_EXPIRED_OR_NO_RO, fileName );
+            // Qt dialog not implemented yet
+            ret = iDrmUtilityUi->DisplayQueryL( EQueryFileWithNoRightsObj, fileName );
             }
 
-        if ( !err && ( ret == EAknSoftkeyYes || ret == EAknSoftkeyOk ) )
+        if ( !err && ret == EOk )
             {
             TRAP_IGNORE( DlaLicenseAcquisitionL( file ) );
             }
@@ -575,7 +577,7 @@ void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
             {
             iDrmUtilityUi = DRM::CDrmUtilityUI::NewL( iCoeEnv );
             }
-        iDrmUtilityUi->DisplayNoteL( R_DRM_INFO_EXPIRED_OR_NO_RO );
+        iDrmUtilityUi->DisplayNoteL( EConfLicenceExpired );
         }
     }
 

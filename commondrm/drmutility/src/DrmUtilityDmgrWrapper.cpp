@@ -26,7 +26,6 @@
 #include <StringLoader.h>
 #include <data_caging_path_literals.hrh>
 
-#include <downloadmgrclient.h> //download manager
 #include <es_enum.h> // tconnectioninfo
 #include <es_enum_partner.h> // TConnectionInfoV2
 #include <es_sock.h> // rconnection rsocket
@@ -41,6 +40,13 @@
 #include <RoapDef.h>
 #include <RoapObserver.h>
 
+// including files related to qt changes
+#include <qstring.h>
+#include <downloadmanager.h>
+#include <download.h>
+#include <dmcommon.h>
+#include <downloadevent.h>
+
 #include "RoapSyncWrapper.h"
 #include "RoapDef.h"
 #include "DrmUtilityDmgrWrapper.h"
@@ -49,6 +55,7 @@
 #include "buffercontainers.h" //CnameContainer etc.
 #include "cleanupresetanddestroy.h"
 #include "buffercontainers.h"
+#include "qdrmutilitydmgreventhandler.h"
 
 #include "OstTraceDefinitions.h"
 #ifdef OST_TRACE_COMPILER_IN_USE
@@ -67,6 +74,8 @@ const TInt KProgressInfoFinalValue(200);
 const TInt KProgressInfoIncrementSmall(5);
 const TInt KProgressInfoIncrementMedium(10);
 const TInt KProgressInfoIncrementLarge(30);
+
+using namespace WRT;
 
 // ======== LOCAL FUNCTIONS ========
 
@@ -93,13 +102,76 @@ void ClearIfNotRoapTemporaryError(TInt aError, HBufC8*& aBuffer)
 
 
 // ---------------------------------------------------------------------------
-// DeleteHttpDowload
+// Calls the appropriate member function of the object during object cleanup
 // ---------------------------------------------------------------------------
 //
-LOCAL_C void DeleteHttpDowload(TAny* aDownload)
-    {
-    reinterpret_cast<RHttpDownload*> (aDownload)->Delete();
-    }
+template<class _Ty, class _Tf>	class mem_auto_ptr 
+	{
+	public:
+		explicit mem_auto_ptr(_Ty _P = 0, _Tf _F = 0) 
+			: _Owns(_P != 0), _Ptr(_P), _Fn(_F) 
+				{}
+		
+		mem_auto_ptr(const mem_auto_ptr<_Ty,_Tf>& _Y) 
+			: _Owns(_Y._Owns), _Ptr(_Y.release()), _Fn(_Y.function()) 
+				{}
+		
+		mem_auto_ptr<_Ty,_Tf>& operator=(const mem_auto_ptr<_Ty,_Tf>& _Y) 
+			{
+			if (this != &_Y)
+				{
+				_Fn = _Y.function();
+				if (_Ptr != _Y.get())
+					{
+					if (_Owns)
+						delete _Ptr;
+					_Owns = _Y._Owns; 
+					}
+				else if (_Y._Owns)
+					_Owns = true;
+				_Ptr = _Y.release(); 
+				}
+			return (*this); 
+			}
+		
+		~mem_auto_ptr()
+			{
+			if (_Owns)
+				{
+				(_Ptr->*_Fn)();
+				}
+			}
+		
+		_Ty& operator*() const 
+			{
+			return (*get()); 
+			}
+		
+		_Ty *operator->() const 
+			{
+			return (get()); 
+			}
+		
+		_Ty *get() const 
+			{
+			return (_Ptr); 
+			}
+		
+		_Ty *release() const 
+			{
+			((mem_auto_ptr<_Ty,_Tf> *)this)->_Owns = false;
+			return (_Ptr); 
+			}
+		
+		_Tf *function() const
+			{
+			return (_Fn);
+			}
+	private:
+		bool _Owns;
+		_Ty _Ptr;
+		_Tf _Fn;
+	};
 
 
 // ---------------------------------------------------------------------------
@@ -142,7 +214,16 @@ void CDrmUtilityDmgrWrapper::ConstructL()
     CLOG_WRITE( "DMgrWrapper::ConstructL" );
     const TInt KDrmUtilityDmgrWrapperUid = 0x102830FE;
     iConnection = DRM::CDrmUtilityConnection::NewL(ETrue);
-    iDlMgr.ConnectL(TUid::Uid(KDrmUtilityDmgrWrapperUid), *this, EFalse);
+    
+    try
+	    {
+	    QString drmUtilityDmgrWrapperUid(QString::number(KDrmUtilityDmgrWrapperUid));
+	    iDlMgr = q_check_ptr(new DownloadManager(drmUtilityDmgrWrapperUid));
+	    }
+	catch(const std::exception& exception)
+		{
+		qt_symbian_exception2LeaveL(exception);
+		}
     iProgressInfo = NULL;
     iProgressNoteDialog = NULL;
     iDialogDismissed = ETrue;
@@ -202,22 +283,11 @@ CDrmUtilityDmgrWrapper::~CDrmUtilityDmgrWrapper()
     delete iTriggerBuf;
     delete iFileName;
     delete iRoapEng;
-
-#ifdef _DEBUG
-
-    if (iDlMgr.Handle())
-        {
-        iDlMgr.Close();
-        }
-
-#else
-
-    iDlMgr.Close();
-
-#endif
-
+    iDownload->cancel();
+    delete iDlMgr;
+    delete iDrmUtilityDmgrEventHandler;
+    
     iFs.Close();
-
     }
 
 
@@ -299,10 +369,11 @@ void CDrmUtilityDmgrWrapper::DoDownloadRoapTriggerL(TDownloadState aNextState)
     TUint32 iapId(0);
     if (iConnection->IsConnected(iapId))
         {
-        iDlMgr.SetIntAttribute( EDlMgrIap, iapId );
+    	const QVariant qIapId( static_cast<unsigned long long>(iapId) );
+		iDlMgr->setAttribute( WRT::ClientName, qIapId );
         }
     RFile roapTrigger;
-    TBool result(EFalse);
+    CleanupClosePushL(roapTrigger);
     DRM::CFileNameContainer* triggerFileName(NULL);
 
     // If no Trigger URL then nothing to download. So finish transaction
@@ -318,20 +389,22 @@ void CDrmUtilityDmgrWrapper::DoDownloadRoapTriggerL(TDownloadState aNextState)
         }
 
     TPtrC8 KNullPtr8(NULL, 0);
-    RHttpDownload* downloadPtr(iDlMgr.FindDownload(*iTriggerUrl, KNullPtr8));
-    if (downloadPtr)
+    QString downloadUrl((QChar*)iTriggerUrl->Des().Ptr(),iTriggerUrl->Length());
+    //uncomment
+    Download* download = NULL;//iDlMgr->findDownload( downloadUrl );
+    if (download)
         {
         // Stale download found.
         // Remove it, and re-create a new download.
-        downloadPtr->Delete();
-        downloadPtr = NULL;
+		download->cancel();
+		download = NULL;
         if (iFileName)
             {
             iFs.Delete(*iFileName);
             }
         }
-
     triggerFileName=DRM::CFileNameContainer::NewLC();
+    
 #ifndef RD_MULTIPLE_DRIVE
 
     User::LeaveIfError( roapTrigger.Temp(
@@ -358,33 +431,46 @@ void CDrmUtilityDmgrWrapper::DoDownloadRoapTriggerL(TDownloadState aNextState)
     UpdateBufferL<HBufC, TFileName> (iFileName, triggerFileName->iBuffer);
     CleanupStack::PopAndDestroy( triggerFileName );
     triggerFileName=NULL;
-
     // create and start download
-    RHttpDownload& download = iDlMgr.CreateDownloadL(*iTriggerUrl, result);
-    // Put download for proper cleanup.
-    TCleanupItem item(DeleteHttpDowload, &download);
-    CleanupStack::PushL(item);
+    downloadUrl = ((QChar*)iTriggerUrl->Des().Ptr(),iTriggerUrl->Length());
+    
+    iDownload = iDlMgr->createDownload(downloadUrl);
+    try
+		{
+		iDrmUtilityDmgrEventHandler = q_check_ptr(new QDrmUtilityDmgrEventHandler(*this, *iDownload));
+		}
+    catch(const std::exception& exception)
+		{
+		qt_symbian_exception2LeaveL(exception);
+		}
+    
+    iDownloadSuccess = EFalse;
+	iConnectionError = EFalse;
 
-    CleanupClosePushL(roapTrigger);
-
-    if (result)
-        {
-        iDownloadSuccess = EFalse;
-        iConnectionError = EFalse;
-
-        User::LeaveIfError(download.SetFileHandleAttribute(roapTrigger));
-        User::LeaveIfError(download.SetBoolAttribute(
-                EDlAttrNoContentTypeCheck, ETrue));
-        User::LeaveIfError(download.Start());
-
-        // wait until download is finished
-        iState = aNextState;
-        TRequestStatus* status(&iStatus);
-        *status = KRequestPending;
-        SetActive();
-        }
+	try
+		{
+		RBuf fileName;
+		fileName.Create(KMaxFileName);
+		CleanupClosePushL(fileName);
+		roapTrigger.Name(fileName);
+		const QVariant& roapTriggerValue( QString((QChar*) fileName.Ptr(), fileName.Length()) );
+		CleanupStack::PopAndDestroy(&fileName);
+		iDownload->setAttribute(FileName,roapTriggerValue);
+		const QVariant& val(ETrue);
+		iDownload->setAttribute(ContentType, val);
+		iDownload->start();
+		}
+	catch(const std::exception& exception)
+		{
+		qt_symbian_exception2LeaveL(exception);
+		}
+	// wait until download is finished
+	iState = aNextState;
+	TRequestStatus* status(&iStatus);
+	*status = KRequestPending;
+	SetActive();
+        
     CleanupStack::PopAndDestroy(&roapTrigger);
-    CleanupStack::Pop(&download); // Left open for DoSaveRoapTrigger
     }
 // ---------------------------------------------------------------------------
 // CDrmUtilityDmgrWrapper::DoSaveRoapTriggerL
@@ -395,15 +481,19 @@ void CDrmUtilityDmgrWrapper::DoSaveRoapTriggerL(TDownloadState aNextState)
     // Check success of download
 
     // Fetch download created in DoDownloadRoapTriggerL
-    RHttpDownload* download = iDlMgr.FindDownload(*iTriggerUrl, KNullDesC8());
+	QString downloadUrl((QChar*)iTriggerUrl->Des().Ptr(),iTriggerUrl->Length());
+     
+	typedef void (Download::*download_cancel_fnptr) ();
+	//uncomment
+	Download* dwnld = NULL;//iDlMgr->findDownload( downloadUrl );
+	mem_auto_ptr<Download*, download_cancel_fnptr> downloadPtr(dwnld,&WRT::Download::cancel);
+    
     // Delete trigger URL so that it is possible to check
     // whether or not meteringResponse has PrUrl.
     delete iTriggerUrl;
     iTriggerUrl = NULL;
     iStatus = KRequestPending;
-    // Put download for proper cleanup.
-    TCleanupItem item(DeleteHttpDowload, download);
-    CleanupStack::PushL(item);
+    
     RFile roapTrigger;
 
     if (!iDownloadSuccess)
@@ -448,8 +538,7 @@ void CDrmUtilityDmgrWrapper::DoSaveRoapTriggerL(TDownloadState aNextState)
     // And let ROAP handle it...
     CleanupStack::PopAndDestroy(&readBuf);
     CleanupStack::PopAndDestroy(&roapTrigger);
-    CleanupStack::PopAndDestroy(download);
-
+    
     iFs.Delete(*iFileName);
     delete iFileName;
     iFileName = NULL;
@@ -506,65 +595,63 @@ void CDrmUtilityDmgrWrapper::CompleteToState(
 // CDrmUtilityDmgrWrapper::HandleDMgrEventL
 // ---------------------------------------------------------------------------
 //
-void CDrmUtilityDmgrWrapper::HandleDMgrEventL(RHttpDownload& aDownload,
-        THttpDownloadEvent aEvent)
+void CDrmUtilityDmgrWrapper::HandleDownloadEventL( WRT::DownloadEvent* aEvent )
     {
-    _LIT8( KDrmUtilityMimeTypeROAPTrigger,
-            "application/vnd.oma.drm.roap-trigger+xml" );
-
-
-
-    if (aEvent.iProgressState == EHttpContentTypeReceived)
+    QString KDrmUtilityMimeTypeROAPTrigger("application/vnd.oma.drm.roap-trigger+xml");
+	
+    try
+    {
+    if (aEvent->type() == DownloadEvent::HeadersReceived)
         {
         // check received mimetype
-        RBuf8 contentType;
-        contentType.CleanupClosePushL();
-        contentType.CreateL(KMaxContentTypeLength);
-        User::LeaveIfError(aDownload.GetStringAttribute(EDlAttrContentType,
-                contentType));
-        if (!contentType.FindF(KDrmUtilityMimeTypeROAPTrigger))
+        QString contentType = iDownload->attribute(ContentType).toString();
+        if (!contentType.contains(KDrmUtilityMimeTypeROAPTrigger))
             {
             // ROAP trigger found, continue download
-            User::LeaveIfError(aDownload.Start());
+			iDownload->start();
             }
         else
             {
             // wrong MIME type, so stop download
             iDownloadSuccess = EFalse;
-            User::LeaveIfError(aDownload.Delete());
+            iDownload->cancel();
             }
-        CleanupStack::PopAndDestroy(&contentType);
         }
-
-    if (aEvent.iDownloadState == EHttpDlCreated)
+    }
+    catch(const std::exception& exception)
+    	{
+		qt_symbian_exception2LeaveL(exception);
+    	}
+    
+    if (aEvent->type() == DownloadEvent::Created)
         {
-        CLOG_WRITE( "DMgrWrapper::HandleDMgrEventL: EHttpDlCreated" );
+        CLOG_WRITE( "DMgrWrapper::ProcessDownloadEventL: Created" );
         if (iUseCoeEnv && iProgressInfo)
             {
             iProgressInfo->IncrementAndDraw(KProgressInfoIncrementMedium);
             }
         }
-    else if (aEvent.iProgressState == EHttpProgDisconnected)
+    else if (aEvent->type() == DownloadEvent::NetworkLoss)
         {
-        CLOG_WRITE( "DMgrWrapper::HandleDMgrEventL: EHttpProgDisconnected" );
+        CLOG_WRITE( "DMgrWrapper::ProcessDownloadEventL: NetworkLoss" );
         
         // store failure
         iDownloadSuccess = EFalse;
         iConnectionError = ETrue;
         // finished
         }
-    else if (aEvent.iDownloadState == EHttpDlInprogress)
+    else if (aEvent->type() == DownloadEvent::InProgress)
         {
-        CLOG_WRITE( "DMgrWrapper::HandleDMgrEventL: EHttpDlInprogress" );
+        CLOG_WRITE( "DMgrWrapper::ProcessDownloadEventL: InProgress" );
         if (iUseCoeEnv)
             {
             iProgressInfo->IncrementAndDraw(KProgressInfoIncrementSmall);
             }
         }
-    else if (aEvent.iDownloadState == EHttpDlCompleted)
+    else if (aEvent->type() == DownloadEvent::Completed)
         {
         // store success
-        CLOG_WRITE( "DMgrWrapper::HandleDMgrEventL: EHttpDlCompleted" );
+        CLOG_WRITE( "DMgrWrapper::ProcessDownloadEventL: Completed" );
         iDownloadSuccess = ETrue;
         iConnectionError = EFalse;
         if (iUseCoeEnv)
@@ -575,34 +662,41 @@ void CDrmUtilityDmgrWrapper::HandleDMgrEventL(RHttpDownload& aDownload,
         TRequestStatus* status(&iStatus);
         User::RequestComplete(status, KErrNone);
         }
-    else if (aEvent.iDownloadState == EHttpDlFailed)
+    else if (aEvent->type() == DownloadEvent::Failed)
         {
-        TInt32 err(KErrNone);
-
-        CLOG_WRITE( "DMgrWrapper::HandleDMgrEventL: EHttpDlFailed" );
-        // store failure
-        iDownloadSuccess = EFalse;
-        User::LeaveIfError(aDownload.GetIntAttribute(EDlAttrErrorId, err));
-        CLOG_WRITE_FORMAT( "EDlAttrErrorId = %d", err );
-
-        if (err == EConnectionFailed || err == ETransactionFailed)
-            {
-            CLOG_WRITE( "DMgrWrapper::HandleDMgrEventL: EConnectionFailed" );
-            iConnectionError = ETrue;
-            }
-        User::LeaveIfError(aDownload.Delete()); // remove useless download
-        User::LeaveIfError(iDlMgr.Disconnect()); // disconnects Dmgr instantly.
-        // finished
-        TRequestStatus* status(&iStatus);
-        if ( iConnection->HasMoreConnectionAttempts() )
-            {
-            iState = EInit; // re-try with another conection
-            User::RequestComplete(status, KErrNone);
-            }
-        else
-            {
-            User::RequestComplete(status, KErrCancel);        
-            }
+		try
+			{
+			TInt32 err(KErrNone);
+	
+			CLOG_WRITE( "DMgrWrapper::ProcessDownloadEventL: Failed" );
+			// store failure
+			iDownloadSuccess = EFalse;
+			err = (iDownload->attribute(LastError)).toInt();
+			CLOG_WRITE_FORMAT( "EDlAttrErrorId = %d", err );
+	
+			if (err == ConnectionFailed || err == TransactionFailed)
+				{
+				CLOG_WRITE( "DMgrWrapper::ProcessDownloadEventL: ConnectionFailed" );
+				iConnectionError = ETrue;
+				}
+			iDownload->cancel(); // remove useless download
+			iDlMgr->pauseAll(); // disconnects Dmgr instantly.
+			// finished
+			TRequestStatus* status(&iStatus);
+			if ( iConnection->HasMoreConnectionAttempts() )
+				{
+				iState = EInit; // re-try with another conection
+				User::RequestComplete(status, KErrNone);
+				}
+			else
+				{
+				User::RequestComplete(status, KErrCancel);        
+				}
+			}
+		catch(const std::exception& exception)
+			{
+			qt_symbian_exception2LeaveL(exception);
+			}
         }
     }
 
@@ -707,7 +801,7 @@ void CDrmUtilityDmgrWrapper::DialogDismissedL(TInt aButtonId )
             }
         }
     //For avoiding active object deadlock
-    iDlMgr.DeleteAll();
+    iDlMgr->removeAll();
 
     }
 
@@ -881,6 +975,7 @@ TInt CDrmUtilityDmgrWrapper::RunError(TInt /* aError */)
         }
     return KErrNone;
     }
+
 // ======== GLOBAL FUNCTIONS ========
 
 //------------------------------------------------------------------------------

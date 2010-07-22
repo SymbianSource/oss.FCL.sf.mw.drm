@@ -59,7 +59,6 @@ LIBRARY avkon.lib bafl.lib commonengine.lib efsrv.lib
 LIBRARY aknskins.lib commonui.lib servicehandler.lib
 LIBRARY dcfrep.lib caf.lib cafutils.lib
 LIBRARY ecom.lib
-LIBRARY commondialogs.lib
 LIBRARY directorylocalizer.lib
 
 LIBRARY drmparsers.lib

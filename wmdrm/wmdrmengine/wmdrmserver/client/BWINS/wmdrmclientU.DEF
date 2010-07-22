@@ -24,4 +24,5 @@ EXPORTS
 	?DeleteRights@RWmDrmClient@@QAEHXZ @ 23 NONAME ; int RWmDrmClient::DeleteRights(void)
 	?StoreState@RWmDrmClient@@QAEHAAW4TWmDrmStoreState@@@Z @ 24 NONAME ; int RWmDrmClient::StoreState(enum TWmDrmStoreState &)
 	?GetTime@RWmDrmClient@@QAEHAAVTTime@@AAH@Z @ 25 NONAME ; int RWmDrmClient::GetTime(class TTime &, int &)
+	?CommitData@RWmDrmClient@@QAEHXZ @ 26 NONAME ; int RWmDrmClient::CommitData(void)
 

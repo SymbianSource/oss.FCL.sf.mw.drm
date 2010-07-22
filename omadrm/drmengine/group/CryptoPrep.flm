@@ -13,11 +13,6 @@
 # Description: DRM Crypto Library build configuration
 #
 
-# Bug 2707 - cryptoprep.flm changes the value of EPOCROOT
-#
-# TMPROOT:=$(subst \,/,$(EPOCROOT))
-# EPOCROOT:=$(patsubst %/,%,$(TMPROOT))/
-
 CREATABLEPATH:=$(EXTENSION_ROOT)/../drmengine/drmcrypto/build
 CLEANTARGETS:=$(CREATABLEPATH)/cmlacrypto.cpp $(CREATABLEPATH)/omacrypto.cpp
 

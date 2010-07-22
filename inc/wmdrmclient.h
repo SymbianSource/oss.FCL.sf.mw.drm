@@ -384,6 +384,18 @@ public:
     */
         
     IMPORT_C TInt GetTime( TTime& aTime, TBool& aValid );
+    
+    /**
+    * CommitData
+    * Commits any cached data to storage
+    *
+    * @return KErrNone if successful
+    *         Otherwise Symbian OS error code
+    */
+       
+    IMPORT_C TInt CommitData();    
+    
+    
 	};
 
 #endif

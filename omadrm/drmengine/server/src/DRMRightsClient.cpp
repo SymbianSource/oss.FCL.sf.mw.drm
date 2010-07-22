@@ -841,7 +841,9 @@ EXPORT_C void RDRMRightsClient::GetDomainRosForCidL(
             Mem::Copy( &roSize, ptr.Ptr()+offset, sizeof(TInt) );
             offset += sizeof (TInt);
             ro = ptr.Mid(offset, roSize).AllocL();
-            aRoList.Append(ro);
+            CleanupStack::PushL( ro );
+            aRoList.AppendL (ro);
+            CleanupStack::Pop( ro );
             offset += roSize;
             }
         CleanupStack::PopAndDestroy();

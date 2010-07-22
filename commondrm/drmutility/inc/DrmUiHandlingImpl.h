@@ -32,7 +32,6 @@
 //*** forward declarations go here:
 class CCoeEnv;
 class CDRMConstraint;
-class CSchemeHandler;
 
 namespace ContentAccess
     {
@@ -807,7 +806,7 @@ private:
     * CallSilentAvailble after right
     * @return Etrue, if silent RO rerieval led to usable content
     */
-    TBool CDrmUiHandlingImpl::GetSilentAndCallL(
+    TBool GetSilentAndCallL(
         MDrmHandleErrorObserver* aObserver,
         TInt aOperationId,
         const ContentAccess::TIntent aIntent,
@@ -820,7 +819,7 @@ private:
     * checks status if launched embedded.
     * CallRightsAvailable, if launched embedded or righsUrl not present
     */
-    void CDrmUiHandlingImpl::GetRightsAndCallL(
+    void GetRightsAndCallL(
         MDrmHandleErrorObserver* aObserver,
         TInt aOperationId,
         const ContentAccess::TIntent aIntent,
@@ -855,9 +854,6 @@ private: // data
 
     // Wait for the notes and queries
     CActiveSchedulerWait iWait;
-
-    // Schemehandler for url handling
-    CSchemeHandler* iSchemeHandler;
 
     // Operation Queue:
     CDrmUiHandlingData* iFirst;

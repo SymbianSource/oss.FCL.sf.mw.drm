@@ -25,9 +25,9 @@
 #include <AknProgressDialog.h>
 #include <apparc.h>
 #include <DRMRightsClient.h>
-#include <drmconstraint.h>
+#include <DrmConstraint.h>
 
-#include "drmclockclient.h"
+#include "DRMClockClient.h"
 #include "DrmViewItems.h"
 
 #include "DRMRightsManager.hrh"

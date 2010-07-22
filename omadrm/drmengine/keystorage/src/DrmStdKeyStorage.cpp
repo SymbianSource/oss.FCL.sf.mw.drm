@@ -576,7 +576,9 @@ void CDrmStdKeyStorage::GetCertificateChainL(
     for (i = 0; i < dir->Count(); i++)
         {
         ReadFileL(iFs, (*dir)[i].iName, cert);
+        CleanupStack::PushL( cert );
         aCertChain.AppendL(cert);
+        CleanupStack::Pop( cert );
         }
     CleanupStack::PopAndDestroy(); // dir
     LOG(_L("CDrmStdKeyStorage::GetCertificateChainL <-"));

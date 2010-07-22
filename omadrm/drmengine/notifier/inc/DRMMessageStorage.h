@@ -78,7 +78,7 @@ NONSHARABLE_CLASS( CDRMMessageStorage ) : public CBase
         *  @param : aMessage - Message related to the reques
         *  @return None
         */
-        void AddSession( CDRMNotifierSession* aSession );
+        TInt AddSession( CDRMNotifierSession* aSession );
 
         /**
         *  UpdateMessage

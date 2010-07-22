@@ -26,7 +26,7 @@
 #include <utf.h>
 
 
-#include <SchemeHandler.h>
+//#include <SchemeHandler.h>
 
 
 #include "Oma2AgentContent.h"
@@ -604,7 +604,10 @@ void COma2AgentContent::RequestRights(
     {
     TRequestStatus *ptr = &aStatus;
     TInt r;
-    HBufC* b = NULL;
+    //HBufC* b = NULL;
+
+    r = KErrNotSupported;
+/*
     CSchemeHandler* handler = NULL;
 
     r = iDcf->OpenPart(aUniqueId);
@@ -623,6 +626,7 @@ void COma2AgentContent::RequestRights(
             delete b;
             }
         }
+*/
     User::RequestComplete(ptr, r);
     }
 

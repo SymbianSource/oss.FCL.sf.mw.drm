@@ -9,6 +9,9 @@
       <module name="drm">
         <unit unitID="sedo.drm" mrp="" bldFile="&layer_real_source_path;/group" name="drm" />
       </module>
+      <module name="">
+        <unit unitID="sedoQT.drm" bldFile="&layer_real_source_path;" mrp="" name="sedoQT_drm" proFile="drm.pro" qmakeArgs="-r" />
+      </module>
     </layer>
     <layer name="api_test_layer">
       <module name="drm_test">

@@ -140,6 +140,12 @@ CDRMConsume* CDRMConsume::NewLC( CDRMDbSession& aSession,
 CDRMConsume::~CDRMConsume()
     {
     DRMLOG( _L( "CDRMConsume::~" ) );
+        
+    if( iURI )
+        {
+        SERVER->RemoveAccessingUrl( *iURI );   
+        }    
+        
     TInt error( KErrNone );
 
     if( IsActive() )
@@ -203,6 +209,8 @@ void CDRMConsume::ConstructL( const TDesC8& aURI,
         {
         iParentId = aParentId->AllocL();
         }
+        
+    SERVER->AddAccessingUrlL( aURI );
     }
 
 // ------------------------------------------------------------------------

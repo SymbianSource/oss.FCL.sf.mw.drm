@@ -43,14 +43,15 @@ PRJ_EXPORTS
 ../rom/drmutility_resources.iby         LANGUAGE_MW_LAYER_IBY_EXPORT_PATH( drmutility_resources.iby )
 ../rom/drmserviceapiwrapper.iby         CORE_MW_LAYER_IBY_EXPORT_PATH( drmserviceapiwrapper.iby )
 ../rom/drmrightsstoringlocation.iby     CORE_MW_LAYER_IBY_EXPORT_PATH( drmrightsstoringlocation.iby )
+../rom/drmbrowserlauncher.iby     	CORE_MW_LAYER_IBY_EXPORT_PATH( drmbrowserlauncher.iby )
 
 PRJ_MMPFILES
 
-// DRMEncryptor
-../drmencryptor/group/DRMEncryptor.mmp
-
 // DRMRightsManagerUi
 ../drmrightsmanagerui/group/DRMRightsManager.mmp
+
+// drmui
+#include "../drmui/group/bld.inf"
 
 // drmutility
 #include "../drmutility/group/bld.inf"
@@ -70,19 +71,6 @@ PRJ_TESTMMPFILES
 
 
 PRJ_EXTENSIONS
-
-START EXTENSION s60/mifconv
-OPTION TARGETFILE drmencryptor.mif
-OPTION HEADERFILE drmencryptor.mbg
-OPTION SOURCES -c8,8 qgn_menu_DRMEncryptor_cxt -c8 icon
-OPTION SOURCEDIR ../drmencryptor/group
-END
-
-START EXTENSION s60/mifconv
-OPTION TARGETFILE drmencryptor_aif.mif
-OPTION SOURCES -c8,8 qgn_menu_drmencryptor -c8 icon
-OPTION SOURCEDIR ../drmencryptor/group
-END
 
 START EXTENSION s60/mifconv
 OPTION TARGETFILE drmrightsmanager.mif

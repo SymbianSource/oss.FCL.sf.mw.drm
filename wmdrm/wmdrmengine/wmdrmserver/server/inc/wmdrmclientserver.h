@@ -47,7 +47,8 @@ enum TWmDrmMessages
     ESetTimeAsValid,
     EDeleteRights,
     EStoreState,
-    EGetTime
+    EGetTime,
+    ECommitData
 	};
 
 #endif //  __WMDRMCLIENTSERVER_H

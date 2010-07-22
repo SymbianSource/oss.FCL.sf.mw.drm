@@ -22,7 +22,7 @@
 //  INCLUDES
 #include <e32base.h>
 #include <f32file.h>
-#include <abclient.h>
+#include <connect/abclient.h>
 #include "drmcommonclientserver.h"
 #include "DRMReplayCache.h"
 #include "drmmeteringdb.h"
@@ -40,7 +40,20 @@ class CDRMBackupObserver;
 class CDRMBackup;
 class RMobilePhone;
 
-// CLASS DECLARATION
+// CLASS DECLARATIONS
+
+// Data Class:
+NONSHARABLE_CLASS( CUsageUrl ) : public CBase
+    {
+    public:
+        CUsageUrl();
+        virtual ~CUsageUrl();   
+                
+    public: // Data    
+        HBufC8* iUrl;
+        TInt    iRefCounter;        
+    };     
+
 
 /**
 *  This class implements the DRM5 Rights Server functionality.
@@ -49,7 +62,7 @@ class RMobilePhone;
 *  @since S60Rel2.5
 */
 NONSHARABLE_CLASS( CDRMRightsServer ) : public CServer2, public MWatcherObserver
-    {
+    {    
     public:  // Constructors and destructor
 
         /**
@@ -161,6 +174,34 @@ NONSHARABLE_CLASS( CDRMRightsServer ) : public CServer2, public MWatcherObserver
         * @param aContentId content ID to add
         */
         void AddActiveCountConstraintL( const TDesC8& aContentId );
+
+
+        /**
+        * Checks if a content ID is in the list of currently consumed contents
+        *
+        * @since 5.2
+        * @param aContentId content ID to search for
+        * @return Index or the Url if the content ID is in the list
+        *         KErrNotFound if the content ID is not in the list
+        */
+        TInt IsAccessingUrl( const TDesC8& aContentId );
+
+        /**
+        * Removes a content ID from the list of currently consumed contents
+        *
+        * @since 5.2
+        * @param aContentId content ID to remove
+        */
+        void RemoveAccessingUrl( const TDesC8& aContentId );
+
+        /**
+        * Adds a content ID to the list of currently consumed contents
+        *
+        * @since 5.2
+        * @param aContentId content ID to add
+        */
+        void AddAccessingUrlL( const TDesC8& aContentId );
+
 
         /**
         * Import rights objects on startup
@@ -275,6 +316,7 @@ NONSHARABLE_CLASS( CDRMRightsServer ) : public CServer2, public MWatcherObserver
         RDRMClockClient iClock;
         RPointerArray<CDRMXOma>* iXOmaHeaders;
         RPointerArray<HBufC8> iActiveCountConstraints;
+        RPointerArray<class CUsageUrl> iActiveUrls;
 
         HBufC* iIMEI;
 
@@ -306,6 +348,7 @@ NONSHARABLE_CLASS( CDRMRightsServer ) : public CServer2, public MWatcherObserver
     private:    // Friend classes
 
 };
+
 
 #endif      // CDRMRIGHTSSERVER_H
 

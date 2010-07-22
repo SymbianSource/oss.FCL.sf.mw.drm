@@ -31,7 +31,7 @@
 // Filter position: DRM Header needs to be positioned below the client.
 const TInt KCameseDrmHeaderFilterPosition = MHTTPFilter::EClient - 10;
 
-const TUid KCRUidMusicShopSettings = {0x10207BF5}; // copied from MusicWapCenRepKeys.h - Album Download
+const TUid KCRUidMusicShopSettings = {0x101FFB51}; // copied from MusicWapCenRepKeys.h - Album Download
 const TUint32 KSupportOmaDownloadDescriptor   = 0x00000004; // copied from MusicWapCenRepKeys.h - Album Download
 const TUint32 KMusicServiceFeatureFlagSupport = 0x00000012; // referred from 5.0 MusicWapCenRepKeys.h - Album Download
 

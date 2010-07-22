@@ -28,6 +28,7 @@ VENDORID        VID_DEFAULT
 
 SOURCEPATH      ../ui/src
 SOURCE          RoMtmUi.cpp
+SOURCE          drmmsgwatcherobserver.cpp
 
 USERINCLUDE     ../inc
 USERINCLUDE     ../ui/inc

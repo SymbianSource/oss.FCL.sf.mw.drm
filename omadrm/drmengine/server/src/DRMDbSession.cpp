@@ -1743,7 +1743,8 @@ void CDRMDbSession::CheckConsumeL( const RMessage2& aMessage )
         // Count constraints are valid for the duration of the
         // session after they have been consumed earlier
         if ( !( iConsume && iConsume->CountConstraintActive() ||
-                SERVER->HasActiveCountConstraint( *CID ) ) )
+                SERVER->HasActiveCountConstraint( *CID ) ||
+                SERVER->IsAccessingUrl( *CID ) != KErrNotFound ) )
             {
             CDRMPermission* child( NULL );
             HBufC8* uri( NULL );
