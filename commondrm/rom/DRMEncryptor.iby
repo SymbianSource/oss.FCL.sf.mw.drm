@@ -20,9 +20,10 @@
 #define __DRMENCRYPTOR_IBY__
 
 #include <data_caging_paths_for_iby.hrh>
+#ifndef _IMAGE_TYPE_PRD
 
 S60_APP_EXE(DRMENCRYPTOR)
-data = ZRESOURCE\apps\drmencryptor.mif                      APP_RESOURCE_DIR\drmencryptor.mif
 data = ZPRIVATE\10003a3f\import\APPS\drmencryptor_reg.rsc   PRIVATE\10003a3f\import\apps\drmencryptor_reg.rsc
 
+#endif //_IMAGE_TYPE_PRD
 #endif

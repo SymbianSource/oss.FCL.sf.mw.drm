@@ -12,13 +12,20 @@
 #
 # Contributors:
 #
-# Description: 
+# Description:
 #
 
 include ( drmutilitydmgrwrapper.pri )
 
 TEMPLATE = lib
 TARGET = DrmUtilityDmgrWrapper
+
+IncludeBlock = \
+	"$${LITERAL_HASH}include <data_caging_paths.hrh>" \
+	"$${LITERAL_HASH}include <platform_paths.hrh>"
+
+MMP_RULES += IncludeBlock
+
 
 SrcIfdefBlock = \
 	"$${LITERAL_HASH}ifdef __DRM" \
@@ -29,7 +36,7 @@ SrcIfdefBlock = \
 
 MMP_RULES += SrcIfdefBlock
 
-symbian: { 
+symbian: {
 	TARGET.CAPABILITY = CAP_GENERAL_DLL
 	TARGET.VID = VID_DEFAULT
 	TARGET.UID3 = 0x102830FE
@@ -38,7 +45,7 @@ symbian: {
 	INCLUDEPATH += ../../inc
 	INCLUDEPATH += ../../../../omadrm/drmengine/roap/inc
 	INCLUDEPATH += ../../../../inc   // ADo level inc dir
-	INCLUDEPATH += ../../traces      // OST definitions 
+	INCLUDEPATH += ../../traces      // OST definitions
 	INCLUDEPATH += /epoc32/include/platform/mw/cwrt
 
 	LIBS += -leuser
@@ -76,6 +83,6 @@ symbian: {
 	"$${LITERAL_HASH}endif"
 
 	MMP_RULES += defBlock
-	
+
 	}
 
