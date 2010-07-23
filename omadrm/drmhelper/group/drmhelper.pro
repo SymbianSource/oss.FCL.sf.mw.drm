@@ -113,7 +113,7 @@ symbian: {
 	MMP_RULES += ResourceBlock
 
 	defBlock = \
-	"$${LITERAL_HASH}if defined(ARMCC)" \
+	"$${LITERAL_HASH}if defined(EABI)" \
 	"DEFFILE ../eabi/" \
 	"$${LITERAL_HASH}elif defined( WINSCW )" \
 	"DEFFILE ../bwinscw/" \
