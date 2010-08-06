@@ -60,6 +60,7 @@ private slots:
     void getDRMClock();
     void startEncrypt();
     void deleteWmDrmDB();
+    void deleteOmaDrmDB();
     void launchBrowser();
     TUint EncryptL(TUint& aEncryptedCount, TUint& aRightsCount, TUint& aMessagesProcessed);
     
@@ -74,6 +75,7 @@ private:
     QAction *iGetDRMClockAct;
     QAction *iEncryptAct;
     QAction *iDeleteWMDRMDBAct;
+    QAction *iDeleteOMADRMDBAct;
     QAction *iLaunchBrowserAct;
     
     DateTimeDialog *iDateTimeDialog;

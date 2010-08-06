@@ -83,16 +83,21 @@ DRMEncryptor::DRMEncryptor()
     iDeleteWMDRMDBAct = new QAction(tr("&Delete WMDRM DB"), this);
     iDeleteWMDRMDBAct->setStatusTip(tr("Delete WMDRM Database rights."));
     
+    iDeleteOMADRMDBAct = new QAction(tr("&Delete OMADRM DB"), this);
+    iDeleteOMADRMDBAct->setStatusTip(tr("Delete OMADRM Database rights."));
+    
     menuBar()->addAction(iSetDRMClockAct);
     menuBar()->addAction(iGetDRMClockAct);
     menuBar()->addAction(iEncryptAct);
     menuBar()->addAction(iDeleteWMDRMDBAct);
+    menuBar()->addAction(iDeleteOMADRMDBAct);
     menuBar()->addAction(iLaunchBrowserAct);
     
     connect(iSetDRMClockAct, SIGNAL(triggered()), this, SLOT(setDRMClock()));
     connect(iGetDRMClockAct, SIGNAL(triggered()), this, SLOT(getDRMClock()));
     connect(iEncryptAct, SIGNAL(triggered()), this, SLOT(startEncrypt()));
     connect(iDeleteWMDRMDBAct, SIGNAL(triggered()), this, SLOT(deleteWmDrmDB()));
+    connect(iDeleteOMADRMDBAct, SIGNAL(triggered()), this, SLOT(deleteOmaDrmDB()));
     connect(iLaunchBrowserAct, SIGNAL(triggered()), this, SLOT(launchBrowser()));
     
     //setDRMClockButton = new QPushButton("Set DRM Clock", this);
@@ -608,6 +613,16 @@ void DRMEncryptor::deleteWmDrmDB()
         QMessageBox::information(this, tr("WMDRM DB"),tr("Error deleting WMDRM rights."));
         }
     }
+
+void DRMEncryptor::deleteOmaDrmDB()
+    {
+    RDRMRightsClient client;
+    User::LeaveIfError(client.Connect());
+    client.DeleteAll();
+    client.Close();
+    }
+
+
 
 void DRMEncryptor::launchBrowser()
     {

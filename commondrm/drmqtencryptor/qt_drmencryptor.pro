@@ -30,4 +30,4 @@ TARGET.CAPABILITY += DRM
 HEADERS += drmencryptor.h
 FORMS += drmencryptor.ui
 SOURCES += drmencyptor.cpp main.cpp
-LIBS += -lplatformenv -ldrmserviceapi -ldcfrep -ldrmparsers -lfbscli -lcone -lestor -lcaf -lefsrv
+LIBS += -lplatformenv -ldrmserviceapi -ldcfrep -ldrmparsers -lfbscli -lcone -lestor -lcaf -lefsrv -ldrmserverinterfaces
