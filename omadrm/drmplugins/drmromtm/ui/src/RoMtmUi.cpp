@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -51,6 +51,8 @@
 #include <ConeResLoader.h> //rconeresloader
 #include <RoMtmUi.rsg> // test
 #include "drmmsgwatcherobserver.h"
+
+#include "cleanupresetanddestroy.h"
 
 // EXTERNAL DATA STRUCTURES
 // EXTERNAL FUNCTION PROTOTYPES
@@ -566,7 +568,7 @@ CMsvOperation* CRightsObjectMtmUi::LaunchEditorApplicationL( TRequestStatus& aSt
     CRichText& body = BaseMtm().Body();
     TPtrC ptr16( body.Read(0) );
     //const TUid KUidDRMUI = { 0x101f85c7 };
-    CDrmMsgWatcherObserver* operation = NULL;
+    CMsvOperation* operation( NULL );
 
     if ( iType == ERoapTrigger || iType == ERoapTriggerRoAcquisition )
         {
@@ -580,36 +582,39 @@ CMsvOperation* CRightsObjectMtmUi::LaunchEditorApplicationL( TRequestStatus& aSt
         ptr.Append(ptr16.Right(ptr16.Length()-4));
 
         show = ShowQueryL(ptr);
+
         if (!show)
             {
-            CleanupStack::PopAndDestroy(filename);
-            return CompletedOperationL( aStatus );
+            operation = CompletedOperationL( aStatus );
+            }
+        else
+            {
+            operation = CDrmMsgWatcherObserver::NewL(
+                    Session(),
+                    CActive::EPriorityStandard,
+                    aStatus,
+                    Type(),
+                    ptr,
+                    type );
             }
 
-	operation = CDrmMsgWatcherObserver::NewL( 
-            Session(),
-            CActive::EPriorityStandard,
-            aStatus,
-            Type(),
-            ptr,
-            type );
+        CleanupStack::PopAndDestroy(filename);
         }
     else
         {
-
         CAiwGenericParamList* paramList = CAiwGenericParamList::NewLC();
         TAiwVariant variantObject( ptr16 );
         TAiwGenericParam param( EGenericParamFile, variantObject );
         paramList->AppendL( param );
 
-	operation = CDrmMsgWatcherObserver::NewL( 
-            Session(),
-            CActive::EPriorityStandard,
-            aStatus,
-            Type(),
-            paramList );
+        operation = CDrmMsgWatcherObserver::NewL(
+                Session(),
+                CActive::EPriorityStandard,
+                aStatus,
+                Type(),
+                paramList );
 
-        CleanupStack::PopAndDestroy( paramList ); // paramList
+        CleanupStack::PopAndDestroy( paramList );
         }
 
     return operation;
@@ -765,9 +770,9 @@ TInt CRightsObjectMtmUi::CheckTriggerTypeL( TDesC16& aFile )
     CleanupStack::PushL(buf);
     roap = Roap::CRoapEng::NewL();
     CleanupStack::PushL(roap);
+    CleanupResetAndDestroyPushL(array);
     roap->SetTriggerL(ptr,NULL,type,status,op,array);
-    array.ResetAndDestroy();
-    array.Close();
+    CleanupStack::PopAndDestroy(&array);
     CleanupStack::PopAndDestroy(roap);
     CleanupStack::PopAndDestroy(buf);
 

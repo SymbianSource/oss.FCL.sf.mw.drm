@@ -82,9 +82,6 @@ const TInt KAllowAllDefined =
     DRM::EDrmAllowVideoMacroVision |
     DRM::EDrmAllowAudioUsb |   
     DRM::EDrmAllowAudioHdmiHdcpRequired |
-    DRM::EDrmAllowAudioHdmi |
-    DRM::EDrmAllowVideoHDMI  |
-    DRM::EDrmAllowVideoHdmiHdcpRequested |
     DRM::EDrmAllowVideoHdmiHdcpRequired;
 
 // ============================= LOCAL FUNCTIONS ===============================

@@ -26,7 +26,7 @@
 #include <ConeResLoader.h>
 #include <apparc.h>
 #include <rdrmhelper.h>
-#include <aknserverapp.h>
+#include <AknServerApp.h>
 #include <caf/caf.h>
 #include <caf/content.h>
 #include <caf/data.h>

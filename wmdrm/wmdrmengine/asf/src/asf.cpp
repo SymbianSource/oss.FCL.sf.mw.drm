@@ -86,6 +86,11 @@ LOCAL_C HBufC16* HBuf16FromBlockL(
     TInt aOffset,
     TInt aLength );
 
+LOCAL_C HBufC16* HBuf16IgnoreNullL(
+    const TDesC8& aBlock,
+    TInt aOffset,
+    TInt aLength );
+
 LOCAL_C TUint32 ReadUint64FromBlockL( const TDesC8& aBlock, TInt aOffset )
     {
     if ( aBlock.Length() <= ( aOffset + 3 ) )
@@ -138,6 +143,33 @@ LOCAL_C HBufC16* HBuf16FromBlockL(
 	    }
 	
 	return buffer;
+    }
+
+LOCAL_C HBufC16* HBuf16IgnoreNullL(
+    const TDesC8& aBlock,
+    TInt aOffset,
+    TInt aLength )
+    {
+    if ( aBlock.Length() < ( aOffset + aLength ) )
+        {
+        User::Leave( KErrArgument );
+        }
+    HBufC16* buffer( HBufC16::NewL( aLength / 2 + 1 ) );
+    TPtr ptr( buffer->Des() );
+    
+    for ( TInt i( 0 ) ; i < aLength; i+=2 )
+        {
+        ptr.Append( aBlock[aOffset + i] );
+        }
+    
+    TInt dLength = ptr.Length();
+    
+    if ( dLength != 0 && ptr[dLength - 1] == '\0' )
+        {
+        ptr.SetLength( dLength - 1 );
+        }
+    
+    return buffer;
     }
 
 // ============================ MEMBER FUNCTIONS ===============================
@@ -582,15 +614,19 @@ void CAsf::ParseContentDescriptionObjectL()
         User::Leave( KErrOverflow );
         }
 
-    iTitle = HBuf16FromBlockL( *iHeaderData, offset, iTitleLength );
+    iTitle = HBuf16IgnoreNullL( *iHeaderData, offset, iTitleLength );
     offset += iTitleLength;
-    iAuthor = HBuf16FromBlockL( *iHeaderData, offset, iAuthorLength );
+    
+    iAuthor = HBuf16IgnoreNullL( *iHeaderData, offset, iAuthorLength );
     offset += iAuthorLength;
-    iCopyright = HBuf16FromBlockL( *iHeaderData, offset, iCopyrightLength );
+    
+    iCopyright = HBuf16IgnoreNullL( *iHeaderData, offset, iCopyrightLength );
     offset += iCopyrightLength;
-    iDescription = HBuf16FromBlockL( *iHeaderData, offset, iDescriptionLength );
+    
+    iDescription = HBuf16IgnoreNullL( *iHeaderData, offset, iDescriptionLength );
     offset += iDescriptionLength;
-    iRating = HBuf16FromBlockL( *iHeaderData, offset, iRatingLength );
+    
+    iRating = HBuf16IgnoreNullL( *iHeaderData, offset, iRatingLength );
     offset += iRatingLength;
     }
 
