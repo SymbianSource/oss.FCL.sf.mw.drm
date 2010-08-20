@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2008-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -20,7 +20,6 @@
 #define C_WMDRMDLABROWSERVIEW_H
 
 #include <aknview.h>
-#include <BrCtlSpecialLoadObserver.h>
 
 class CWmDrmDlaBrowserContainer;
 class CInternetConnectionManager;
@@ -36,8 +35,7 @@ class MBrowserViewLicenseReceivedCallback
 
     };
 
-class CWmDrmDlaBrowserView : public CAknView,
-                             public MBrCtlSpecialLoadObserver
+class CWmDrmDlaBrowserView : public CAknView
     {
 
     public:
@@ -50,44 +48,12 @@ class CWmDrmDlaBrowserView : public CAknView,
          */
         virtual ~CWmDrmDlaBrowserView();
 
-        /**
-         * Set the IAP that is used in network connection
-         * @param aIap - IAP to be used
-         */
-        void SetIAP( TInt aIap );
-
-        /**
-         * Make a POST-request
-         * @param aCallback - Callback used to inform when license
-         *                    response is received
-         * @param aPostUrl - Post URL
-         * @param aPostContentType - Post content type
-         * @param aPostData - Post data
-         * @param aPostContentBoundary - Post content boundary
-         */
-        void PostL( MBrowserViewLicenseReceivedCallback* aCallback,
-                    const TDesC& aPostUrl,
-                    const TDesC8& aPostContentType,
-                    const TDesC8& aPostData,
-                    const TDesC8& aPostContentBoundary );
-
-        /**
-         * Get the license response
-         * @return License response or NULL
-         */
-        HBufC8* LicenseResponse();
-
     public: // From CAknView
 
         /**
         * @see CAknView
         */
         TUid Id() const;
-
-        /**
-        * @see CAknView
-        */
-        void HandleCommandL( TInt aCommand );
 
         /**
         * @see CAknView
@@ -106,17 +72,6 @@ class CWmDrmDlaBrowserView : public CAknView,
         void HandleClientRectChange();
 
     public: // From MBrCtlSpecialLoadObserver
-
-        void NetworkConnectionNeededL( TInt* aConnectionPtr,
-                                       TInt* aSockSvrHandle,
-                                       TBool* aNewConn,
-                                       TApBearerType* aBearerType );
-
-        TBool HandleRequestL( RArray<TUint>* aTypeArray,
-                              CDesCArrayFlat* aDesArray );
-
-        TBool HandleDownloadL( RArray<TUint>* aTypeArray,
-                               CDesCArrayFlat* aDesArray );
 
     private:
 
