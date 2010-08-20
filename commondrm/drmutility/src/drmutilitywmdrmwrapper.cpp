@@ -260,7 +260,7 @@ EXPORT_C void DRM::CDrmUtilityWMDrmWrapper::HandleWmErrorL(
 
     if ( !value )
         {
-        ShowNoRightsNoteL( aContent, reason );
+        ShowNoRightsNoteL( aContent, reason, aOperationId, aObserver );
         User::LeaveIfError( aContent.GetAttribute( ContentAccess::ECanPlay, value ) );
         if ( value )
             {
@@ -484,7 +484,7 @@ void DRM::CDrmUtilityWMDrmWrapper::CallRightsNotValidL(
         {
         case DRM::EUHCheckRightsActionDefault:
             {
-            ShowNoRightsNoteL( aContent, aReason );
+            ShowNoRightsNoteL( aContent, aReason, aOperationId, aObserver );
             }
             break;
 
@@ -542,8 +542,11 @@ void DRM::CDrmUtilityWMDrmWrapper::CallRightsAvailable(
 //
 void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
     ContentAccess::CData& aContent,
-    TUint32 /*aReason*/ )
+    TUint32 /*aReason*/,
+    TInt aOperationId,
+    DRM::MDrmHandleErrorObserver* aObserver )
     {
+    TInt value;
     TRAPD( err, LoadDlaWrapperL() );
     if ( !err )
         {
@@ -568,6 +571,14 @@ void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
         if ( !err && ret == EOk )
             {
             TRAP_IGNORE( DlaLicenseAcquisitionL( file ) );
+            
+            // Ask the rights from CAF, same call for both ECanPlay and ECanView
+            aContent.GetAttribute( ContentAccess::ECanPlay, value );
+            // call given HandleErrorObserver
+            if( value > 0 )
+                {
+                aObserver->RightsAvailable( aOperationId, KErrNone );              
+                }
             }
         CleanupStack::PopAndDestroy( &file );
         }

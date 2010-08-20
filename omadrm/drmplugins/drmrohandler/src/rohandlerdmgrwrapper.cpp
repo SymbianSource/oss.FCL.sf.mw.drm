@@ -326,7 +326,7 @@ void CRoHandlerDMgrWrapper::DoDownloadRoapTriggerL( TMeterState aNextState )
 	try
 		{
 		RBuf fileName;
-		fileName.Create(KMaxFileName);
+		User::LeaveIfError(fileName.Create(KMaxFileName));
 		CleanupClosePushL(fileName);
 		roapTrigger.Name(fileName);
 		const QVariant& roapTriggerValue( QString((QChar*) fileName.Ptr(), fileName.Length()) );
