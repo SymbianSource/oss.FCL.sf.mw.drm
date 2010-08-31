@@ -22,7 +22,6 @@
 #include <e32def.h>     // Type definitions
 #include <hash.h>       // MD5 Algorithm
 // #include <SysUtil.h>    // Disk space checking
-#include <featmgr.h>    // Feature Manager 
 #include <f32file.h>
 #include <s32strm.h>
 #include <s32file.h>
@@ -71,9 +70,7 @@ _LIT( KLogName, "backup.log");
 // LOCAL CONSTANTS AND MACROS
 #ifdef RD_MULTIPLE_DRIVE
 // Backup Directory
-#ifdef __DRM_OMA2
 _LIT( KBackupDir, "%c:\\private\\101F51F2\\backup\\" );
-#endif
 #endif
 
 
@@ -93,8 +90,16 @@ _LIT(KRODirName, "DomainROs\\");
 _LIT(KCorruptionFlagFile, "invalid");
 
 #ifdef __DRM_OMA2
+const TInt KMaxUDTDataSize = 256;
+const TInt KDeviceDataSize = 256;
 const TInt KDeviceDataBlock = 128;
+#else
+const TInt KMaxUDTDataSize = 0;
+const TInt KDeviceDataSize = 0;
+const TInt KDeviceDataBlock = 0;
 #endif
+const TInt KUdtDataPos = 4 + KDeviceDataSize;
+
 
 const TInt KEncryptionKeySize = 16;
 const TInt KMaxEncryptionSize = 8192;
@@ -107,10 +112,8 @@ const TUint32 KMaxTIntVal = 2147483647; // 2^31-1
 // MODULE DATA STRUCTURES
 
 // LOCAL FUNCTION PROTOTYPES
-#ifdef __DRM_OMA2
 LOCAL_C void CleanupData( TAny* aPtr );
 LOCAL_C void WriteIntToBlock( TInt aValue, TDes8& aBlock, TInt aOffset );
-#endif
 LOCAL_C void DeleteObject( TAny* aObject );
 
 // FORWARD DECLARATIONS
@@ -122,7 +125,6 @@ LOCAL_C void DeleteObject( TAny* aObject );
 // Used to catch errors and delete the file if it's needed
 // -----------------------------------------------------------------------------
 //
-#ifdef __DRM_OMA2
 LOCAL_C void CleanupData( TAny* aPtr )
     {
     CDRMRightsDB* rdb = reinterpret_cast<CDRMRightsDB*>( aPtr );
@@ -138,7 +140,7 @@ LOCAL_C void WriteIntToBlock( TInt aValue, TDes8& aBlock, TInt aOffset )
     aBlock[aOffset + 2] = (aValue & 0x0000ff00) >> 8;
     aBlock[aOffset + 3] = (aValue & 0x000000ff);
     }
-#endif
+
 // ----------------------------------------------------------------------------
 // DeleteObject
 // Deletes the file by TFileName presented by aHandle
@@ -205,9 +207,6 @@ void CDRMRightsDB::ConstructL( const TDesC& aDatabasePath,
         }
 
     InitializeDatabaseL();
-    
-    FeatureManager::InitializeLibL();
-    
     };
 
 // -----------------------------------------------------------------------------
@@ -273,8 +272,6 @@ CDRMRightsDB::~CDRMRightsDB()
         }
 
     iMemStream.Close();
-    
-    FeatureManager::UnInitializeLib();
 
     DRMLOG( _L( "RDB Closing." ) );
     };
@@ -1158,16 +1155,6 @@ TBool CDRMRightsDB::DeleteExpiredL( const TFileName& aFileName,
 HBufC8* CDRMRightsDB::GetUdtDataLC()
     {
 #ifdef __DRM_OMA2
-    
-    if ( ! ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) ) )
-        {
-        User::Leave( KErrNotSupported );
-        }
-    
-    const TInt KMaxUDTDataSize( 256 );
-    const TInt KDeviceDataSize( 256 ); 
-    const TInt KUdtDataPos = 4 + KDeviceDataSize;
-    
     HBufC8* udtData = HBufC8::NewMaxLC( KMaxUDTDataSize );
     TFileName backupFile;
     RFile input;
@@ -1223,12 +1210,6 @@ void CDRMRightsDB::InitiateUdtL( const TDesC8& )
 #endif // __DRM_OMA2
     {
 #ifdef __DRM_OMA2
-    
-    if ( ! ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) ) )
-        {
-        User::Leave( KErrNotSupported );
-        }
-    
     TFileName backupFile;
     RFile input;
     HBufC8* keyData = NULL;
@@ -1464,10 +1445,7 @@ void CDRMRightsDB::BackupContentToFileL( RFile& aBackupFile,
     stream.WriteInt32L( fileSize );
 
 #ifdef __DRM_OMA2
-    if ( FeatureManager::FeatureSupported ( KFeatureIdFfOmadrm2Support ) )
-        {
-        AddUDTDataL( stream );
-        }
+    AddUDTDataL( stream );
 #endif
 
     encIV.SetLength(KEncryptionKeySize);
@@ -1714,20 +1692,13 @@ void CDRMRightsDB::BackupContentToFileL( RFile& aBackupFile,
 //
 void CDRMRightsDB::RestoreContentFromFileL( RFile& aBackupFile,
                                             const TDesC8& aEncryptionKey,
-                                            const TInt aMode )																																									
+                                            const TInt aMode )
     {
-	
     // RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("RestoreContentFromFileL\n\r"));
     TInt8 continueMarker = 1;
     TBuf8<16> key;
     TBuf8<16> encryptionKey;
     TInt permissions = 0;
-    
-    // Default values when OMA2 DRM is not supported
-    TInt maxUDTDataSize( 0 );
-    TInt deviceDataSize( 0 );
-    TInt udtDataPos( 4 + deviceDataSize );
-    
     CDRMPermission* permission = CDRMPermission::NewLC();
     CDRMCommonData *commonData = NULL;
     CDRMPointerArray<CDRMPermission> *permissionArray = CDRMPointerArray<CDRMPermission>::NewLC();
@@ -1738,18 +1709,10 @@ void CDRMRightsDB::RestoreContentFromFileL( RFile& aBackupFile,
     TInt size = 0;
     TInt dataLeft = 0;
     TPtr8 keyData(NULL,0,0);
-      
-#ifdef __DRM_OMA2    
-    if ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) )
-        {
-    		maxUDTDataSize = 256;
-    		deviceDataSize = 256; 
-    		udtDataPos = 4 + deviceDataSize;	
-    		}    
-#endif 
- 
+
     // maintain knowledge about stateful rights not being restored
     TBool stateful = EFalse;
+
 
     DRMLOG( _L( "CDRMRightsDB::RestoreContentFromFileL ->" ) );
 
@@ -1798,7 +1761,7 @@ void CDRMRightsDB::RestoreContentFromFileL( RFile& aBackupFile,
     // Check that the decryption works, if it doesn't then the
     // key is faulty
     User::LeaveIfError( aBackupFile.Size( readPos ) );
-    if( readPos < udtDataPos+maxUDTDataSize+(KEncryptionKeySize*2) )
+    if( readPos < KUdtDataPos+KMaxUDTDataSize+(KEncryptionKeySize*2) )
         {
           // RFileLogger::Write(KLogDir, KLogName, EFileLoggingModeAppend, _L8("RestoreContentFromFileL : corrupt\n\r"));
         User::Leave(KErrCorrupt);
@@ -1827,7 +1790,7 @@ void CDRMRightsDB::RestoreContentFromFileL( RFile& aBackupFile,
     //-----------------------------------------------------------------------
 
     // Duplicate file handle
-    readPos = udtDataPos+maxUDTDataSize;
+    readPos = KUdtDataPos+KMaxUDTDataSize;
     User::LeaveIfError( fileHandle.Seek( ESeekStart, readPos ) );
     iMemStream.Close();
 
@@ -1924,6 +1887,7 @@ void CDRMRightsDB::RestoreContentFromFileL( RFile& aBackupFile,
                 }
             }
 
+
         // Encrypt the key
         if( keyExists )
             {
@@ -1989,6 +1953,9 @@ void CDRMRightsDB::RestoreContentFromFileL( RFile& aBackupFile,
             User::Leave( KErrGeneral );
             }
 
+
+
+
         if( insertPerm == -1 ) // Add everything no checks needed
             {
             for( TInt count = 0; count < permissions; count++ )
@@ -2044,6 +2011,7 @@ void CDRMRightsDB::RestoreContentFromFileL( RFile& aBackupFile,
                     }
 
                 }
+
 
             for( TInt count = 0; count < permissions; count++ )
                 {
@@ -2141,7 +2109,6 @@ void CDRMRightsDB::RestoreContentFromFileL( RFile& aBackupFile,
         {
         User::Leave( KErrPermissionDenied );
         }
-		
     };
 
 
@@ -2295,13 +2262,6 @@ void CDRMRightsDB::AddUDTDataL( RWriteStream& )
 #endif // __DRM_OMA2
     {
 #ifdef __DRM_OMA2
-    
-    if ( ! ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) ) )
-        {
-        User::Leave( KErrNotSupported );
-        }
-    
-    const TInt KMaxUDTDataSize( 256 );
     TBuf8<MDrmKeyStorage::KRdbSerialNumberLength> serialNumber;
     TBuf8<KMaxUDTDataSize> buffer;
     TUint8* ptr = const_cast<TUint8*>(buffer.Ptr());
@@ -2472,12 +2432,6 @@ void CDRMRightsDB::AddUDTDataL( RWriteStream& )
 void CDRMRightsDB::CreateDummyUDTFileL()
     {
 #ifdef __DRM_OMA2
-    
-    if ( ! ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) ) )
-        {
-        User::Leave( KErrNotSupported );
-        }
-    
     TFileName backupFile;
     RFile input;
     TInt fileSize = 4 + 256 + 256;
@@ -2507,12 +2461,6 @@ void CDRMRightsDB::CreateDummyUDTFileL()
 void CDRMRightsDB::CleanUdtData()
     {
 #ifdef __DRM_OMA2
-    
-    if ( ! ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) ) )
-        {
-        return;
-        }
-    
     TFileName backupFile;
 
 #ifndef RD_MULTIPLE_DRIVE

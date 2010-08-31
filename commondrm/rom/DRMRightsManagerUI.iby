@@ -21,7 +21,7 @@
 
 // DRM Rights Manager Application
 
-#if ( (defined __DRM_FULL) || (defined __WINDOWS_MEDIA_DRM) )
+#ifdef __DRM_FULL
 
 S60_APP_EXE(DRMRightsManager)
 S60_APP_BITMAP(DRMRightsManager)
@@ -30,7 +30,7 @@ S60_APP_AIF_ICONS(DRMRightsManager)
 data=\epoc32\data\z\private\10003a3f\apps\DRMRightsManager_reg.rsc	\private\10003a3f\import\apps\DRMRightsManager_reg.rsc
 data=ZSYSTEM\install\DRMRightsManager_stub.SIS             \system\install\DRMRightsManager_stub.SIS
 
-#endif	// __DRM_FULL || __WINDOWS_MEDIA_DRM
+#endif	// __DRM_FULL
 
 
 #endif	// __DRMRIGHTSMANAGERUI_IBY__

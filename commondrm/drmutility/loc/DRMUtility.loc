@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2007-2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2007-2008 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -74,7 +74,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_query_waiting_for_ro "Waiting for license. Try again later."
+#define qtn_drm_query_waiting_for_ro "Waiting for licence. Try again later."
 
 //d: Text in confirmation query that is displayed when user tries to render MO that is missing RO.
 //d: The waiting time of RO to arrive has passed, and there is no possibility to get new RO (no rights
@@ -83,7 +83,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_query_ro_late "License not yet received. Expected time of delivery elapsed."
+#define qtn_drm_query_ro_late "Licence not yet received. Expected time of delivery elapsed."
 
 //d: Text in confirmation query that is displayed when user tries to render MO that is missing RO.
 //d: The waiting time of RO to arrive has passed, and there is possibility to get new RO (rights issuer url exists).
@@ -91,7 +91,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_query_ro_late_activate "License not yet received. Expected time of delivery elapsed. Get new license?"
+#define qtn_drm_query_ro_late_activate "Licence not yet received. Expected time of delivery elapsed. Get new licence?"
 
 //d: Text in confirmation query when user is asked about updating account.
 //d: Device is already connected to network, but must upgrade the domain key before rendering,
@@ -138,7 +138,7 @@
 //w:
 //r:
 //
-#define qtn_drm_query_valid_rights_until "License for selected item valid until %U. Continue?"
+#define qtn_drm_query_valid_rights_until "Licence for selected item valid until %U. Continue?"
 
 //d: Text in confirmation query
 //l: popup_note_window
@@ -160,10 +160,3 @@
 //r: 9.1
 //
 #define qtn_drm_msg_qry_head_no_license "No license"
-
-//d: Text in message query to notify user that the DRM license needs to be acquired with PC sync.
-//l: popup_note_window
-//w:
-//r: 9.2
-//
-#define qtn_drm_query_expired_connect_pc "You must have valid license to play %U. Please sync your phone with your PC to update license."

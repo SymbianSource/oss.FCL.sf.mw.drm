@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2004-2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2004-2008 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -239,9 +239,8 @@ class CRoHandler
                                         // initialised at instantiation
         DRM::CWbxmlRoapTriggerParser* iWbxmlTriggerParser;
         HBufC8* iParsedXmlTrigger;
-        TBool iPutRightsToInbox;        // whether received RO is put into Inbox as an
+        TBool iPutRightsToInbox;         // whether received RO is put into Inbox as an
                                         // entry or not. Initialized at instantiation.
-        TBool iFeatureManagerFound;     // Feature Manager is succesfully initialized
                                         
     };
 

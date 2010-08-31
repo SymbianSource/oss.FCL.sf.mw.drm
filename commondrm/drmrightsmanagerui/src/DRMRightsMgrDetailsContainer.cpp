@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2003-2009 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -841,8 +841,10 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                                     TInt aIntYrs, TInt aIntMon, TInt aIntDay,
                                     TInt aIntHrs, TInt aIntMin, TInt aIntSec )
     {
-    
-    CDesCArrayFlat* strings = new ( ELeave ) CDesCArrayFlat( 1 );
+    // Only the two most meaningful data will be showed
+    TInt numOfData = 0;
+
+    CDesCArrayFlat* strings = new ( ELeave ) CDesCArrayFlat( 2 );
     CleanupStack::PushL( strings );
 
     if ( aIntYrs > 0 )
@@ -853,8 +855,10 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_YEARS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_YEARS_FIVE_ZERO,
                               strings );
+        numOfData++;
         }
-    else if ( aIntMon > 0 )
+
+    if ( aIntMon > 0 )
         {
         //  Second type not provided because 11 is the maximum
         AddSinglePartOfTimeL( aIntMon,
@@ -863,8 +867,11 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_MONTHS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_MONTHS_FIVE_ZERO,
                               strings );
+        numOfData++;
         }
-    else if ( aIntDay > 0 )
+
+    // Only if years or months were missing
+    if ( aIntDay > 0 && numOfData < 2 )
         {
         AddSinglePartOfTimeL( aIntDay,
                               R_QTN_DRM_NBR_OF_DAYS_ONE,
@@ -872,8 +879,10 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_DAYS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_DAYS_FIVE_ZERO,
                               strings );
+        numOfData++;
         }
-    else if ( aIntHrs > 0 )
+
+    if ( aIntHrs > 0 && numOfData < 2 )
         {
         AddSinglePartOfTimeL( aIntHrs,
                               R_QTN_DRM_NBR_OF_HOURS_ONE,
@@ -881,8 +890,10 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_HOURS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_HOURS_FIVE_ZERO,
                               strings );
+        numOfData++;
         }
-    else if ( aIntMin > 0 )
+
+    if ( aIntMin > 0 && numOfData < 2 )
         {
         AddSinglePartOfTimeL( aIntMin,
                               R_QTN_DRM_NBR_OF_MINS_ONE,
@@ -890,9 +901,11 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_MINS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_MINS_FIVE_ZERO,
                               strings );
+        numOfData++;
         }
+
     // If interval is 0, then it shows "0 seconds" anyway
-    else
+    if ( ( aIntSec > 0 && numOfData < 2 ) || numOfData == 0 )
         {
         AddSinglePartOfTimeL( aIntSec,
                               R_QTN_DRM_NBR_OF_SECS_ONE,
@@ -900,10 +913,21 @@ HBufC* CDRMRightsMgrDetailsContainer::AddPartsOfTimeL(
                               R_QTN_DRM_NBR_OF_SECS_TWO_FOUR,
                               R_QTN_DRM_NBR_OF_SECS_FIVE_ZERO,
                               strings );
+        numOfData++;
         }
 
-    HBufC* stringHolder = StringLoader::LoadL( R_QTN_DRM_MGR_DET_INTER,
+    HBufC* stringHolder;
+    if ( numOfData == 1 )
+        {
+        stringHolder = StringLoader::LoadL( R_QTN_DRM_MGR_DET_INTER,
                                             strings->MdcaPoint(0), iEikonEnv );
+        }
+    else
+        {
+        stringHolder = StringLoader::LoadL( R_QTN_DRM_MGR_DET_INTER_TWO,
+                                            *strings, iEikonEnv );
+        }
+
     CleanupStack::PopAndDestroy( strings );
 
     return stringHolder;

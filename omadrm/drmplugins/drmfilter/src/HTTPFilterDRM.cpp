@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006 Nokia Corporation and/or its subsidiary(-ies).
+ * Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
  * All rights reserved.
  * This component and the accompanying materials are made available
  * under the terms of "Eclipse Public License v1.0"
@@ -217,7 +217,7 @@ void CHTTPFilterDRM::MHFUnload( RHTTPSession, THTTPFilterHandle )
 
 //------------------------------------------------------------------------
 // CHTTPFilterDRM::MHFRunL
-// See MHTTPFilterBase::MHFRunL 
+// See MHTTPFilterBase::MHFRunL
 //------------------------------------------------------------------------
 //
 void CHTTPFilterDRM::MHFRunL( RHTTPTransaction aTransaction,
@@ -320,7 +320,7 @@ TInt CHTTPFilterDRM::MHFRunError( TInt aError, RHTTPTransaction aTransaction,
         case KErrCANoRights:
         case KErrCorrupt:
             {
-            error = NW_STAT_FAILURE; //Unable to perform operation   
+            error = NW_STAT_FAILURE; //Unable to perform operation
             }
             break;
         case KErrArgument:
@@ -461,10 +461,10 @@ void CHTTPFilterDRM::DumpResponseHeadersL( RHTTPResponse& aResponse )
 // CHTTPFilterDRM::CheckHeadersL
 // Check HTTP headers and extract MIME type
 //------------------------------------------------------------------------
-// 
+//
 void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
     {
-    // read the header data and check the MIME type here    
+    // read the header data and check the MIME type here
     // check the status and body
     RHTTPResponse response = aTrans.Response();
     TInt status = response.StatusCode();
@@ -512,14 +512,17 @@ void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
                 drmData = CHTTPFilterDRMDataSupplier::NewL( aTrans.Id(),
                     response.Body(), const_cast<CHTTPFilterDRM*> ( this ) );
                 /** Support for Hutchinson's content protection scheme, CFM
-                 *  
+                 *
                  */
                 drmData->SetProcessedContentType( EStandardDRMContent );
                 /**
                  *
                  */
-                iDataSups.Append( drmData );
+                CleanupStack::PushL( drmData );
+                iDataSups.AppendL ( drmData );
+                CleanupStack::Pop( drmData );
                 response.SetBody( *drmData );
+                
 
                 // change the mime type to "application/vnd.oma.drm.content"
                 headers.RemoveField( fieldNameStr );
@@ -566,7 +569,9 @@ void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
                         = CHTTPFilterDRMDataSupplier::NewL( aTrans.Id(),
                             response.Body(),
                             const_cast<CHTTPFilterDRM*> ( this ) );
-                    iDataSups.Append( drmData );
+                    CleanupStack::PushL( drmData );
+                    iDataSups.AppendL ( drmData );
+                    CleanupStack::Pop( drmData );
                     }
 
                 }
@@ -630,7 +635,7 @@ void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
         // Do not encrypt JAD files:
         if ( headers.GetField( fieldNameStr, 0, fieldVal ) == KErrNone )
             {
-            // If it is a JAD always ignore any of the above:   
+            // If it is a JAD always ignore any of the above:
             const TBuf8<sizeof( KJADString )> JADStringBuf( KJADString );
             RStringF JADValue = strP.OpenFStringL( JADStringBuf );
             CleanupClosePushL( JADValue );
@@ -662,10 +667,13 @@ void CHTTPFilterDRM::CheckHeadersL( const RHTTPTransaction& aTrans )
                 User::Leave( KErrUnknown );
                 }
 
-            iDataSups.Append( drmData );
+            CleanupStack::PushL( drmData );
+            iDataSups.AppendL ( drmData );
+            CleanupStack::Pop( drmData );
+                
             response.SetBody( *drmData );
 
-            ///         
+            ///
             RStringF DRMValue1 = strP.OpenFStringL( DRMStringBuf1 );
             CleanupClosePushL( DRMValue1 );
 

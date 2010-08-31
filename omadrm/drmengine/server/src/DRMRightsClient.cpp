@@ -19,7 +19,6 @@
 // INCLUDE FILES
 #include <s32file.h>
 #include <etelmm.h>
-#include <featmgr.h>
 #include "DRMRightsClient.h"
 #include "DRMEngineClientServer.h"
 #include "DrmPermission.h"
@@ -158,23 +157,11 @@ EXPORT_C TInt RDRMRightsClient::Connect()
         }
 
 #ifdef __DRM_FULL
-    
-    TRAP( ret, FeatureManager::InitializeLibL() );
-    
-    if ( !ret && FeatureManager::FeatureSupported( KFeatureIdFfOmadrm1FullSupport ) )
-        {
-        // startup code, if it starts it starts if not it will be tried again.        
-        RDRMHelper helper;
-        TInt ignore = helper.Connect(); // Start HelperServer
-        helper.Close();
-        }
-    
-    if ( !ret )
-        {
-        FeatureManager::UnInitializeLib();
-        }
-    
-#endif        
+    // startup code, if it starts it starts if not it will be tried again.
+    RDRMHelper helper;
+    TInt ignore = helper.Connect(); // Start HelperServer
+    helper.Close();
+#endif
 
     DRMLOG2( _L( "RDRMRightsClient::Connect(): Result: %d" ), ret );
 
@@ -854,7 +841,9 @@ EXPORT_C void RDRMRightsClient::GetDomainRosForCidL(
             Mem::Copy( &roSize, ptr.Ptr()+offset, sizeof(TInt) );
             offset += sizeof (TInt);
             ro = ptr.Mid(offset, roSize).AllocL();
-            aRoList.Append(ro);
+            CleanupStack::PushL( ro );
+            aRoList.AppendL (ro);
+            CleanupStack::Pop( ro );
             offset += roSize;
             }
         CleanupStack::PopAndDestroy();

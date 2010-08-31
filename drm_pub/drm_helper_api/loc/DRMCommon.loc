@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2005 - 2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2005 - 2008 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -52,7 +52,7 @@
 //w:
 //r:
 //
-#define qtn_drm_gen_rights_exp "License expired for some of the selected objects"
+#define qtn_drm_gen_rights_exp "Licence expired for some of the selected objects"
 
 //d: Text in information note
 //l: popup_note_window
@@ -66,7 +66,7 @@
 //w:
 //r:
 //
-#define qtn_drm_mgr_det_exp "License expired"
+#define qtn_drm_mgr_det_exp "Licence expired"
 
 //d: Text in message query
 //d: %N is number of deleted objects
@@ -152,14 +152,14 @@
 //w:
 //r:
 //
-#define qtn_drm_cnt_or_dt_exp_multi "License will expire for some of the selected objects"
+#define qtn_drm_cnt_or_dt_exp_multi "Licence will expire for some of the selected objects"
 
 //d: Text in confirmation query
 //l: popup_note_window
 //w:
 //r:
 //
-#define qtn_drm_sd_rights_exp "License expired. Get new license to unlock file?"
+#define qtn_drm_sd_rights_exp "Licence expired. Get new licence to unlock file?"
 
 //d: Text in confirmation query
 //d: %U is name of the media object
@@ -182,7 +182,7 @@
 //w:
 //r:
 //
-#define qtn_drm_query_valid_rights_until "License for selected item valid until %U. Continue?"
+#define qtn_drm_query_valid_rights_until "Licence for selected item valid until %U. Continue?"
 
 //d: Text in confirmation query when content with inactive interval rights is set as automated content.
 //d: %U is calculated expiration date of rights object, if rights are activated
@@ -198,7 +198,7 @@
 //w:
 //r:
 //
-#define qtn_drm_note_cd_ro_expired "License for %U expired"
+#define qtn_drm_note_cd_ro_expired "Licence for %U expired"
 
 //d: Text in confirmation note when superdistributable automated content has expired.
 //d: %U is name of the content
@@ -206,7 +206,7 @@
 //w:
 //r:
 //
-#define qtn_drm_note_sd_ro_expired "License for %U expired. Get new license to unlock file?"
+#define qtn_drm_note_sd_ro_expired "Licence for %U expired. Get new licence to unlock file?"
 
 //d: Text in information note when usage rights are not yet valid.
 //d: %U is start date of rights object
@@ -214,14 +214,14 @@
 //w:
 //r: 2.6
 //
-#define qtn_drm_note_ro_valid_on_future "License valid from %U"
+#define qtn_drm_note_ro_valid_on_future "Licence valid from %U"
 
 //d:Possible second line for first entry of Details View listbox
 //l:list_double_pane_t2_cp2
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_det_valid "License is valid"
+#define qtn_drm_mgr_det_valid "Licence is valid"
 
 //d: Text in information note shown when removing device from account failed.
 //l: popup_note_window
@@ -250,7 +250,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_act_key_received "License received"
+#define qtn_drm_info_act_key_received "Licence received"
 
 //d: Text in information note shown when getting rights object has failed.
 //d: Reason is permanent device or server error and there is no possibility to retry.
@@ -258,7 +258,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_getting_key_failed "Unable to get license"
+#define qtn_drm_info_getting_key_failed "Unable to get licence"
 
 //d: Text in confirmation note shown when device has been succesfully removed from account.
 //l: popup_note_window
@@ -339,7 +339,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_get_key_failed_retry "License not received. Try again?"
+#define qtn_drm_get_key_failed_retry "Licence not received. Try again?"
 
 //d: Text in wait note shown while device is acquiring RO and possibly completing registration
 //d: protocol with Rights Issuer.
@@ -426,7 +426,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_query_waiting_for_ro "Waiting for license. Try again later."
+#define qtn_drm_query_waiting_for_ro "Waiting for licence. Try again later."
 
 //d: Text in confirmation query that is displayed when user tries to render MO that is missing RO.
 //d: The waiting time of RO to arrive has passed, and there is no possibility to get new RO (no rights
@@ -435,7 +435,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_query_ro_late "License not yet received. Expected time of delivery elapsed."
+#define qtn_drm_query_ro_late "Licence not yet received. Expected time of delivery elapsed."
 
 //d: Text in confirmation query that is displayed when user tries to render MO that is missing RO.
 //d: The waiting time of RO to arrive has passed, and there is possibility to get new RO (rights issuer url exists).
@@ -443,7 +443,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_query_ro_late_activate "License not yet received. Expected time of delivery elapsed. Get new license?"
+#define qtn_drm_query_ro_late_activate "Licence not yet received. Expected time of delivery elapsed. Get new licence?"
 
 //d: Text in confirmation note that is displayed when device registration is complete.
 //l: popup_note_window
@@ -483,7 +483,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_cal_tone_exp_activate "License for calendar alert tone %U expired. Get new license to unlock file?"
+#define qtn_drm_cal_tone_exp_activate "Licence for calendar alert tone %U expired. Get new licence to unlock file?"
 
 //d: Text in information note that that is displayed when rights for calendar alert tone have expired.
 //d: Note is shown when Idle is activated. This info note is shown fore combined delivery object
@@ -493,7 +493,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_calendar_tone_exp "License for calendar alert tone %U expired"
+#define qtn_drm_info_calendar_tone_exp "Licence for calendar alert tone %U expired"
 
 //d: Text in confirmation query that is displayed when rights for clock alarm tone have expired.
 //d: Query is shown when Idle is activated. Activation query is shown only for superdistributable
@@ -503,7 +503,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_clock_alrm_exp_activate "License for clock alarm tone %U expired. Get new license to unlock file?"
+#define qtn_drm_clock_alrm_exp_activate "Licence for clock alarm tone %U expired. Get new licence to unlock file?"
 
 //d: Text in information note that that is displayed when rights for clock alarm tone have expired.
 //d: Note is shown when Idle is activated. This info note is shown fore combined delivery object
@@ -513,7 +513,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_clock_alarm_exp "License for clock alarm tone %U expired"
+#define qtn_drm_info_clock_alarm_exp "Licence for clock alarm tone %U expired"
 
 //d: Text in confirmation query that is displayed when rights for e-mail alert tone have expired.
 //d: Query is shown when Idle is activated. Activation query is shown only for superdistributable
@@ -523,7 +523,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_email_tone_exp_activate "License for e-mail alert tone %U expired. Get new license to unlock file?"
+#define qtn_drm_email_tone_exp_activate "Licence for e-mail alert tone %U expired. Get new licence to unlock file?"
 
 //d: Text in information note that that is displayed when rights for e-mail alert tone have expired.
 //d: Note is shown when Idle is activated. This info note is shown fore combined delivery object
@@ -533,7 +533,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_email_tone_exp "License for e-mail alert tone %U expired"
+#define qtn_drm_info_email_tone_exp "Licence for e-mail alert tone %U expired"
 
 //d: Text in confirmation query that is displayed when rights for instant message alert tone have expired.
 //d: Query is shown when Idle is activated. Activation query is shown only for superdistributable
@@ -543,7 +543,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_im_tone_exp_activate "License for IM alert tone %U expired. Activate?"
+#define qtn_drm_im_tone_exp_activate "Licence for IM alert tone %U expired. Activate?"
 
 //d: Text in information note that that is displayed when rights for instant message alert tone have expired.
 //d: Note is shown when Idle is activated. This info note is shown fore combined delivery object
@@ -553,7 +553,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_im_alert_tone_exp "License for IM alert tone %U expired"
+#define qtn_drm_info_im_alert_tone_exp "Licence for IM alert tone %U expired"
 
 //d: Text in confirmation query that is displayed when rights for message alert tone have expired.
 //d: Query is shown when Idle is activated. Activation query is shown only for superdistributable
@@ -563,7 +563,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_msg_tone_exp_activate "License for message alert tone %U expired. Get new license to unlock file?"
+#define qtn_drm_msg_tone_exp_activate "Licence for message alert tone %U expired. Get new licence to unlock file?"
 
 //d: Text in information note that that is displayed when rights for message alert tone have expired.
 //d: Note is shown when Idle is activated. This info note is shown fore combined delivery object
@@ -573,7 +573,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_msg_tone_exp "License for message alert tone %U expired"
+#define qtn_drm_info_msg_tone_exp "Licence for message alert tone %U expired"
 
 //d: Text in confirmation query that is displayed when rights for ringing tone have expired.
 //d: Query is shown when Idle is activated. Activation query is shown only for superdistributable
@@ -583,7 +583,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_ring_tone_exp_activate "License for ringing tone %U expired. Get new license to unlock file?"
+#define qtn_drm_ring_tone_exp_activate "Licence for ringing tone %U expired. Get new licence to unlock file?"
 
 //d: Text in information note that that is displayed when rights for ringing tone have expired.
 //d: Note is shown when Idle is activated. This info note is shown fore combined delivery object
@@ -593,7 +593,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_ring_tone_exp "License for ringing tone %U expired"
+#define qtn_drm_info_ring_tone_exp "Licence for ringing tone %U expired"
 
 //d: Text in confirmation query that is displayed when rights for screensaver have expired.
 //d: Query is shown when Idle is activated. Activation query is shown only for superdistributable
@@ -603,7 +603,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_screensave_exp_activate "License for power saver %U expired. Get new license to unlock file?"
+#define qtn_drm_screensave_exp_activate "Licence for power saver %U expired. Get new licence to unlock file?"
 
 //d: Text in information note that that is displayed when rights for screensaver have expired.
 //d: Note is shown when Idle is activated. This info note is shown fore combined delivery object
@@ -623,7 +623,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_wallpaper_exp_activate "License for wallpaper %U expired. Get new license to unlock file?"
+#define qtn_drm_wallpaper_exp_activate "Licence for wallpaper %U expired. Get new licence to unlock file?"
 
 //d: Text in information note that that is displayed when rights for wallpaper have expired.
 //d: Note is shown when Idle is activated. This info note is shown fore combined delivery object
@@ -633,7 +633,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_wallpaper_exp "License for wallpaper %U expired"
+#define qtn_drm_info_wallpaper_exp "Licence for wallpaper %U expired"
 
 //d: Text in confirmation query that is displayed when rights for theme have expired.
 //d: Query is shown when Idle is activated. Activation query is shown only for superdistributable
@@ -643,7 +643,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_theme_exp_activate "License for theme %U expired. Get new license to unlock file?"
+#define qtn_drm_theme_exp_activate "Licence for theme %U expired. Get new licence to unlock file?"
 
 //d: Text in information note that that is displayed when rights for theme have expired.
 //d: Note is shown when Idle is activated. This info note is shown for combined delivery object
@@ -653,7 +653,7 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_info_theme_exp "License for theme %U expired"
+#define qtn_drm_info_theme_exp "Licence for theme %U expired"
 
 //d: Text in information note shown when updating account has failed
 //d: (device was trying to join to new account).
@@ -706,14 +706,14 @@
 //w:
 //r: 3.0
 //
-#define qtn_drm_roap_title "License download"
+#define qtn_drm_roap_title "Licence download"
 
 //d: Text in information note
 //l: popup_note_window
 //w:
 //r:
 //
-#define qtn_drm_info_ro_expired "License expired"
+#define qtn_drm_info_ro_expired "Licence expired"
 
 //d: Text in confirmation query shown when content cannot be rendered because of wrong SIM card in device
 //l: popup_note_window
@@ -885,7 +885,7 @@
 //l: None
 //r: 3.2
 //
-#define qtn_drm_msq_query_registration "Registration with content provider is needed. After registration, licenses for protected files can be downloaded automatically."
+#define qtn_drm_msq_query_registration "Registration with content provider is needed. After registration, licences for protected files can be downloaded automatically."
 
 //Link text for more info
 //d: String which contains the description for more info -link

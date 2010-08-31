@@ -17,13 +17,6 @@
 
 // INCLUDE FILES
 
-// connection
-#include <cmconnectionmethod.h>
-#include <cmdestination.h>
-#include <cmconnectionmethoddef.h>
-#include <cmmanager.h>
-#include <sacls.h>
-#include <utf.h>
 
 // publish & subscribe
 #include <e32property.h>
@@ -35,11 +28,6 @@
 #include <apgtask.h>
 #include <avkon.hrh>
 #include <aknenv.h>
-
-// browser
-#ifdef __SERIES60_NATIVE_BROWSER
-#include <browseruisdkcrkeys.h>
-#endif
 
 // caf
 #include <caf/data.h>
@@ -57,9 +45,6 @@
 // character conversions
 #include <utf.h>
 
-// handling urls
-#include <schemehandler.h>
-
 // resources
 #include <data_caging_path_literals.hrh>
 #include <drmutility.rsg>
@@ -74,6 +59,14 @@
 #include <drmutilitytypes.h>
 #include <drmasyncobserver.h>
 #include <drmhandleerrorobserver.h>
+#include <drmbrowserlauncher.h>
+
+//connectivity logic
+#include <cmconnectionmethod.h> // RCmConnectionMethod
+#include <cmdestination.h> // RCmDestination
+#include <cmmanager.h> // RCmManager
+
+
 
 #ifdef _DEBUG
 #include <e32debug.h>
@@ -96,6 +89,7 @@
 #include "DRMDomainContext.h"
 
 #include "DrmUtilityInternalcrkeys.h"      // Cenrep extension for OmaBased
+#include "drmuidialogids.h"
 
 // CONSTANTS
 const TInt KCommandHandleErrorFile( 1 );
@@ -108,14 +102,6 @@ const TInt KCommandHandleUrlFile( 7 );
 const TInt KCommandHandleUrlData( 8 );
 const TInt KCommandAvailableUrlsFile( 9 );
 const TInt KCommandAvailableUrlsData( 10 );
-// browser
-#ifndef __SERIES60_NATIVE_BROWSER
-const TUid KCRUidBrowser =
-    {0x10008D39};
-const TUint32 KBrowserDefaultAccessPoint = 0x0000000E;
-const TUint32 KBrowserAccessPointSelectionMode = 0x0000001E;
-const TUint32 KBrowserNGDefaultSnapId = 0x00000053;
-#endif
 
 _LIT( KEncryptedRightsIssuerMatchString, "flk*" );
 
@@ -136,6 +122,8 @@ const TInt KCenRepDataLength( 50 );
 
 const TInt KresOmaBasedBuf( 512 );
 const TInt KNameBuf( 256 );
+const TInt KNoValue = -1;
+
 #ifdef _DEBUG
 // debug panic
 _LIT( KDRMUtilityDebugPanicMessage, "DrmUiHandlingDebugPanic" );
@@ -143,6 +131,67 @@ const TInt KDRMUtilityDebugPanicCode( 1 );
 #endif
 
 // ============================= LOCAL FUNCTIONS ===============================
+// -----------------------------------------------------------------------------
+// HasDefaultConnectionL
+// Finds default IAP id
+// @return Etrue: valid AP found
+//         EFalse: valid AP not found
+// @leave system wide error codes
+// -----------------------------------------------------------------------------
+//
+LOCAL_C TBool HasDefaultConnectionL()
+    {
+    TBool hasDefault(EFalse);
+    TCmDefConnValue defConn;
+    RCmManager cmManager;
+    cmManager.OpenLC();
+    cmManager.ReadDefConnL(defConn);
+    if (defConn.iType == ECmDefConnConnectionMethod)
+        {
+        cmManager.GetConnectionMethodInfoIntL(defConn.iId,
+                CMManager::ECmIapId);
+        hasDefault = ETrue;
+        }
+    else if (defConn.iType == ECmDefConnDestination)
+        {
+        RCmDestination dest(cmManager.DestinationL(defConn.iId));
+        CleanupClosePushL(dest);
+
+        if (dest.ConnectionMethodCount() <= 0)
+            {
+            User::Leave(KErrNotFound);
+            }
+
+        RCmConnectionMethod cMeth(dest.ConnectionMethodL(0));
+        CleanupClosePushL(cMeth);
+
+        cMeth.GetIntAttributeL(CMManager::ECmIapId);
+        CleanupStack::PopAndDestroy(&cMeth);
+        CleanupStack::PopAndDestroy(&dest);
+        hasDefault = ETrue;
+        }
+    CleanupStack::PopAndDestroy(&cmManager);
+    return hasDefault;
+    }
+
+// -----------------------------------------------------------------------------
+// HasAccessPointsL
+// -----------------------------------------------------------------------------
+//
+LOCAL_C TBool HasAccessPointsL()
+    {
+    TInt apCount(0);
+    RCmManager cmManager;
+    CleanupClosePushL(cmManager);
+    cmManager.OpenL();
+    RArray<TUint32> aps;
+    CleanupClosePushL(aps);
+    cmManager.ConnectionMethodL(aps, EFalse, EFalse, ETrue);
+    apCount = aps.Count();
+    CleanupStack::PopAndDestroy(2, &cmManager); //aps, cmManager
+    return apCount > 0;
+    }
+
 // -----------------------------------------------------------------------------
 // MapToCallError
 // -----------------------------------------------------------------------------
@@ -158,30 +207,16 @@ LOCAL_C inline TInt CheckAndMapToCallError(
     }
 
 // -----------------------------------------------------------------------------
-// IapIdOfDefaultSnapL
-// for trapping purposes only
+// HasDefConn
 // -----------------------------------------------------------------------------
 //
-LOCAL_C TUint32 IapIdOfDefaultSnapL(
-    RCmManager& aCmManager,
-    const TUint32 aDefaultSnap )
+inline TBool HasDefConn()
     {
-    RCmDestination dest( aCmManager.DestinationL( aDefaultSnap ) );
-    CleanupClosePushL( dest );
-    TUint32 iapIdOfDest( 0 );
+    TBool found( EFalse );
 
-    if ( dest.ConnectionMethodCount() <= 0 )
-        {
-        User::Leave( KErrNotFound );
-        }
+    TRAP_IGNORE( found = HasDefaultConnectionL() );
 
-    RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
-    CleanupClosePushL( cMeth );
-
-    iapIdOfDest = cMeth.GetIntAttributeL( CMManager::ECmIapId );
-    CleanupStack::PopAndDestroy( &cMeth );
-    CleanupStack::PopAndDestroy( &dest );
-    return iapIdOfDest;
+    return found;
     }
 
 // ---------------------------------------------------------
@@ -401,8 +436,6 @@ DRM::CDrmUiHandlingImpl::~CDrmUiHandlingImpl()
     delete iDrmUtilityCommon;
 
     delete iDrmUtilityUi;
-
-    delete iSchemeHandler;
 
     delete iWrapperLoader;
 
@@ -1803,8 +1836,8 @@ void DRM::CDrmUiHandlingImpl::HandleOmaErrorL(
     TBool onlyMeteringRejection( reason == DRM::EURejectionMetering );
     if ( onlyMeteringRejection )
         {
-        iDrmUtilityUi->DisplayQueryWithIdL( R_DRM_QUERY_METERING_DISABLED,
-            R_DRMUTILITY_WAITING_RIGHTS_CONFIRMATION_QUERY );
+        // Qt dialog not implemented yet
+        iDrmUtilityUi->DisplayNoteL( EConfUnableToOpen );
 
         CleanupStack::PopAndDestroy( contentId );
         return;
@@ -2935,9 +2968,8 @@ void DRM::CDrmUiHandlingImpl::CallRightsNotValidL(
             if ( RejectReason( aReason ) == DRM::EURejectionMetering )
                 {
                 // Show that only reason for error was rejected metering.
-                iDrmUtilityUi->DisplayQueryWithIdL(
-                    R_DRM_QUERY_METERING_DISABLED,
-                    R_DRMUTILITY_WAITING_RIGHTS_CONFIRMATION_QUERY );
+                // Qt dialog not implemented yet
+                iDrmUtilityUi->DisplayNoteL( EConfUnableToOpen );
                 }
             else
                 {
@@ -3458,7 +3490,7 @@ TBool DRM::CDrmUiHandlingImpl::ShowNoRightsNoteL(
     HBufC* etaBuf( NULL );
     TBool isRegistered( EFalse );
     TBool isJoined( EFalse );
-    TInt ret( 0 );
+    TInt ret( ECancelled );
     TInt err( KErrNone );
     TInt eta( 0 );
     TFileName fileName;
@@ -3484,16 +3516,13 @@ TBool DRM::CDrmUiHandlingImpl::ShowNoRightsNoteL(
             // rights should have come already
             if ( aRightsUrl )
                 {
-                ret = iDrmUtilityUi->DisplayQueryWithIdL(
-                    R_DRMUTILITY_RIGHTS_SHOULD_HAVE_COME,
-                    R_DRMUTILITY_CONFIRMATION_QUERY );
+                ret = iDrmUtilityUi->DisplayQueryL( EQueryGetNewLicence, KNoValue );
                 }
             else
                 {
                 // no rights issuer
-                iDrmUtilityUi->DisplayQueryWithIdL(
-                    R_DRMUTILITY_RIGHTS_SHOULD_HAVE_COME_NO_RI,
-                    R_DRMUTILITY_WAITING_RIGHTS_CONFIRMATION_QUERY );
+                // Qt dialog not implemented yet
+                iDrmUtilityUi->DisplayNoteL( EConfLicenceNotReceived );
                 }
             }
         else if ( !eta || err || eta == -1 )
@@ -3507,17 +3536,13 @@ TBool DRM::CDrmUiHandlingImpl::ShowNoRightsNoteL(
 
             if ( aRightsUrl && isRegistered && !isJoined ) // Domain ro case
                 {
-                ret = iDrmUtilityUi->DisplayQueryWithIdL(
-                    R_DRMUTILITY_ACTIVATE_ACCOUNT,
-                    R_DRMUTILITY_CONFIRMATION_QUERY );
+                ret = iDrmUtilityUi->DisplayQueryL( EQueryAccountUpdate, KNoValue );
                 }
             else if ( aRightsUrl ) // Device ro case
                 {
                 if ( aReason & EConstraintIndividual )
                     {
-                    ret = iDrmUtilityUi->DisplayQueryWithIdL(
-                        R_DRMUTILITY_INVALID_SIM,
-                        R_DRMUTILITY_CONFIRMATION_QUERY );
+                    ret = iDrmUtilityUi->DisplayQueryL( EQueryFileLockedForSim, KNoValue );
                     }
                 else
                     {
@@ -3525,19 +3550,20 @@ TBool DRM::CDrmUiHandlingImpl::ShowNoRightsNoteL(
                     User::LeaveIfError( aContent.GetStringAttribute(
                         EFileName, fileName ) );
 
-                    ret = iDrmUtilityUi->DisplayQueryL(
-                        R_DRM_QUERY_EXPIRED_OR_NO_RO, fileName );
+                    // Qt dialog not implemented yet
+                    ret = iDrmUtilityUi->DisplayQueryL( EQueryFileWithNoRightsObj, fileName );
                     }
                 }
             else // no rights issuer
                 {
                 if ( aReason & EConstraintIndividual )
                     {
-                    iDrmUtilityUi->DisplayNoteL( R_DRM_INFO_SIM_NOT_ALLOWED );
+                    // Qt dialog not implemented yet
+                    iDrmUtilityUi->DisplayNoteL( EConfFileLockedForSim );
                     }
                 else
                     {
-                    iDrmUtilityUi->DisplayNoteL( R_DRM_INFO_EXPIRED_OR_NO_RO );
+                    iDrmUtilityUi->DisplayNoteL( EConfLicenceExpired );
                     }
                 }
             }
@@ -3547,31 +3573,25 @@ TBool DRM::CDrmUiHandlingImpl::ShowNoRightsNoteL(
             if ( eta != KErrCAPendingRights )
                 {
                 // rights expected to arrive in eta seconds
-                iDrmUtilityUi->DisplayQueryWithIdL(
-                    R_DRMUTILITY_WAITING_FOR_RIGHTS,
-                    R_DRMUTILITY_WAITING_RIGHTS_CONFIRMATION_QUERY );
+                iDrmUtilityUi->DisplayNoteL( EConfWaitingForLicence );
                 }
             else
                 {
                 // rights should have come
                 if ( aRightsUrl )
                     {
-                    ret = iDrmUtilityUi->DisplayQueryWithIdL(
-                        R_DRMUTILITY_RIGHTS_SHOULD_HAVE_COME,
-                        R_DRMUTILITY_CONFIRMATION_QUERY );
+                    ret = iDrmUtilityUi->DisplayQueryL( EQueryGetNewLicence, KNoValue );
                     }
                 else
                     {
                     // no rights issuer
-                    iDrmUtilityUi->DisplayQueryWithIdL(
-                        R_DRMUTILITY_RIGHTS_SHOULD_HAVE_COME_NO_RI,
-                        R_DRMUTILITY_WAITING_RIGHTS_CONFIRMATION_QUERY );
+                    // Qt dialog not implemented yet
+                    iDrmUtilityUi->DisplayNoteL( EConfLicenceNotReceived );
                     }
                 }
             }
         }
-
-    if ( ret == EAknSoftkeyYes || ret == EAknSoftkeyOk )
+    if ( ret == EOk )
         {
         rightsRenewalWanted = ETrue;
         }
@@ -4050,25 +4070,11 @@ TBool DRM::CDrmUiHandlingImpl::LaunchBrowserL( const HBufC* aUrl )
         ptrc.Set( *newUrl );
         }
 
-    CSchemeHandler* schemeHandler( CSchemeHandler::NewL( ptrc ) );
-    CleanupStack::PushL( schemeHandler );
-    if ( iCoeEnv )
-        {
-        embeddedLaunch = ETrue;
-        // launch embedded
-        schemeHandler->Observer( this );
-        schemeHandler->HandleUrlEmbeddedL();
-        CleanupStack::Pop( schemeHandler );
-        iSchemeHandler = schemeHandler;
-        iWait.Start();
-        }
-    else
-        {
-        // no CoeEnv, launch standalone with scheme app
-        schemeHandler->HandleUrlStandaloneL();
-        CleanupStack::PopAndDestroy( schemeHandler );
-        }
-    schemeHandler = NULL;
+    CDrmBrowserLauncher* browserLauncher = CDrmBrowserLauncher::NewLC();
+    	
+    browserLauncher->LaunchUrlL(ptrc);
+    
+    CleanupStack::PopAndDestroy(); // browserLauncher
 
     // delete newUrl if needed
     if ( newUrl )
@@ -4087,39 +4093,38 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
     const TBool aShowNotes )
     {
     TInt r( KErrCancel );
-    TInt buttonCode( EAknSoftkeyYes );
+    TInt buttonCode( EOk );
     HBufC8* url( NULL );
 
     if ( !SilentRightsAllowedL() )
         {
-        buttonCode = EAknSoftkeyNo;
+        buttonCode = ECancelled;
         if ( aShowNotes )
             {
-            buttonCode = iDrmUtilityUi->DisplayQueryWithIdL(
-                R_DRM_QRY_CONNECT_TO_ACTIVATE,
-                R_DRMUTILITY_CONFIRMATION_QUERY );
+            // Qt dialog not implemented yet
+            buttonCode = iDrmUtilityUi->DisplayQueryL( EQueryConnectToActivate, KNoValue );
             }
         }
-    else if ( !BrowserAPDefinedL() )
+    else if ( !(HasDefConn()) )
         {
-        buttonCode = EAknSoftkeyNo;
+        buttonCode = ECancelled;
         if ( aShowNotes )
             {
-            buttonCode = iDrmUtilityUi->DisplayQueryWithIdL(
-                R_DRM_QRY_CONNECT_TO_ACTIVATE,
-                R_DRMUTILITY_CONFIRMATION_QUERY );
+            // Qt dialog not implemented yet
+            buttonCode = iDrmUtilityUi->DisplayQueryL( EQueryConnectToActivate, KNoValue );
             }
         }
 
-    if ( buttonCode == EAknSoftkeyYes || buttonCode == EAknSoftkeyOk )
+    if ( buttonCode == EOk )
         {
-        TInt APs( APCountL() );
+        TBool APs( HasAccessPointsL() );
         if ( !APs )
             {
             // No AP defined
             if ( aShowNotes )
                 {
-                iDrmUtilityUi->DisplayNoteL( R_DRM_WARN_NO_CONN_DEFINED );
+                // Qt dialog not implemented yet
+                iDrmUtilityUi->DisplayNoteL( EConfNoAccessPoint );
                 }
             r = KErrCANoRights;
             }
@@ -4153,8 +4158,8 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
                         // Connection failed with selected AP
                         if ( aShowNotes )
                             {
-                            iDrmUtilityUi->DisplayNoteL(
-                                R_DRM_WARN_INVALID_OR_NO_AP );
+                            // Qt dialog not implemented yet
+                            iDrmUtilityUi->DisplayNoteL( EConfConnectionFailed );
                             }
                         r = KErrCANoRights;
                         }
@@ -4171,13 +4176,10 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
                             if ( errorUrl )
                                 {
                                 // ask user whether error url should be opened
-                                buttonCode
-                                    = iDrmUtilityUi->DisplayQueryWithIdL(
-                                        R_DRM_QUERY_OPEN_ERROR_URL,
-                                        R_DRMUTILITY_CONFIRMATION_QUERY );
+                                // Qt dialog not implemented yet
+                                buttonCode = iDrmUtilityUi->DisplayQueryL( EQueryOpenErrorUrl, KNoValue );
 
-                                if ( buttonCode == EAknSoftkeyYes
-                                    || buttonCode == EAknSoftkeyOk )
+                                if ( buttonCode == EOk )
                                     {
                                     // Launch browser
                                     LaunchBrowserL( errorUrl );
@@ -4185,8 +4187,8 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
                                 }
                             else
                                 {
-                                iDrmUtilityUi->DisplayNoteL(
-                                    R_DRM_ERR_OPENING_FAIL_PERM );
+                                // Qt dialog not implemented yet
+                                iDrmUtilityUi->DisplayNoteL( EConfUnableToUnlock );
                                 }
                             CleanupStack::PopAndDestroy( errorUrl );
                             }
@@ -4213,82 +4215,14 @@ TBool DRM::CDrmUiHandlingImpl::SilentRightsAllowedL()
     }
 
 // -----------------------------------------------------------------------------
-// CDrmUiHandlingImpl::BrowserAPDefinedL
-// -----------------------------------------------------------------------------
-//
-TBool DRM::CDrmUiHandlingImpl::BrowserAPDefinedL()
-    {
-    const TInt KDestinationSelectionMode( 2 );
-    TInt err( KErrNone );
-    TInt ap( 0 );
-    TInt alwaysAsk( 0 );
-    TInt defaultSnap( 0 );
-
-    CRepository* repository( CRepository::NewL( KCRUidBrowser ) );
-    repository->Get( KBrowserDefaultAccessPoint, ap );
-    repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
-    repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
-    delete repository;
-    if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
-        {
-        alwaysAsk = ETrue;
-        }
-    else
-        {
-        RCmManager cmManager;
-        CleanupClosePushL( cmManager );
-        cmManager.OpenL();
-        if ( !alwaysAsk )
-            {
-                TRAP( err, cmManager.GetConnectionMethodInfoIntL(
-                        ap, CMManager::ECmIapId ) );
-            }
-        else if ( alwaysAsk == KDestinationSelectionMode )
-            {
-                TRAP( err, IapIdOfDefaultSnapL( cmManager, defaultSnap ) );
-            }
-        CleanupStack::PopAndDestroy( &cmManager );
-        if ( !err && ( !alwaysAsk || alwaysAsk == KDestinationSelectionMode ) )
-            {
-            return ETrue;
-            }
-        }
-    return EFalse;
-    }
-
-// -----------------------------------------------------------------------------
-// CDrmUiHandlingImpl::APCountL
-// -----------------------------------------------------------------------------
-//
-TInt DRM::CDrmUiHandlingImpl::APCountL()
-    {
-    TInt apCount( 0 );
-    RCmManager cmManager;
-    CleanupClosePushL( cmManager );
-    cmManager.OpenL();
-    RArray<TUint32> aps;
-    CleanupClosePushL( aps );
-    cmManager.ConnectionMethodL( aps, EFalse, EFalse, ETrue );
-    apCount = aps.Count();
-    CleanupStack::PopAndDestroy( 2, &cmManager ); //aps, cmManager
-    return apCount;
-    }
-
-// -----------------------------------------------------------------------------
 // CDrmUiHandlingImpl::HandleServerAppExit
 // -----------------------------------------------------------------------------
 //
 void DRM::CDrmUiHandlingImpl::HandleServerAppExit( TInt aReason )
     {
-    if ( aReason == EAknCmdExit && !iSchemeHandler )
+    if ( aReason == EAknCmdExit)
         {
         CAknEnv::RunAppShutter();
-        }
-
-    if ( iSchemeHandler )
-        {
-        delete iSchemeHandler;
-        iSchemeHandler = NULL;
         }
 
     if ( iWait.IsStarted() )

@@ -22,7 +22,7 @@
 // INCLUDES
 
 #include <e32base.h>	// CBase
-#include <abclient.h>
+#include <connect/abclient.h>
 
 // CONSTANTS
 

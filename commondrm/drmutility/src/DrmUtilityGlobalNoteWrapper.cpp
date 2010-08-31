@@ -21,7 +21,6 @@
 #include <StringLoader.h>
 #include <AknGlobalConfirmationQuery.h>
 #include <AknGlobalListQuery.h>
-#include <AknGlobalMsgQuery.h>
 #include <badesca.h>
 #include <avkon.hrh> // EAknSoftkeyNo
 #include <drmutility.rsg>
@@ -90,7 +89,6 @@ DRM::CDrmUtilityGlobalNoteWrapper* DRM::CDrmUtilityGlobalNoteWrapper::NewL(
 DRM::CDrmUtilityGlobalNoteWrapper::~CDrmUtilityGlobalNoteWrapper()
     {
     Cancel(); // Cancel active object
-    delete iGlobalMsgQuery;	
     }
 
 // -----------------------------------------------------------------------------
@@ -181,32 +179,6 @@ TInt DRM::CDrmUtilityGlobalNoteWrapper::ShowNoteL(
     srcBuffer = iTextBuffer;
     StringLoader::Format( iTextBuffer, srcBuffer, aStringPos, aString );
     return DoShowNoteL( aResourceId, aString, aValue );
-    }
-
-// -----------------------------------------------------------------------------
-// CDrmUtilityGlobalNoteWrapper::ShowNoteL
-// -----------------------------------------------------------------------------
-//
-void DRM::CDrmUtilityGlobalNoteWrapper::ShowMessageQueryL(
-    TInt aMessageResourceId,
-    TInt aHeaderResourceId,
-    const TDesC& aString)
-    {
-    TBuf<KDRMNoteBufferMaxSize> messageBuffer(
-        iResourceReader->ReadResourceString( aMessageResourceId ) );
-
-    StringLoader::Format( iFinalMessageBuffer, messageBuffer, -1, aString );
-    
-    iHeaderBuffer = iResourceReader->ReadResourceString( aHeaderResourceId );
-    
-    CAknGlobalMsgQuery* iGlobalMsgQuery = CAknGlobalMsgQuery::NewL();
-    
-    iStatus = KRequestPending;
-    iGlobalMsgQuery->ShowMsgQueryL(iStatus, iFinalMessageBuffer, 
-          R_AVKON_SOFTKEYS_OK_EMPTY, iHeaderBuffer, KNullDesC);
-          
-    SetActive();
-    iWait.Start();
     }
 
 // -----------------------------------------------------------------------------
@@ -333,10 +305,6 @@ void DRM::CDrmUtilityGlobalNoteWrapper::DoCancel()
 void DRM::CDrmUtilityGlobalNoteWrapper::RunL()
     {
     iWait.AsyncStop();
-    if(iGlobalMsgQuery)
-    		{
-    		iGlobalMsgQuery->CancelMsgQuery();
-    		}
     }
 
 // -----------------------------------------------------------------------------

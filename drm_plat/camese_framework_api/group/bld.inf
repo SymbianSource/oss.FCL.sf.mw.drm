@@ -29,3 +29,4 @@ PRJ_EXPORTS
 ../inc/wmdrmdlahttpplugin.inl               MW_LAYER_PLATFORM_EXPORT_PATH( wmdrmdlahttpplugin.inl )
 ../inc/wmdrmdlauiplugin.h                   MW_LAYER_PLATFORM_EXPORT_PATH( wmdrmdlauiplugin.h )
 ../inc/wmdrmdlauiplugin.inl                 MW_LAYER_PLATFORM_EXPORT_PATH( wmdrmdlauiplugin.inl )
+../inc/wmdrmdlahandler.h                    MW_LAYER_PLATFORM_EXPORT_PATH( wmdrmdlahandler.h )

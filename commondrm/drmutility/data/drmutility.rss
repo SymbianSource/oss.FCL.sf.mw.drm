@@ -21,15 +21,11 @@ NAME DRMU
 
 //  INCLUDES
 #include <eikon.rh>
-#include <avkon.rsg>
+#include <eikon.rsg>
 #include <avkon.rh>
-#include <avkon.hrh>
-#include <avkon.mbg>
-#include <bldvariant.hrh>
+#include <avkon.rsg>
 #include <avkon.loc>
-#include <bldvariant.hrh>
-#include <CommonDialogs.hrh> 
-#include <CommonDialogs.rh> 
+#include <avkon.mbg>
 
 #include <drmutility.loc>
 
@@ -601,56 +597,4 @@ RESOURCE TBUF r_drmutility_get_preview_video
 
 #endif // RD_DRM_PREVIEW_RIGHT_FOR_AUDIO
 
-// -----------------------------------------------------------------------------
-// r_drmutility_sync_with_pc
-// Text displayed if WMDRM Direct License Acquisition is supported to
-// notify user that license needs to be aquired with PC sync.
-// -----------------------------------------------------------------------------
-RESOURCE TBUF r_drmutility_sync_with_pc
-    {
-    buf = qtn_drm_sync_with_pc;
-    }
-
-// -----------------------------------------------------------------------------
-// r_drmutility_sync_with_pc_header
-// Header displayed if WMDRM Direct License Acquisition is supported to
-// notify user that license needs to be aquired with PC sync.
-// -----------------------------------------------------------------------------
-RESOURCE TBUF r_drmutility_head_no_license
-    {
-    buf = qtn_drm_msg_qry_head_no_license;
-    }
-
-//------------------------------------------------------------------------------
-//
-//    r_drmutility_sync_dialog
-//    Shows the user a dialog that license needs to be synced with pc
-//
-//------------------------------------------------------------------------------
-//
-RESOURCE DIALOG r_drmutility_sync_dialog
-    {
-    flags = EGeneralQueryFlags | EEikDialogFlagNoBorder | EEikDialogFlagNoShadow;
-    buttons = R_AVKON_SOFTKEYS_OK_EMPTY__OK;
-    items =
-        {
-        DLG_LINE 
-            {
-            type = EAknCtPopupHeadingPane;
-            id = EAknMessageQueryHeaderId;
-            control = AVKON_HEADING
-                {
-                };
-            },
-        DLG_LINE
-            {
-            type = EAknCtMessageQuery;
-            id = EAknMessageQueryContentId;
-            control = AVKON_MESSAGE_QUERY
-                {                
-                };
-            }
-        };
-
-    }
 // End of File

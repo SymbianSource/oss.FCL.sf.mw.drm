@@ -40,7 +40,6 @@
 
 #include <msvapi.h>
 #include <RoMtmUi.rsg>
-#include <muiu.mbg>
 #include <mtmuids.h>
 #include <mtmuidef.hrh>
 #include <stringresourcereader.h>
@@ -561,8 +560,8 @@ void CRightsObjectMtmUiData::CreateSkinnedBitmapsL( TInt aNumZoomStates )
     {
     MAknsSkinInstance* skins = AknsUtils::SkinInstance();
     TAknsItemID id;
-    CFbsBitmap* bitmap;
-    CFbsBitmap* bitmapMask;
+    //CFbsBitmap* bitmap;
+    //CFbsBitmap* bitmapMask;
     CBitmapArray* array = NULL;
     TParse tp;
     tp.Set( KRoMtmUiDataBitmapFile, &KDC_APP_BITMAP_DIR, NULL );
@@ -572,14 +571,6 @@ void CRightsObjectMtmUiData::CreateSkinnedBitmapsL( TInt aNumZoomStates )
     
     id.Set( KAknsIIDQgnPropMcePushUnread );
 
-    AknsUtils::CreateIconL( skins, id, bitmap,
-        bitmapMask, tp.FullName(), EMbmMuiuQgn_prop_mce_push_unread,
-        EMbmMuiuQgn_prop_mce_push_unread_mask );
-             
-    array->AppendL( bitmap );
-    bitmap = 0;
-    array->AppendL( bitmapMask );
-    bitmapMask = 0;
     iIconArrays->AppendL( array );
     CleanupStack::Pop(); //array
     
@@ -588,14 +579,6 @@ void CRightsObjectMtmUiData::CreateSkinnedBitmapsL( TInt aNumZoomStates )
     
     id.Set( KAknsIIDQgnPropMcePushRead );
 
-    AknsUtils::CreateIconL( skins, id, bitmap,
-        bitmapMask, tp.FullName(), EMbmMuiuQgn_prop_mce_push_read,
-        EMbmMuiuQgn_prop_mce_push_read_mask );
-             
-    array->AppendL( bitmap );
-    bitmap = 0;
-    array->AppendL( bitmapMask );
-    bitmapMask = 0;
     iIconArrays->AppendL( array );
     CleanupStack::Pop(); //array
     }

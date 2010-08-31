@@ -1,0 +1,5 @@
+EXPORTS
+	_ZN3DRM19CDrmBrowserLauncher10LaunchUrlLER7TDesC16 @ 1 NONAME
+	_ZN3DRM19CDrmBrowserLauncher4NewLEv @ 2 NONAME
+	_ZN3DRM19CDrmBrowserLauncher5NewLCEv @ 3 NONAME
+

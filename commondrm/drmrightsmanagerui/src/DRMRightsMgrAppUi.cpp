@@ -1096,7 +1096,7 @@ void CDRMRightsMgrAppUi::FindBestCompositionRightsL( const TDesC8& aContentURI,
                 if ( i == 0 )
                     {
                     // No need to check if the parent UID is a duplicate
-                    parentUidList.Append( permissionList[i]->iParentUID );
+                    parentUidList.AppendL ( permissionList[i]->iParentUID );
                     }
                 else 
                     {
@@ -1132,7 +1132,7 @@ void CDRMRightsMgrAppUi::FindBestCompositionRightsL( const TDesC8& aContentURI,
             for ( k = 0; k < permissionTempList.Count(); k++ ) 
                 {
                 // Store the pointer to the main list of permissions
-                permissionList.Append( permissionTempList[k] );
+                permissionList.AppendL ( permissionTempList[k] );
                 }    
                     
             // Close the temporary pointer array so that the referenced 

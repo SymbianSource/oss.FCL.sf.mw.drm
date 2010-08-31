@@ -29,7 +29,6 @@
 #include <caf/caferr.h>
 #include <utf.h>
 #include <drmagents.h>
-#include <featmgr.h>
 #include "Oma2Agent.h"
 #include "Oma2AgentAttributes.h"
 #include "Oma1Dcf.h"
@@ -82,6 +81,9 @@ const TInt KAllowAllDefined =
     DRM::EDrmAllowVideoMacroVision |
     DRM::EDrmAllowAudioUsb |   
     DRM::EDrmAllowAudioHdmiHdcpRequired |
+    DRM::EDrmAllowAudioHdmi |
+    DRM::EDrmAllowVideoHDMI  |
+    DRM::EDrmAllowVideoHdmiHdcpRequested |
     DRM::EDrmAllowVideoHdmiHdcpRequired;
 
 // ============================= LOCAL FUNCTIONS ===============================
@@ -1021,26 +1023,14 @@ TInt TOma2AgentAttributes::GetStringAttribute(
                     }
                 break;
             case ERightsIssuerUrl:
-                TRAP(ret, FeatureManager::InitializeLibL());
-                
-                if (!ret && FeatureManager::FeatureSupported(KFeatureIdFfOmadrm1FullSupport))
+#ifndef __DRM_FULL
+                err = KErrNotSupported;
+#else
+                if (aDcfFile.iRightsIssuerURL != NULL)
                     {
-                    if (aDcfFile.iRightsIssuerURL != NULL)
-                        {
-                        TRAP(err, b = CnvUtfConverter::ConvertToUnicodeFromUtf8L(
-                                *aDcfFile.iRightsIssuerURL));
-                        }
+                    TRAP(err, b = CnvUtfConverter::ConvertToUnicodeFromUtf8L(*aDcfFile.iRightsIssuerURL));
                     }
-                else
-                    {
-                    err = KErrNotSupported;
-                    }
-                
-                if (!ret)
-                    {
-                    FeatureManager::UnInitializeLib();
-                    }
-                
+#endif
                 break;
             case ETransactionTrackingId:
                 if (dcf2 != NULL && dcf2->iTransactionTracking)

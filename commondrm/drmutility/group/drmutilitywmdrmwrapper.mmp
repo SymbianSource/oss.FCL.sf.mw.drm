@@ -37,12 +37,6 @@ USERINCLUDE     ../../../inc
 // Default system include paths for application layer modules.
 APP_LAYER_SYSTEMINCLUDE
 
-START RESOURCE ../data/drmutility.rss
-HEADER
-TARGETPATH RESOURCE_FILES_DIR
-LANGUAGE_IDS
-END
-
 LIBRARY         aknnotify.lib
 LIBRARY         apparc.lib // for launching rights mgr ui embedded
 LIBRARY         euser.lib
@@ -58,7 +52,6 @@ LIBRARY         drmutilitycommon.lib // Common utility
 LIBRARY         servicehandler.lib
 LIBRARY         drmserverinterfaces.lib // DrmClockClient
 LIBRARY         drmrights.lib
-LIBRARY		featdiscovery.lib 
 
 DOCUMENT    bld.inf
 

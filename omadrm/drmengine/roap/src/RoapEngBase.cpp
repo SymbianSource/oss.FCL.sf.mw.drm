@@ -17,7 +17,6 @@
 
 
 // INCLUDE FILES
-#include <featmgr.h>
 #include <DRMRights.h>
 #include <DRMRightsClient.h>
 // #include <GenericParam.h> // from S60
@@ -51,8 +50,6 @@ EXPORT_C CRoapEngBase::~CRoapEngBase()
     iReturnedROs.ResetAndDestroy();
     delete iDomainRightsResp;
     delete iRiAlias;
-    
-    FeatureManager::UnInitializeLib();
     }
 
 // ---------------------------------------------------------
@@ -81,8 +78,6 @@ void CRoapEngBase::ConstructL()
     iImplicitJoinDomain = EFalse;
     iReRegistered = EFalse;
     iRiAlias = NULL;
-    
-    FeatureManager::InitializeLibL();
     }
 
 
@@ -99,12 +94,10 @@ EXPORT_C void CRoapEngBase::SetTriggerL( const TDesC8& aXmlTrigger,
     {
     LOGLIT( "CRoapEngBase::SetTriggerL" )
 
-    if ( !( FeatureManager::FeatureSupported( 
-            KFeatureIdFfOmadrm2Support ) ) )    
-        {
-        User::Leave(KErrNotSupported);
-        }
-        
+#ifndef __DRM_OMA2
+    User::Leave(KErrNotSupported);
+#endif
+
     __ASSERT_ALWAYS( iState == EInit || iState == EReady, \
         User::Invariant() );
     TBool registered = EFalse;

@@ -30,7 +30,6 @@
 #include <centralrepository.h>          // link against centralrepository.lib
 #include <msvuids.h>
 #include <msvids.h>
-#include <downloadmgrclient.h>
 
 #ifdef RD_MULTIPLE_DRIVE
 #include <driveinfo.h>
@@ -39,16 +38,14 @@
 #include <uri16.h>                          // TUriParser16
 #include <data_caging_path_literals.hrh>    // KDC_MTM_RESOURCE_DIR
 #include <uriutils.h>                       // UriUtils and so on
-#include <PushMtmUi.rsg>                    // for R_PUSHMISC_UNK_SENDER
 #include <RoHandler.rsg>                    // for R_QTN_DRM_MGR_INB_TITLE
 #include <sysutil.h>                        // Disk space checking
-#include <featmgr.h>                        // Feature Manager
 
 #include "CRoHandler.h"
 #include "RoMtmCli.h"                       // for CRightsObjectMtmClient
 #include "RoapSyncWrapper.h"
 
-#include "StringResourceReader.h"
+#include "RoHandlerStringResourceReader.h"
 #include "rohandlerdmgrwrapper.h"
 #include "rohandlerinternalcrkeys.h"
 
@@ -101,7 +98,6 @@ _LIT( KDriveZ, "z:" );
 _LIT( KRoHandlerTriggerFilePath, "c:\\system\\data\\" );
 #endif
 
-_LIT( KPushMtmRes, "PushMtmUi.rsc" );
 _LIT( KRoHandlerResourceFile, "RoHandler.rsc" );
 
 _LIT8( KRoapTriggerElement, "roapTrigger" );
@@ -115,6 +111,8 @@ _LIT( KZero, "0" );
 
 _LIT( KRoAcquisitionPrefix, "ROA:" );
 _LIT( KTriggerPrefix, "TRI:" );
+
+_LIT( KEmpty, " " );
 
 // MODULE DATA STRUCTURES
 
@@ -399,7 +397,7 @@ CRoHandler::CRoHandler
         )
     : CPushHandlerBase(),
     iFirstTime( ETrue ), iPushMsg( NULL ), iMsvId( NULL ),
-    iPutRightsToInbox( ETrue ), iFeatureManagerFound( EFalse )
+    iPutRightsToInbox( ETrue )
     {
     }
 
@@ -429,14 +427,7 @@ void CRoHandler::ConstructL
 
     CRepository* repository( NULL );
     TInt err( KErrNone );
-    TInt ret( KErrNone );
 
-    TRAP( ret, FeatureManager::InitializeLibL() );
-    if ( !ret )
-        {
-        iFeatureManagerFound = ETrue;
-        }   
-    
     User::LeaveIfError( iFs.Connect() );
 
     // create drm
@@ -518,12 +509,7 @@ CRoHandler::~CRoHandler
 
     // session must be deleted last (and constructed first)
     delete iSession;
-    
-    if ( iFeatureManagerFound )
-        {
-        FeatureManager::UnInitializeLib();
-        }
-        
+
 #ifdef _DRM_TESTING
     TRAP( r, WriteL( _L8( "~CRoHandler-End" ) ) );
 #endif
@@ -670,36 +656,26 @@ void CRoHandler::HandleMessageL
         {
         case EOma1Ro:
             {
-            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
-                    KFeatureIdFfOmadrm1FullSupport ) )
-                {
-                HandleRightsMessageL();
-                }
+            HandleRightsMessageL();
             break;
             }
 #ifdef __DRM_OMA2
         case EOma2RoapTrigger:
         case EOma2RoapTriggerRoAcquisition:
-            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
-                    KFeatureIdFfOmadrm2Support ) )
-                {
-                HandleRoapTriggerL();
-                }
-            break;    
+            {
+            HandleRoapTriggerL();
+            break;
+            }
         case EOma2RoapTriggerMetering:
-            if ( iFeatureManagerFound && FeatureManager::FeatureSupported( 
-                    KFeatureIdFfOmadrm2Support ) )
-                {
-                HandleMeteringTriggerSilentlyL();
-                }
+            {
+            HandleMeteringTriggerSilentlyL();
             break;
+            }
         case EOma2RoapPdu:
-            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
-                    KFeatureIdFfOmadrm2Support ) )
-                {
-                HandleRoapPduL();
-                }
+            {
+            HandleRoapPduL();
             break;
+            }
 #endif
         default:
             {
@@ -803,7 +779,7 @@ void CRoHandler::HandleRightsMessageL()
         ptrToMz.Append( KMarker );
         ptrToMz.Append( uri16 ); //add uri16
         ptrToMz.Append( KMarker );
-        
+
         CleanupStack::PopAndDestroy( number );
         CleanupStack::PopAndDestroy( buffer );
         CleanupStack::PushL( messageContent );
@@ -1210,10 +1186,10 @@ void CRoHandler::ReadFromResourceLC(
     TRAP( r, WriteL( _L8( "ReadFromResourceLC-fs.Connect" ) ) );
 #endif
     CleanupClosePushL( fs );
-    CStringResourceReader* reader(
-        new ( ELeave ) CStringResourceReader( fs, aFile ) );
+    CRoHandlerStringResourceReader* reader(
+        new ( ELeave ) CRoHandlerStringResourceReader( fs, aFile ) );
 #ifdef _DRM_TESTING
-    TRAP( r, WriteL( _L8( "ReadFromResourceLC-CStringResourceReader" ) ) );
+    TRAP( r, WriteL( _L8( "ReadFromResourceLC-CRoHandlerStringResourceReader" ) ) );
 #endif
     CleanupStack::PushL( reader );
     aBuf = reader->AllocReadResourceL( aIndex );
@@ -1242,28 +1218,7 @@ HBufC* CRoHandler::GetDetailLC()
     // First line in Inbox: TMsvEntry::iDetails.
     if ( !flag || srvAddress.Length() == 0 )
         {
-        // Read from resource.
-
-#ifndef RD_MULTIPLE_DRIVE
-
-        TFileName resourceFile( KDriveZ );
-
-#else //RD_MULTIPLE_DRIVE
-
-        _LIT( KDriveRoot, "%c:" );
-        TInt driveNumber( -1 );
-        TChar driveLetter;
-        DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRom, driveNumber );
-        iFs.DriveToChar( driveNumber, driveLetter );
-
-        TFileName resourceFile;
-        resourceFile.Format( KDriveRoot, (TUint )driveLetter );
-
-#endif
-
-        resourceFile.Append( KDC_MTM_RESOURCE_DIR );
-        resourceFile.Append( KPushMtmRes );
-        ReadFromResourceLC( resourceFile, R_PUSHMISC_UNK_SENDER, result );
+        result = KEmpty().AllocL();
         }
     else
         {
@@ -1423,30 +1378,22 @@ void CRoHandler::RunL
     switch( iMsgType )
         {
         case EOma1Ro:
-            {            
-            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
-                    KFeatureIdFfOmadrm1FullSupport ) )
-                {
-                HandleRightsMessageL();
-                }
+            {
+            HandleRightsMessageL();
             break;
             }
 #ifdef __DRM_OMA2
         case EOma2RoapTrigger:
         case EOma2RoapTriggerRoAcquisition:
-            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
-                    KFeatureIdFfOmadrm2Support ) )
-                {
-                HandleRoapTriggerL();
-                }
+            {
+            HandleRoapTriggerL();
             break;
+            }
         case EOma2RoapPdu:
-            if ( iFeatureManagerFound && FeatureManager::FeatureSupported(
-                    KFeatureIdFfOmadrm2Support ) )
-                {
-                HandleRoapPduL();
-                }
+            {
+            HandleRoapPduL();
             break;
+            }
 #endif
         default:
             {

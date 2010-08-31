@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hbdocument version="0.9">
+    <widget name="dialog" type="HbDialog">
+        <widget name="container" role="HbDialog:contentWidget" type="HbWidget">
+            <widget name="labelPrimary" type="HbLabel">
+                <enums name="alignment" value="AlignLeft|AlignLeading"/>
+                <contentsmargins bottom="0un" left="0un" right="0un" top="0un"/>
+                <string name="plainText" value="Rights Objects Recieved"/>
+                <fontspec name="fontSpec" role="Primary" textheight="var(hb-param-text-height-primary)"/>
+            </widget>
+            <layout spacing="0un" type="grid">
+                <contentsmargins bottom="var(hb-param-margin-gene-popup)" left="var(hb-param-margin-gene-popup)" right="var(hb-param-margin-gene-popup)" top="var(hb-param-margin-gene-popup)"/>
+                <griditem column="0" itemname="labelPrimary" row="0"/>
+            </layout>
+        </widget>
+        <contentsmargins bottom="0un" left="0un" right="0un" top="0un"/>
+    </widget>
+    <metadata activeUIState="Common ui state" display="NHD portrait" unit="un">
+        <resource location="TemplateIcons.qrc"/>
+        <uistate name="Common ui state" sections="#common"/>
+    </metadata>
+</hbdocument>

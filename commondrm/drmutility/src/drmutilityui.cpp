@@ -32,7 +32,6 @@
 #include <AknGlobalNote.h>
 #include <AknQueryDialog.h>
 #include <aknlistquerydialog.h>
-#include <aknmessagequerydialog.h> 
 
 // secondary display support
 #include <AknMediatorFacade.h>
@@ -59,6 +58,9 @@
 #include "DrmUtilityGlobalNoteWrapper.h"
 #include "DrmUtilityInfoNoteWrapper.h"
 
+#include "drmuidialogids.h"
+#include "drmuidialogs.h"
+
 // CONSTANTS
 #ifndef RD_MULTIPLE_DRIVE
 _LIT( KDriveZ, "z:" );
@@ -75,6 +77,7 @@ const TInt KDRMUtilityMaxDateLen( 30 );
 const TInt KDRMUtilityMaxTimeFormatLen( 30 );
 const TInt KDRMUtilityMaxTimeLen( 30 );
 const TInt KDRMUtilityNoteMaxSize ( 256 );
+const TInt KNoValue = -1;
 
 #ifdef _DEBUG
 // debug panic
@@ -232,8 +235,6 @@ DRM::CDrmUtilityUI::~CDrmUtilityUI()
     iNoteList.Close();
 
     FeatureManager::UnInitializeLib();
-    delete iNoteWrapper;	
-    	
     }
 
 // -----------------------------------------------------------------------------
@@ -316,38 +317,12 @@ EXPORT_C TInt DRM::CDrmUtilityUI::DisplayQueryL(
     TInt aTextResourceId,
     TInt aValue )
     {
-    TInt buttonCode( 0 );
+    TInt resultCode( ECancelled );
 
-    if ( iCoeEnv )
-        {
-        TPtr bufPtr( NULL, 0 );
-
-        HBufC* stringholder( StringLoader::LoadLC( aTextResourceId,
-                                                   aValue,
-                                                   iCoeEnv ) );
-        CAknQueryDialog* dlg(
-                        CAknQueryDialog::NewL( CAknQueryDialog::ENoTone ) );
-
-        bufPtr.Set( stringholder->Des() );
-        AknTextUtils::LanguageSpecificNumberConversion( bufPtr );
-        PrepareSecondaryDisplayL( *dlg, aTextResourceId, KNullDesC, aValue );
-
-        buttonCode = dlg->ExecuteLD( R_DRMUTILITY_CONFIRMATION_QUERY,
-                                     *stringholder );
-
-        CancelSecondaryDisplayL( aTextResourceId );
-        CleanupStack::PopAndDestroy( stringholder );
-        }
-    else
-        {
-        DRM::CDrmUtilityGlobalNoteWrapper* noteWrapper(
-            DRM::CDrmUtilityGlobalNoteWrapper::NewLC( iUtilityStringResourceReader ) );
-
-        buttonCode = noteWrapper->ShowNoteL( aTextResourceId, aValue );
-
-        CleanupStack::PopAndDestroy( noteWrapper );
-        }
-    return buttonCode;
+    CDrmUIDialogs* drmUiDialog( CDrmUIDialogs::NewLC() ); 
+    resultCode = drmUiDialog->ShowNoteL( aTextResourceId, KNullDesC, aValue );
+    CleanupStack::PopAndDestroy( drmUiDialog );
+    return resultCode;
     }
 
 // -----------------------------------------------------------------------------
@@ -358,39 +333,12 @@ EXPORT_C TInt DRM::CDrmUtilityUI::DisplayQueryL(
     TInt aTextResourceId,
     const TDesC& aString )
     {
-    TInt buttonCode( 0 );
+    TInt resultCode( ECancelled );
 
-    if ( iCoeEnv )
-        {
-        TPtr bufPtr( NULL, 0 );
-
-        HBufC* stringholder( StringLoader::LoadLC( aTextResourceId,
-                                                   aString,
-                                                   iCoeEnv ) );
-        CAknQueryDialog* dlg(
-            CAknQueryDialog::NewL( CAknQueryDialog::ENoTone ) );
-
-        bufPtr.Set( stringholder->Des() );
-        AknTextUtils::LanguageSpecificNumberConversion( bufPtr );
-        PrepareSecondaryDisplayL( *dlg, aTextResourceId, aString, -1 );
-
-        buttonCode = dlg->ExecuteLD( R_DRMUTILITY_CONFIRMATION_QUERY,
-                                     *stringholder );
-
-        CancelSecondaryDisplayL( aTextResourceId );
-        CleanupStack::PopAndDestroy( stringholder );
-        }
-    else
-        {
-        DRM::CDrmUtilityGlobalNoteWrapper* noteWrapper(
-            DRM::CDrmUtilityGlobalNoteWrapper::NewLC( iUtilityStringResourceReader ) );
-
-        buttonCode = noteWrapper->ShowNoteL( aTextResourceId, aString );
-
-        CleanupStack::PopAndDestroy( noteWrapper );
-        }
-
-    return buttonCode;
+    CDrmUIDialogs* drmUiDialog( CDrmUIDialogs::NewLC() );
+    resultCode = drmUiDialog->ShowNoteL( aTextResourceId, aString, KNoValue );
+    CleanupStack::PopAndDestroy( drmUiDialog );
+    return resultCode;
     }
 
 // -----------------------------------------------------------------------------
@@ -488,7 +436,7 @@ EXPORT_C TInt DRM::CDrmUtilityUI::SetAutomatedQueryL(
     __ASSERT_DEBUG( aConstraint, User::Panic( KDRMUtilityDebugPanicMessage,
                                               KDRMUtilityDebugPanicCode ) );
 
-    TInt buttonCode( 1 );
+    TInt buttonCode( EOk );
 
     if ( aConstraint->iActiveConstraints & EConstraintEndTime )
         {
@@ -509,13 +457,14 @@ EXPORT_C TInt DRM::CDrmUtilityUI::SetAutomatedQueryL(
             }
 
         endTime.FormatL( endDate, dateFormat );
-        buttonCode = DisplayQueryL(R_DRM_QUERY_SET_AUTOMATED, endDate );
+
+        // Qt dialog not implmented yet.
+        buttonCode = DisplayQueryL( EQueryLicenceValidUntil, endDate );
         }
     else if ( aConstraint->iActiveConstraints & EConstraintInterval )
         {
-        buttonCode = DisplayQueryWithIdL( R_DRM_QUERY_SET_AUTO_INTERVAL,
-                                          R_DRMUTILITY_CONFIRMATION_QUERY );
-
+        // Qt dialog not implemented yet.
+        buttonCode = DisplayQueryL( EQueryValidForLimitedTime, KNoValue );
         }
     return buttonCode;
     }
@@ -559,7 +508,8 @@ EXPORT_C void DRM::CDrmUtilityUI::ShowFutureRightsNoteL(
     startDateBuf.Append( startTimeBuf );
 
     // display note with start date
-    DisplayNoteL( R_DRMUTILITY_USAGE_RIGHTS_IN_FUTURE, startDateBuf );
+    // Qt dialog not implemented yet
+    DisplayNoteL( EConfUnableToUse, startDateBuf );
     }
 
 // -----------------------------------------------------------------------------
@@ -568,20 +518,9 @@ EXPORT_C void DRM::CDrmUtilityUI::ShowFutureRightsNoteL(
 //
 EXPORT_C void DRM::CDrmUtilityUI::DisplayNoteL( TInt aTextResourceId )
     {
-    if ( iCoeEnv )
-        {
-        HBufC* msgText( StringLoader::LoadLC( aTextResourceId, iCoeEnv ) );
-        DisplayNoteL( *msgText, aTextResourceId );
-        CleanupStack::PopAndDestroy( msgText );
-        }
-
-    else
-        {
-        TBuf<KDRMUtilityNoteMaxSize> buffer(
-            iUtilityStringResourceReader->ReadResourceString( aTextResourceId ) );
-
-        DisplayNoteL( buffer, aTextResourceId );
-        }
+    CDrmUIDialogs* drmUiDialog( CDrmUIDialogs::NewLC() );
+    drmUiDialog->ShowNoteL( aTextResourceId, KNullDesC, KNoValue );
+    CleanupStack::PopAndDestroy( drmUiDialog );
     }
 
 // -----------------------------------------------------------------------------
@@ -592,26 +531,9 @@ EXPORT_C void DRM::CDrmUtilityUI::DisplayNoteL(
     TInt aTextResourceId,
     const TDesC& aString )
     {
-    if ( iCoeEnv )
-        {
-        HBufC* msgText( StringLoader::LoadLC( aTextResourceId,
-                                              aString,
-                                              iCoeEnv ) );
-        DisplayNoteL( *msgText, aTextResourceId );
-        CleanupStack::PopAndDestroy( msgText );
-        }
-    else
-        {
-        TBuf<KDRMUtilityNoteMaxSize + KMaxFileName> destBuffer;
-
-
-        TBuf<KDRMUtilityNoteMaxSize> buffer(
-            iUtilityStringResourceReader->ReadResourceString( aTextResourceId ) );
-
-
-        StringLoader::Format( destBuffer, buffer, -1, aString );
-        DisplayNoteL( destBuffer, aTextResourceId, aString, -1 );
-        }
+    CDrmUIDialogs* drmUiDialog( CDrmUIDialogs::NewLC() );
+    drmUiDialog->ShowNoteL( aTextResourceId, aString, KNoValue );
+    CleanupStack::PopAndDestroy( drmUiDialog );
     }
 
 // -----------------------------------------------------------------------------
@@ -622,26 +544,9 @@ EXPORT_C void DRM::CDrmUtilityUI::DisplayNoteL(
     TInt aTextResourceId,
     TInt aValue )
     {
-    if ( iCoeEnv )
-        {
-        HBufC* msgText( StringLoader::LoadLC( aTextResourceId,
-                                              aValue,
-                                              iCoeEnv ) );
-
-        DisplayNoteL( *msgText, aTextResourceId, KNullDesC, aValue );
-        CleanupStack::PopAndDestroy( msgText );
-        }
-    else
-        {
-        TBuf<KDRMUtilityNoteMaxSize + KMaxFileName> destBuffer;
-
-        TBuf<KDRMUtilityNoteMaxSize> buffer(
-            iUtilityStringResourceReader->ReadResourceString( aTextResourceId ) );
-
-
-        StringLoader::Format( destBuffer, buffer, -1, aValue );
-        DisplayNoteL( destBuffer, aTextResourceId, KNullDesC, aValue );
-        }
+    CDrmUIDialogs* drmUiDialog( CDrmUIDialogs::NewLC() );
+    drmUiDialog->ShowNoteL( aTextResourceId, KNullDesC, aValue );
+    CleanupStack::PopAndDestroy( drmUiDialog );
     }
 
 // -----------------------------------------------------------------------------
@@ -771,39 +676,6 @@ EXPORT_C TInt DRM::CDrmUtilityUI::DisplayPopupWindowsForPreviewL(
     }
 
 #endif  // RD_DRM_PREVIEW_RIGHT_FOR_AUDIO
-
-EXPORT_C TInt DRM::CDrmUtilityUI::DisplayMessageQueryL( TInt aMessage, TInt aHeader, const TDesC& aString)
-    {
-    TInt buttonCode = 0;
-		if ( iCoeEnv )
-	    	{
-		    CAknMessageQueryDialog* messageQuery = new (ELeave) CAknMessageQueryDialog();
-		    messageQuery->PrepareLC(R_DRMUTILITY_SYNC_DIALOG);
-		    		    
-		    HBufC* headerStringholder ( StringLoader::LoadLC( aHeader, iCoeEnv ) );
-        
-		    messageQuery->QueryHeading()->SetTextL(*headerStringholder);
- 				CleanupStack::PopAndDestroy(); // headerStringholder
- 				 				
- 				HBufC* messageStringholder ( StringLoader::LoadLC( aMessage, aString, iCoeEnv ) );
- 				
- 				messageQuery->SetMessageTextL(*messageStringholder);
- 				CleanupStack::PopAndDestroy(); // messageStringholder
-		    
-		    buttonCode =  messageQuery->RunLD();
-		    }
-		else
-		  	{
-		  	if(!iNoteWrapper)
-		  			{
-		    		iNoteWrapper = DRM::CDrmUtilityGlobalNoteWrapper::NewL( iUtilityStringResourceReader );
-        		}
-        		
-        iNoteWrapper->ShowMessageQueryL(aMessage, aHeader, aString);
-				}
-		return buttonCode;
-    }
-
 
 // -----------------------------------------------------------------------------
 // CDrmUtilityUI::CreateNoteForResourceL

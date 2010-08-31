@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2008-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -121,8 +121,6 @@ void CWmDrmDlaAppServiceSession::SetIapL( const RMessage2& aMessage )
         }
     aMessage.ReadL( 0, iapPckg );
     
-    BrowserView()->SetIAP( iap );
-    
     CompleteMessage( aMessage, KErrNone );
     }
 
@@ -159,12 +157,6 @@ void CWmDrmDlaAppServiceSession::PostL( const RMessage2& aMessage )
     ptr8.Set( postContentBoundary->Des() );
     aMessage.ReadL( 3, ptr8 );
     
-    BrowserView()->PostL( this, 
-                          *postUrl, 
-                          *postContentType, 
-                          *postData, 
-                          *postContentBoundary );
-    
     CleanupStack::PopAndDestroy( 4, postUrl ); //postContentBoundary, postData,
                                                //postContentType, postUrl
     
@@ -187,16 +179,7 @@ void CWmDrmDlaAppServiceSession::LicenseResponseSizeL(
     {
     TInt err( KErrNone );
     
-    HBufC8* licenseResponse( BrowserView()->LicenseResponse() );
-    if ( licenseResponse )
-        {
-        TInt licenseSize( licenseResponse->Size() );
-        aMessage.WriteL( 0, TPckg<TInt>( licenseSize ) );
-        }
-    else
-        {
         err = KErrArgument;
-        }
     
     CompleteMessage( aMessage, err );
     }
@@ -209,16 +192,8 @@ void CWmDrmDlaAppServiceSession::LicenseResponseL( const RMessage2& aMessage )
     {
     TInt err( KErrNone );
     
-    HBufC8* licenseResponse( BrowserView()->LicenseResponse() );
-    if ( licenseResponse )
-        {
-        aMessage.WriteL( 0, *licenseResponse );
-        }
-    else
-        {
         err = KErrArgument;
-        }
-    
+   
     CompleteMessage( aMessage, err );
     }
 

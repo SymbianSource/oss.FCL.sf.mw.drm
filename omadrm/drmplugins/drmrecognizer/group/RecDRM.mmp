@@ -32,7 +32,7 @@ USERINCLUDE	    ../../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
-systeminclude	/epoc32/include/ecom
+
 
 source		RecDRM.cpp
 
@@ -47,6 +47,5 @@ MACRO       DRM_OMA2_ENABLED
 
 library		EUSER.LIB	
 library		APMIME.LIB
-library		featmgr.lib
 
 SMPSAFE

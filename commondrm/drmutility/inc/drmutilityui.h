@@ -24,8 +24,6 @@
 #include <f32file.h>
 #include <AknNotifyStd.h>
 
-#include "DrmUtilityGlobalNoteWrapper.h"
-
 //*** forward declarations go here:
 class CDRMConstraint;
 class CCoeEnv;
@@ -125,18 +123,8 @@ public:
                                                 ContentAccess::CData& aContent,
                                                 TInt aPreviewType,
                                                 TInt aMediaType );
-                                                
-    /*
-    * Utility method for showing an AVKON Message Query dialog, with buttons R_AVKON_SOFTKEYS_OK_EMPTY__OK.
-    * 
-    * @param aMessage Resource ID for the dialog message.
-    * @param aHeader  Resource ID for the dialog header.
-    * @param aString  Replacement string for dialog message content. Replaces aMessage resources strings %U mark.
-    * @return Returns button code TInt from the dialog.
-    */                                            
 
-    IMPORT_C TInt DisplayMessageQueryL( TInt aMessage, TInt aHeader, const TDesC& aString );
-    
+
 protected:
 
 private:
@@ -186,8 +174,6 @@ private: // Data members
     RPointerArray<CDrmUtilityInfoNoteWrapper> iNoteList;
 
     CMediatorEventProvider* iEventProvider;
-    
-    CDrmUtilityGlobalNoteWrapper* iNoteWrapper;
 
     };
 }

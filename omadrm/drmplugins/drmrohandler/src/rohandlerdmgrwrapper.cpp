@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2008 - 2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2008 - 2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -21,10 +21,6 @@
 #include <centralrepository.h>
 #include <cdblen.h>
 
-#ifdef __SERIES60_NATIVE_BROWSER
-#include <browseruisdkcrkeys.h>
-#endif
-
 #include <cmconnectionmethod.h>
 #include <cmdestination.h>
 #include <cmconnectionmethoddef.h>
@@ -36,8 +32,6 @@
 
 #include <data_caging_path_literals.hrh>
 
-#include <downloadmgrclient.h>
-
 #include <es_enum.h> // tconnectioninfo
 #include <es_sock.h> // rconnection rsocket
 #include <RoapEng.h>
@@ -45,7 +39,15 @@
 #include <RoapObserver.h>
 #include "RoapSyncWrapper.h"
 
+// Download manager apis
+#include <qobject.h>
+#include <downloadmanager.h>
+#include <download.h>
+
 #include "rohandlerdmgrwrapper.h"
+#include "cleanupresetanddestroy.h"
+#include "buffercontainers.h"
+#include "qrohandlerdmgreventhandler.h"
 
 #ifdef _DEBUG
 #define DRMDEBUG( a ) RDebug::Print( a )
@@ -93,9 +95,6 @@ namespace RoHdlrDMgrWrDebugLiterals
     _LIT( KMethConstructL, "ConstructL" );
     _LIT( KMethNewL, "NewL" );
     _LIT( KMethNewLC, "NewLC" );
-    _LIT( KMethDownloadAndHandleRoapTriggerL, "DownloadAndHandleRoapTriggerL" );
-    _LIT( KMethDownloadAndHandleRoapTriggerFromPrUrlL,
-        "DownloadAndHandleRoapTriggerFromPrUrlL" );
     _LIT( KMethDoDownloadAndHandleRoapTriggerL,
         "DoDownloadAndHandleRoapTriggerL" );
     _LIT( KFormatDoDlHdlRoapTrigL, "DoDownloadAndHandleRoapTriggerL: %S" );
@@ -103,7 +102,6 @@ namespace RoHdlrDMgrWrDebugLiterals
     _LIT( KStrDlFinished, "download finished" );
 
     _LIT( KMethSetDefaultAccessPointL, "SetDefaultAccessPointL" );
-    _LIT( KMiIapId, "iIapId" );
 
     _LIT( KMethHandleDMgrEventL, "HandleDMgrEventL" );
     _LIT( KFormatMethHandleDMgrEventL, "HandleDMgrEventL %S" );
@@ -116,8 +114,7 @@ namespace RoHdlrDMgrWrDebugLiterals
     _LIT( KStrEConnectionFailed, "EConnectionFailed" );
     _LIT( KFormatEDlAttrErrorId, "EDlAttrErrorId = %d" );
 
-    _LIT( KMiDownLoadState, "iDownLoadState" );
-    _LIT( KMiProgressState, "iProgressState" );
+    _LIT( KMiState, "iState" );
 
     }
 
@@ -135,41 +132,12 @@ namespace RoHdlrDMgrWrDebugLiterals
 //#define LOG2( a, b )
 #endif
 
-#ifndef __SERIES60_NATIVE_BROWSER
-const TUid KCRUidBrowser =
-    {0x10008D39};
-const TUint32 KBrowserDefaultAccessPoint = 0x0000000E;
-const TUint32 KBrowserAccessPointSelectionMode = 0x0000001E;
-const TUint32 KBrowserNGDefaultSnapId = 0x00000053;
-#endif
-
 // CONSTANTS
 #ifndef RD_MULTIPLE_DRIVE
 _LIT( KHelperTriggerFilePath, "d:\\" );
 #endif
 
-// ============================== LOCAL FUNCTIONS ==============================
-
-// ---------------------------------------------------------------------------
-// DoResetAndDestroy
-// Does RPointerArray< typename >->ResetAndDestroy() for the given array aPtr.
-// ---------------------------------------------------------------------------
-//
-template< typename elemType >
-LOCAL_C void DoResetAndDestroy( TAny* aPtr )
-    {
-    ( reinterpret_cast< RPointerArray< elemType >* >( aPtr ) )->
-        ResetAndDestroy();
-    }
-
-// ---------------------------------------------------------------------------
-// DeleteHttpDowload
-// ---------------------------------------------------------------------------
-//
-LOCAL_C void DeleteHttpDowload( TAny* aDownload )
-    {
-    reinterpret_cast< RHttpDownload* >( aDownload )->Delete();
-    }
+using namespace WRT;
 
 // ---------------------------------------------------------------------------
 // UpdateBufferL
@@ -188,34 +156,6 @@ LOCAL_C void UpdateBufferL( bufType*& aTargetBuf, const descType& aSourceBuf )
         aTargetBuf = aSourceBuf.AllocL();
         }
     }
-
-// ---------------------------------------------------------------------------
-// IapIdOfDefaultSnapL
-// for trapping purposes only
-// ---------------------------------------------------------------------------
-//
-LOCAL_C TUint32 IapIdOfDefaultSnapL(
-    RCmManager& aCmManager,
-    const TUint32 aDefaultSnap )
-    {
-    RCmDestination dest( aCmManager.DestinationL( aDefaultSnap ) );
-    CleanupClosePushL( dest );
-    TUint32 iapIdOfDest( 0 );
-
-    if ( dest.ConnectionMethodCount() <= 0 )
-        {
-        User::Leave( KErrNotFound );
-        }
-
-    RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
-    CleanupClosePushL( cMeth );
-
-    iapIdOfDest = cMeth.GetIntAttributeL( CMManager::ECmIapId );
-    CleanupStack::PopAndDestroy( &cMeth );
-    CleanupStack::PopAndDestroy( &dest );
-    return iapIdOfDest;
-    }
-
 
 // ============================= MEMBER FUNCTIONS ==============================
 
@@ -239,7 +179,15 @@ void CRoHandlerDMgrWrapper::ConstructL()
     DRMDEBUGMETHOD( RoHdlrDMgrWrDebugLiterals::KMethConstructL() );
     // Get UID from process
     const TInt KRoHandlerDMgrWrapperUid = 0x101F7B92;
-    iDlMgr.ConnectL( TUid::Uid( KRoHandlerDMgrWrapperUid ), *this, EFalse );
+    try
+		{
+		QString roHandlerDmgrWrapperUid(QString::number(KRoHandlerDMgrWrapperUid));
+		iDlMgr = q_check_ptr(new DownloadManager(roHandlerDmgrWrapperUid));
+		}
+    catch(const std::exception& exception)
+    	{
+		qt_symbian_exception2LeaveL(exception);
+    	}
     User::LeaveIfError( iFs.Connect() );
     User::LeaveIfError( iFs.ShareProtected() );
 
@@ -284,24 +232,15 @@ CRoHandlerDMgrWrapper::~CRoHandlerDMgrWrapper()
     delete iFileName;
     delete iRoapEng;
 
-#ifdef _DEBUG
-
-    if ( iDlMgr.Handle() )
-        {
-        iDlMgr.Close();
-        }
-
-#else
-
-    iDlMgr.Close();
-
-#endif
-
+    delete iDlMgr;
+    delete iRoHandlerDMgrEventHandler;
+    
     iFs.Close();
+    
     }
 
 // ---------------------------------------------------------------------------
-// CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerL
+// CRoHandlerDMgrWrapper::HandleRoapTriggerL
 // ---------------------------------------------------------------------------
 //
 void CRoHandlerDMgrWrapper::HandleRoapTriggerL( const TDesC8& aTrigger )
@@ -317,50 +256,13 @@ void CRoHandlerDMgrWrapper::HandleRoapTriggerL( const TDesC8& aTrigger )
     }
 
 // ---------------------------------------------------------------------------
-// CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerL
-// ---------------------------------------------------------------------------
-//
-void CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerL( const HBufC8* aUrl )
-    {
-    DRMDEBUGMETHOD(
-        RoHdlrDMgrWrDebugLiterals::KMethDownloadAndHandleRoapTriggerL() );
-    if ( iState != EInit || iWait.IsStarted() )
-        {
-        User::Leave( KErrNotReady );
-        }
-
-    UpdateBufferL< HBufC8, TDesC8 >( iTriggerUrl, *aUrl );
-    Continue( EGetMeteringTrigger, KErrNone );
-    iWait.Start();
-    }
-
-// ---------------------------------------------------------------------------
-// CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerFromPrUrlL
-// ---------------------------------------------------------------------------
-//
-void CRoHandlerDMgrWrapper::DownloadAndHandleRoapTriggerFromPrUrlL(
-        const HBufC8* aUrl )
-    {
-    DRMDEBUGMETHOD( RoHdlrDMgrWrDebugLiterals::KMethDownloadAndHandleRoapTriggerFromPrUrlL() );
-    if ( iState != EInit || iWait.IsStarted() )
-        {
-        User::Leave( KErrNotReady );
-        }
-
-    UpdateBufferL< HBufC8, TDesC8 >( iTriggerUrl, *aUrl );
-    Continue( EGetPrUrlTrigger, KErrNone );
-    iWait.Start();
-    }
-
-// ---------------------------------------------------------------------------
 // CRoHandlerDMgrWrapper::DoDownloadRoapTriggerL
 // ---------------------------------------------------------------------------
 //
 void CRoHandlerDMgrWrapper::DoDownloadRoapTriggerL( TMeterState aNextState )
     {
     RFile roapTrigger;
-    TBool result( EFalse );
-    TFileName triggerFileName;
+    DRM::CFileNameContainer* triggerFileName(NULL);
 
     DRMDEBUGMETHOD( RoHdlrDMgrWrDebugLiterals::KMethDoDownloadAndHandleRoapTriggerL() );
     // If no Trigger URL then nothing to download. So finish transaction
@@ -370,10 +272,11 @@ void CRoHandlerDMgrWrapper::DoDownloadRoapTriggerL( TMeterState aNextState )
         return;
         }
 
+    triggerFileName=DRM::CFileNameContainer::NewLC();
 #ifndef RD_MULTIPLE_DRIVE
 
     User::LeaveIfError( roapTrigger.Temp(
-            iFs, KHelperTriggerFilePath, triggerFileName, EFileWrite ) );
+            iFs, KHelperTriggerFilePath, triggerFileName->iBuffer, EFileWrite ) );
 
 #else //RD_MULTIPLE_DRIVE
     _LIT( KDrive, "%c:\\" );
@@ -382,46 +285,69 @@ void CRoHandlerDMgrWrapper::DoDownloadRoapTriggerL( TMeterState aNextState )
     DriveInfo::GetDefaultDrive( DriveInfo::EDefaultRam, driveNumber );
     iFs.DriveToChar( driveNumber, driveLetter );
 
-    TFileName helperTriggerFilePath;
+    DRM::CFileNameContainer*
+        helperTriggerFilePath( DRM::CFileNameContainer::NewLC() );
 
-    helperTriggerFilePath.Format( KDrive, ( TUint )driveLetter );
+    helperTriggerFilePath->iBuffer.Format( KDrive, ( TUint )driveLetter );
 
-    User::LeaveIfError( roapTrigger.Temp( iFs, helperTriggerFilePath,
-            triggerFileName, EFileWrite ) );
+    User::LeaveIfError( roapTrigger.Temp( iFs, helperTriggerFilePath->iBuffer,
+                triggerFileName->iBuffer, EFileWrite ) );
+    CleanupStack::PopAndDestroy( helperTriggerFilePath );
+    helperTriggerFilePath=NULL;
 
 #endif
-    UpdateBufferL< HBufC, TFileName >( iFileName, triggerFileName );
+    UpdateBufferL< HBufC, TFileName >( iFileName, triggerFileName->iBuffer );
+    CleanupStack::PopAndDestroy( triggerFileName );
+    triggerFileName=NULL;
 
-    // create and start download
-    RHttpDownload& download = iDlMgr.CreateDownloadL( *iTriggerUrl, result );
-    // Put download for proper cleanup.
-    TCleanupItem item( DeleteHttpDowload, &download );
-    CleanupStack::PushL( item );
-
+    try
+		{
+		// create and start download
+        QString downloadUrl((QChar*)iTriggerUrl->Des().Ptr(),iTriggerUrl->Length());
+        iDownload = iDlMgr->createDownload( downloadUrl );
+		iRoHandlerDMgrEventHandler = q_check_ptr(new QRoHandlerDMgrEventHandler(*this, *iDownload));
+		}
+    catch(const std::exception& exception)
+		{
+		qt_symbian_exception2LeaveL(exception);
+		}
+    		
     CleanupClosePushL( roapTrigger );
 
-    if ( result )
-        {
-        DRMDEBUG2(
-            RoHdlrDMgrWrDebugLiterals::KFormatDoDlHdlRoapTrigL(),
-            &RoHdlrDMgrWrDebugLiterals::KStrDlCreated() );
-        iDownloadSuccess = EFalse;
-        iConnectionError = EFalse;
+    
+	DRMDEBUG2(
+		RoHdlrDMgrWrDebugLiterals::KFormatDoDlHdlRoapTrigL(),
+		&RoHdlrDMgrWrDebugLiterals::KStrDlCreated() );
+	iDownloadSuccess = EFalse;
+	iConnectionError = EFalse;
 
-        SetDefaultAccessPointL();
-        User::LeaveIfError( download.SetFileHandleAttribute( roapTrigger ) );
-        User::LeaveIfError( download.SetBoolAttribute(
-                EDlAttrNoContentTypeCheck, ETrue ) );
-        User::LeaveIfError( download.Start() );
-
-        // wait until download is finished
-        iState = aNextState;
-        TRequestStatus* status( &iStatus );
-        *status = KRequestPending;
-        SetActive();
-        }
+	SetDefaultAccessPointL();
+        
+	try
+		{
+		RBuf fileName;
+		User::LeaveIfError(fileName.Create(KMaxFileName));
+		CleanupClosePushL(fileName);
+		roapTrigger.Name(fileName);
+		const QVariant& roapTriggerValue( QString((QChar*) fileName.Ptr(), fileName.Length()) );
+		CleanupStack::PopAndDestroy(&fileName);
+		iDownload->setAttribute(FileName,roapTriggerValue);
+		const QVariant& val(ETrue);
+		iDownload->setAttribute(ContentType, val);
+		iDownload->start();
+		}
+	catch(const std::exception& exception)
+		{
+		qt_symbian_exception2LeaveL(exception);
+		}
+	
+	// wait until download is finished
+	iState = aNextState;
+	TRequestStatus* status( &iStatus );
+	*status = KRequestPending;
+	SetActive();
+        
     CleanupStack::PopAndDestroy( &roapTrigger );
-    CleanupStack::Pop( &download ); // Left open for DoSaveRoapTrigger
     }
 // ---------------------------------------------------------------------------
 // CRoHandlerDMgrWrapper::DoSaveRoapTriggerL
@@ -434,15 +360,23 @@ void CRoHandlerDMgrWrapper::DoSaveRoapTriggerL( TMeterState aNextState )
         RoHdlrDMgrWrDebugLiterals::KFormatDoDlHdlRoapTrigL(),
         &RoHdlrDMgrWrDebugLiterals::KStrDlFinished() );
 
-    // Fetch download created in DoDownloadRoapTriggerL
-    RHttpDownload* download = iDlMgr.FindDownload( *iTriggerUrl, KNullDesC8() );
+    try
+		{
+		// Fetch download created in DoDownloadRoapTriggerL
+		QString downloadUrl((QChar*)iTriggerUrl->Des().Ptr(),iTriggerUrl->Length());
+		//uncomment
+		iDownload = NULL; //iDlMgr->findDownload( downloadUrl );
+		}
+    catch(const std::exception& exception)
+		{
+		qt_symbian_exception2LeaveL(exception);
+		} 
+    
     // Delete trigger URL so that it is possible to check
     // whether or not meteringResponse has PrUrl.
     delete iTriggerUrl;
     iTriggerUrl = NULL;
-    // Put download for proper cleanup.
-    TCleanupItem item( DeleteHttpDowload, download );
-    CleanupStack::PushL( item );
+    
     RFile roapTrigger;
 
     if ( !iDownloadSuccess )
@@ -485,8 +419,7 @@ void CRoHandlerDMgrWrapper::DoSaveRoapTriggerL( TMeterState aNextState )
     // And let ROAP handle it...
     CleanupStack::PopAndDestroy( &readBuf );
     CleanupStack::PopAndDestroy( &roapTrigger );
-    CleanupStack::PopAndDestroy( download );
-
+    
     iFs.Delete( *iFileName );
     delete iFileName;
     iFileName=NULL;
@@ -504,9 +437,7 @@ void CRoHandlerDMgrWrapper::DoHandleRoapTriggerL( TMeterState aNextState )
     Roap::TDomainOperation domainOperation;
 
     RPointerArray< HBufC8 > contentIds;
-
-    TCleanupItem cleanup( DoResetAndDestroy< HBufC8 >, &contentIds );
-    CleanupStack::PushL( cleanup );
+    CleanupResetAndDestroyPushL( contentIds );
 
     iRoapEng = Roap::CRoapEng::NewL();
 
@@ -535,55 +466,12 @@ void CRoHandlerDMgrWrapper::DoHandleRoapTriggerL( TMeterState aNextState )
 //
 void CRoHandlerDMgrWrapper::SetDefaultAccessPointL()
     {
-    const TInt KDestinationSelectionMode( 2 );
-    CRepository* repository( NULL );
-    TInt ap( 0 );
-    TInt alwaysAsk( 0 );
-    TUint32 iapd32( 0 );
-    TInt defaultSnap( 0 );
-    TInt err( KErrNone );
-
     DRMDEBUGMETHOD( RoHdlrDMgrWrDebugLiterals::KMethSetDefaultAccessPointL() );
 
-    if ( !iIapId )
+    if ( iIapId )
         {
-        repository = CRepository::NewL( KCRUidBrowser );
-        CleanupStack::PushL( repository );
-        repository->Get( KBrowserDefaultAccessPoint, ap );
-        repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
-        repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
-        if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
-            {
-            alwaysAsk = ETrue;
-            }
-        else
-            {
-            RCmManager cmManager;
-            cmManager.OpenLC();
-            if ( !alwaysAsk )
-                {
-                TRAP( err, iapd32 = cmManager.GetConnectionMethodInfoIntL(
-                        ap, CMManager::ECmIapId ) );
-                }
-            else if ( alwaysAsk == KDestinationSelectionMode )
-                {
-                TRAP( err, iapd32 = IapIdOfDefaultSnapL(
-                        cmManager, defaultSnap ) );
-                }
-            CleanupStack::PopAndDestroy( &cmManager );
-            }
-        if ( !err && ( !alwaysAsk || alwaysAsk == KDestinationSelectionMode ) )
-            {
-            iIapId = iapd32;
-            DRMDEBUG3( RoHdlrDMgrWrDebugLiterals::KFormatMembValInt(),
-                &RoHdlrDMgrWrDebugLiterals::KMiIapId(), iIapId );
-            err = iDlMgr.SetIntAttribute( EDlMgrIap, iapd32 );
-            }
-        CleanupStack::PopAndDestroy( repository );
-        }
-    else
-        {
-        err = iDlMgr.SetIntAttribute( EDlMgrIap, iIapId );
+        QVariant iapId((unsigned long long)iIapId);
+        iDlMgr->setAttribute(DefaultDestinationPath, iapId);
         }
     }
 
@@ -608,48 +496,41 @@ void CRoHandlerDMgrWrapper::Continue(
 // CRoHandlerDMgrWrapper::HandleDMgrEventL
 // ---------------------------------------------------------------------------
 //
-void CRoHandlerDMgrWrapper::HandleDMgrEventL( RHttpDownload& aDownload,
-        THttpDownloadEvent aEvent )
+void CRoHandlerDMgrWrapper::HandleDownloadEventL( WRT::DownloadEvent* aEvent )
     {
-    _LIT8( KDRMHelperMimeTypeROAPTrigger, "application/vnd.oma.drm.roap-trigger+xml" );
+    QString KDRMHelperMimeTypeROAPTrigger("application/vnd.oma.drm.roap-trigger+xml" );
 
     DRMDEBUGMETHOD( RoHdlrDMgrWrDebugLiterals::KMethHandleDMgrEventL() );
     DRMDEBUG3( RoHdlrDMgrWrDebugLiterals::KFormatMembValInt(),
-            &RoHdlrDMgrWrDebugLiterals::KMiDownLoadState(), aEvent.iDownloadState );
-    DRMDEBUG3( RoHdlrDMgrWrDebugLiterals::KFormatMembValInt(),
-            &RoHdlrDMgrWrDebugLiterals::KMiProgressState(), aEvent.iProgressState );
-
-    if ( aEvent.iProgressState == EHttpContentTypeReceived )
+            &RoHdlrDMgrWrDebugLiterals::KMiState(), aEvent->type() );
+    
+    if ( aEvent->type() == DownloadEvent::HeadersReceived )
         {
         DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
                 &RoHdlrDMgrWrDebugLiterals::KStrEHttpContentTypeReceived() );
         // check received mimetype
-        RBuf8 contentType;
-        contentType.CleanupClosePushL();
-        contentType.CreateL( KMaxContentTypeLength );
-        User::LeaveIfError( aDownload.GetStringAttribute( EDlAttrContentType,
-                contentType ) );
-        if ( !contentType.FindF( KDRMHelperMimeTypeROAPTrigger ) )
+        QString contentType = iDownload->attribute( ContentType).toString();
+        if ( contentType.contains( KDRMHelperMimeTypeROAPTrigger )  == EFalse )
             {
             // ROAP trigger found, continue download
-            User::LeaveIfError( aDownload.Start() );
+            iDownload->start();
             }
         else
             {
             // wrong MIME type?, stop download
             iDownloadSuccess = EFalse;
-            User::LeaveIfError( aDownload.Delete() );
+            iDownload->cancel();
             }
         CleanupStack::PopAndDestroy( &contentType );
         }
 
-    if ( aEvent.iDownloadState == EHttpDlCreated )
+    if ( aEvent->type() == DownloadEvent::Created )
         {
         DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
                 &RoHdlrDMgrWrDebugLiterals::KStrEHttpDlCreated() );
         }
     else
-        if ( aEvent.iProgressState == EHttpProgDisconnected )
+        if ( aEvent->type() == DownloadEvent::NetworkLoss )
             {
             DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
                     &RoHdlrDMgrWrDebugLiterals::KStrEHttpProgDisconnected() );
@@ -660,49 +541,47 @@ void CRoHandlerDMgrWrapper::HandleDMgrEventL( RHttpDownload& aDownload,
             TRequestStatus* status( &iStatus );
             User::RequestComplete( status, KErrCancel );
             }
-        else
-            if ( aEvent.iDownloadState == EHttpDlInprogress )
-                {
-                DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
-                        &RoHdlrDMgrWrDebugLiterals::KStrEHttpDlInprogress() );
-                }
-            else
-                if ( aEvent.iDownloadState == EHttpDlCompleted )
-                    {
-                    // store success
-                    DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
-                            &RoHdlrDMgrWrDebugLiterals::KStrEHttpDlCompleted() );
-                    iDownloadSuccess = ETrue;
+	else
+		if ( aEvent->type() == DownloadEvent::InProgress )
+			{
+			DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
+					&RoHdlrDMgrWrDebugLiterals::KStrEHttpDlInprogress() );
+			}
+	else
+		if ( aEvent->type() == DownloadEvent::Completed )
+			{
+			// store success
+			DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
+					&RoHdlrDMgrWrDebugLiterals::KStrEHttpDlCompleted() );
+			iDownloadSuccess = ETrue;
 
-                    // finished
-                    TRequestStatus* status( &iStatus );
-                    User::RequestComplete( status, KErrNone );
-                    }
-                else
-                    if ( aEvent.iDownloadState == EHttpDlFailed )
-                        {
-                        TInt32 err;
+			// finished
+			TRequestStatus* status( &iStatus );
+			User::RequestComplete( status, KErrNone );
+			}
+	else
+		if ( aEvent->type() == DownloadEvent::Failed )
+			{
+			TInt32 err;
 
-                        DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
-                                &RoHdlrDMgrWrDebugLiterals::KStrEHttpDlFailed() );
-                        // store failure
-                        iDownloadSuccess = EFalse;
-                        User::LeaveIfError( aDownload.GetIntAttribute(
-                                EDlAttrErrorId, err ) );
-                        DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatEDlAttrErrorId(), err );
+			DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
+					&RoHdlrDMgrWrDebugLiterals::KStrEHttpDlFailed() );
+			// store failure
+			iDownloadSuccess = EFalse;
+			err = iDownload->attribute(LastError ).toInt();
+			DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatEDlAttrErrorId(), err );
 
-                        if ( err == EConnectionFailed || err
-                                == ETransactionFailed )
-                            {
-                            DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
-                                    &RoHdlrDMgrWrDebugLiterals::KStrEConnectionFailed() );
-                            iConnectionError = ETrue;
-                            }
+			if ( err == ConnectionFailed || err == TransactionFailed )
+				{
+				DRMDEBUG2( RoHdlrDMgrWrDebugLiterals::KFormatMethHandleDMgrEventL(),
+						&RoHdlrDMgrWrDebugLiterals::KStrEConnectionFailed() );
+				iConnectionError = ETrue;
+				}
 
-                        // finished
-                        TRequestStatus* status( &iStatus );
-                        User::RequestComplete( status, KErrCancel );
-                        }
+			// finished
+			TRequestStatus* status( &iStatus );
+			User::RequestComplete( status, KErrCancel );
+			}
     }
 
 
@@ -881,3 +760,4 @@ TInt CRoHandlerDMgrWrapper::RunError( TInt /* aError */ )
         }
     return KErrNone;
     }
+

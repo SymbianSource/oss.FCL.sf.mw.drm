@@ -20,7 +20,7 @@
 #define WMDRMDLAHTTPFWPLUGINRESOLVER_H
 
 #include <e32base.h>
-#include <implementationinformation.h>
+#include <ecom/implementationinformation.h>
 
 class CWmDrmDlaPluginContainer;
 class CAknIconArray;

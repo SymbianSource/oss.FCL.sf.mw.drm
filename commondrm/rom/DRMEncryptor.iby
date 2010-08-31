@@ -23,15 +23,7 @@
 #ifndef _IMAGE_TYPE_PRD
 
 S60_APP_EXE(DRMENCRYPTOR)
-
-
-SCALABLE_IMAGE(APP_BITMAP_DIR,APP_BITMAP_DIR,DRMEncryptor)
-
-
-S60_APP_AIF_ICONS(DRMENCRYPTOR)
-S60_APP_AIF_RSC(DRMENCRYPTOR)
-
-data=DATAZ_\APP_RESOURCE_DIR\drmencryptor.rsc         APP_RESOURCE_DIR\drmencryptor.rsc
+data = ZPRIVATE\10003a3f\import\APPS\drmencryptor_reg.rsc   PRIVATE\10003a3f\import\apps\drmencryptor_reg.rsc
 
 #endif //_IMAGE_TYPE_PRD
 #endif
