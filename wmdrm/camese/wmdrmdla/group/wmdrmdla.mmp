@@ -43,7 +43,7 @@ USERINCLUDE				../../wmdrmdlautils/inc
 USERINCLUDE			    ../../../inc
 
 MW_LAYER_SYSTEMINCLUDE
-
+SYSTEMINCLUDE           /epoc32/include/ecom
 
 LIBRARY                 euser.lib
 LIBRARY					efsrv.lib

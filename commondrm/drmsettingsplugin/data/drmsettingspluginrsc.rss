@@ -1,0 +1,533 @@
+/*
+* Copyright (c) 2006 - 2007 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:  Resource file for DRMSettinsPlugin
+*
+*/
+
+
+
+//  RESOURCE IDENTIFIER
+NAME    DRMS // 4 letter ID
+
+//  INCLUDES
+#include    <eikon.rh>
+#include    <uikon.rh>
+#include    <avkon.rsg>
+#include    <avkon.rh>
+#include    <avkon.mbg>
+#include    <EIKCORE.rsg>
+#include    <eikon.rsg>
+#include    <appinfo.rh>
+#include    <avkon.loc>
+#include    <AvkonIcons.hrh>
+#include    <data_caging_paths_strings.hrh>
+#include    <gs.loc>
+#include    <drmsettingsplugin.loc>
+
+#include    "drmsettingsplugin.hrh"
+#include    "drmsettingsplugin.rh"
+
+
+// CONSTANTS
+
+//  RESOURCE DEFINITIONS
+
+RESOURCE RSS_SIGNATURE
+    {
+    }
+
+
+RESOURCE TBUF
+    {
+    buf="DRMS";
+    }
+
+//----------------------------------------------------
+//
+//    EIK_APP_INFO
+//    It contains application information.
+//
+//----------------------------------------------------
+//
+RESOURCE EIK_APP_INFO
+    {
+    }
+
+
+
+//----------------------------------------------------
+//  r_drm_settings_view_caption
+//
+// Caption for DRM Settings plugin
+//----------------------------------------------------
+//
+RESOURCE TBUF r_drm_settings_view_caption
+    {
+    buf = qtn_set_protected_content;
+    }
+
+
+//----------------------------------------------------
+//
+//    r_drm_settings_view_title
+//    Title of DRM Settings view
+//
+//----------------------------------------------------
+//
+RESOURCE TITLE_PANE r_drm_settings_view_title
+    {
+    txt = qtn_set_protected_content;
+    }
+
+
+//----------------------------------------------------
+//
+//    r_drm_softkeys_options_back_change
+//    Text association with MSK ( CHANGE )
+//
+//----------------------------------------------------
+//
+RESOURCE CBA r_drm_softkeys_options_back_change
+    {
+    buttons =
+        {
+        CBA_BUTTON
+            {
+            id=EAknSoftkeyOptions;
+            txt = text_softkey_option;
+            },
+        CBA_BUTTON
+            {
+            id=EAknSoftkeyBack;
+            txt = text_softkey_back;
+            },
+        CBA_BUTTON
+            {
+            id=EDRMSettingsCmdAppChangeMSK;
+            txt = qtn_msk_change;
+            }
+        };
+    }
+
+
+
+
+//----------------------------------------------------
+//
+//    r_drm_settings_view
+//    DRM Settings view.
+//
+//----------------------------------------------------
+//
+RESOURCE AVKON_VIEW r_drm_settings_view
+    {
+    menubar = r_drm_settings_menubar_change_exit;
+    cba = r_drm_softkeys_options_back_change;
+    }
+
+
+// -----------------------------------------------------------------------------
+//
+// r_drm_settings_menubar_change_exit
+// Menu with 'change' and 'exit' items.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE MENU_BAR r_drm_settings_menubar_change_exit
+    {
+    titles =
+        {
+        MENU_TITLE
+            {
+            menu_pane = r_drm_settings_menu_item_exit;
+            },
+        MENU_TITLE
+            {
+            menu_pane = r_drm_settings_menu_item_change;
+            }
+        };
+    }
+
+
+    // -----------------------------------------------------------------------------
+    //
+    // r_drm_settings_menu_item_exit
+    // Options menu items 'Help' and 'Exit'. Used instead of plain 'Exit' when help
+    // is wanted to be shown in UI.
+    //
+    // -----------------------------------------------------------------------------
+    //
+    RESOURCE MENU_PANE r_drm_settings_menu_item_exit
+        {
+        items =
+            {
+            MENU_ITEM
+                {
+                command = EAknCmdHelp;
+                txt = qtn_options_help;
+                },
+            MENU_ITEM
+                {
+                command = EAknCmdExit;
+                txt = qtn_options_exit;
+                }
+            };
+        }
+
+
+// -----------------------------------------------------------------------------
+//
+// r_drm_settings_menu_item_change
+// Change item.
+//
+// -----------------------------------------------------------------------------
+//
+RESOURCE MENU_PANE r_drm_settings_menu_item_change
+    {
+    items =
+        {
+        MENU_ITEM
+            {
+            command = EDRMSettingsCmdAppChange;
+            txt = qtn_set_options_change;
+            flags = EEikMenuItemAction;
+            }
+        };
+    }
+
+
+//----------------------------------------------------
+//
+//    r_drm_settings_lbx
+//    DRM Settings view's listbox.
+//
+//----------------------------------------------------
+//
+RESOURCE DRM_SETTINGS_FEATURE_ARRAY r_drm_settings_lbx
+    {
+    items =
+        {
+#ifdef __DRM_OMA2
+#ifdef RD_DRM_SILENT_RIGHTS_ACQUISITION
+        DRM_SETTINGS_FEATURE
+            {
+            txt = " \t"qtn_set_automatic_activation"\t\t";
+            item = EDRMSettingsIdAutomaticActivation;
+            },
+#endif // RD_DRM_SILENT_RIGHTS_ACQUISITION
+
+#ifdef RD_DRM_METERING
+        DRM_SETTINGS_FEATURE
+            {
+            txt = " \t"qtn_drm_set_usage_reporting"\t\t";
+            item = EDRMSettingsIdUsageReporting;
+            },
+#endif // RD_DRM_METERING
+
+        DRM_SETTINGS_FEATURE
+            {
+            txt = " \t"qtn_set_transaction_tracking"\t\t";
+            item = EDRMSettingsIdTransactionTracking;
+            },
+#endif // __DRM_OMA2
+
+        DRM_SETTINGS_FEATURE
+            {
+            txt = " \t"qtn_drm_set_license_deletion"\t\t";
+            item = EDRMSettingsIdWMDRMLicenseDeletion;
+            }
+        };
+    }
+
+//----------------------------------------------------
+//
+//    r_drm_settings_lbx_no_oma2
+//    DRM Settings view's listbox when OMA DRM version
+//    2 is configured not to be supported.
+//
+//----------------------------------------------------
+//
+RESOURCE DRM_SETTINGS_FEATURE_ARRAY r_drm_settings_lbx_no_oma2
+    {
+    items =
+        {        
+        DRM_SETTINGS_FEATURE
+            {
+            txt = " \t"qtn_drm_set_license_deletion"\t\t";
+            item = EDRMSettingsIdWMDRMLicenseDeletion;
+            }
+        };    
+    }
+
+
+
+//----------------------------------------------------
+//
+//    r_drm_settings_setting_listbox
+//    Common listbox editor resource for setting pages.
+//
+//----------------------------------------------------
+//
+RESOURCE LISTBOX r_drm_settings_setting_listbox
+    {
+    flags = EEikListBoxMultipleSelection;
+    }
+
+
+//----------------------------------------------------
+//
+//    r_ttracking_setting_page
+//    Transaction tracking setting page.
+//
+//----------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_ttracking_setting_page
+    {
+    number = EAknSettingPageNoOrdinalDisplayed;
+    label = qtn_drm_set_popup_trans_track;
+    softkey_resource = R_AVKON_SOFTKEYS_OK_CANCEL__OK;
+    type = EAknSetListBox;
+    editor_resource_id = r_drm_settings_setting_listbox;
+    }
+
+
+//----------------------------------------------------
+//
+//    r_ttracking_setting_page_lbx
+//    Transaction tracking setting page's listbox.
+//
+//----------------------------------------------------
+//
+RESOURCE ARRAY r_ttracking_setting_page_lbx
+    {
+    items =
+        {
+        LBUF
+            {
+            txt = qtn_set_transact_tracking_on;
+            },
+        LBUF
+            {
+            txt = qtn_set_transact_tracking_off;
+            }
+        };
+    }
+
+
+//----------------------------------------------------
+//  r_drm_settings_ttracking_on
+//
+// DRM Settings text for Transaction tracking "On"
+//----------------------------------------------------
+//
+RESOURCE TBUF r_drm_settings_ttracking_on
+    {
+    buf = qtn_set_transact_tracking_on;
+    }
+
+
+//----------------------------------------------------
+//  r_drm_settings_ttracking_off
+//
+// DRM Settings text for Transaction tracking "Off"
+//----------------------------------------------------
+//
+RESOURCE TBUF r_drm_settings_ttracking_off
+    {
+    buf = qtn_set_transact_tracking_off;
+    }
+
+
+//----------------------------------------------------
+//
+//    r_autom_activ_setting_page
+//    Automatic activation setting page.
+//
+//----------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_autom_activ_setting_page
+    {
+    number = EAknSettingPageNoOrdinalDisplayed;
+    label = qtn_drm_set_popup_autom_activat;
+    softkey_resource = R_AVKON_SOFTKEYS_OK_CANCEL__OK;
+    type = EAknSetListBox;
+    editor_resource_id = r_drm_settings_setting_listbox;
+    }
+
+
+//----------------------------------------------------
+//
+//    r_autom_activ_setting_page_lbx
+//    Automatic activation setting page's listbox.
+//
+//----------------------------------------------------
+//
+RESOURCE ARRAY r_autom_activ_setting_page_lbx
+    {
+    items =
+        {
+        LBUF
+            {
+            txt = qtn_set_automat_act_allowed;
+            },
+        LBUF
+            {
+            txt = qtn_set_automat_act_not_allowed;
+            }
+        };
+    }
+
+
+//----------------------------------------------------
+//  r_drm_settings_autom_activ_on
+//
+// DRM Settings text for Automatic activation "Allowed"
+//----------------------------------------------------
+//
+RESOURCE TBUF r_drm_settings_autom_activ_on
+    {
+    buf = qtn_set_automat_act_allowed;
+    }
+
+
+//----------------------------------------------------
+//  r_drm_settings_autom_activ_off
+//
+// DRM Settings text for Automatic activation "Not allowed"
+//----------------------------------------------------
+//
+RESOURCE TBUF r_drm_settings_autom_activ_off
+    {
+    buf = qtn_set_automat_act_not_allowed;
+    }
+
+// ---------------------------------------------------------
+//
+//      r_drm_settings_metering_checkbox_page
+//      Used in checkbox list.
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_SETTING_PAGE r_drm_settings_metering_checkbox_page
+    {
+    number = EAknSettingPageNoOrdinalDisplayed;
+    label = qtn_drm_set_popup_usage_report;
+    softkey_resource = R_AVKON_SOFTKEYS_OK_CANCEL__MARK;
+    type =  EAknSetListBox;
+    editor_resource_id = r_drm_settings_metering_checkbox_list;
+    invalid_contents_softkey_resource = R_AVKON_SOFTKEYS_CANCEL;
+    }
+
+// ---------------------------------------------------------
+//
+//      r_drm_settings_metering_checkbox_list
+//      Used in checkbox list.
+//
+// ---------------------------------------------------------
+//
+RESOURCE AVKON_MULTISELECTION_LIST r_drm_settings_metering_checkbox_list
+    {
+    }
+
+//------------------------------------------------------------------------------
+//
+//    r_usage_reporting_list_title
+//    Title text for usage reporting listbox
+//
+//------------------------------------------------------------------------------
+//
+RESOURCE TBUF r_usage_reporting_list_title
+    {
+    buf=qtn_drm_set_popup_usage_report;
+    }
+
+
+//------------------------------------------------------------------------------
+//
+//    r_usage_reporting_list_empty
+//    Empty text for usage reporting listbox
+//
+//------------------------------------------------------------------------------
+//
+RESOURCE TBUF r_usage_reporting_list_empty
+    {
+    buf=qtn_drm_set_pane_no_providers;
+    }
+
+
+//------------------------------------------------------------------------------
+//
+//    r_drm_set_several_services
+//    'Several' value for 'Allow usage reporting for' field
+//
+//------------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_set_several_services
+    {
+    buf=qtn_drm_set_several_services;
+    }
+
+
+//------------------------------------------------------------------------------
+//
+//    r_drm_set_usage_report_none
+//    'None' value for 'Allow usage reporting for' field
+//
+//------------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_set_usage_report_none
+    {
+    buf=qtn_drm_set_usage_report_none;
+    }
+
+
+//------------------------------------------------------------------------------
+//
+//    r_drm_confirmation_query_metering
+//    Confirmation query dialog.
+//
+//------------------------------------------------------------------------------
+//
+RESOURCE DIALOG r_drm_confirmation_query_metering
+    {
+    flags=EGeneralQueryFlags;
+    buttons=R_AVKON_SOFTKEYS_YES_NO__YES;
+    items=
+        {
+        DLG_LINE
+            {
+            type=EAknCtQuery;
+            id=EGeneralQuery;
+            control= AVKON_CONFIRMATION_QUERY
+                {
+                layout = EConfirmationQueryLayout;
+                label = " ";
+                };
+            }
+        };
+    }
+
+//------------------------------------------------------------------------------
+//
+//    r_drm_conf_query_metering
+//    Confirmation query text.
+//
+//------------------------------------------------------------------------------
+//
+RESOURCE TBUF r_drm_conf_query_metering
+    {
+    buf=qtn_drm_conf_query_metering;
+    }
+
+//End of File

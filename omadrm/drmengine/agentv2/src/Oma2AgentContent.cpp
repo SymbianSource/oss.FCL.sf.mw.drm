@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -25,7 +25,9 @@
 #include <e32test.h>
 #include <utf.h>
 
-#include <drmbrowserlauncher.h>
+
+#include <schemehandler.h>
+
 
 #include "Oma2AgentContent.h"
 #include "Oma2AgentAttributes.h"
@@ -543,6 +545,7 @@ void COma2AgentContent::NotifyStatusChangeL(
 
 // -----------------------------------------------------------------------------
 // COma2AgentContent::NotifyStatusChange
+//
 // -----------------------------------------------------------------------------
 //
 void COma2AgentContent::NotifyStatusChange(
@@ -603,8 +606,7 @@ void COma2AgentContent::RequestRights(
     TRequestStatus *ptr = &aStatus;
     TInt r;
     HBufC* b = NULL;
-
-    r = KErrNotSupported;
+    CSchemeHandler* handler = NULL;
 
     r = iDcf->OpenPart(aUniqueId);
     if (r == KErrNone && iDcf->iRightsIssuerURL != NULL)
@@ -613,17 +615,16 @@ void COma2AgentContent::RequestRights(
             *iDcf->iRightsIssuerURL));
         if (b != NULL)
             {
-    				DRM::CDrmBrowserLauncher* browserLauncher = DRM::CDrmBrowserLauncher::NewLC();
-    	
-				    browserLauncher->LaunchUrlL(*b);
-    
-    				CleanupStack::PopAndDestroy(); // browserLauncher
-   
+            TRAP(r, handler = CSchemeHandler::NewL(*b));
+            if (handler != NULL)
+                {
+                TRAP(r, handler->HandleUrlStandaloneL());
+                delete handler;
+                }
             delete b;
             }
         }
-
-		User::RequestComplete(ptr, r);
+    User::RequestComplete(ptr, r);
     }
 
 // -----------------------------------------------------------------------------

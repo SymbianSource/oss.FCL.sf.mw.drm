@@ -30,7 +30,8 @@ USERINCLUDE	    ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
-
+SYSTEMINCLUDE   /epoc32/include/libc
+SYSTEMINCLUDE   /epoc32/include/ecom
 
 SOURCEPATH      ../keystorage/src
 SOURCE          DrmKeyStorage.cpp
@@ -46,6 +47,7 @@ LIBRARY         pkixcert.lib
 LIBRARY         random.lib
 LIBRARY         hash.lib
 LIBRARY         flogger.lib
+LIBRARY		featmgr.lib
 
 #if defined(ARMCC)
 deffile ../eabi/ 

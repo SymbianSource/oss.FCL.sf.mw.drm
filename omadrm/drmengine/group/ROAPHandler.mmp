@@ -39,6 +39,8 @@ USERINCLUDE     ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 APP_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE   /epoc32/include/libc
+SYSTEMINCLUDE   /epoc32/include/ecom
 
 SOURCEPATH  ../roap/src
 
@@ -111,9 +113,9 @@ LIBRARY     DrmServerInterfaces.lib
 LIBRARY     DcfRep.lib
 LIBRARY     caf.lib                     // Embedding domain ROs
 LIBRARY     cafutils.lib                // Embedding domain ROs
-LIBRARY     centralrepository.lib       // CRepository
+LIBRARY     centralrepository.lib       // Browser default AP
 LIBRARY     cmmanager.lib
-LIBRARY     extendedconnpref.lib netmeta.lib // TExtendedConnPref
+LIBRARY	    featmgr.lib
 
 LIBRARY     SysUtil.lib
 LIBRARY     HttpFilterCommon.lib

@@ -1,3 +1,5 @@
-EXPORTS	
+EXPORTS
 	_Z16GateFunctionDMgrv @ 1 NONAME
+	_ZTI22CDrmUtilityDmgrWrapper @ 2 NONAME ; #<TI>#
+	_ZTV22CDrmUtilityDmgrWrapper @ 3 NONAME ; #<VT>#
 

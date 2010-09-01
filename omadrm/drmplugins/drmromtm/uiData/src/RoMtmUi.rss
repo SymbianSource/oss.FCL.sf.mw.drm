@@ -29,6 +29,8 @@
 #include <avkon.rsg>
 #include <avkon.loc>
 #include <mtud.rh>
+#include <MtmExtendedCapabilities.hrh>
+#include <muiu.mbg>
 #include <data_caging_paths_strings.hrh>
 
 #include "RoMtmCommands.hrh"
@@ -52,6 +54,17 @@ RESOURCE TBUF80 r_roud_can_not_edit_folders  {buf="Can not edit folders";}
 RESOURCE TBUF80 r_roud_only_messages  {buf="This can only be done on local messages";}
 RESOURCE TBUF80 r_roud_not_supported  {buf="This action is not supported";}
 
+
+RESOURCE AKN_ICON_ARRAY r_ronsm_icons
+    {
+    bmpfile = APP_BITMAP_DIR"\\Muiu.mbm";
+
+    icons =
+        {
+        AKN_ICON { iconId = EMbmMuiuQgn_prop_mce_push_unread;
+                   maskId = EMbmMuiuQgn_prop_mce_push_unread_mask; }
+        };
+    }
 
 // -----------------------------------------------------------------------------
 //

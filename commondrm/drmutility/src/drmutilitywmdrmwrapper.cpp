@@ -31,12 +31,18 @@
 #include <avkon.hrh>
 
 // access point utils
-
+#include <centralrepository.h>
 #include <cdblen.h>
 #include <cmconnectionmethod.h>
 #include <cmdestination.h>
 #include <cmconnectionmethoddef.h>
 #include <cmmanager.h>
+#ifdef __SERIES60_NATIVE_BROWSER
+#include <browseruisdkcrkeys.h>
+#endif
+
+#include <featdiscovery.h>
+#include <aknmessagequerydialog.h>
 
 #include    <wmdrmagent.h> // for WMDRM file details view
 #include    <drmutilitytypes.h>
@@ -55,11 +61,18 @@
 #include    "drmutilitywmdrmutilities.h"
 
 #include    "wmdrmdlawrapper.h"
-#include    "drmuidialogids.h"
+
+using namespace DRM;
 
 // CONSTANTS
 const TInt KMaxUrlLength( 1024 );
 const TInt KMaxUrlSanityLength( 102400 );
+
+#ifndef __SERIES60_NATIVE_BROWSER
+const TUid KCRUidBrowser = {0x10008D39};
+const TUint32 KBrowserDefaultAccessPoint = 0x0000000E;
+const TUint32 KBrowserAccessPointSelectionMode = 0x0000001E;
+#endif
 
 #ifdef _DEBUG
 // debug panic
@@ -77,7 +90,8 @@ const TInt KWmDrmWrapperDebugPanicCode( 1 );
 //
 DRM::CDrmUtilityWMDrmWrapper::CDrmUtilityWMDrmWrapper() :
     iCoeEnv( NULL ),
-    iDrmUtilityUi( NULL )
+    iDrmUtilityUi( NULL ),
+    iWmDrmDlaSupportOn ( ETrue )
     {
     }
 
@@ -89,6 +103,8 @@ DRM::CDrmUtilityWMDrmWrapper::CDrmUtilityWMDrmWrapper() :
 void DRM::CDrmUtilityWMDrmWrapper::ConstructL()
     {
     User::LeaveIfError( iFs.Connect() );
+    TUid u = TUid::Uid( KFeatureIdFfWmdrmDlaSupport );
+    TRAPD(err, iWmDrmDlaSupportOn = CFeatureDiscovery::IsFeatureSupportedL( u ));
     }
 
 // -----------------------------------------------------------------------------
@@ -260,7 +276,7 @@ EXPORT_C void DRM::CDrmUtilityWMDrmWrapper::HandleWmErrorL(
 
     if ( !value )
         {
-        ShowNoRightsNoteL( aContent, reason, aOperationId, aObserver );
+        ShowNoRightsNoteL( aContent, reason );
         User::LeaveIfError( aContent.GetAttribute( ContentAccess::ECanPlay, value ) );
         if ( value )
             {
@@ -484,7 +500,7 @@ void DRM::CDrmUtilityWMDrmWrapper::CallRightsNotValidL(
         {
         case DRM::EUHCheckRightsActionDefault:
             {
-            ShowNoRightsNoteL( aContent, aReason, aOperationId, aObserver );
+            ShowNoRightsNoteL( aContent, aReason );
             }
             break;
 
@@ -542,15 +558,12 @@ void DRM::CDrmUtilityWMDrmWrapper::CallRightsAvailable(
 //
 void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
     ContentAccess::CData& aContent,
-    TUint32 /*aReason*/,
-    TInt aOperationId,
-    DRM::MDrmHandleErrorObserver* aObserver )
+    TUint32 /*aReason*/ )
     {
-    TInt value;
     TRAPD( err, LoadDlaWrapperL() );
     if ( !err )
         {
-        TInt ret( EOk );
+        TInt ret( EAknSoftkeyYes );
         RFile file;
         GetRFileFromCDataL( aContent, file );
         CleanupClosePushL( file );
@@ -564,21 +577,18 @@ void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
                 }
             TFileName fileName;
             User::LeaveIfError( aContent.GetStringAttribute( DRM::EDrmFileName, fileName ) );
-            // Qt dialog not implemented yet
-            ret = iDrmUtilityUi->DisplayQueryL( EQueryFileWithNoRightsObj, fileName );
+            if(iWmDrmDlaSupportOn)
+                {
+                ret = iDrmUtilityUi->DisplayQueryL( R_DRM_QUERY_EXPIRED_OR_NO_RO, fileName );
+                }
+            else
+                {
+                ret = iDrmUtilityUi->DisplayMessageQueryL( R_DRMUTILITY_SYNC_WITH_PC, R_DRMUTILITY_HEAD_NO_LICENSE, fileName);
+                }
             }
-
-        if ( !err && ret == EOk )
+        if ( !err && ( ret == EAknSoftkeyYes || ret == EAknSoftkeyOk ) && iWmDrmDlaSupportOn)
             {
             TRAP_IGNORE( DlaLicenseAcquisitionL( file ) );
-            
-            // Ask the rights from CAF, same call for both ECanPlay and ECanView
-            aContent.GetAttribute( ContentAccess::ECanPlay, value );
-            // call given HandleErrorObserver
-            if( value > 0 )
-                {
-                aObserver->RightsAvailable( aOperationId, KErrNone );              
-                }
             }
         CleanupStack::PopAndDestroy( &file );
         }
@@ -588,7 +598,7 @@ void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
             {
             iDrmUtilityUi = DRM::CDrmUtilityUI::NewL( iCoeEnv );
             }
-        iDrmUtilityUi->DisplayNoteL( EConfLicenceExpired );
+        iDrmUtilityUi->DisplayNoteL( R_DRM_INFO_EXPIRED_OR_NO_RO );
         }
     }
 
@@ -767,18 +777,31 @@ TBool DRM::CDrmUtilityWMDrmWrapper::IsDlaLicenseAcquisitionSilentL(
 void DRM::CDrmUtilityWMDrmWrapper::DlaLicenseAcquisitionL(
     RFile& aFile )
     {
-    TInt iapId( 0 );
-    HBufC* contentUrl( NULL );
-    HBufC* htmlData( NULL );
-    LoadDlaWrapperL();
-    TRAPD( err, iapId = DefaultAccessPointL() );
-    if ( !err )
+    if( iWmDrmDlaSupportOn )
         {
-        iDlaWrapper->SetIapId( iapId );
+        TInt iapId( 0 );
+        HBufC* contentUrl( NULL );
+        HBufC* htmlData( NULL );
+        LoadDlaWrapperL();
+        TRAPD( err, iapId = DefaultAccessPointL() );
+        if ( !err )
+            {
+            iDlaWrapper->SetIapId( iapId );
+            }
+        iDlaWrapper->AcquireLicenseL( aFile, contentUrl, htmlData  );
+        delete contentUrl;
+        delete htmlData;
         }
-    iDlaWrapper->AcquireLicenseL( aFile, contentUrl, htmlData  );
-    delete contentUrl;
-    delete htmlData;
+    else
+        {
+        if ( !iDrmUtilityUi )
+            {
+            iDrmUtilityUi = DRM::CDrmUtilityUI::NewL( iCoeEnv );
+            }
+        TFileName aFileName;
+        TInt err = aFile.Name(aFileName);
+        iDrmUtilityUi->DisplayNoteL( R_DRMUTILITY_SYNC_WITH_PC , aFileName);
+        }
     }
 
 // -----------------------------------------------------------------------------
@@ -801,38 +824,56 @@ void DRM::CDrmUtilityWMDrmWrapper::SilentDlaLicenseAcquisitionL(
 //
 TInt DRM::CDrmUtilityWMDrmWrapper::DefaultAccessPointL()
     {
-    //Fetch default connection
+    const TInt KDestinationSelectionMode( 2 );
+    CRepository* repository( NULL );
+    TInt ap( 0 );
+    TInt alwaysAsk( 0 );
     TUint32 iapd32( 0 );
-    TCmDefConnValue defConn;
-    RCmManager cmManager;
-    cmManager.OpenLC();
-    cmManager.ReadDefConnL(defConn);
-    if (defConn.iType == ECmDefConnConnectionMethod)
+    TInt defaultSnap( 0 );
+
+    repository = CRepository::NewL( KCRUidBrowser );
+    CleanupStack::PushL( repository );
+    repository->Get( KBrowserDefaultAccessPoint, ap );
+    repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
+    repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
+    CleanupStack::PopAndDestroy( repository );
+
+    if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
         {
-        iapd32=defConn.iId;
-        }
-    else if (defConn.iType == ECmDefConnDestination)
-        {
-        RCmDestination dest( cmManager.DestinationL( defConn.iId ) );
-        CleanupClosePushL( dest );
-
-        if ( dest.ConnectionMethodCount() <= 0 )
-            {
-            User::Leave( KErrNotFound );
-            }
-
-        RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
-        CleanupClosePushL( cMeth );
-
-        iapd32 = cMeth.GetIntAttributeL( CMManager::ECmIapId );
-        CleanupStack::PopAndDestroy( 2, &dest ); //cMeth, dest
+        alwaysAsk = ETrue;
         }
     else
         {
+        RCmManager cmManager;
+        cmManager.OpenLC();
+        if ( !alwaysAsk )
+            {
+            iapd32 =
+                cmManager.GetConnectionMethodInfoIntL( ap,
+                                                       CMManager::ECmIapId );
+            }
+        else if ( alwaysAsk == KDestinationSelectionMode )
+            {
+            RCmDestination dest( cmManager.DestinationL( defaultSnap ) );
+            CleanupClosePushL( dest );
+
+            if ( dest.ConnectionMethodCount() <= 0 )
+                {
+                User::Leave( KErrNotFound );
+                }
+
+            RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
+            CleanupClosePushL( cMeth );
+
+            iapd32 = cMeth.GetIntAttributeL( CMManager::ECmIapId );
+            CleanupStack::PopAndDestroy( 2, &dest ); //cMeth, dest
+            }
+        CleanupStack::PopAndDestroy( &cmManager );
+        }
+    if ( alwaysAsk && alwaysAsk != KDestinationSelectionMode )
+        {
         User::Leave( KErrAccessDenied );
         }
-    CleanupStack::PopAndDestroy(&cmManager);
-    // End of fetch default connection
     return iapd32;
     }
 

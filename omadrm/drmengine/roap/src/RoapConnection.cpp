@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -22,15 +22,53 @@
 #include <cmconnectionmethoddef.h>
 #include <cmmanager.h>
 #include <centralrepository.h>
-#include <extendedconnpref.h>
+#include <commdbconnpref.h>
 #include <cdblen.h>
-#include <cdbcols.h> // IAP, COMMDB_ID
 #include <es_enum.h>
+#ifdef __SERIES60_NATIVE_BROWSER
+#include <browseruisdkcrkeys.h>
+#endif
 #include "RoapConnection.h"
 #include "RoapDef.h"
 #include "RoapLog.h"
 
 
+
+#ifndef __SERIES60_NATIVE_BROWSER
+    const TUid KCRUidBrowser   = {0x10008D39};
+    const TUint32 KBrowserDefaultAccessPoint =  0x0000000E;
+    const TUint32 KBrowserAccessPointSelectionMode = 0x0000001E;
+    const TUint32 KBrowserNGDefaultSnapId = 0x00000053;
+#endif
+
+
+// ================= LOCAL FUNCTIONS =========================================
+// ---------------------------------------------------------------------------
+// IapIdOfDefaultSnapL
+// for trapping purposes only
+// ---------------------------------------------------------------------------
+//
+LOCAL_C TUint32 IapIdOfDefaultSnapL(
+    RCmManager& aCmManager,
+    const TUint32 aDefaultSnap )
+    {
+    RCmDestination dest( aCmManager.DestinationL( aDefaultSnap ) );
+    CleanupClosePushL( dest );
+    TUint32 iapIdOfDest( 0 );
+
+    if ( dest.ConnectionMethodCount() <= 0 )
+        {
+        User::Leave( KErrNotFound );
+        }
+
+    RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
+    CleanupClosePushL( cMeth );
+
+    iapIdOfDest = cMeth.GetIntAttributeL( CMManager::ECmIapId );
+    CleanupStack::PopAndDestroy( &cMeth );
+    CleanupStack::PopAndDestroy( &dest );
+    return iapIdOfDest;
+    }
 
 // ================= MEMBER FUNCTIONS =======================
 
@@ -66,6 +104,8 @@ void Roap::CRoapConnection::ConnectL
 ( TUint32 aIap, TRequestStatus* aStatus )
     {
     LOGLIT( "CRoapConnection::ConnectL" )
+    const TInt KAlwaysAskSelectionMode( 1 );
+    const TInt KDestinationSelectionMode( 2 );
 
     if ( iState == EInit )
         {
@@ -80,9 +120,11 @@ void Roap::CRoapConnection::ConnectL
         CleanupClosePushL<RConnection>( iConnection );
 
         TConnectionInfoBuf connInfo;
-        TUint count(0);
+        TInt ap = 0;
+        TInt alwaysAsk = 0;
+        TUint count;
         User::LeaveIfError( iConnection.EnumerateConnections( count ) );
-        TUint i(0);
+        TUint i;
         if ( count )
             {
             // Select from existing connections. Try to make AP match.
@@ -110,44 +152,71 @@ void Roap::CRoapConnection::ConnectL
         else
             {
             // No existing connections, create new one.
-            // Create overrides
-            TConnPrefList prefList;
-            TExtendedConnPref prefs;
+#ifdef __WINS__
+            // WINS connection creation does not work if preferences are given.
+            // Defaults are to be used always.
+            iConnection.Start( iStatus );
+#else
+            // Note: the TCommDbConnPref must NOT be stack variable.
+            // It must persist until completion of RConnection::Start().
+            iConnPref.SetDirection( ECommDbConnectionDirectionOutgoing );
+            //iConnPref.SetDialogPreference( ECommDbDialogPrefWarn )
+            iConnPref.SetBearerSet( ECommDbBearerCSD | ECommDbBearerWcdma );
+            // New connection is always created with user-selected AP
+            // so 0 is used instead of aIap.
 
-            prefs.SetNoteBehaviour(TExtendedConnPref::ENoteBehaviourConnSilent);
+            TInt defaultSnap( 0 );
+            CRepository* repository( NULL );
+            repository = CRepository::NewL( KCRUidBrowser );
+            CleanupStack::PushL( repository );
 
-            //Fetch default connection
-            TBool hasDefault(ETrue);
-            TCmDefConnValue defConn;
-            RCmManager cmManager;
-            cmManager.OpenLC();
-            cmManager.ReadDefConnL(defConn);
-            if (defConn.iType == ECmDefConnConnectionMethod)
+            repository->Get( KBrowserDefaultAccessPoint, ap);
+            repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
+            repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
+            CleanupStack::PopAndDestroy( repository );
+            repository = NULL;
+
+            TUint32 iapd32 = 0;
+            TInt err = KErrNone;
+
+            if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
                 {
-                prefs.SetIapId(defConn.iId);
-                }
-            else if (defConn.iType == ECmDefConnDestination)
-                {
-                prefs.SetSnapId(defConn.iId);
+                alwaysAsk = KAlwaysAskSelectionMode;
                 }
             else
                 {
-                hasDefault = EFalse;
+                RCmManager cmManager;
+                cmManager.OpenLC();
+                if ( !alwaysAsk )
+                    {
+                    TRAP( err, iapd32 = cmManager.GetConnectionMethodInfoIntL(
+                            ap, CMManager::ECmIapId ) );
+                    }
+                else if ( alwaysAsk == KDestinationSelectionMode )
+                    {
+                    TRAP( err, iapd32 = IapIdOfDefaultSnapL(
+                            cmManager, defaultSnap ) );
+                    }
+                CleanupStack::PopAndDestroy( &cmManager );
                 }
-            // End of fetch default connection
-            if (hasDefault)
-                {
-                prefList.AppendL(&prefs);
 
-                // Start an Outgoing Connection with overrides
-                iConnection.Start(prefList, iStatus);
+            if ( err || alwaysAsk == KAlwaysAskSelectionMode )
+                {
+                // Always ask
+                LOGLIT( "SetDialogPreference( ECommDbDialogPrefPrompt )" )
+                iConnPref.SetDialogPreference( ECommDbDialogPrefPrompt );
+                iapd32 = 0;
                 }
             else
                 {
-                // No default found --> trying with query
-                iConnection.Start(iStatus);
+                // User defined
+                LOGLIT( "SetDialogPreference( ECommDbDialogPrefDoNotPrompt )" )
+                iConnPref.SetDialogPreference( ECommDbDialogPrefDoNotPrompt );
                 }
-            CleanupStack::PopAndDestroy(&cmManager);
+
+            iConnPref.SetIapId( iapd32 );
+            iConnection.Start( iConnPref, iStatus );
+#endif
             iState = EConnecting;
             SetActive();    // The only path with a real async request.
             }

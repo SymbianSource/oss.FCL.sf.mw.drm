@@ -33,6 +33,8 @@ drmutilitycommon.mmp
 #if (defined __WINDOWS_MEDIA_DRM)
 drmutilitywmdrmwrapper.mmp
 #endif // __WINDOWS_MEDIA_DRM
+DrmUtilityDmgrWrapper.mmp
+DRMUiHandlingImpl.mmp
 DRMAutomatedUsageImpl.mmp
 DrmRightsInfoImpl.mmp
 

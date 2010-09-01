@@ -35,7 +35,7 @@ USERINCLUDE     ../../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
-
+SYSTEMINCLUDE /epoc32/include/ecom
 
 
 SOURCEPATH ../data
@@ -46,6 +46,7 @@ TARGET HTTPFilterDRM.rsc
 END
 
 LIBRARY euser.lib ecom.lib http.lib bafl.lib estlib.lib efsrv.lib estor.lib cone.lib commonui.lib caf.lib
+LIBRARY featmgr.lib
 
 #ifndef __DRM_NO_BB
 MACRO BLOCK_BY_BLOCK

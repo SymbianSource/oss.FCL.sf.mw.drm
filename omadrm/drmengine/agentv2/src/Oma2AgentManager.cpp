@@ -32,6 +32,7 @@
 #include <apaserverapp.h>
 #include <sysutil.h>
 #include <centralrepository.h>
+#include <featmgr.h>
 
 #include "Oma2AgentManager.h"
 #include "Oma2AgentAttributes.h"
@@ -130,7 +131,9 @@ void COma2AgentManager::ConstructL()
             }
         iOmaBasedMimeType = NULL;
         }
-
+    
+    FeatureManager::InitializeLibL();
+    
     }
 
 // -----------------------------------------------------------------------------
@@ -200,6 +203,8 @@ COma2AgentManager::~COma2AgentManager()
     delete iWatchedId;
 
     delete iOmaBasedMimeType;
+    
+    FeatureManager::UnInitializeLib();
     }
 
 // -----------------------------------------------------------------------------
@@ -723,11 +728,11 @@ TBool COma2AgentManager::RecognizeFileL(
     TInt err = KErrNone;
     CDcfCommon* dcf = NULL;
 
-#ifdef __DRM_OMA2
+#ifdef __DRM_OMA2   
     if ( !aFileName.Right(4).CompareF( KOma2DcfExtension ) ||
-        !aFileName.Right(4).CompareF( KOma2DcfExtensionAudio ) ||
-        !aFileName.Right(4).CompareF( KOma2DcfExtensionVideo ) ||
-        COma2Dcf::IsValidDcf(aBuffer) )
+            !aFileName.Right(4).CompareF( KOma2DcfExtensionAudio ) ||
+            !aFileName.Right(4).CompareF( KOma2DcfExtensionVideo ) ||
+            COma2Dcf::IsValidDcf(aBuffer) )
         {
         aFileMimeType.Copy(KOma2DcfContentType);
         aContentMimeType.Copy(KCafMimeType);
@@ -795,7 +800,11 @@ TInt COma2AgentManager::AgentSpecificCommand(
                 {
                 aOutputBuffer.Copy(_L8("FL CD SD"));
 #ifdef __DRM_OMA2
-                aOutputBuffer.Append(_L8(" OMADRM2"));
+                if( FeatureManager::FeatureSupported( 
+                        KFeatureIdFfOmadrm2Support ) )
+                    {
+                    aOutputBuffer.Append(_L8(" OMADRM2"));
+                    }
 #endif
                 }
             break;

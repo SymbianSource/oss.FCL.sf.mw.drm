@@ -21,7 +21,7 @@
 #include    <e32base.h>
 #include    <e32std.h>
 #include    <f32file.h>
-#include    <connect/sbdefs.h> //for KUidBackupRestoreStatus
+#include    <sbdefs.h> //for KUidBackupRestoreStatus
 #include    "DRMBackupObserver.h"
 #include    "DRMRightsServer.h"
 /*

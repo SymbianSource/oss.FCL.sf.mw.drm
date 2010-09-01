@@ -42,7 +42,6 @@ END  // RESOURCE
 USERINCLUDE     ../inc
 USERINCLUDE     ../../../omadrm/drmengine/server/inc
 USERINCLUDE     ../../../inc   // ADo level inc dir
-USERINCLUDE     ../../drmui/drmuidialogs/inc
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
@@ -62,7 +61,6 @@ LIBRARY         eikdlg.lib
 LIBRARY         aknnotify.lib
 LIBRARY         drmrights.lib // Permission, Constraint
 LIBRARY         drmserverinterfaces.lib // DrmClockClient, DrmRightsClient
-LIBRARY         drmuidialogs.lib
 
 DOCUMENT    bld.inf
 

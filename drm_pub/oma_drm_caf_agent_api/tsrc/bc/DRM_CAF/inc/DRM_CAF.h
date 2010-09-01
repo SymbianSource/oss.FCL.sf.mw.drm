@@ -38,7 +38,8 @@
 #include <s32file.h>
 #include <e32std.h>
 #include <e32base.h>
-#include <caf/data.h>
+#include <data.h>
+//#include <caf.h>
 
 #include <Oma2Agent.h>
 #include <DRMLicenseChecker.h>

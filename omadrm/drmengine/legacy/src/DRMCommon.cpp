@@ -21,6 +21,7 @@
 #include <f32file.h>
 #include <s32file.h>
 #include <apmstd.h>
+#include <featmgr.h>
 #include <wspdecoder.h>
 #include <wspencoder.h>
 
@@ -1821,7 +1822,8 @@ EXPORT_C DRMCommon::DRMCommon(void)
 // -----------------------------------------------------------------------------
 EXPORT_C void DRMCommon::ConstructL()
     {
-    }
+    FeatureManager::InitializeLibL();
+    } 
 
 // -----------------------------------------------------------------------------
 // DRMCommon::NewL
@@ -1840,6 +1842,7 @@ EXPORT_C DRMCommon* DRMCommon::NewL()
 // Destructor
 EXPORT_C DRMCommon::~DRMCommon()
     {
+    FeatureManager::UnInitializeLib();
     }
 
 // -----------------------------------------------------------------------------
@@ -2261,7 +2264,15 @@ EXPORT_C TInt DRMCommon::SupportedDRMMethods(
         DRMCommon::ESeparateDelivery |
         DRMCommon::ESuperDistribution;
 #ifdef __DRM_OMA2
-    aOMALevel = EOMA_2_0;
+    if ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) )
+        {
+        aOMALevel = EOMA_2_0;
+        }
+    else
+        {
+        aOMALevel = EOMA_1_0;
+        }
+    
 #else
     aOMALevel = EOMA_1_0;
 #endif

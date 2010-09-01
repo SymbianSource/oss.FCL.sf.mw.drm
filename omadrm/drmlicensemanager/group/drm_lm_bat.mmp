@@ -23,6 +23,7 @@ TARGETTYPE      EXE
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE   /epoc32/include/libc
 
 USERINCLUDE     ../inc
 USERINCLUDE     ../../../inc   // ADo level inc dir

@@ -37,7 +37,8 @@ USERINCLUDE	    ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
-
+SYSTEMINCLUDE   /epoc32/include/caf
+SYSTEMINCLUDE   /epoc32/include/libc
 
 SOURCEPATH      ../legacy/src
 SOURCE          DRMCommon.cpp
@@ -55,6 +56,7 @@ LIBRARY         drmserverinterfaces.lib
 LIBRARY         euser.lib efsrv.lib charconv.lib
 LIBRARY         apmime.lib bafl.lib estor.lib InetProtUtil.lib
 LIBRARY         caf.lib
+LIBRARY		featmgr.lib 
 
 #ifdef RD_MULTIPLE_DRIVE
 LIBRARY         platformenv.lib

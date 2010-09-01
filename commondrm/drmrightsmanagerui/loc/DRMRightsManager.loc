@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003 - 2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2003 - 2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -22,7 +22,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_view_det        "Licence details"
+#define qtn_drm_mgr_view_det        "License details"
 
 //d:Command in options menu.
 //l:list_single_pane_t1_cp2
@@ -44,42 +44,42 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_restore         "Restore licences"
+#define qtn_drm_mgr_restore         "Restore licenses"
 
 //d:Caption and short caption. "Activ." stands for "Activation"
 //l:cell_app_pane_t1
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr                 "Licences"
+#define qtn_drm_mgr                 "Licenses"
 
 //d:Title pane text in main view
 //l:title_pane_t2/opt9
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_title_pane      "Licences"
+#define qtn_drm_mgr_title_pane      "Licenses"
 
 //d:Error message
 //l:popup_note_window
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_query_restart   "Unable to access licences. Phone will restart. Continue?"
+#define qtn_drm_mgr_query_restart   "Unable to access licenses. Phone will restart. Continue?"
 
 //d:Error message
 //l:popup_note_window
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_note_backup     "Unable to access licences. Licence list should be restored."
+#define qtn_drm_mgr_note_backup     "Unable to access licenses. License list should be restored."
 
 //d:Empty text in listbox
 //l:main_list_empty_pane
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_no_files        "no licences"
+#define qtn_drm_mgr_no_files        "no licenses"
 
 //d:Text to be used when related Media Object is not found in device
 //d:%N is a progressive number
@@ -103,14 +103,14 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_det_valid       "Licence is valid"
+#define qtn_drm_mgr_det_valid       "License is valid"
 
 //d:Possible second line for first entry of Details View listbox
 //l:list_double_pane_t2_cp2
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_det_exp         "Licence expired"
+#define qtn_drm_mgr_det_exp         "License expired"
 
 //d:First line of 'Content in phone' entry in Details View listbox.
 //d:It says if related Media Object is in device or not. If Media object is in device and not in a private
@@ -575,7 +575,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_auto_del_romo   "If you delete licence, %U will also be deleted. Continue?"
+#define qtn_drm_mgr_auto_del_romo   "If you delete license, %U will also be deleted. Continue?"
 
 //d:Confirmation query text used when deleting a Right Object
 //d:%U name of the file
@@ -583,7 +583,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_del_single_ro   "If you delete licence, file %U cannot be used. Continue?"
+#define qtn_drm_mgr_del_single_ro   "If you delete license, file %U cannot be used. Continue?"
 
 //d:Confirmation query text proposed to ask if also related file should be deleted
 //d:%U name of the file
@@ -599,7 +599,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_wait_del_one_ro "Deleting licence for %U"
+#define qtn_drm_mgr_wait_del_one_ro "Deleting license for %U"
 
 //d:Text during deletion
 //d:%U name of the file
@@ -607,7 +607,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_wait_del_roco   "Deleting %U and licence"
+#define qtn_drm_mgr_wait_del_roco   "Deleting %U and license"
 
 //d:Notification after deletion
 //d:%U name of the file
@@ -615,7 +615,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_deleted_one_ro  "Licence for %U deleted"
+#define qtn_drm_mgr_deleted_one_ro  "License for %U deleted"
 
 //d:Notification after deletion
 //d:%U name of the file
@@ -623,7 +623,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_deleted_roco    "Licence and %U deleted"
+#define qtn_drm_mgr_deleted_roco    "License and %U deleted"
 
 //d:Confirmation query text
 //d:%U name of the file
@@ -639,7 +639,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_note_ro_removed "Unable to access licence"
+#define qtn_drm_mgr_note_ro_removed "Unable to access license"
 
 
 // NEW STRINGS
@@ -649,14 +649,14 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_list_valid_keys     "Valid licences"
+#define qtn_drm_mgr_list_valid_keys     "Valid licenses"
 
 //d:Second item data text of Main View
 //l:list_single_large_graphic_pane_t1_cp2
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_list_invalid_keys   "Invalid licences"
+#define qtn_drm_mgr_list_invalid_keys   "Invalid licenses"
 
 //d:Third item data text of Main View
 //l:list_single_large_graphic_pane_t1_cp2
@@ -670,7 +670,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_del_group_ro_descr  "After deleting the licence, several files may not be used"
+#define qtn_drm_mgr_del_group_ro_descr  "After deleting the license, several files may not be used"
 
 //d:Title of the list query
 //l:heading_pane_t1
@@ -691,14 +691,14 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_delete_group_ro     "Delete licence to the files"
+#define qtn_drm_mgr_delete_group_ro     "Delete license to the files"
 
 //d:Notification after deletion
 //l:popup_note_window
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_deleted_ro          "Licence deleted"
+#define qtn_drm_mgr_deleted_ro          "License deleted"
 
 //d:Data query prompt text When renaming an item
 //l:popup_query_data_window
@@ -713,21 +713,21 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_title_valid_keys    "Valid licences"
+#define qtn_drm_mgr_title_valid_keys    "Valid licenses"
 
 //d:Title pane text for Invalid keys View
 //l:title_pane_t2/opt9
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_title_invalid_keys  "Invalid licences"
+#define qtn_drm_mgr_title_invalid_keys  "Invalid licenses"
 
 //d:Title pane text for Keys not in use View
 //l:title_pane_t2/opt9
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_title_keys_not_used "Licences not in use"
+#define qtn_drm_mgr_title_keys_not_used "Licenses not in use"
 
 //d:Empty text in listbox
 //l:main_list_empty_pane
@@ -744,7 +744,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_name_group_key      "Group licence %N"
+#define qtn_drm_mgr_name_group_key      "Group license %N"
 
 //d:Menu item used in Group view to see the details of a Media Object.
 //l:list_single_pane_t1_cp2
@@ -786,7 +786,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_det_ro_number           "Licence %0N/%1N"
+#define qtn_drm_det_ro_number           "License %0N/%1N"
 
 //d:Possible second line for first entry (qtn_drm_mgr_det_stat) of Details View
 //d:listbox, when the activation key is missing.
@@ -794,7 +794,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_det_invalid         "Licence is invalid"
+#define qtn_drm_mgr_det_invalid         "License is invalid"
 
 //d:Possible second line for first entry (qtn_drm_det_ro_number) of Details
 //d:View listbox, when the activation key is not yet valid.
@@ -802,7 +802,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_det_not_valid_yet   "Licence not valid yet"
+#define qtn_drm_mgr_det_not_valid_yet   "License not valid yet"
 
 //d:Command in options menu, used to rename a Group key.
 //l:list_single_pane_t1_cp2
@@ -838,7 +838,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_info_unable_delete  "Licence lists are updated. Unable to delete during updating."
+#define qtn_drm_mgr_info_unable_delete  "License lists are updated. Unable to delete during updating."
 
 //d:Info popup for an activation key with future rights. %U is the date when
 //d:the activation key will start to be valid
@@ -846,7 +846,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_mgr_info_popup_future   "Licence is valid from %U"
+#define qtn_drm_mgr_info_popup_future   "License is valid from %U"
 
 //d:Possible first line for fourth entry of Details View listbox
 //d:Second line is qtn_drm_mgr_det_inter or qtn_drm_mgr_det_inter_two, meaning
@@ -862,7 +862,7 @@
 //l:popup_note_window
 //r:3.0
 //
-#define qtn_drm_mgr_query_enable_keys "Restore licences and enable on this phone?"
+#define qtn_drm_mgr_query_enable_keys "Restore licenses and enable on this phone?"
 
 //d:Progress dialog text
 //d:Label for UDT progress note until HTTP connection has been estabilished
@@ -883,7 +883,7 @@
 //l:popup_note_wait_window
 //r:3.0
 //
-#define qtn_drm_mgr_prgr_restoring_keys "Restoring licences"
+#define qtn_drm_mgr_prgr_restoring_keys "Restoring licenses"
 
 
 //d:Text for password editor in multiline query
@@ -919,7 +919,7 @@
 //l:popup_note_window
 //r:3.0
 //
-#define qtn_drm_mgr_info_no_backup_ros "No licences to restore"
+#define qtn_drm_mgr_info_no_backup_ros "No licenses to restore"
 
 //d:Information note layout
 //d:Server unavailable
@@ -933,7 +933,7 @@
 //w:
 //r:3.1
 //
-#define qtn_drm_mgr_options_get_new_key "Get new licence"
+#define qtn_drm_mgr_options_get_new_key "Get new license"
 
 //d:Confirmation query text
 //d:Shown when user has selected option Get new key, but valid, unlimited rights exist
@@ -941,7 +941,7 @@
 //w:
 //r:3.1
 //
-#define qtn_drm_mgr_query_unlimited_ro "Licence is valid for unlimited time. Get still new licence?"
+#define qtn_drm_mgr_query_unlimited_ro "License is valid for unlimited time. Get still new license?"
 
 //d:First line of an entry of Details View listbox, for an individual constraint.
 //d:Second line is qtn_drm_det_sim_allowed or qtn_drm_det_sim_not_allowed.
@@ -1023,7 +1023,7 @@
 //w:
 //r:9.1
 //
-#define qtn_drm_details_valid       "Licence is valid"
+#define qtn_drm_details_valid       "License is valid"
 
 //d:Possible second line for first entry of Details View listbox
 //l:list_double_pane_t2_cp2
@@ -1037,7 +1037,7 @@
 //w:
 //r:9.1
 //
-#define qtn_drm_details_no_licence_available       "No licence available"
+#define qtn_drm_details_no_licence_available       "No license available"
 
 //d:First line of third entry of Details View listbox
 //d:It reports if it is possible to send Media Object or not.

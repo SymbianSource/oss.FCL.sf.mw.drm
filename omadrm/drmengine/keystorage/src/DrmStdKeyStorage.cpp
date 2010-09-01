@@ -25,6 +25,7 @@
 #include <x509cert.h>
 #include <etelmm.h>
 #include <mmtsy_names.h>
+#include <featmgr.h>
 
 #ifdef RD_MULTIPLE_DRIVE
 #include <driveinfo.h>
@@ -210,10 +211,17 @@ void CDrmStdKeyStorage::ConstructL()
     User::LeaveIfError(iFs.Connect());
     iFileMan = CFileMan::NewL(iFs);
 
-#ifdef __DRM_OMA2
-    TRAP_IGNORE( SelectDefaultRootL() ); // Allow startup anyway.
+    FeatureManager::InitializeLibL();
+    
+#ifdef __DRM_OMA2 
+    if ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) )
+        {
+        TRAP_IGNORE( SelectDefaultRootL() );
+        }
 #endif
-
+    
+    FeatureManager::UnInitializeLib();
+    
     iDeviceSpecificKey.Copy(KDefaultKey);
 
     LOG(_L("CDrmStdKeyStorage::ConstructL <-"));
@@ -576,9 +584,7 @@ void CDrmStdKeyStorage::GetCertificateChainL(
     for (i = 0; i < dir->Count(); i++)
         {
         ReadFileL(iFs, (*dir)[i].iName, cert);
-        CleanupStack::PushL( cert );
         aCertChain.AppendL(cert);
-        CleanupStack::Pop( cert );
         }
     CleanupStack::PopAndDestroy(); // dir
     LOG(_L("CDrmStdKeyStorage::GetCertificateChainL <-"));

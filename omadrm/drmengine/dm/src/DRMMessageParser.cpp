@@ -24,6 +24,7 @@
 #include <caf/caftypes.h>
 #include <wspdecoder.h>
 #include <wspencoder.h>
+#include <featmgr.h>
 
 #ifdef RD_MULTIPLE_DRIVE
 #include <driveinfo.h>
@@ -223,6 +224,9 @@ EXPORT_C CDRMMessageParser::~CDRMMessageParser()
     Reset();
 
     User::Free( const_cast< TUint8* >( iInputBuffer.Ptr() ) );
+    
+    FeatureManager::UnInitializeLib();
+    
     }
 
 // -----------------------------------------------------------------------------
@@ -331,6 +335,9 @@ EXPORT_C void CDRMMessageParser::FinalizeMessageParserL()
 //
 void CDRMMessageParser::ConstructL()
     {
+    
+    FeatureManager::InitializeLibL();
+    
     // Make some extra room for crazy b64decode().
     iInputBuffer.Set( reinterpret_cast< TUint8* >(
                         User::AllocL( KInputBufferSize + 2 ) ),
@@ -486,9 +493,12 @@ void CDRMMessageParser::HandleRightsDataL()
                 SetBit( EReadingHeaderPart );
 
                 res.Set( NULL, 0 );
-#ifndef __DRM_FULL
-                User::Leave(KErrNotSupported);
-#endif
+                
+                if ( !( FeatureManager::FeatureSupported(
+                        KFeatureIdFfOmadrm1FullSupport ) ) )
+                    {
+                    User::Leave(KErrNotSupported);
+                    }  
                 }
             else
                 {

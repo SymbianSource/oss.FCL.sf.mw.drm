@@ -406,7 +406,7 @@
 //w:
 //r:3.0
 //
-#define qtn_drm_query_rights_acq_msg   "Connect to server to get a licence?"
+#define qtn_drm_query_rights_acq_msg   "Connect to server to get a license?"
 
 //d:Confirmation query text used when triggering registration to a domain
 //l:popup_note_window

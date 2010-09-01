@@ -42,6 +42,9 @@ USERINCLUDE	    ../../../inc   // ADo level inc dir
 
 // Default system include paths for middleware layer modules.
 MW_LAYER_SYSTEMINCLUDE
+SYSTEMINCLUDE   /epoc32/include/libc
+SYSTEMINCLUDE   /epoc32/include/ecom
+SYSTEMINCLUDE   /epoc32/include/caf
 
 SOURCEPATH      ../server/src
 SOURCE          DRMRightsClient.cpp
@@ -73,6 +76,7 @@ LIBRARY		    drmcrypto.lib drmrights.lib flogger.lib
 LIBRARY         euser.lib XmlFramework.lib hash.lib
 LIBRARY         estor.lib efsrv.lib apmime.lib InetProtUtil.lib bnf.lib
 LIBRARY         cryptography.lib random.lib bafl.lib charconv.lib
+LIBRARY		featmgr.lib
 
 #if defined(ARMCC)
 deffile ../eabi/ 

@@ -111,8 +111,16 @@ gnumakefile ../drmengine/group/CryptoPrep.mak // Copy the appropriate DRM crypto
 // Recognizer
 ../drmplugins/drmrecognizer/group/RecDRM.mmp
 
+// Ro Handler (only used if OMA DRM 1.0 Full is enabled)
+#ifdef __DRM_FULL
+../drmplugins/drmrohandler/group/crohandler.mmp
+#endif
+
 // DRMFilter
 ../drmplugins/drmfilter/group/HTTPFilterDRM.mmp
+
+// DRMHelper
+../drmhelper/group/Drmhelper.mmp
 
 #ifdef SBSV2
 PRJ_EXTENSIONS

@@ -21,6 +21,7 @@
 #include <apmstd.h>
 #include <ecom/ecom.h>
 #include <ecom/implementationproxy.h>
+#include <featmgr.h>
 
 #include "RecDRM.h"
 
@@ -39,6 +40,8 @@ const TInt KMinContentTypeLen( 3 );
 const TInt KMaxBufferLength=256;
 
 const TInt KDCFHeaderLength=3;
+
+#ifdef DRM_OMA2_ENABLED
 const TInt KLengthBoxSize = 4;
 const TInt KLengthBoxType = 4;
 const TInt KLengthBoxSize64 = 8;
@@ -50,6 +53,7 @@ _LIT8(KODFPrefix, "odcf");
 _LIT8(KRoapTriggerElement, "roap-trigger:roapTrigger"); // before OMA spec CR, ROAP Trigger namespace prefix was roap-trigger
 _LIT8(KRoapTriggerElement2, "roap:roapTrigger");
 _LIT8(KRoapTriggerType, "application/vnd.oma.drm.roap-trigger+xml");
+#endif
 
 const TImplementationProxy ImplementationTable[] =
         {
@@ -89,12 +93,14 @@ CApaDRMRecognizer::CApaDRMRecognizer():
 
 CApaDRMRecognizer::~CApaDRMRecognizer()
 {
+    FeatureManager::UnInitializeLib();
 }
 
 
 CApaDataRecognizerType* CApaDRMRecognizer::CreateRecognizerL()
 {
-    return new (ELeave) CApaDRMRecognizer ();
+    FeatureManager::InitializeLibL();
+	return new (ELeave) CApaDRMRecognizer ();
 }
 
 
@@ -131,22 +137,25 @@ void CApaDRMRecognizer::DoRecognizeL( const TDesC& aName, const TDesC8& aBuffer 
 #endif
 
 #ifdef DRM_OMA2_ENABLED
-    // Recognize ROAP Trigger
-    if ( RecognizeRoapTrigger( aBuffer ) )
-        {
-        return;
-        }
-
-    // Recognize DCFv2
-    if ( RecognizeODF( aBuffer ) )
-        {
-        return;
-        }
-#endif
-    // Recognize DCFv1
-    TUint8 version = aBuffer[0];
-    TUint8 contentTypeLen = aBuffer[1];
-    TUint8 contentURILen = aBuffer[2];
+	if( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) )
+	    {    
+        // Recognize ROAP Trigger
+        if ( RecognizeRoapTrigger( aBuffer ) )
+            {
+            return;
+            }
+	
+        // Recognize DCFv2    
+        if ( RecognizeODF( aBuffer ) )
+            {
+            return;
+            }
+	    }
+#endif	
+	// Recognize DCFv1
+	TUint8 version = aBuffer[0];
+	TUint8 contentTypeLen = aBuffer[1];
+	TUint8 contentURILen = aBuffer[2];
 
     if ( contentTypeLen < KMinContentTypeLen || contentURILen == 0 )
     {
@@ -177,6 +186,12 @@ void CApaDRMRecognizer::DoRecognizeL( const TDesC& aName, const TDesC8& aBuffer 
 #ifdef DRM_OMA2_ENABLED
 TBool CApaDRMRecognizer::RecognizeRoapTrigger( const TDesC8& aBuffer )
 {
+        if( ! ( FeatureManager::FeatureSupported( 
+                KFeatureIdFfOmadrm2Support ) ) )
+            {
+            return EFalse;
+            }
+        
         if ( aBuffer.FindF( KRoapTriggerElement() ) != KErrNotFound
              || aBuffer.FindF( KRoapTriggerElement2() ) != KErrNotFound )
         {
@@ -189,54 +204,61 @@ TBool CApaDRMRecognizer::RecognizeRoapTrigger( const TDesC8& aBuffer )
 
 TBool CApaDRMRecognizer::RecognizeODF( const TDesC8& aBuffer )
 {
-    if ( aBuffer.Size() < 24 ) return EFalse;
-    TPtrC8 ftypPrefix = aBuffer.Mid( 4, KFTypPrefix().Length() );
-    if ( KFTypPrefix().CompareF( ftypPrefix ) == KErrNone )
-    {
-        TPtrC8 odfPrefix = aBuffer.Mid( 8, KODFPrefix().Length() );
-        if ( KODFPrefix().CompareF( odfPrefix ) == KErrNone )
+    
+    if( ! ( FeatureManager::FeatureSupported(
+            KFeatureIdFfOmadrm2Support ) ) )
         {
-            TBuf8<4> buffer;
-            TUint32 size;
-            TPtr8 ptr(NULL, 0);
-            TUint32 offset(20);
-
-            // ODRM box header
-            buffer.Zero();
-            buffer.Copy( aBuffer.Mid( offset, 4 ));
-            size = ReadUint32FromBlock( buffer, 0 );
-            offset += KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
-
-            if (size == 1)
-            {
-                offset += KLengthBoxSize64;
-            }
-            if ( aBuffer.Size() < offset+4 ) return EFalse;
-
-            // Discrete headers box header
-            buffer.Zero();
-            buffer.Copy( aBuffer.Mid( offset, 4 ));
-            size = ReadUint32FromBlock( buffer, 0 );
-            offset += KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
-            if ( size == 1 )
-            {
-                offset += KLengthBoxSize64;
-            }
-            if ( aBuffer.Size() < offset+1 ) return EFalse;
-
-            // Content type
-            buffer.Zero();
-            buffer.Copy( aBuffer.Mid( offset, 1 ));
-            if ( aBuffer.Size() < offset + 1 + buffer[0] ) return EFalse;
-            TPtrC8 mimeType = aBuffer.Mid( offset+1, buffer[0] );
-
-            iConfidence = ECertain;
-            iDataType=TDataType( mimeType );
-            return ETrue;
+        return EFalse;
         }
-
-    }
-    return EFalse;
+    
+	if ( aBuffer.Size() < 24 ) return EFalse;
+	TPtrC8 ftypPrefix = aBuffer.Mid( 4, KFTypPrefix().Length() );
+	if ( KFTypPrefix().CompareF( ftypPrefix ) == KErrNone )
+	{
+		TPtrC8 odfPrefix = aBuffer.Mid( 8, KODFPrefix().Length() );
+		if ( KODFPrefix().CompareF( odfPrefix ) == KErrNone )
+		{
+			TBuf8<4> buffer;
+    		TUint32 size;
+    		TPtr8 ptr(NULL, 0);
+    		TUint32 offset(20);
+    
+    		// ODRM box header
+    		buffer.Zero();
+    		buffer.Copy( aBuffer.Mid( offset, 4 ));
+    		size = ReadUint32FromBlock( buffer, 0 );
+    		offset += KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
+    		
+    		if (size == 1)
+        	{
+        		offset += KLengthBoxSize64;
+        	}
+    		if ( aBuffer.Size() < offset+4 ) return EFalse;
+    		
+    		// Discrete headers box header
+    		buffer.Zero();
+    		buffer.Copy( aBuffer.Mid( offset, 4 ));
+    		size = ReadUint32FromBlock( buffer, 0 );
+    		offset += KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
+    		if ( size == 1 )
+        	{
+        		offset += KLengthBoxSize64;
+        	}
+    		if ( aBuffer.Size() < offset+1 ) return EFalse;
+    		
+    		// Content type
+    		buffer.Zero();
+    		buffer.Copy( aBuffer.Mid( offset, 1 ));
+    		if ( aBuffer.Size() < offset + 1 + buffer[0] ) return EFalse;
+    		TPtrC8 mimeType = aBuffer.Mid( offset+1, buffer[0] );
+   			
+   			iConfidence = ECertain;
+			iDataType=TDataType( mimeType );
+			return ETrue;
+		}
+		
+	}
+	return EFalse;
 }
 #endif
 

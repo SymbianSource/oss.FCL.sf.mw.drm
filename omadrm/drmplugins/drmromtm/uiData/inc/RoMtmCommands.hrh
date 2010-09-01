@@ -22,6 +22,8 @@
 
 // INCLUDE FILES
 
+#include <MtmExtendedCapabilities.hrh>
+
 /**
 * The following enum constants define those Ro MTM specific commands that 
 * are supported by the client or the UI MTM components.

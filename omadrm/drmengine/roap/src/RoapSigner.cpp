@@ -185,9 +185,7 @@ TBool CRoapSigner::VerifyAndAddResponseL(
     ptr.Copy( aResponse.Left( startPoint ) );
     ptr.Append( aResponse.Right( aResponse.Length() - endPoint ) );
 
-    CleanupStack::PushL( tempMessage );
-    iResponses.AppendL ( tempMessage );
-    CleanupStack::Pop( tempMessage );
+    iResponses.Append( tempMessage );
     iHash->Reset();
     for ( i = 0; i < iResponses.Count(); i++ )
         {
@@ -292,9 +290,7 @@ HBufC8* CRoapSigner::SignAndAddRequestL(
     CleanupStack::PopAndDestroy( s );
     CleanupStack::PopAndDestroy( signature );
 
-    CleanupStack::PushL( r );
-    iRequests.AppendL ( r->Des().AllocL() );
-    CleanupStack::Pop( r );
+    iRequests.Append( r->Des().AllocL() );
     return r;
     }
 

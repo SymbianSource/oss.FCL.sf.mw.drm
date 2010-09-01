@@ -20,6 +20,7 @@
 #include <DRMCommon.h>
 #include <f32file.h>
 #include <s32buf.h>
+#include <featmgr.h>
 #include <DRMMessageParser.h>
 #include <caf/caf.h>
 #include <caf/cafplatform.h>
@@ -30,7 +31,10 @@
 
 //------------------------------------------------------------------------
 
+#ifdef __DRM_FULL
 const TInt KMinContentSizeToGetTheURI = 520;
+#endif
+
 const TInt KDefaultSize( 2048 );
 const TInt KWholeDataPart( -1 );
 
@@ -110,6 +114,8 @@ void CHTTPFilterDRMDataSupplier::ConstructL( TInt aSize )
     Attach( iMemBuf );
 
     iDRMMessageParser->InitializeMessageParserL( *this );
+    
+    FeatureManager::InitializeLibL();
 
     }
 
@@ -131,6 +137,9 @@ void CHTTPFilterDRMDataSupplier::ConstructL( TInt aSize,
 
     iDRMOma1DcfCreator = COma1DcfCreator::NewL();
     Attach( iMemBuf );
+    
+    FeatureManager::InitializeLibL();
+    
     }
 
 // -----------------------------------------------------------------------------
@@ -183,6 +192,9 @@ CHTTPFilterDRMDataSupplier::~CHTTPFilterDRMDataSupplier()
         delete iDRMOma1DcfCreator;
         iDRMOma1DcfCreator = NULL;
         }
+    
+    FeatureManager::UnInitializeLib();
+    
     }
 
 // -----------------------------------------------------------------------------
@@ -456,6 +468,13 @@ void CHTTPFilterDRMDataSupplier::SetContentMimeTypeL( const TDesC8& aMimeType )
 #ifdef __DRM_FULL
 void CHTTPFilterDRMDataSupplier::SetEstimatedArrivalTime( TInt aXOmaHeaderVal )
     {
+    
+    if ( !( FeatureManager::FeatureSupported( 
+            KFeatureIdFfOmadrm1FullSupport ) ) )
+        {
+        return;
+        }
+    
     // get the data part
     ContentAccess::CManager* manager = NULL;
     ContentAccess::TAgent agent;

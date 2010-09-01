@@ -80,7 +80,6 @@
 #include "DcfEntry.h"
 #include "Base64.h"
 #include "drmsettingsplugininternalcrkeys.h"
-#include "buffercontainers.h"
 
 
 #define STUB_C_CLASS_IN_NAMESPACE( n, c ) namespace n { class c: public CBase { private: c(); public: virtual ~c(); }; } n::c::c() {} n::c::~c() {}
@@ -2163,7 +2162,7 @@ void CRoapEng::GetDeviceDetailsL(
 #ifndef __WINS__
     TInt numPhone = 0;
     TUint32 caps = 0;
-    DRM::CNameContainer* tsyName(NULL);
+    TName tsyName;
     RMobilePhone phone;
     RTelServer etelServer;
     RTelServer::TPhoneInfo phoneInfo;
@@ -2174,20 +2173,18 @@ void CRoapEng::GetDeviceDetailsL(
     CleanupClosePushL( etelServer );
 
     User::LeaveIfError( etelServer.LoadPhoneModule( KMmTsyModuleName ) );
-    User::LeaveIfError( etelServer.EnumeratePhones( numPhone ) );
+    User::LeaveIfError( etelServer.EnumeratePhones( numPhone) );
 
-    tsyName = DRM::CNameContainer::NewLC();
     for (TInt i(0); i < numPhone; i++)
         {
         User::LeaveIfError( etelServer.GetPhoneInfo( i, phoneInfo ) );
-        User::LeaveIfError( etelServer.GetTsyName( i,tsyName->iBuffer ) );
+        User::LeaveIfError( etelServer.GetTsyName( i,tsyName ) );
 
-        if ( !tsyName->iBuffer.CompareF( KMmTsyModuleName ) )
+        if ( tsyName.CompareF( KMmTsyModuleName ) == 0)
             {
             break;
             }
         }
-    CleanupStack::PopAndDestroy( tsyName );
 
     User::LeaveIfError( phone.Open( etelServer, phoneInfo.iName ) );
     CleanupClosePushL( phone );
@@ -2366,7 +2363,7 @@ void CRoapEng::InsertTransactionIDL(
             TPair pair;
             pair.iCid = aContentIDs[i];
             pair.iTtid = aTransIDs[i];
-            array.AppendL( pair );
+            array.Append( pair );
             }
 
         iDcfRep->SetTtid( array, status );

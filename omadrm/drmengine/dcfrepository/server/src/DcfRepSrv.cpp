@@ -726,7 +726,6 @@ void CDcfRepSrv::CheckFileL(const TDesC& aFile , TInt& aType)
                     {
                     aType = ENoDcf;
                     }
-
                 }
             break;
         case EStateSetTtid:

@@ -17,7 +17,7 @@
 */
 
 #include <e32base.h>
-#include <ecom/ecom.h>
+#include <ecom.h>
 
 #include <wmdrmaccess.h>
 #include <wmdrmaccessecominterface.h>

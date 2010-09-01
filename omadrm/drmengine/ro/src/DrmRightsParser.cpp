@@ -1113,7 +1113,7 @@ void CDrmRightsParser::OnStartElementL(
                     GetAttributeValueL( aAttributes, KIdAttribute );
                 iRights->iCurrentAsset->iIdRef =
                     GetAttributeValueL( aAttributes, KIdRefAttribute );
-                iRights->iAssets.AppendL ( iRights->iCurrentAsset );
+                iRights->iAssets.Append( iRights->iCurrentAsset );
                 break;
             case EPermissionAssetState:
                 iRights->iCurrentAsset = CParsedAsset::NewL();
@@ -1126,7 +1126,8 @@ void CDrmRightsParser::OnStartElementL(
                 break;
             case EPermissionState:
                 iRights->iCurrentPermission = CParsedPermission::NewL();
-                iRights->iPermissions.AppendL ( iRights->iCurrentPermission );
+                iRights->iPermissions.Append(
+                        iRights->iCurrentPermission );
                 iRights->iCurrentPermission->iOnExpiredUrl =
                     GetAttributeValueL( aAttributes, KOnExpiredUrlAttribute );
                 break;

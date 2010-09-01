@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006-2009 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -32,6 +32,7 @@
 //*** forward declarations go here:
 class CCoeEnv;
 class CDRMConstraint;
+class CSchemeHandler;
 
 namespace ContentAccess
     {
@@ -777,6 +778,16 @@ private:
     TBool SilentRightsAllowedL();
 
     /**
+    * Check if browser AP has been defined
+    */
+    TBool BrowserAPDefinedL();
+
+    /**
+    * Returns the number of access points on phone
+    */
+    TInt APCountL();
+
+    /**
     * Handles exit from service
     * from MAknServerAppExitObserver
     */
@@ -854,6 +865,9 @@ private: // data
 
     // Wait for the notes and queries
     CActiveSchedulerWait iWait;
+
+    // Schemehandler for url handling
+    CSchemeHandler* iSchemeHandler;
 
     // Operation Queue:
     CDrmUiHandlingData* iFirst;

@@ -25,6 +25,7 @@
 #include "DcfCommon.h"
 #include "DRMHelperDownloadManager.h"
 
+#include <sacls.h>
 #include <Drmhelper.rsg>
 #include <AknQueryDialog.h>
 #include <DRMCommon.h>
@@ -59,12 +60,12 @@
 
 #include <utf.h>
 
+#include <schemehandler.h> // for handling URLs
 #include "DRMHelperServer.h"
 #include "ConsumeData.h"
 #include "DRMTypes.h"
 #include "DRMClockClient.h"
 #include "DRMPointerArray.h"
-#include <drmbrowserlauncher.h>
 
 #include <SecondaryDisplay/DRMHelperSecondaryDisplay.h> // for secondary display support
 #include <AknMediatorFacade.h>
@@ -82,15 +83,25 @@
 #include "DRMRIContext.h"
 #include "DRMDomainContext.h"
 
+#include <cmconnectionmethod.h>
+#include <cmdestination.h>
+#include <cmconnectionmethoddef.h>
+#include <cmmanager.h>
+
 // publish & subrscibe
 #include <e32property.h>
 #include <PSVariables.h>
 
+#ifdef __SERIES60_NATIVE_BROWSER
+#include <browseruisdkcrkeys.h>
+#endif
 
-//connectivity logic
-#include <cmconnectionmethod.h> // RCmConnectionMethod
-#include <cmdestination.h> // RCmDestination
-#include <cmmanager.h> // RCmManager
+#ifndef __SERIES60_NATIVE_BROWSER
+const TUid KCRUidBrowser   = {0x10008D39};
+const TUint32 KBrowserDefaultAccessPoint =  0x0000000E;
+const TUint32 KBrowserAccessPointSelectionMode = 0x0000001E;
+#endif
+
 
 // EXTERNAL DATA STRUCTURES
 
@@ -158,65 +169,32 @@ private:
     };
 
 // ============================= LOCAL FUNCTIONS ===============================
+
 // -----------------------------------------------------------------------------
-// HasDefaultConnectionL
-// Finds default IAP id
-// @return Etrue: valid AP found
-//         EFalse: valid AP not found
-// @leave system wide error codes
+// IapIdOfDefaultSnapL
+// for trapping purposes only
 // -----------------------------------------------------------------------------
 //
-LOCAL_C TBool HasDefaultConnectionL()
+LOCAL_C TUint32 IapIdOfDefaultSnapL(
+    RCmManager& aCmManager,
+    const TUint32 aDefaultSnap )
     {
-    TBool hasDefault(EFalse);
-    TCmDefConnValue defConn;
-    RCmManager cmManager;
-    cmManager.OpenLC();
-    cmManager.ReadDefConnL(defConn);
-    if (defConn.iType == ECmDefConnConnectionMethod)
+    RCmDestination dest( aCmManager.DestinationL( aDefaultSnap ) );
+    CleanupClosePushL( dest );
+    TUint32 iapIdOfDest( 0 );
+
+    if ( dest.ConnectionMethodCount() <= 0 )
         {
-        cmManager.GetConnectionMethodInfoIntL(defConn.iId,
-                CMManager::ECmIapId);
-        hasDefault = ETrue;
+        User::Leave( KErrNotFound );
         }
-    else if (defConn.iType == ECmDefConnDestination)
-        {
-        RCmDestination dest(cmManager.DestinationL(defConn.iId));
-        CleanupClosePushL(dest);
 
-        if (dest.ConnectionMethodCount() <= 0)
-            {
-            User::Leave(KErrNotFound);
-            }
+    RCmConnectionMethod cMeth( dest.ConnectionMethodL( 0 ) );
+    CleanupClosePushL( cMeth );
 
-        RCmConnectionMethod cMeth(dest.ConnectionMethodL(0));
-        CleanupClosePushL(cMeth);
-
-        cMeth.GetIntAttributeL(CMManager::ECmIapId);
-        CleanupStack::PopAndDestroy(&cMeth);
-        CleanupStack::PopAndDestroy(&dest);
-        hasDefault = ETrue;
-        }
-    CleanupStack::PopAndDestroy(&cmManager);
-    return hasDefault;
-    }
-
-// -----------------------------------------------------------------------------
-// HasAccessPointsL
-// -----------------------------------------------------------------------------
-//
-LOCAL_C TBool HasAccessPointsL()
-    {
-    TInt apCount(0);
-    RCmManager cmManager;
-    CleanupClosePushL(cmManager);
-    cmManager.OpenL();
-    RArray<TUint32> aps;
-    CleanupClosePushL(aps);
-    cmManager.ConnectionMethodL(aps, EFalse, EFalse, ETrue);
-    apCount = aps.Count();
-    CleanupStack::PopAndDestroy(2, &cmManager); //aps, cmManager
-    return apCount > 0;
+    iapIdOfDest = cMeth.GetIntAttributeL( CMManager::ECmIapId );
+    CleanupStack::PopAndDestroy( &cMeth );
+    CleanupStack::PopAndDestroy( &dest );
+    return iapIdOfDest;
     }
 
 // -----------------------------------------------------------------------------
@@ -862,6 +840,7 @@ EXPORT_C CDRMHelper::~CDRMHelper()
 
     FeatureManager::UnInitializeLib();
 
+    delete iSchemeHandler;
     delete iEventProvider;
     }
 
@@ -2360,7 +2339,13 @@ TInt CDRMHelper::GetSilentRightsL( const TDesC8& aUrl )
     if ( buttonCode == EAknSoftkeyYes )
         {
         // check if there are any APs defined
-        TBool APs( HasAccessPointsL() );
+        RCmManager cmManager;
+        cmManager.OpenLC();
+        RArray<TUint32> aps;
+        CleanupClosePushL( aps );
+        cmManager.ConnectionMethodL( aps, EFalse, EFalse, ETrue );
+        TUint32 APs( aps.Count() );
+        CleanupStack::PopAndDestroy( 2, &cmManager ); //aps, cmManager
         if ( !APs )
             {
             // No AP defined
@@ -2445,17 +2430,43 @@ TBool CDRMHelper::SilentRightsAllowedL()
     }
 
 
-// -----------------------------------------------------------------------------
-// CDRMHelper::CheckRightsPercentL
-// Note: obsolete function name kept only
-// to avoid SC break on Helper selection logic
-// -----------------------------------------------------------------------------
-//
 TBool CDRMHelper::BrowserAPDefinedL()
     {
-    TBool apFound( EFalse );
-    TRAP_IGNORE( apFound = HasDefaultConnectionL() );
-    return apFound;
+    const TInt KDestinationSelectionMode( 2 );
+    TInt err( KErrNone );
+    TInt ap( 0 );
+    TInt alwaysAsk( 0 );
+    TInt defaultSnap( 0 );
+
+    CRepository* repository( CRepository::NewL( KCRUidBrowser ) );
+    repository->Get( KBrowserDefaultAccessPoint, ap );
+    repository->Get( KBrowserAccessPointSelectionMode, alwaysAsk );
+    repository->Get( KBrowserNGDefaultSnapId, defaultSnap );
+    delete repository;
+    if ( ap <= KErrNotFound && defaultSnap <= KErrNotFound )
+        {
+        alwaysAsk = ETrue;
+        }
+    else
+        {
+        RCmManager cmManager;
+        cmManager.OpenLC();
+        if ( !alwaysAsk )
+            {
+            TRAP( err, cmManager.GetConnectionMethodInfoIntL(
+                    ap, CMManager::ECmIapId ) );
+            }
+        else if ( alwaysAsk == KDestinationSelectionMode )
+            {
+            TRAP( err, IapIdOfDefaultSnapL( cmManager, defaultSnap ) );
+            }
+        CleanupStack::PopAndDestroy( &cmManager );
+        if ( !err && ( !alwaysAsk || alwaysAsk == KDestinationSelectionMode ) )
+            {
+            return ETrue;
+            }
+        }
+    return EFalse;
     }
 
 
@@ -3616,9 +3627,9 @@ void CDRMHelper::CreateLaunchParamL(
         {
         ptr[index++] = ( unsigned char ) (*aUrl)[i];
         }
-
+    
     ptr[index] = ( unsigned char ) KMarker()[0];
-
+    
     CleanupStack::PopAndDestroy( localIDBuf );
     }
 
@@ -5548,14 +5559,25 @@ void CDRMHelper::LaunchBrowserL( HBufC* aUrl )
             i = 0;
             }
 
-				// convert given URL to QUrl format
-				DRM::CDrmBrowserLauncher* browserLauncher = DRM::CDrmBrowserLauncher::NewLC();
-    	
-		    browserLauncher->LaunchUrlL(ptr);
-    
-    		CleanupStack::PopAndDestroy(); // browserLauncher
+        CSchemeHandler* schemeHandler( CSchemeHandler::NewL( ptr.Mid( i ) ) );
+        CleanupStack::PushL( schemeHandler );
+        if ( iUseCoeEnv )
+            {
+            // launch embedded
+            schemeHandler->Observer( this );
+            schemeHandler->HandleUrlEmbeddedL();
+            CleanupStack::Pop( schemeHandler );
+            iSchemeHandler = schemeHandler;
+            iWait.Start();
+            }
+        else
+            {
+            // no CoeEnv, launch standalone with scheme app
+            schemeHandler->HandleUrlStandaloneL();
+            CleanupStack::PopAndDestroy( schemeHandler );
+            }
+        schemeHandler = NULL;
 
-        
         // delete newUrl if needed
         if ( newUrl )
             {
@@ -5585,7 +5607,7 @@ void CDRMHelper::LaunchRightsManagerUiL( const TDesC& aParam16 )
 
         CAknLaunchAppService* launchAppService =
             CAknLaunchAppService::NewL( KUidDRMUI, this, paramList );
-
+        
         CleanupStack::PushL( launchAppService );
         iWait.Start();
 
@@ -7011,21 +7033,27 @@ EXPORT_C TInt CDRMHelper::UnRegisterDataType(
 EXPORT_C TInt CDRMHelper::SupportedDRMMethods2(
     TInt& aDRMMethod, TDRMHelperOMALevel& aOMALevel)
     {
-#ifndef __DRM_FULL
-    aDRMMethod = CDRMHelper::EForwardLock;
-#else
-    aDRMMethod =
-        CDRMHelper::EForwardLock |
-        CDRMHelper::ECombinedDelivery |
-        CDRMHelper::ESeparateDelivery |
-        CDRMHelper::ESuperDistribution;
+    if ( !( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm1FullSupport ) ) )
+        {
+        aDRMMethod = CDRMHelper::EForwardLock;
+        }
+    else
+        {
+        aDRMMethod =
+                CDRMHelper::EForwardLock |
+                CDRMHelper::ECombinedDelivery |
+                CDRMHelper::ESeparateDelivery |
+                CDRMHelper::ESuperDistribution;
+        aOMALevel = EOMA_1_0;
+        }
+    
 #ifdef __DRM_OMA2
-    aOMALevel = EOMA_2_0;
-#else
-    aOmaLevel = EOMA_1_0;
+    if ( FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) )
+        {
+        aOMALevel = EOMA_2_0;
+        }
 #endif // __DRM_OMA2
 
-#endif // __DRM_FULL
     return KErrNone;
     }
 
@@ -7036,9 +7064,15 @@ EXPORT_C TInt CDRMHelper::SupportedDRMMethods2(
 //
 void CDRMHelper::HandleServerAppExit( TInt aReason )
     {
-    if ( aReason == EAknCmdExit )
+    if ( aReason == EAknCmdExit && !iSchemeHandler )
         {
         CAknEnv::RunAppShutter();
+        }
+
+    if ( iSchemeHandler )
+        {
+        delete iSchemeHandler;
+        iSchemeHandler = NULL;
         }
 
     if ( iWait.IsStarted() )

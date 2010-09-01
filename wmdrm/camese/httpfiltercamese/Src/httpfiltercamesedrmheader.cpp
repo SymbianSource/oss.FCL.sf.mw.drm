@@ -21,6 +21,7 @@
 #include <es_enum.h>
 #include <utf.h>
 #include <centralrepository.h> // - Album Download
+#include <featdiscovery.h>
 
 #include "httpfiltercamesedrmheader.h"
 #include "httpfiltercamesedatasupplier.h"
@@ -263,10 +264,23 @@ void CHttpFilterCameseDrmHeader::CheckResponseHeadersL(
     	{	    
         if ( contentTypeVal.StrF().DesC().MatchF( KDataTypeCameseDRM ) != 
             KErrNotFound )
-	    	{
-	    	CAMESE_LOG( "CHttpFilterCameseDrmHeader::CheckResponseHeaders Found Drm Header" );            
-            StartDrmHeaderCaptureL( aTrans );
-	    	}
+			    	{
+			    	CAMESE_LOG( "CHttpFilterCameseDrmHeader::CheckResponseHeaders Found Drm Header" );
+	
+						TUid u = TUid::Uid( KFeatureIdFfWmdrmDlaSupport );
+						TBool wmDrmDlaSupportOn = ETrue;
+						TRAPD(err, wmDrmDlaSupportOn = CFeatureDiscovery::IsFeatureSupportedL( u ));
+												
+						if(wmDrmDlaSupportOn)
+								{
+				    		StartDrmHeaderCaptureL( aTrans );
+				    		}
+			    	else if(!err)
+			    			{
+			    			aTrans.Response().SetStatusCode( KErrCompletion );
+			    			aTrans.Fail();
+			    			}
+		        }
     	}
     }
     

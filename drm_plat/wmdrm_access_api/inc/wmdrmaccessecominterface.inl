@@ -15,7 +15,7 @@
 *  wmdrmaccessecominterface.inl
 *
 */
-#include <ecom/ecom.h> // for interface
+#include <ecom.h> // for interface
 
 // ---------------------------------------------------------------------------
 // CWmDrmAccessEcomInterface::NewL

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -187,9 +187,7 @@ private:
     // Show the appropriate notes
     void ShowNoRightsNoteL(
         ContentAccess::CData& aContent,
-        TUint32 aReason,
-        TInt aOperationId,
-        DRM::MDrmHandleErrorObserver* aObserver );
+        TUint32 aReason );
 
 //*** DLA:
 
@@ -215,6 +213,7 @@ private: // Data members
 
     RLibrary iDlaWrapperDll;
     CWmDrmDlaWrapper* iDlaWrapper;
+    TBool iWmDrmDlaSupportOn;
     };
 }
 

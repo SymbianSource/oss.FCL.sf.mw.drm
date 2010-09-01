@@ -53,8 +53,9 @@ LIBRARY                 http.lib
 LIBRARY                 inetprotutil.lib
 LIBRARY                 esock.lib
 LIBRARY                 ecom.lib
-LIBRARY         		charconv.lib
-LIBRARY					wmdrmdla.lib
+LIBRARY         				charconv.lib
+LIBRARY									wmdrmdla.lib
 LIBRARY                 centralrepository.lib // central repository
+LIBRARY									featdiscovery.lib 
 
 SMPSAFE

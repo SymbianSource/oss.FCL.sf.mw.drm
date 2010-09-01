@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2008-2010 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2008 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -22,18 +22,52 @@
 #include <coecntrl.h>
 
 class CAknView;
+class MBrCtlSpecialLoadObserver;
+class CBrCtlInterface;
 
 class CWmDrmDlaBrowserContainer : public CCoeControl
     {
 
     public:
 
+        static CWmDrmDlaBrowserContainer* NewL( CAknView* aView, 
+                                                MBrCtlSpecialLoadObserver* aObserver );
+        static CWmDrmDlaBrowserContainer* NewLC( CAknView* aView, 
+                                                 MBrCtlSpecialLoadObserver* aObserver );
+
+        /**
+         * Destructor.
+         */
+        virtual ~CWmDrmDlaBrowserContainer();
+        
+        /**
+         * Returns pointer to the CBrCtlInterface owned by the container.
+         * @return A pointer to CBrCtlInterface
+         */        
+        CBrCtlInterface* BrCtlInterface();
+    
+        
     public: // From CCoeControl
 
         /**
          * @see CCoeControl
          */
+        TKeyResponse OfferKeyEventL( const TKeyEvent& aKeyEvent, TEventCode aType );
+        
+        /**
+         * @see CCoeControl
+         */
+        TInt CountComponentControls() const;
+
+        /**
+         * @see CCoeControl
+         */
         CCoeControl* ComponentControl( TInt aIndex ) const;
+
+        /**
+         * @see CCoeControl
+         */
+        void SizeChanged();
 
         /**
          * @see CCoeControl
@@ -48,11 +82,14 @@ class CWmDrmDlaBrowserContainer : public CCoeControl
     private:
 
         CWmDrmDlaBrowserContainer( CAknView* aView );
+        void ConstructL( MBrCtlSpecialLoadObserver* aObserver );
 
     private: // data
    
         //Not owned
         CAknView* iView;
+        
+        CBrCtlInterface* iBrCtlInterface;
         
     };
 

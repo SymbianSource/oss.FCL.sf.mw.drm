@@ -63,6 +63,7 @@ class CDRMConstraint;
 class CAknGlobalNote;
 class CAknWaitDialog;
 class CDRMHelperInfoNoteWrapper;
+class CSchemeHandler;
 class CMediatorEventProvider;
 
 // CLASS DECLARATION
@@ -1574,6 +1575,8 @@ class CDRMHelper : public CBase, public MAknServerAppExitObserver
         // Used to queue up global notes
         RPointerArray<CDRMHelperInfoNoteWrapper>      iNoteList;
         
+        CSchemeHandler*         iSchemeHandler;
+
         TBool                   iReturnCancel;
 
         // Used to send cancel events to cover ui

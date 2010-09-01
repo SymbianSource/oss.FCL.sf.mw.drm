@@ -32,8 +32,12 @@ CAPABILITY      None
 /* Remove comments and replace 0x00000000 with correct secure id */
 // SECUREID     0x00000000
 
-MW_LAYER_SYSTEMINCLUDE
-
+#if defined(__S60_)
+    MW_LAYER_SYSTEMINCLUDE
+#else // __S60_ not defined
+    SYSTEMINCLUDE   /epoc32/include 
+    SYSTEMINCLUDE   /epoc32/include/internal
+#endif // __S60_
 
 /* Source files */
 SOURCEPATH      ../src

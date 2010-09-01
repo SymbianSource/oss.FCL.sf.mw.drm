@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002 - 2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002 - 2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -23,6 +23,7 @@
 #include <e32base.h>
 #include <f32file.h>
 #include <utf.h>
+#include <featmgr.h>
 #include <caf/caf.h>
 #include <caf/cafplatform.h>
 #include "Oma2Agent.h"
@@ -291,11 +292,24 @@ EXPORT_C TBool COma2Dcf::IsValidDcf(
     const TDesC8& aDcfFragment )
     {
     TBool r( EFalse );
+    TInt err( KErrNone );
 
     if ( aDcfFragment.Length() >= KBrandingSize &&
         aDcfFragment.Left( KBrandingSize ).Compare( KOma2DcfBranding ) == 0 )
         {
-        r = ETrue;
+    
+        TRAP( err, FeatureManager::InitializeLibL() );
+    
+        if ( !err && FeatureManager::FeatureSupported( KFeatureIdFfOmadrm2Support ) )
+            {
+            r = ETrue;
+            }
+        
+        if ( !err )
+            {
+            FeatureManager::UnInitializeLib();
+            }
+        
         }
     return r;
     }
