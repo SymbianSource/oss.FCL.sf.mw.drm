@@ -22,7 +22,6 @@
 #include <aknViewAppUi.h>
 #include <coeaui.h>
 #include <coecntrl.h>
-#include <InternetConnectionManager.h>
 #include <wmdrmdlaapp.rsg>
 #include "wmdrmdlabrowserview.h"
 #include "wmdrmdlabrowsercontainer.h"
@@ -41,7 +40,6 @@
 void CWmDrmDlaBrowserView::ConstructL()
     {
     BaseConstructL( R_WMDRMDLA_APP_BROWSER_VIEW );
-    iConMgr = CInternetConnectionManager::NewL( ETrue );
     }
 
 // ---------------------------------------------------------------------------
@@ -85,7 +83,6 @@ CWmDrmDlaBrowserView::~CWmDrmDlaBrowserView()
     {
     RemoveContainer();
     delete iLicenseResponse;
-    delete iConMgr;
     }
 
 // ---------------------------------------------------------------------------

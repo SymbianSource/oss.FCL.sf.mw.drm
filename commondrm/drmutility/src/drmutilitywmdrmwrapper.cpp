@@ -577,7 +577,7 @@ void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
             // call given HandleErrorObserver
             if( value > 0 )
                 {
-                aObserver->RightsAvailable( aOperationId, KErrNone );              
+                CallRightsAvailable( aObserver, aOperationId, KErrNone );             
                 }
             }
         CleanupStack::PopAndDestroy( &file );

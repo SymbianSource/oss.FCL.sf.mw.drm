@@ -220,10 +220,10 @@ TKeyResponse CDRMRightsMgrAppUi::HandleKeyEventL( const TKeyEvent& aKeyEvent,
     {
     TChar charCode( aKeyEvent.iCode );
 
-    if ( charCode == EKeyEnter )
+    if ( aKeyEvent.iScanCode ==  EStdKeyEnter )
         // Default is to show details
         {
-        TInt command = EDRMRightsManagerCmdAppViewDet;
+        TInt command = EAknSoftkeyClose;
         HandleCommandL( command );
         return EKeyWasConsumed;
         }
