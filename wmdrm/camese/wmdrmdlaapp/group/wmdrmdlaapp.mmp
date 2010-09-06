@@ -53,8 +53,6 @@ LIBRARY		eikcore.lib
 LIBRARY		avkon.lib
 LIBRARY		bafl.lib
 LIBRARY		commonengine.lib
-LIBRARY     browserengine.lib
-LIBRARY		connectionmanager.lib
 
 START RESOURCE ../data/wmdrmdlaapp_reg.rss
 DEPENDS wmdrmdlaapp.rsg
