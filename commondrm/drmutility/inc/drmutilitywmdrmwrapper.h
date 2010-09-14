@@ -187,7 +187,9 @@ private:
     // Show the appropriate notes
     void ShowNoRightsNoteL(
         ContentAccess::CData& aContent,
-        TUint32 aReason );
+        TUint32 aReason,
+        TInt aOperationId,
+        DRM::MDrmHandleErrorObserver* aObserver );
 
 //*** DLA:
 

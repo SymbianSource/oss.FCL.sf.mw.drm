@@ -32,7 +32,7 @@
 #ifndef __WINS__
 #include <etelmm.h>
 #include <mmtsy_names.h>
-#include <SysUtil.h>
+#include <sysutil.h>
 #endif
 
 #include <flogger.h>
