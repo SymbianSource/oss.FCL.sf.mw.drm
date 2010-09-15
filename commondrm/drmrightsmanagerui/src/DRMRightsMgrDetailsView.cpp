@@ -437,6 +437,7 @@ void CDRMRightsMgrDetailsView::PrepareRefreshL( const TDesC& aFullName,
     iDetails.iIndividualConstraint = aIndividualConstraint;
     iDetails.iUsageAllowed = aUsageAllowed;
     iDetails.iActiveROindex = 0;
+    DeleteConstraints();
     iDetails.iRights->Reset();
     iDetails.iDrmScheme = aDrmScheme;
 

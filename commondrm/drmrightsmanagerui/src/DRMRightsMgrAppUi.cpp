@@ -35,7 +35,6 @@
 #include <coeutils.h>
 #include <eikserverapp.h>
 
-
 #include <starterclient.h>
 
 // character conversions
@@ -220,10 +219,10 @@ TKeyResponse CDRMRightsMgrAppUi::HandleKeyEventL( const TKeyEvent& aKeyEvent,
     {
     TChar charCode( aKeyEvent.iCode );
 
-    if ( charCode == EKeyEnter )
+    if ( aKeyEvent.iScanCode ==  EStdKeyEnter )
         // Default is to show details
         {
-        TInt command = EDRMRightsManagerCmdAppViewDet;
+        TInt command = EAknSoftkeyClose;
         HandleCommandL( command );
         return EKeyWasConsumed;
         }
@@ -255,12 +254,10 @@ void CDRMRightsMgrAppUi::HandleCommandL( TInt aCommand )
             }
         case EAknSoftkeyClose:
             {
-
             if (server)
                 {
                 server->NotifyServerExit(EAknSoftkeyClose);
                 }
-                
             Exit();
             break;
             }    
