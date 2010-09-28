@@ -45,7 +45,7 @@ USERINCLUDE    ../traces      // OST definitions
 MW_LAYER_SYSTEMINCLUDE
 
 LIBRARY        euser.lib
-LIBRARY        cmmanager.lib // RCmManager CCmApplicationSettingsUi
+LIBRARY        cmmanager.lib // RCmManager
 LIBRARY        esock.lib // RConnection, RSocketServ
 LIBRARY        extendedconnpref.lib netmeta.lib // TExtendedConnPref
 LIBRARY        downloadmgr.lib

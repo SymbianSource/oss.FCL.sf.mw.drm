@@ -49,7 +49,7 @@ symbian: {
 	INCLUDEPATH += /epoc32/include/platform/mw/cwrt
 
 	LIBS += -leuser
-	LIBS += -lcmmanager // RCmManager CCmApplicationSettingsUi
+	LIBS += -lcmmanager // RCmManager
 	LIBS += -lesock // RConnection, RSocketServ
 	LIBS += -lextendedconnpref
 	LIBS += -lnetmeta // TExtendedConnPref

@@ -215,6 +215,7 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
     TInt64 headerSize( 0 );
     TBool isDrmFile( EFalse );
     TPtr8 headerPtr( NULL, 0 );
+    TInt dataLength = 0;
 
     aProtected = DRM::EUUnprotected;
     aAgent.Set( KNullDesC );
@@ -306,11 +307,17 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
             {
             // set the mimetype from the buffer which is in the beginning
             // starting from byte 3 with the length specified at position 2
-            TPtrC8 mimeType( buffer->Des().Mid(3, (buffer->Des())[1]) );
-            if( !mimeType.CompareF( *iOmaBasedMimeType ) )
-                {
-                aAgent.Set( *DRM::CDrmUtility::iOmaBasedAgentName );
-                isDrmFile = ETrue;
+            // also make sure the data length is greater or equal to the
+            // position + the 2nd byte of the content
+            dataLength = 3 + (buffer->Des())[1];
+            if( buffer->Length() >= dataLength )
+                {           
+                TPtrC8 mimeType( buffer->Des().Mid(3, (buffer->Des())[1]) );
+                if( !mimeType.CompareF( *iOmaBasedMimeType ) )
+                    {
+                    aAgent.Set( *DRM::CDrmUtility::iOmaBasedAgentName );
+                    isDrmFile = ETrue;
+                    }
                 }
             }
         CleanupStack::PopAndDestroy( buffer );
@@ -333,6 +340,7 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
     TPtr8 asfPtr( NULL, 0 );
     TBuf8< 32 > asfGuidHex;
     TBool isDrmFile( EFalse );
+    TInt dataLength = 0;
 
     aProtected = DRM::EUUnprotected;
     aAgent.Set( KNullDesC );
@@ -401,12 +409,18 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
             {
             // set the mimetype from the buffer which is in the beginning
             // starting from byte 3 with the length specified at position 2
-            TPtrC8 mimeType( aContent.Mid(3, (aContent)[1]) );
-            if( !mimeType.CompareF( *iOmaBasedMimeType ) )
+            // also make sure the data length is greater or equal to the
+            // position + the 2nd byte of the content
+            dataLength = 3 + (aContent)[1];
+            if( aContent.Length() >= dataLength )
                 {
-                aAgent.Set( *DRM::CDrmUtility::iOmaBasedAgentName );
-                isDrmFile = ETrue;
-                aProtected = DRM::EUProtected;
+                TPtrC8 mimeType( aContent.Mid(3, (aContent)[1]) );
+                if( !mimeType.CompareF( *iOmaBasedMimeType ) )
+                    {
+                    aAgent.Set( *DRM::CDrmUtility::iOmaBasedAgentName );
+                    isDrmFile = ETrue;
+                    aProtected = DRM::EUProtected;
+                    }
                 }
             }
         }

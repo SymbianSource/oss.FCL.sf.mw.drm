@@ -81,9 +81,6 @@ const TInt KAllowAllDefined =
     DRM::EDrmAllowVideoMacroVision |
     DRM::EDrmAllowAudioUsb |   
     DRM::EDrmAllowAudioHdmiHdcpRequired |
-    DRM::EDrmAllowAudioHdmi |
-    DRM::EDrmAllowVideoHDMI  |
-    DRM::EDrmAllowVideoHdmiHdcpRequested |
     DRM::EDrmAllowVideoHdmiHdcpRequired;
 
 // ============================= LOCAL FUNCTIONS ===============================
@@ -471,7 +468,9 @@ TInt TOma2AgentAttributes::GetAttribute(
                             DRM::EDrmAllowAudioBluetooth | 
                             DRM::EDrmAllowVideoMacroVision | 
                             DRM::EDrmAllowAudioFmTransmitter | 
-                            DRM::EDrmAllowAudioUsb;
+                            DRM::EDrmAllowAudioUsb |
+                            DRM::EDrmAllowAudioHdmiHdcpRequired |
+                            DRM::EDrmAllowVideoHdmiHdcpRequired;    
                     }
                 else
                     {
@@ -714,7 +713,9 @@ TInt TOma2AgentAttributes::GetAttribute(
                             DRM::EDrmAllowAudioBluetooth | 
                             DRM::EDrmAllowVideoMacroVision | 
                             DRM::EDrmAllowAudioFmTransmitter | 
-                            DRM::EDrmAllowAudioUsb;
+                            DRM::EDrmAllowAudioUsb |
+                            DRM::EDrmAllowAudioHdmiHdcpRequired |
+                            DRM::EDrmAllowVideoHdmiHdcpRequired;    
                     }
                 else
                     {

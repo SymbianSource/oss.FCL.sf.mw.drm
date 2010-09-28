@@ -22,7 +22,6 @@
 #include <cmconnectionmethoddef.h>
 #include <cmmanager.h>
 #include <extendedconnpref.h>
-#include <cmapplicationsettingsui.h> // CCmApplicationSettingsUi
 #include <es_enum.h>
 #include <cdbcols.h> // IAP, COMMDB_ID
 #include "drmutilityconnection.h"
@@ -477,52 +476,9 @@ void DRM::CDrmUtilityConnection::ConnectUsingSnapPurposeL(
 //
 void DRM::CDrmUtilityConnection::ConnectUsingQueryL()
     {
-    // Create overrides
-    TConnPrefList prefList;
-    TExtendedConnPref prefs;
-
-    CCmApplicationSettingsUi* ui(CCmApplicationSettingsUi::NewLC());
-    TCmSettingSelection selectedConn;
-
-    TBool selected(ui->RunApplicationSettingsL(selectedConn));
-    CleanupStack::PopAndDestroy(ui);
-    ui=NULL;
-    if (selected)
-        {
-        if (selectedConn.iResult == CMManager::EConnectionMethod)
-            {
-            prefs.SetIapId(selectedConn.iId);
-            }
-        else if (selectedConn.iResult == CMManager::EDestination)
-            {
-            prefs.SetSnapId(selectedConn.iId);
-            }
-        else if (selectedConn.iResult != CMManager::EDefaultConnection)
-            {
-            selected=EFalse;
-            }
-        }
-    if (selected)
-        {
-        if (selectedConn.iResult != CMManager::EDefaultConnection)
-            {
-            prefList.AppendL(&prefs);
-            // For ensuring possibly stale connections get disconnected first;
-            iConnection.Close();
-            iConnection.Open(iSocketServ);
-            
-            iConnection.Start(prefList, iStatus);
-            }
-        else
-            {
-            iConnection.Start(iStatus);
-            }
-        SetActive();
-        }
-    else
-        {
-        CompleteSelf(KErrCancel);
-        }
+    // Implement according to the new Connection Settings
+    // QT API when possible to test the implementation
+    CompleteSelf(KErrCancel);
     }
 // ---------------------------------------------------------------------------
 // DRM::CDrmUtilityConnection::CompleteSelf
