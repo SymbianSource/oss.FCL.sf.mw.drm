@@ -389,6 +389,10 @@ DRM::CDrmUiHandlingImpl::~CDrmUiHandlingImpl()
     {
     DRM::CDrmUiHandlingData* data( PopFront() );
 
+    // reset the current observer
+    // it may already be deleted so don't do any calls to it.
+    iObserver = NULL;
+
     // Empty the queue:
     while ( data )
         {
@@ -1126,17 +1130,26 @@ void DRM::CDrmUiHandlingImpl::RunL()
             break;
         }
 
-    // Complete the client request
-    iObserver->OperationCompleted( iOperationId, KErrNone );
+    // if the observer exists and it has not been deleted, call complete
+    // for the operation and get ready for another round
+    // this should prevent crashes in case the class is deleted before
+    // and operation finihes.
+    
+    if( iObserver && reinterpret_cast<TInt>(iObserver) != 0xDEDEDEDE )
+        {
+        // Complete the client request
+        iObserver->OperationCompleted( iOperationId, KErrNone );
 
+        // Get ready for another round:
+        SetActive();
+
+        // complete internal request:
+        User::RequestComplete( status, KErrNone );
+        }
+        
     // destroy the object:
     CleanupStack::PopAndDestroy( data );
 
-    // Get ready for another round:
-    SetActive();
-
-    // complete internal request:
-    User::RequestComplete( status, KErrNone );
     }
 
 // -----------------------------------------------------------------------------
