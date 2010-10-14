@@ -304,7 +304,7 @@ TInt COma1Dcf::ReadHeaderL(void)
     TInt fieldLength = 0;
     TBuf8<10> lengthFields;
     TUint32 length;
-    TInt size;
+    TInt size = 0;
 
     iFile.Size(size);
     if (size<3)

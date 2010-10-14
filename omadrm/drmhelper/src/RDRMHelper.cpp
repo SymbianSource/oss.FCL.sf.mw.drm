@@ -67,8 +67,9 @@ TInt RDRMHelper::Connect()
     {
     TInt error = StartServer();
     TRACE2( "RDRMHelper::Connect() StartServer(): error: %d", error );
-    if ( !error )
+    if ( !error || error == KErrAlreadyExists )
         {
+        error = KErrNone;    
         error = CreateSession( KDRMHelperServerName, Version(),
             KDefaultMessageSlots );
         TRACE2( "RDRMHelper::Connect() CreateSession(): error: %d", error );

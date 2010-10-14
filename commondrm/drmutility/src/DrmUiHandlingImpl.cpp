@@ -424,6 +424,10 @@ DRM::CDrmUiHandlingImpl::~CDrmUiHandlingImpl()
     {
     DRM::CDrmUiHandlingData* data( PopFront() );
 
+    // reset the current observer
+    // it may already be deleted so don't do any calls to it.
+    iObserver = NULL;
+
     // Empty the queue:
     while ( data )
         {
@@ -1159,17 +1163,26 @@ void DRM::CDrmUiHandlingImpl::RunL()
             break;
         }
 
-    // Complete the client request
-    iObserver->OperationCompleted( iOperationId, KErrNone );
+    // if the observer exists and it has not been deleted, call complete
+    // for the operation and get ready for another round
+    // this should prevent crashes in case the class is deleted before
+    // and operation finihes.
+    
+    if( iObserver && reinterpret_cast<TInt>(iObserver) != 0xDEDEDEDE )
+        {
+        // Complete the client request
+        iObserver->OperationCompleted( iOperationId, KErrNone );
 
+        // Get ready for another round:
+        SetActive();
+
+        // complete internal request:
+        User::RequestComplete( status, KErrNone );
+        }
+        
     // destroy the object:
     CleanupStack::PopAndDestroy( data );
 
-    // Get ready for another round:
-    SetActive();
-
-    // complete internal request:
-    User::RequestComplete( status, KErrNone );
     }
 
 // -----------------------------------------------------------------------------
@@ -1836,7 +1849,6 @@ void DRM::CDrmUiHandlingImpl::HandleOmaErrorL(
     TBool onlyMeteringRejection( reason == DRM::EURejectionMetering );
     if ( onlyMeteringRejection )
         {
-        // Qt dialog not implemented yet
         iDrmUtilityUi->DisplayNoteL( EConfUnableToOpen );
 
         CleanupStack::PopAndDestroy( contentId );
@@ -2885,7 +2897,7 @@ void DRM::CDrmUiHandlingImpl::CheckOmaDomainStatusL(
     if ( !error )
         {
         ptr.Set( riId->Des() );
-        stringAttributeSet.GetValue( EDomainRightsIssuerId, ptr );
+        error = stringAttributeSet.GetValue( EDomainRightsIssuerId, ptr );
         if ( !error )
             {
             riId8 = HBufC8::NewLC( riId->Length() );
@@ -2968,7 +2980,6 @@ void DRM::CDrmUiHandlingImpl::CallRightsNotValidL(
             if ( RejectReason( aReason ) == DRM::EURejectionMetering )
                 {
                 // Show that only reason for error was rejected metering.
-                // Qt dialog not implemented yet
                 iDrmUtilityUi->DisplayNoteL( EConfUnableToOpen );
                 }
             else
@@ -3521,7 +3532,6 @@ TBool DRM::CDrmUiHandlingImpl::ShowNoRightsNoteL(
             else
                 {
                 // no rights issuer
-                // Qt dialog not implemented yet
                 iDrmUtilityUi->DisplayNoteL( EConfLicenceNotReceived );
                 }
             }
@@ -3550,7 +3560,6 @@ TBool DRM::CDrmUiHandlingImpl::ShowNoRightsNoteL(
                     User::LeaveIfError( aContent.GetStringAttribute(
                         EFileName, fileName ) );
 
-                    // Qt dialog not implemented yet
                     ret = iDrmUtilityUi->DisplayQueryL( EQueryFileWithNoRightsObj, fileName );
                     }
                 }
@@ -3558,7 +3567,6 @@ TBool DRM::CDrmUiHandlingImpl::ShowNoRightsNoteL(
                 {
                 if ( aReason & EConstraintIndividual )
                     {
-                    // Qt dialog not implemented yet
                     iDrmUtilityUi->DisplayNoteL( EConfFileLockedForSim );
                     }
                 else
@@ -3584,8 +3592,7 @@ TBool DRM::CDrmUiHandlingImpl::ShowNoRightsNoteL(
                     }
                 else
                     {
-                    // no rights issuer
-                    // Qt dialog not implemented yet
+                    // no rights issuer 
                     iDrmUtilityUi->DisplayNoteL( EConfLicenceNotReceived );
                     }
                 }
@@ -3800,7 +3807,7 @@ void DRM::CDrmUiHandlingImpl::SelectOmaRightsUrlL(
     if ( !error )
         {
         ptr.Set( riId->Des() );
-        stringAttributeSet.GetValue( EDomainRightsIssuerId, ptr );
+        error = stringAttributeSet.GetValue( EDomainRightsIssuerId, ptr );
         if ( !error )
             {
             riId8 = HBufC8::NewLC( riId->Length() );
@@ -4101,7 +4108,6 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
         buttonCode = ECancelled;
         if ( aShowNotes )
             {
-            // Qt dialog not implemented yet
             buttonCode = iDrmUtilityUi->DisplayQueryL( EQueryConnectToActivate, KNoValue );
             }
         }
@@ -4110,7 +4116,6 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
         buttonCode = ECancelled;
         if ( aShowNotes )
             {
-            // Qt dialog not implemented yet
             buttonCode = iDrmUtilityUi->DisplayQueryL( EQueryConnectToActivate, KNoValue );
             }
         }
@@ -4123,7 +4128,6 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
             // No AP defined
             if ( aShowNotes )
                 {
-                // Qt dialog not implemented yet
                 iDrmUtilityUi->DisplayNoteL( EConfNoAccessPoint );
                 }
             r = KErrCANoRights;
@@ -4158,7 +4162,6 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
                         // Connection failed with selected AP
                         if ( aShowNotes )
                             {
-                            // Qt dialog not implemented yet
                             iDrmUtilityUi->DisplayNoteL( EConfConnectionFailed );
                             }
                         r = KErrCANoRights;
@@ -4176,7 +4179,6 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
                             if ( errorUrl )
                                 {
                                 // ask user whether error url should be opened
-                                // Qt dialog not implemented yet
                                 buttonCode = iDrmUtilityUi->DisplayQueryL( EQueryOpenErrorUrl, KNoValue );
 
                                 if ( buttonCode == EOk )
@@ -4187,7 +4189,6 @@ TInt DRM::CDrmUiHandlingImpl::GetSilentRightsL(
                                 }
                             else
                                 {
-                                // Qt dialog not implemented yet
                                 iDrmUtilityUi->DisplayNoteL( EConfUnableToUnlock );
                                 }
                             CleanupStack::PopAndDestroy( errorUrl );

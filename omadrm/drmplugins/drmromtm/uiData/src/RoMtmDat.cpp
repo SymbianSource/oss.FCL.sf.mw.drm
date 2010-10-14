@@ -558,7 +558,6 @@ HBufC* CRightsObjectMtmUiData::StatusTextL( const TMsvEntry& /*aContext*/ ) cons
 // ---------------------------------------------------------
 void CRightsObjectMtmUiData::CreateSkinnedBitmapsL( TInt aNumZoomStates )
     {
-    MAknsSkinInstance* skins = AknsUtils::SkinInstance();
     TAknsItemID id;
     //CFbsBitmap* bitmap;
     //CFbsBitmap* bitmapMask;

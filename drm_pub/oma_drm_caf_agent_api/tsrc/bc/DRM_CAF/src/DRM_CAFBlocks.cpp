@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -15,25 +15,22 @@
 *
 */
 
-
-
-
-
-
-
-
-
 // [INCLUDE FILES] - do not remove
 #include <e32svr.h>
 #include <StifParser.h>
 #include <Stiftestinterface.h>
-#include "DRM_CAF.h"
 #include <caf/caftypes.h>
 #include <caf/caf.h>
 #include <caf/data.h>
 #include <f32file.h>
 #include <bautils.h>
 #include <TestclassAssert.h>
+#include "DRM_CAF.h"
+#include "drmrightsparser.h"
+#include "drmpointerarray.h"
+#include "drmrights.h"
+#include "drmrightsclient.h"
+
 using namespace ContentAccess;
 // LOCAL CONSTANTS AND MACROS
 
@@ -215,17 +212,66 @@ Fixes:\r\n\
 \r\n\
 --random78o6bP%[GB6b/8&/45&%*^'?vS--");
 
+_LIT8(KROHeadOMA1, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\
+<!DOCTYPE o-ex:rights PUBLIC \"-//OMA//DTD DRMREL 1.0//EN\" \
+\"http://www.oma.org/dtd/dr\">\
+<o-ex:rights\
+   xmlns:o-ex=\"http://odrl.net/1.1/ODRL-EX\" \
+   xmlns:o-dd=\"http://odrl.net/1.1/ODRL-DD\" \
+   xmlns:oma-dd=\"http://www.openmobilealliance.com/oma-dd\" \
+   xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#/\">\
+  <o-ex:context>\
+    <o-dd:version>1.0</o-dd:version>\
+  </o-ex:context>\
+  <o-ex:agreement>\
+    <o-ex:asset>\
+      <o-ex:context>\
+        <o-dd:uid>");
+
+_LIT8(KROTailFullOMA1, "</o-dd:uid>\
+      </o-ex:context>\
+      <ds:KeyInfo><ds:KeyValue>qtyAvglXxJNuAJVM2yxHQA==</ds:KeyValue></ds:KeyInfo>\
+    </o-ex:asset>\
+  <o-ex:permission>\
+\
+<o-dd:play>\
+      <o-ex:constraint>\
+      </o-ex:constraint>\
+    </o-dd:play>\
+\
+<o-dd:display>\
+      <o-ex:constraint>\
+      </o-ex:constraint>\
+    </o-dd:display>\
+\
+<o-dd:execute>\
+      <o-ex:constraint>\
+      </o-ex:constraint>\
+    </o-dd:execute>\
+\
+<o-dd:print>\
+      <o-ex:constraint>\
+      </o-ex:constraint>\
+    </o-dd:print>\
+  </o-ex:permission>\
+  </o-ex:agreement>\
+</o-ex:rights>");
+
 _LIT(KOma1Content, "c:\\content.dcf");
+_LIT(KOma1Content2, "c:\\content2.dcf");
 _LIT(KOma2Content, "c:\\content.odf");
 _LIT(KOma2ContentNoEnc, "c:\\content-noenc.odf");
 _LIT(KOma2ContentNoEncTruncated, "c:\\content-noenc-trunc.odf");
+_LIT8(KOma1ContentID, "cid:testcontent20090526095637-2657230746@testcontent.com");
 
 _LIT(KEncryptedDir, "c:\\");
 _LIT(KTempDcfName, "test.dcf");
 _LIT(KTempDcfPathName, "c:\\test.dcf");
 _LIT(KFVariantFile,"c:\\DrmCAFVarFile.txt");
 
-
+// LOCAL FUNCTION PROTOTYPES
+LOCAL_C void AddROL(const TDesC8& aHead, const TDesC8& aCID, const TDesC8& aTail);
+LOCAL_C void DeleteRODBL();
 // ============================= LOCAL FUNCTIONS ===============================
 
 
@@ -349,6 +395,47 @@ LOCAL_C CRightsManager* GetOmaDrmRightsManagerL()
     CleanupStack::PopAndDestroy();
     return rm;
     }
+
+// -----------------------------------------------------------------------------
+// AddROL
+// Helper function with which test cases can add ROs
+// -----------------------------------------------------------------------------
+//
+LOCAL_C void AddROL(const TDesC8& aHead, const TDesC8& aCID,
+    const TDesC8& aTail)
+    {
+    TInt roSize(aHead.Size() + aCID.Size() + aTail.Size());
+    HBufC8* buf(HBufC8::NewLC(roSize));
+    TPtr8 tmp(buf->Des());
+
+    tmp.Append(aHead);
+    tmp.Append(aCID);
+    tmp.Append(aTail);
+
+    CDRMPointerArray<CDRMRights>* rights(CDRMPointerArray<CDRMRights>::NewLC());
+    rights->SetAutoCleanup(ETrue);
+
+    CDrmRightsParser* rp(CDrmRightsParser::NewL());
+    CleanupStack::PushL(rp);
+
+    rp->ParseAndStoreL(*buf, *rights);
+
+    CleanupStack::PopAndDestroy(3, buf); // rp, rights, buf
+    }
+
+// -----------------------------------------------------------------------------
+// DeleteRODBL
+// Helper function with which test cases can delete RO DB.
+// -----------------------------------------------------------------------------
+//
+LOCAL_C void DeleteRODBL()
+    {
+    RDRMRightsClient client;
+    User::LeaveIfError(client.Connect());
+    client.DeleteAll();
+    client.Close();
+    }
+
 
 // ============================ MEMBER FUNCTIONS ===============================
 
@@ -1708,36 +1795,21 @@ TInt  CDRM_CAF::CContent_AgentSpecificCommandL()
     }
 TInt  CDRM_CAF::CContent_NotifyStatusChangeL()
     {
-    _LIT(KSdkVersion31,"Z:\\System\\install\\Series60v3.1.sis");
-    _LIT(KSdkVersion50,"Z:\\System\\install\\Series60v5.0.sis");
-    RFs fs;
-    TBool found = EFalse;
-    User::LeaveIfError(fs.Connect ());
-    CleanupClosePushL (fs);
-    if(BaflUtils::FileExists (fs, KSdkVersion31))
-        {
-        found = ETrue;
-        }
-    else if(BaflUtils::FileExists (fs, KSdkVersion50))
-        {
-        found = ETrue;
-        }
     CContent* content = NULL;
     TRequestStatus status = KRequestPending;
-    content = CContent::NewLC(KOma2Content);
+    content = CContent::NewLC(KOma1Content2);
     STIF_ASSERT_NOT_NULL(content);
-    content->NotifyStatusChange(ERightsAvailable, status);//ERightsAvailable
-    if(found)
-    	{
-    	User::After(10000);
-			content->CancelNotifyStatusChange(status);
-    	User::WaitForRequest(status);
-   		}
-   else
-   		{
-   	  User::WaitForRequest(status);
-  		}
-    CleanupStack::PopAndDestroy(2);
+    content->NotifyStatusChange(ERightsAvailable, status); //ERightsAvailable
+    
+    AddROL(KROHeadOMA1, KOma1ContentID, KROTailFullOMA1);
+    
+    User::After(10000);
+	content->CancelNotifyStatusChange(status);
+    User::WaitForRequest(status);
+    
+    DeleteRODBL();
+    
+    CleanupStack::PopAndDestroy(content);
     return KErrNone;
     }
 

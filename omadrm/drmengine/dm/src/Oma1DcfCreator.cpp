@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002, 2003 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -82,10 +82,7 @@ EXPORT_C void COma1DcfCreator::ConstructL()
 // -----------------------------------------------------------------------------
 EXPORT_C COma1DcfCreator* COma1DcfCreator::NewL()
     {
-    COma1DcfCreator* self = new COma1DcfCreator();
-
-    User::LeaveIfNull(self);
-
+    COma1DcfCreator* self = new (ELeave) COma1DcfCreator();
     CleanupStack::PushL(self);
     self->ConstructL();
     CleanupStack::Pop();

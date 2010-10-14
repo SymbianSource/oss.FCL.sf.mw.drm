@@ -276,7 +276,9 @@ void COma2AgentContent::GetEmbeddedObjectsL(
                 part = CEmbeddedObject::NewL(*id, *dcf2->iParts[i]->iMimeType,
                     EContentObject);
                 CleanupStack::PopAndDestroy(id);
+                CleanupStack::PushL(part);
                 aArray.AppendL(part);
+                CleanupStack::Pop(part);
                 }
             }
         else
@@ -287,7 +289,9 @@ void COma2AgentContent::GetEmbeddedObjectsL(
             part = CEmbeddedObject::NewL(*id, *iDcf->iMimeType,
                 EContentObject);
             CleanupStack::PopAndDestroy(id);
+            CleanupStack::PushL(part);
             aArray.AppendL(part);
+            CleanupStack::Pop(part);
             }
         }
     }

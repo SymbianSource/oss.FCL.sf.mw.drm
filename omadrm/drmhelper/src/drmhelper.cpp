@@ -1476,8 +1476,9 @@ TUint32 CDRMHelper::RejectReasonL( TInt aIntent, const TDesC8& aContentUri )
     TUint32 rejectReason(0);
 
     User::LeaveIfError( rightsClient.Connect() );
-    rightsClient.CheckRights( aIntent, aContentUri, rejectReason );
+    TInt r = rightsClient.CheckRights( aIntent, aContentUri, rejectReason );
     rightsClient.Close();
+    User::LeaveIfError( r );
 
     return rejectReason;
     }
@@ -1682,6 +1683,7 @@ EXPORT_C TInt CDRMHelper::HandleErrorOrPreviewL(
     RFile& aFile,
     HBufC8*& aEmbeddedPreviewUri )
     {
+    
     ContentAccess::CData* content( NULL );
     TPtr ptr( NULL,0 );
     TInt previewType = 0;

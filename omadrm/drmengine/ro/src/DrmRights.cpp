@@ -896,8 +896,6 @@ EXPORT_C TInt CDRMRights::GetRightsInfo(
 
     if (noRights)
         {
-        delete constraint;
-        constraint = NULL;
         aExpiration = EExpiredRights;
         return ENoRights;
         }

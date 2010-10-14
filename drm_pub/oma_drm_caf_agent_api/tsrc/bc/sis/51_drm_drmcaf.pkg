@@ -1,5 +1,5 @@
 ;
-; Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).
+; Copyright (c) 2009-2010 Nokia Corporation and/or its subsidiary(-ies).
 ; All rights reserved.
 ; This component and the accompanying materials are made available
 ; under the terms of "Eclipse Public License v1.0"
@@ -36,6 +36,7 @@
 "\epoc32\winscw\c\content.txt"-"!:\content.txt"
 "\epoc32\winscw\c\content-noenc.odf"-"!:\content-noenc.odf"
 "\epoc32\winscw\c\content.dcf"-"!:\content.dcf"
+"\epoc32\winscw\c\content2.dcf"-"!:\content2.dcf"
 
 
 "\epoc32\release\armv5\urel\drm_caf.dll"-"!:\sys\bin\drm_caf.dll"

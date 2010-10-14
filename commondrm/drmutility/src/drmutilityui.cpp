@@ -642,8 +642,9 @@ EXPORT_C TInt DRM::CDrmUtilityUI::DisplayPopupWindowsForPreviewL(
     if ( iCoeEnv && resourceId )
         {
         CAknListQueryDialog* dlg = new( ELeave ) CAknListQueryDialog( &index );
-
+        CleanupStack::PushL( dlg );
         PrepareSecondaryDisplayL( *dlg, resourceId );
+        CleanupStack::Pop( dlg );
         answer = dlg->ExecuteLD( resourceId );
         CancelSecondaryDisplayL( resourceId );
 

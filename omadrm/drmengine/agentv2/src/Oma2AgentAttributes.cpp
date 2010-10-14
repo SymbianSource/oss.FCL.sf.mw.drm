@@ -1066,8 +1066,9 @@ TInt TOma2AgentAttributes::GetStringAttribute(
             case EContentVendor:
                 if (dcf1 != NULL)
                     {
-                    TRAP(err, dcf1->GetHeaderL(KContentVendor, ptr));
-                    if (ptr.Length() > 0 && err == KErrNone)
+                    TInt val = KErrNone;
+                    TRAP(err, val = dcf1->GetHeaderL(KContentVendor, ptr));
+                    if (ptr.Length() > 0 && err == KErrNone && val == KErrNone)
                         {
                         TRAP(err, b = CnvUtfConverter::ConvertToUnicodeFromUtf8L(ptr));
                         }

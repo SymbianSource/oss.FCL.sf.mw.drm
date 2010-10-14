@@ -2365,8 +2365,6 @@ void CDRMRightsDB::AddUDTDataL( RWriteStream& )
 
     CleanupStack::PopAndDestroy(); // result
 
-    ptr = const_cast<TUint8*>(buffer.Ptr());
-
     // UDT public key encrypted Rights Database Serial Number 256 bytes
     // UDT public key encrypted Rights Database Encryption Key 256 bytes
     // ----------------------------------------------------------

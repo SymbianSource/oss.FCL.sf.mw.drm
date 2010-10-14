@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2004 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -96,6 +96,7 @@ void TJoinDomainRespParser::OnStartElementL(
                 iResponse->iDomainKeyIDs.AppendL(buffer);
                 CleanupStack::Pop();
                 }
+            break;
         case EExtensionState:
             buffer = aParser.GetAttributeValueL(aAttributes, KType );
             if(buffer != NULL)
@@ -106,7 +107,7 @@ void TJoinDomainRespParser::OnStartElementL(
                     }
                 delete buffer;
                 }
-        break;
+            break;
         }
     }
 
@@ -206,16 +207,5 @@ void TJoinDomainRespParser::OnEndElementL(
             break;
         }
     }
-
-// ========================== OTHER EXPORTED FUNCTIONS =========================
-
-// -----------------------------------------------------------------------------
-// ?function_name implements...
-// ?implementation_description.
-// Returns: ?value_1: ?description
-//          ?value_n: ?description
-//                    ?description
-// -----------------------------------------------------------------------------
-//
 
 //  End of File  

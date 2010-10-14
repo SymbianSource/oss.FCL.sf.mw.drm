@@ -307,7 +307,7 @@ EXPORT_C TBool COma2Dcf::IsValidDcf(
 void COma2Dcf::ReadPartsL( void )
     {
     TBuf8<KBrandingSize> buffer;
-    TInt size;
+    TInt size = 0;
     TUint32 type;
     TInt offset;
     TInt headerSize;

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2004 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2004-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -101,8 +101,9 @@ CDRMRightsData* CDRMRightsData::OpenLC( const TFileName& aRightsFile,
                                         RFs& aFileServer )
     {
     CDRMCommonData* common = CDRMCommonData::NewL();
-
+    CleanupStack::PushL( common );
     CDRMRightsData* self = new( ELeave ) CDRMRightsData( common, aFileServer );
+    CleanupStack::Pop( common );
     CleanupStack::PushL( self );
     self->ConstructL( aRightsFile );
 

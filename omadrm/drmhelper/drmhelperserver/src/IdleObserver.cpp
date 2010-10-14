@@ -21,7 +21,7 @@
 #include    <e32base.h>
 #include    <e32std.h>
 #include    <f32file.h>
-#include    <activeidle2domainpskeys.h>
+#include    <homescreendomainpskeys.h>
 #include    <e32property.h> //for RProperty
 #include    "IdleObserver.h"
 #include    "DRMHelperServer.h"
@@ -134,7 +134,7 @@ void CIdleObserver::ConstructL()
 #ifdef _DRM_TESTING
     CreateLogL(); //test
 #endif
-    User::LeaveIfError( iProperty.Attach( KPSUidAiInformation, KActiveIdleState ) );
+    User::LeaveIfError( iProperty.Attach( KHsCategoryUid, KHsCategoryStateKey ) );
     }
 
 // -----------------------------------------------------------------------------
@@ -200,15 +200,15 @@ void CIdleObserver::RunL()
 #endif
 
     // Resubscribe before processing new value to prevent missing updates
-    TInt idleStauts = 0;
+    TInt idleStatus = 0;
     TInt err( iStatus.Int() );
     if (err == KErrNone)
         {
         StartL();
         User::LeaveIfError( iProperty.Get(
-                KPSUidAiInformation,
-                KActiveIdleState, idleStauts ) );
-        if ( idleStauts == EPSAiForeground )
+                KHsCategoryUid,
+                KHsCategoryStateKey, idleStatus ) );
+        if ( idleStatus == EHomeScreenApplicationForeground )
             {
             iServer.HandleIdleL();
             }

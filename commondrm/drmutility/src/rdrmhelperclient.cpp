@@ -79,8 +79,9 @@ TInt RDrmHelperClient::Connect()
     {
     TInt error = StartServer();
 
-    if ( !error )
+    if ( !error || error == KErrAlreadyExists )
         {
+        error = KErrNone;    
         error = CreateSession( KDRMHelperServerName,
                                Version(),
                                KDefaultMessageSlots );

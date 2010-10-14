@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2004 - 2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2004 - 2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -750,9 +750,15 @@ EXPORT_C void CDRMRIContext::InternalizeL( RReadStream& aStream )
         {
         // Read the certificate
         dataPart = HBufC8::NewL( aStream, KMaxCertificateLength );
-
+        
+        // Put dataPart to cleanup stack
+        CleanupStack::PushL( dataPart );
+        
         // assign the certificate
         iOcspResponse.AppendL( dataPart );
+        
+        // Pop dataPart from cleanup stack
+        CleanupStack::Pop( dataPart );
         }
 
     // certificate caching indication

@@ -312,7 +312,7 @@ TInt CWmDrmFileServerSession::WriteL( const RMessage2& aMessage )
 TInt CWmDrmFileServerSession::SizeL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
-    TInt size;
+    TInt size = 0;
     
     //LOGFNR( "CWmDrmFileServerSession::SizeL", r );
     __UHEAP_MARK;

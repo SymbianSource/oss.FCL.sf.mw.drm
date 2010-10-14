@@ -308,9 +308,10 @@ LOCAL_C void WriteCurrentTimeL()
 //
 LOCAL_C void DoResetAndDestroy( TAny* aPtr )
     {
-    ( reinterpret_cast< RPointerArray< CDRMRights >* >( aPtr ) )->ResetAndDestroy();
-    delete aPtr;
-    aPtr = NULL;
+    RPointerArray< CDRMRights >* arr = reinterpret_cast< RPointerArray< CDRMRights >* >( aPtr );
+    arr->ResetAndDestroy();
+    delete arr;
+    arr = NULL;
     }
 
 // ----------------------------------------------------------------------------

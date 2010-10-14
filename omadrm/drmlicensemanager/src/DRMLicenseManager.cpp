@@ -214,7 +214,7 @@ EXPORT_C CDRMLicenseManager::~CDRMLicenseManager()
         }
     }
 
-LOCAL_C TBool GetRightsIssuerL(const TFileName aFileName, HBufC8*& aRightsIssuerURL)
+LOCAL_C TBool GetRightsIssuerL(const TFileName& aFileName, HBufC8*& aRightsIssuerURL)
     {
     TInt err(KErrNotFound);
 
@@ -236,7 +236,7 @@ LOCAL_C TBool GetRightsIssuerL(const TFileName aFileName, HBufC8*& aRightsIssuer
     return EFalse;
     }
 
-LOCAL_C TBool GetRightsIssuerL(RFile aFileName, HBufC8*& aRightsIssuerURL)
+LOCAL_C TBool GetRightsIssuerL(RFile& aFileName, HBufC8*& aRightsIssuerURL)
     {
     TInt err(KErrNotFound);
 

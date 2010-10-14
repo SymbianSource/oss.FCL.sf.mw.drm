@@ -630,7 +630,6 @@ void CWmDrmDlaDefaultHttpManager::SubmitL()
     for ( TInt i = 0; i < nofheaders; i++ )
         {
         TInt field = iHdrFields[i];
-        const TDesC8& fieldStr = HTTP_STRING( field ).DesC();
         HBufC8* pValue = iHdrValues[i];
         SetHeaderL( hdr, field, *pValue );
         }

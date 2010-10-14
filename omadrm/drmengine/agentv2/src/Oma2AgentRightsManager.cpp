@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -332,7 +332,9 @@ void COma2AgentRightsManager::ListContentL(
         CleanupStack::PushL(entry);
         path = CVirtualPath::NewL(TVirtualPathPtr(entry->FileName(),
             KDefaultContentObject));
+        CleanupStack::PushL(path);
         aArray.AppendL(path);
+        CleanupStack::Pop(path);
         CleanupStack::PopAndDestroy(); // entry
         entry = rep->NextL();
         }

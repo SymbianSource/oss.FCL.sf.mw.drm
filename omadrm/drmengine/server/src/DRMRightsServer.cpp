@@ -1466,7 +1466,7 @@ void CDRMRightsServer::ImportRightsObjectsL( const TDesC& aImportDir )
     HBufC8* k = NULL;
     RFs fs;
     RFile file;
-    TInt size;
+    TInt size = 0;
     RPointerArray<CDRMRights> rights;
     CDir* dir;
     TFileName name;

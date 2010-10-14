@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2004-2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2004-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -442,8 +442,14 @@ EXPORT_C void CDRMDomainContext::InternalizeL( RReadStream& aStream )
         // Read the ContentID
         dataPart = HBufC8::NewL( aStream, KMaxUrlLength );
 
+        // Put dataPart to cleanup stack
+        CleanupStack::PushL( dataPart );
+        
         // assign the new content id
         iDomainKeys.AppendL( dataPart );
+        
+        // Pop dataPart from cleanup stack
+        CleanupStack::Pop( dataPart );
         }
 
     // Read the rights issuer ID

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -726,7 +726,6 @@ void CDcfRepSrv::CheckFileL(const TDesC& aFile , TInt& aType)
                     {
                     aType = ENoDcf;
                     }
-
                 }
             break;
         case EStateSetTtid:
@@ -1052,6 +1051,11 @@ void CDcfRepSrv::CompleteScanning(TInt aRet)
 #ifdef _DRM_TESTING
     TRAPD(r,WriteL(_L8("CompleteScanning")));
 #endif
+
+    if ( iScan->IsActive() )
+        {
+        iScan->Cancel();
+        }
 
     for (TInt i = 0 ; i<iMessageList.Count() ; i++ )
         {

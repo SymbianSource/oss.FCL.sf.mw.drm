@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2005 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2005-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -38,8 +38,10 @@ void CProcWatcher::ConstructL( const TDesC& aProcess, const TDesC& aFile )
 
 CProcWatcher* CProcWatcher::NewL( MWatcherObserver& aObserver, const TDesC& aProcess, const TDesC& aFile )
     {
-    CProcWatcher* self = new( ELeave ) CProcWatcher( aObserver);
+    CProcWatcher* self = new( ELeave ) CProcWatcher( aObserver );
+    CleanupStack::PushL( self );
     self->ConstructL( aProcess, aFile );
+    CleanupStack::Pop( self );
     return self;
     }
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2005 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2005-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -41,7 +41,9 @@ void CDirWatcher::ConstructL( const TDesC& aDir )
 CDirWatcher* CDirWatcher::NewL( MWatcherObserver& aObserver, RFs& aFs, const TDesC& aDir )
     {
     CDirWatcher* self = new( ELeave ) CDirWatcher( aObserver, aFs );
+    CleanupStack::PushL( self );
     self->ConstructL( aDir );
+    CleanupStack::Pop( self );
     return self;
     }
 

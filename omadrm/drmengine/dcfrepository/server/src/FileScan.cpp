@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2004 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -121,6 +121,8 @@ CActive( CActive::EPriorityStandard ),iServer(NULL),iFs(&aFs),iCurrentLeaf(NULL)
 void CFileScan::ConstructL()
     {
     TInt err = 0;
+    CActiveScheduler::Add( this );
+
     if ( !iFs )
         {
         err = KErrArgument;
@@ -150,6 +152,7 @@ CFileScan* CFileScan::NewL( RFs& aFs )
 // Destructor
 CFileScan::~CFileScan()
     {
+    Deque();
     CleanInternal();
     iServer = NULL;
     iFs = NULL;
@@ -196,8 +199,8 @@ TInt CFileScan::IsProtected( const TDesC& aFileName , TBool& aIsDCF )
 //
 void CFileScan::RunL()
     {
-    TInt err = KErrNone;
-    if ( iSearching && iServer->State()!=EStateIdle )
+    TInt err (iStatus.Int());
+    if ( !err && iSearching && iServer->State()!=EStateIdle )
         {
         err = SearchNext();
         if ( err == KErrCancel )
@@ -206,22 +209,29 @@ void CFileScan::RunL()
             }
         if ( !err )
             {
-            SetActive();
-            TRequestStatus* status = &iStatus;
-            User::RequestComplete( status , err );
+            if (iServer->State() != EStateIdle)
+                {
+                if (iSearching)
+                    {
+                    SetActive();
+                    TRequestStatus* status = &iStatus;
+                    User::RequestComplete(status, err);
+                    }
+                else
+                    {
+                    iServer->CompleteScanning(err);
+                    }
+                }
+            else
+                {
+                CleanInternal();
+                }
             }
-        }
-    else
-        {
-        CleanInternal();
-        iServer->CompleteScanning(err);
-        Deque();
         }
     if ( err )
         {
         CleanInternal();
         iServer->CompleteScanning(err);
-        Deque();
         }
     }
 
@@ -237,18 +247,19 @@ TInt CFileScan::SearchContent( CDcfRepSrv* aServer )
     {
     TInt err = KErrNone;
 
-    iServer = aServer;
-    CActiveScheduler::Add( this );
-
-    iSearching = ETrue;
-    err = SearchNext();
-    if ( err )
+    if ( IsActive() )
         {
-        return err;
+        err=KErrServerBusy;
         }
-    SetActive();
-    TRequestStatus* status = &iStatus;
-    User::RequestComplete( status , KErrNone );
+
+    if ( !err )
+        {
+        iServer = aServer;
+        iSearching = ETrue;
+        SetActive();
+        TRequestStatus* status = &iStatus;
+        User::RequestComplete( status , KErrNone );
+        }
     return err;
     }
 

@@ -201,9 +201,9 @@ EXPORT_C TInt RDcfRepCli::Connect()
 
     TInt error = StartServer();
 
-    if (KErrNone == error)
+    if ( !error || error == KErrAlreadyExists )
         {
-
+        error = KErrNone;
         error = CreateSession(KDcfRepSrvName,
                               Version(),
                               KDefaultMessageSlots);

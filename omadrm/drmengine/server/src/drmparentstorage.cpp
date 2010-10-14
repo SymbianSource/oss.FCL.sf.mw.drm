@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2003-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -17,6 +17,7 @@
 
 
 // INCLUDE FILES
+#include <e32def.h>
 #include "drmparentstorage.h"
 #include "DrmPermission.h"
 #include "drmlog.h"
@@ -185,7 +186,8 @@ CDRMPermissionList& CDRMParentStorage::operator[]( const TDesC8& aCID )
     {
     TInt pos;
 
-    iParentIDs->FindIsq( aCID, pos );
+    TInt error = iParentIDs->FindIsq( aCID, pos );
+    __ASSERT_ALWAYS( !error && pos >= 0, User::Invariant() );
     return *( iParents[ pos ] );
     }
 
