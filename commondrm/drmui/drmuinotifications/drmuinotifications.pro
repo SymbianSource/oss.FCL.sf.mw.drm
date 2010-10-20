@@ -14,8 +14,7 @@ HEADERS += inc/drmuidialogsbuilder.h \
     inc/drmuidialogpluginkeys.h \
     inc/drmuidialogplugin.h
 SOURCES += src/drmuidialogsbuilder.cpp \
-    src/drmuidialogplugin.cpp \
-    DRMUINotifications_reg.rss
+    src/drmuidialogplugin.cpp
 FORMS += 
 symbian:TARGET.UID3 = 0x20026835
 RESOURCES += resource/drmuinotifications.qrc
@@ -26,7 +25,7 @@ symbian: {
     TARGET.CAPABILITY = CAP_GENERAL_DLL
     TARGET.UID3 = 20026835
     hblib.sources = Hb.dll
-    hblib.path = \sys\bin
+    hblib.path = /sys/bin
     hblib.depends = "(0xEEF9EA38), 1, 0, 0, {\"Hb\"}"
     pluginstub.sources = drmuinotifications.dll
     pluginstub.path = /resource/plugins/devicedialogs

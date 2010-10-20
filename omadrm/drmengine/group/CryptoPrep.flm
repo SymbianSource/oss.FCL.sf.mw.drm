@@ -13,38 +13,68 @@
 # Description: DRM Crypto Library build configuration
 #
 
-CREATABLEPATH:=$(EXTENSION_ROOT)/../drmengine/drmcrypto/build
-CLEANTARGETS:=$(CREATABLEPATH)/cmlacrypto.cpp $(CREATABLEPATH)/omacrypto.cpp
+ifeq ($(_CRYPTOPREP_FLM_),)
+# first instance of this FLM
+_CRYPTOPREP_FLM_:= 1
 
-crypto_files:=$(wildcard $(EXTENSION_ROOT)/../drmengine/drmcrypto/CMLA/*.cpp)
 
+# NB: abspath doesn't like Windows drive letters
+CRYPTO_SOURCE_DRIVE:=$(firstword $(subst :, ,$(EXTENSION_ROOT)))
+ifeq ($(CRYPTO_SOURCE_DRIVE),$(EXTENSION_ROOT))
+CRYPTO_ROOT:=$(abspath $(EXTENSION_ROOT)/../drmengine/drmcrypto))
+else
+CRYPTO_SOURCE_REST:=$(subst $(CRYPTO_SOURCE_DRIVE):, ,$(EXTENSION_ROOT)/../drmengine/drmcrypto)
+CRYPTO_ABSPATH:=$(abspath $(CRYPTO_SOURCE_REST))
 
-GUARD:=done_$(call sanitise,$(CLEANTARGETS))
-ifeq ($($(GUARD)),)
-$(GUARD):=1
+#Ensure that drive letter appears in absolute path once and only once.
+ifeq (,$(findstring $(CRYPTO_SOURCE_DRIVE):,$(CRYPTO_ABSPATH)))
+CRYPTO_ROOT:=$(CRYPTO_SOURCE_DRIVE):$(CRYPTO_ABSPATH)
+else
+CRYPTO_ROOT:=$(CRYPTO_ABSPATH)
+endif
 
-BITMAP :: $(CREATABLEPATH)
+endif
+
+CREATABLEPATH:=$(CRYPTO_ROOT)/build
+
+crypto_files:=$(wildcard $(CRYPTO_ROOT)/CMLA/*.cpp)
 
 ifeq ($(crypto_files),)
-	$(GNUCP) $(CREATABLEPATH)/../stub/CmlaCryptoStub.cpp $(CREATABLEPATH)/cmlacrypto.cpp
+CMLA_CRYPTO_SOURCE:=$(CRYPTO_ROOT)/stub/CmlaCryptoStub.cpp
 else
-	$(GNUCP) $(CREATABLEPATH)/../CMLA/CmlaCrypto.cpp $(CREATABLEPATH)/cmlacrypto.cpp
+CMLA_CRYPTO_SOURCE:=$(CRYPTO_ROOT)/CMLA/CmlaCrypto.cpp
 endif
-	$(GNUCP) $(CREATABLEPATH)/../src/OmaCrypto.cpp $(CREATABLEPATH)/omacrypto.cpp
-	$(GNUCHMOD) u+w $(CREATABLEPATH)/cmlacrypto.cpp
-	$(GNUCHMOD) u+w $(CREATABLEPATH)/omacrypto.cpp
+CLEANTARGETS:=$(CREATABLEPATH)/cmlacrypto.cpp
+
+define drmcryptoprep
+
+BITMAP:: $(CLEANTARGETS)
+	$(call startrule,drmcryptoprep) \
+	echo created $(CLEANTARGETS) \
+	$(call endrule,drmcryptoprep)
+
+
+$(CLEANTARGETS): $(CMLA_CRYPTO_SOURCE)
+	$(call startrule,drmcryptoprep) \
+	$(GNUCP) $$< $$@ && \
+	$(GNUCHMOD) u+w $$@ \
+	$(call endrule,drmcryptoprep)
+
+endef
 
 # Create dirs
 $(call makepath,$(CREATABLEPATH))
-
+$(eval $(call drmcryptoprep))
 ## Clean up
 $(eval $(call GenerateStandardCleanTarget,$(CLEANTARGETS)))
 
 ## What
 $(eval $(call whatmacro,$(CLEANTARGETS)))
 
+$(info <debug>$(PLATFORM) $(CFG), selecting $(CMLA_CRYPTO_SOURCE)</debug>)
 
 else
-$(info <debug>$(PLATFORM) $(CFG), up-to-date $(CLEANTARGETS)</debug>)
+$(info <debug>$(PLATFORM) $(CFG), already handled $(CMLA_CRYPTO_SOURCE)</debug>)
+# FLM already included - don't duplicate the targets
 
 endif

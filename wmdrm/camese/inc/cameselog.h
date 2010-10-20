@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2007 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2007i-2010 Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -70,6 +70,7 @@ NONSHARABLE_CLASS(CameseLog)
     };
 
 // MACROS
+#define CAMESE_LOG_DEF(a)               a
 #define CAMESE_LOG_TDES(fmt)            CameseLog::Printf1(fmt)
 #define CAMESE_LOG(fmt)                 CameseLog::Printf1(_L(fmt))
 #define CAMESE_LOG1(fmt,v1)             CameseLog::Printf(_L(fmt),v1)
@@ -105,15 +106,16 @@ NONSHARABLE_CLASS(TLogOverflowHandler8) : public TDes8Overflow
 
 #else
 
+#define CAMESE_LOG_DEF(a)
 #define CAMESE_LOG_TDES(fmt)
 #define CAMESE_LOG(fmt)
 #define CAMESE_LOG1(fmt,v1)
 #define CAMESE_LOG2(fmt,v1,v2)
 #define CAMESE_LOG3(fmt,v1,v2,v3)
 #define CAMESE_HEX_DUMP(h, m, p, l)
-#define CAMESE_LOG8(fmt)           
-#define CAMESE_LOG8_1(fmt,v1)         
-#define CAMESE_LOG8_2(fmt,v1,v2)     
+#define CAMESE_LOG8(fmt)
+#define CAMESE_LOG8_1(fmt,v1)
+#define CAMESE_LOG8_2(fmt,v1,v2)
 #define CAMESE_LOG8_3(fmt,v1,v2,v3)
 
 #endif

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2007-2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2007-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -42,23 +42,23 @@
 //---------------------------------------------------------------------------
 //
 CWmDrmSession::CWmDrmSession()
-	{
-	}
+    {
+    }
 
 //---------------------------------------------------------------------------
 // CWmDrmSession::~CWmDrmSession
 // Destructor
 //---------------------------------------------------------------------------
-//	
+//
 CWmDrmSession::~CWmDrmSession()
-	{
-	LOGFN( "CWmDrmSession::~CWmDrmSession" );
+    {
+    LOGFN( "CWmDrmSession::~CWmDrmSession" );
     //Server().Cache()->FlushL();
-	delete iEnumerator;
-	iEnumerator = NULL;
+    delete iEnumerator;
+    iEnumerator = NULL;
     delete iSlot;
-	iSlot = NULL;
-	}
+    iSlot = NULL;
+    }
 
 //---------------------------------------------------------------------------
 // CWmDrmSession::InitStoreL
@@ -68,7 +68,7 @@ TInt CWmDrmSession::InitStoreL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     TBuf8<KMaxWmDrmStoreNameSize> store;
-    
+
     LOGFNR( "CWmDrmSession::InitStoreL", r );
     if ( aMessage.GetDesLength( 0 ) > KMaxWmDrmStoreNameSize || aMessage.GetDesLength( 0 ) <= 0 )
         {
@@ -86,12 +86,12 @@ TInt CWmDrmSession::InitStoreL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::RemoveStoreL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::RemoveStoreL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     TBuf8<KMaxWmDrmStoreNameSize> store;
-    
+
     LOGFNR( "CWmDrmSession::RemoveStoreL", r );
     if ( aMessage.GetDesLength( 0 ) > KMaxWmDrmStoreNameSize || aMessage.GetDesLength( 0 ) <= 0  )
         {
@@ -106,13 +106,13 @@ TInt CWmDrmSession::RemoveStoreL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::InitNamespaceL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::InitNamespaceL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     TBuf8<KMaxWmDrmStoreNameSize> store;
     TBuf8<KMaxWmDrmNamespaceNameSize> nameSpace;
-    
+
     LOGFNR( "CWmDrmSession::InitNamespaceL", r );
     // :KLUDGE: Note: store length of zero is allowed
     if ( aMessage.GetDesLengthL( 0 ) > KMaxWmDrmStoreNameSize ||
@@ -139,13 +139,13 @@ TInt CWmDrmSession::InitNamespaceL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::RemoveNamespaceL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::RemoveNamespaceL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     TBuf8<KMaxWmDrmStoreNameSize> store;
     TBuf8<KMaxWmDrmNamespaceNameSize> nameSpace;
-    
+
     LOGFNR( "CWmDrmSession::RemoveNamespaceL", r );
     // :KLUDGE: Note: store length of zero is allowed
     if ( aMessage.GetDesLengthL( 0 ) > KMaxWmDrmStoreNameSize ||
@@ -172,13 +172,13 @@ TInt CWmDrmSession::RemoveNamespaceL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::SlotOpenL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::SlotOpenL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     RBuf8 messageBuffer;
-	TInt size;
-    
+    TInt size;
+
     LOGFNR( "CWmDrmSession::SlotOpenL", r );
     if ( aMessage.GetDesLength( 0 ) > KMaxSlotNameSize || aMessage.GetDesLength( 0 ) <= 0 )
         {
@@ -202,13 +202,13 @@ TInt CWmDrmSession::SlotOpenL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::SlotCreateL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::SlotCreateL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     RBuf8 messageBuffer;
-	TInt size;
-    
+    TInt size;
+
     LOGFNR( "CWmDrmSession::SlotCreateL", r );
     if ( aMessage.GetDesLength( 0 ) > KMaxSlotNameSize || aMessage.GetDesLength( 0 ) <= 0  )
         {
@@ -223,7 +223,7 @@ TInt CWmDrmSession::SlotCreateL( const RMessage2& aMessage )
         delete iSlot;
         iSlot = NULL;
         }
-    
+
     iSlot = CSlot::NewL( &Server(), messageBuffer );
     iSlot->CreateL( size );
     CleanupStack::PopAndDestroy( &messageBuffer );
@@ -233,14 +233,14 @@ TInt CWmDrmSession::SlotCreateL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::SlotSeekL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::SlotSeekL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     TSeek whence = ESeekStart;
     TInt pos = aMessage.Int0();
     TInt size;
-    
+
     LOGFNR( "CWmDrmSession::SlotSeekL", r );
     if ( iSlot == NULL )
         {
@@ -278,13 +278,13 @@ TInt CWmDrmSession::SlotSeekL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::SlotReadL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::SlotReadL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     RBuf8 buf;
     TInt amountRead = 0;
-    
+
     LOGFNR( "CWmDrmSession::SlotReadL", r );
     if ( iSlot == NULL )
         {
@@ -306,12 +306,12 @@ TInt CWmDrmSession::SlotReadL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::SlotWriteL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::SlotWriteL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     RBuf8 buf;
-    
+
     LOGFNR( "CWmDrmSession::SlotWriteL", r );
     if ( iSlot == NULL )
         {
@@ -324,11 +324,11 @@ TInt CWmDrmSession::SlotWriteL( const RMessage2& aMessage )
     CleanupStack::PopAndDestroy( &buf );
     return r;
     }
-    
+
 TInt CWmDrmSession::SlotResizeL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
-    
+
     LOGFNR( "CWmDrmSession::SlotResizeL", r );
     if ( iSlot == NULL )
         {
@@ -341,12 +341,12 @@ TInt CWmDrmSession::SlotResizeL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::SlotDeleteL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::SlotDeleteL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     RBuf8 messageBuffer;
-    
+
     LOGFNR( "CWmDrmSession::SlotDeleteL", r );
     if ( aMessage.GetDesLength( 0 ) > KMaxSlotNameSize )
         {
@@ -371,11 +371,11 @@ TInt CWmDrmSession::SlotDeleteL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::SlotCloseL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::SlotCloseL( const RMessage2& /*aMessage*/ )
     {
     TInt r = KErrNone;
-    
+
     LOGFNR( "CWmDrmSession::SlotCloseL", r );
     if ( iSlot == NULL )
         {
@@ -389,12 +389,12 @@ TInt CWmDrmSession::SlotCloseL( const RMessage2& /*aMessage*/ )
 //---------------------------------------------------------------------------
 // CWmDrmSession::EnumerateStartL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::EnumerateStartL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     RBuf8 messageBuffer;
-    
+
     LOGFNR( "CWmDrmSession::EnumerateStartL", r );
     if ( aMessage.GetDesLength( 0 ) > KMaxSlotNameSize || aMessage.GetDesLength( 0 ) <= 0  )
         {
@@ -422,13 +422,13 @@ TInt CWmDrmSession::EnumerateStartL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::EnumerateReloadL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::EnumerateReloadL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     TBuf8<KWmDrmIdSize> hash;
     TBuf8<KWmDrmIdSize> id;
-    
+
     LOGFNR( "CWmDrmSession::EnumerateReloadL", r );
     if ( iEnumerator == NULL )
         {
@@ -448,13 +448,13 @@ TInt CWmDrmSession::EnumerateReloadL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::EnumerateNextL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::EnumerateNextL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
     TBuf8<KWmDrmIdSize> hash;
     TBuf8<KWmDrmIdSize> id;
-    
+
     LOGFNR( "CWmDrmSession::EnumerateNextL", r );
     if ( iEnumerator == NULL )
         {
@@ -478,11 +478,11 @@ TInt CWmDrmSession::EnumerateNextL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::EnumerateDeleteL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::EnumerateDeleteL ( const RMessage2& /*aMessage*/ )
     {
     TInt r = KErrNone;
-    
+
     LOGFNR( "CWmDrmSession::EnumerateDeleteL", r );
     if ( iEnumerator == NULL )
         {
@@ -499,7 +499,7 @@ TInt CWmDrmSession::EnumerateDeleteL ( const RMessage2& /*aMessage*/ )
 TInt CWmDrmSession::EnumerateEndL ( const RMessage2& /*aMessage*/ )
     {
     TInt r = KErrNone;
-    
+
     LOGFNR( "CWmDrmSession::EnumerateEndL", r );
     if ( iEnumerator == NULL )
         {
@@ -518,7 +518,7 @@ TInt CWmDrmSession::EnumerateEndL ( const RMessage2& /*aMessage*/ )
 TInt CWmDrmSession::EmptyCacheL( const RMessage2& aMessage )
     {
     TInt r = KErrNone;
-    
+
     LOGFNR( "CWmDrmSession::EmptyCacheL", r );
     TRAP_IGNORE( EnumerateEndL( aMessage ) );
     TRAP_IGNORE( SlotCloseL( aMessage ) );
@@ -529,19 +529,19 @@ TInt CWmDrmSession::EmptyCacheL( const RMessage2& aMessage )
 //---------------------------------------------------------------------------
 // CWmDrmSession::LogStats
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::LogStats( const RMessage2& /*aMessage*/ )
     {
     TInt r = KErrNone;
 
-#ifdef _LOGGING    
+#ifdef _LOGGING
     TInt cells;
     TInt amount;
     TInt i;
     TInt j;
     _LIT( KStatsDir, "wmdrm" );
     _LIT( KStatsFile, "wmdrmserver.txt" );
-    
+
     LOGFNR( "CWmDrmSession::LogStatsL", r );
     cells = User::AllocSize( amount );
     RFileLogger::Write( KStatsDir, KStatsFile, EFileLoggingModeAppend, _L( "Statistics:" ) );
@@ -584,7 +584,7 @@ TInt CWmDrmSession::LogStats( const RMessage2& /*aMessage*/ )
             }
         }
 #endif
-    
+
     return r;
     }
 
@@ -595,7 +595,7 @@ TInt CWmDrmSession::LogStats( const RMessage2& /*aMessage*/ )
 TInt CWmDrmSession::TimeValid( const RMessage2& /*aMessage*/ )
     {
     TInt r = KErrNone;
-    
+
     LOGFNR( "CWmDrmSession::TimeValid", r );
     r = Server().Clock()->TimeIsGood();
     return r;
@@ -604,52 +604,52 @@ TInt CWmDrmSession::TimeValid( const RMessage2& /*aMessage*/ )
 //---------------------------------------------------------------------------
 // CWmDrmSession::SetTimeAsValidL
 //---------------------------------------------------------------------------
-//    
+//
 void CWmDrmSession::SetTimeAsValidL( const RMessage2& aMessage )
     {
     LOGFN( "CWmDrmSession::TimeValid" );
     Server().Clock()->SetTimeAsGoodL( aMessage.Int0() == 0 ? EFalse : ETrue );
     }
-    
+
 
 //---------------------------------------------------------------------------
 // CWmDrmSession::DeleteRightsL
 //---------------------------------------------------------------------------
-//    
+//
 TInt CWmDrmSession::DeleteRightsL( const RMessage2& /*aMessage*/ )
     {
     TInt r = KErrNone;
     TBool wmDrmRightsConfigFound( EFalse );
     TChar driveLetter;
     TDrmScheme drmScheme( EDrmSchemeWmDrm );
-    
+
     LOGFNR( "CWmDrmSession::DeleteRightsL", r );
     // Close EVERYTHING down, clear cache etc, so that we have nothing going on
     // When we start to delete stuff
     Server().ResetCacheL();
-    
+
     wmDrmRightsConfigFound = DrmRightsStoringLocation::CheckDrmRightsStorageDriveL(
-	  		Server().Fs(), drmScheme, driveLetter );
-    
+            Server().Fs(), drmScheme, driveLetter );
+
     // If WM DRM rights storage configuration is found, update both databases
     if ( wmDrmRightsConfigFound )
         {
-    	Server().DataStore()->UpdateDummyDbFileL( 
-    	    Server().DataStore()->DummyDBSizeL( ETrue ), ETrue );
-    	}
-    Server().DataStore()->UpdateDummyDbFileL( 
+        Server().DataStore()->UpdateDummyDbFileL(
+            Server().DataStore()->DummyDBSizeL( ETrue ), ETrue );
+        }
+    Server().DataStore()->UpdateDummyDbFileL(
         Server().DataStore()->DummyDBSizeL( EFalse ), EFalse );
-    
+
     // Delete license store
     Server().Db()->DeleteLicenseStoreL();
-    
-    // If WM DRM rights storage configuration is found, update both databases 
+
+    // If WM DRM rights storage configuration is found, update both databases
     if ( wmDrmRightsConfigFound )
-    	{
-    	Server().DataStore()->UpdateDummyDbFileL( 0, ETrue );
-    	}	
+        {
+        Server().DataStore()->UpdateDummyDbFileL( 0, ETrue );
+        }
     Server().DataStore()->UpdateDummyDbFileL( 0, EFalse );
-    
+
     return r;
     }
 
@@ -660,7 +660,7 @@ TInt CWmDrmSession::DeleteRightsL( const RMessage2& /*aMessage*/ )
 void CWmDrmSession::StoreStateL( const RMessage2& aMessage )
     {
     TWmDrmStoreState state;
-    
+
     LOGFN( "CWmDrmSession::StoreStateL" );
     state = Server().DataStore()->DataStoreStateL();
     aMessage.WriteL( 0, TPckg<TWmDrmStoreState>( state ) );
@@ -676,12 +676,12 @@ void CWmDrmSession::GetTimeL( const RMessage2& aMessage )
     TBool validity = EFalse;
     TPckg<TTime> timePckg(time);
     TPckg<TBool> validityPckg(validity);
-    
+
     LOGFN( "CWmDrmSession::GetTimeL" );
-    
+
     // Get the time from the clock
     Server().Clock()->GetTimeL( time, validity );
-    
+
     aMessage.WriteL(0, timePckg);
     aMessage.WriteL(1, validityPckg);
     }
@@ -691,29 +691,29 @@ void CWmDrmSession::GetTimeL( const RMessage2& aMessage )
 // CWmDrmSession::CommitDataL
 //---------------------------------------------------------------------------
 //
-void CWmDrmSession::CommitDataL( const RMessage2& aMessage )
+void CWmDrmSession::CommitDataL( const RMessage2& /*aMessage*/ )
     {
-    
+
     LOGFN( "CWmDrmSession::CommitDataL" );
-    
+
     // Force a commit on the database
     Server().Db()->CheckDatabaseCommitL( ETrue );
     }
 
 
- 
+
 //---------------------------------------------------------------------------
 // CWmDrmSession::ServiceL
 //---------------------------------------------------------------------------
-//    
+//
 void CWmDrmSession::ServiceL( const RMessage2& aMessage )
-	{
-	TInt r = KErrNone;
-	TInt trap = KErrNone;
-	_LIT_SECURITY_POLICY_C1(drmCheck, ECapabilityDRM);
+    {
+    TInt r = KErrNone;
+    TInt trap = KErrNone;
+    _LIT_SECURITY_POLICY_C1(drmCheck, ECapabilityDRM);
     RThread client;
-	
-	LOGFNR( "CWmDrmSession::ServiceL", r );
+
+    LOGFNR( "CWmDrmSession::ServiceL", r );
 #ifdef _LOGGING
     TInt c;
     TInt s;
@@ -802,10 +802,10 @@ void CWmDrmSession::ServiceL( const RMessage2& aMessage )
                 break;
             case EGetTime:
                 TRAP( trap, GetTimeL( aMessage ) );
-                break;      
+                break;
             case ECommitData:
                 TRAP( trap, CommitDataL( aMessage ) );
-                break;            
+                break;
             default:
                 r = KErrArgument;
                 break;
@@ -822,24 +822,24 @@ void CWmDrmSession::ServiceL( const RMessage2& aMessage )
     client.Close();
     LOG2( "** ServiceL error: %d", r );
     aMessage.Complete( r );
-	}
+    }
 
 //---------------------------------------------------------------------------
 // CWmDrmSession::ServiceError
 //---------------------------------------------------------------------------
 //
 void CWmDrmSession::ServiceError( const RMessage2& aMessage, TInt aError )
-	{
-	LOGFN( "CWmDrmSession::ServiceError" );
-	LOG2( "** Error: %d", aError );
-	CSession2::ServiceError( aMessage, aError );
-	}
+    {
+    LOGFN( "CWmDrmSession::ServiceError" );
+    LOG2( "** Error: %d", aError );
+    CSession2::ServiceError( aMessage, aError );
+    }
 
 //---------------------------------------------------------------------------
 // CWmDrmSession::Server
 //---------------------------------------------------------------------------
 //
 CWmDrmServer& CWmDrmSession::Server()
-	{
-	return *static_cast<CWmDrmServer*>( const_cast<CServer2*>( CSession2::Server() ) );
-	}
+    {
+    return *static_cast<CWmDrmServer*>( const_cast<CServer2*>( CSession2::Server() ) );
+    }

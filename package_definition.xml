@@ -85,6 +85,7 @@
   </collection>
   <collection id="commondrm" name="Common DRM" level="generic">
    <!-- it looks like this collection would be better as a component. If so, move down a directory. Otherwise, split up the bld.inf -->
+   <!--
    <component id="drmqtencryptor" filter="s60" name="DRM Qt Encryptor" introduced="^4">
     <unit bldFile="commondrm/drmqtencryptor"  qt:proFile="qt_drmencryptor.pro" />
    </component>
@@ -100,6 +101,7 @@
    <component id="drmrightsstoringlocation" filter="s60" name="DRM Rights Storing Location">
     <unit bldFile="commondrm/drmrightsstoringlocation/group"/>
    </component>
+   -->
    <component id="commondrm_build" filter="s60" name="Common DRM Build">
     <!-- should be split into the above files, or them collapsed into a single component -->
     <unit bldFile="commondrm/group"/>

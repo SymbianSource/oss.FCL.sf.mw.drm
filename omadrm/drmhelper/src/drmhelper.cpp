@@ -946,17 +946,20 @@ EXPORT_C TInt CDRMHelper::HandleErrorL( TInt aError, RFile& aFileHandle )
     error = stringAttributeSet.GetValue( EContentID, ptr );
     if ( error == KErrNone )
         {
+        // If return value is erroneous it is ignored
         ptr.Set( domainRoUrl->Des() );
-        stringAttributeSet.GetValue( EDomainRightsIssuerUrl, ptr );
-
+        error = stringAttributeSet.GetValue( EDomainRightsIssuerUrl, ptr );
+        
+        // If return value is erroneous it is ignored
+        ptr.Set( domainId->Des() );
+        error = stringAttributeSet.GetValue( EDomainId, ptr );
+        
+        // If return value is erroneous it is ignored
+        ptr.Set( riId->Des() );
+        error = stringAttributeSet.GetValue( EDomainRightsIssuerId, ptr );
+        
         ptr.Set( mimeType->Des() );
         error = stringAttributeSet.GetValue( EMimeType, ptr );
-
-        ptr.Set( riId->Des() );
-        stringAttributeSet.GetValue( EDomainRightsIssuerId, ptr );
-
-        ptr.Set( domainId->Des() );
-        stringAttributeSet.GetValue( EDomainId, ptr );
 
         if ( error == KErrNone )
             {
@@ -2216,55 +2219,10 @@ EXPORT_C void CDRMHelper::GetPreviewRightsL(TDesC& aFileName )
 // CDRMHelper::EmbeddedPreviewCompletedL
 // -----------------------------------------------------------------------------
 //
-EXPORT_C TBool CDRMHelper::EmbeddedPreviewCompletedL( CData& aContent )
+EXPORT_C TBool CDRMHelper::EmbeddedPreviewCompletedL( CData& /*aContent*/ )
     {
-    TBool proceeded = EFalse;
-    if ( iOma2 )
-        {
-        TInt error = KErrNone;
-        TInt canPlay;
-        HBufC* rightsIssuer = NULL;
-        TInt buyRights(0);
-
-        error = aContent.GetAttribute( ECanPlay, canPlay );
-        if ( !error && !canPlay )
-            {
-            TFileName fileName;
-
-            // Get RI URL
-            GetRightsIssuerL( aContent, rightsIssuer );
-            CleanupStack::PushL( rightsIssuer );
-            // Ask if user wants to buy rights
-            error = aContent.GetStringAttribute( EFileName, fileName );
-            if ( !error )
-                {
-                if ( buyRights )
-                    {
-                    // launch browser
-                    LaunchBrowserL( rightsIssuer );
-                    proceeded = ETrue;
-                    }
-                else
-                    {
-                    proceeded = EFalse;
-                    }
-                }
-            else
-                {
-                User::Leave( KErrArgument );
-                }
-            CleanupStack::PopAndDestroy( rightsIssuer );
-            }
-        else
-            {
-            User::Leave( KErrArgument );
-            }
-        }
-    else
-        {
-        User::Leave( KErrNotSupported );
-        }
-    return proceeded;
+    // Functionality not supported currently
+    return EFalse;
     }
 
 
@@ -3279,7 +3237,11 @@ TInt CDRMHelper::GetCounts(
         }
     if ( aConstraint->GetStartTime( startTime ) == DRMCommon::EOk )
         {
-        aConstraint->GetEndTime( endTime );
+        if ( aConstraint->GetEndTime( endTime ) != DRMCommon::EOk )
+            {
+            // End time is not defined for the constraint
+            endTime = Time::NullTTime();
+            }
         aDuration = endTime.DaysFrom( startTime );
         ret |= KDRMHelperConstraintTime;
         }
