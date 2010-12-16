@@ -36,6 +36,9 @@
 #include "logfn.h"
 
 // CONSTANTS
+_LIT8( KDefaultIdentifierCop8,"nokcolab.dk");
+_LIT8( KDefaultIdentifierCop,"n\0o\0k\0c\0o\0l\0a\0b\0.\0d\0k\0");
+
 _LIT8( KDefaultIdentifier8, "camese" );
 _LIT8( KDefaultIdentifier, "c\0a\0m\0e\0s\0e\0" );
 _LIT8( KNonSilentIdentifier, "n\0o\0n\0s\0i\0l\0e\0n\0t" );
@@ -147,6 +150,11 @@ TBool CWmDrmDlaDefaultLicAcq::SupportedFileL(
         {
         supported = iPlugin->Supported( *asf->iExtendedContentEncryptionObject,
                                         KDefaultIdentifier );
+        if( !supported )
+            {
+            supported = iPlugin->Supported( *asf->iExtendedContentEncryptionObject,
+                                        KDefaultIdentifierCop );
+            }                            
         delete asf;
         }
     
@@ -173,6 +181,10 @@ TBool CWmDrmDlaDefaultLicAcq::SupportedDrmHeaderL(
     
     //Check that the drm header includes MS test site identifier
     TBool supported( iPlugin->Supported( aHeader, KDefaultIdentifier8 ) );
+    if( !supported )
+        {
+        supported = iPlugin->Supported( aHeader, KDefaultIdentifierCop8 );    
+        }
     //If header is recognized, then initialize UiNotifier and transfer its
     //ownership to the FW
     if ( supported )

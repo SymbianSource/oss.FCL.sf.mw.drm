@@ -21,8 +21,8 @@
 #define WMDRMAGENTMANAGER_H
 
 //  INCLUDES
-#include <caf.h>
-#include <agentinterface.h>
+#include <caf/caf.h>
+#include <caf/agentinterface.h>
 #include <caf/attributeset.h>
 #include <caf/stringattributeset.h>
 

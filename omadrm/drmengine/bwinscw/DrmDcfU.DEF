@@ -12,4 +12,5 @@ EXPORTS
 	?SetRightsObjectsL@COma2Dcf@@QAEXAAV?$RPointerArray@VHBufC8@@@@@Z @ 11 NONAME ; void COma2Dcf::SetRightsObjectsL(class RPointerArray<class HBufC8> &)
 	?SetTransactionIdL@COma2Dcf@@QAEXABVTDesC8@@@Z @ 12 NONAME ; void COma2Dcf::SetTransactionIdL(class TDesC8 const &)
 	?GetHeaderL@COma1Dcf@@QAEHABVTDesC8@@AAVTPtrC8@@@Z @ 13 NONAME ; int COma1Dcf::GetHeaderL(class TDesC8 const &, class TPtrC8 &)
+	?GetHashL@COma2Dcf@@QAEXXZ @ 14 NONAME ; void COma2Dcf::GetHashL(void)
 

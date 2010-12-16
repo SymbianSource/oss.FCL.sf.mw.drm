@@ -264,7 +264,7 @@ void CDrmUtilityDmgrWrapper::DoDownloadAndHandleRoapTriggerL(
     const HBufC8* aUrl )
     {
     RFs fs;
-    RFile roapTrigger;
+    RFile64 roapTrigger;
     HBufC8* triggerBuf( NULL );
     TBool result( EFalse );
     TFileName triggerFileName;
@@ -324,7 +324,7 @@ void CDrmUtilityDmgrWrapper::DoDownloadAndHandleRoapTriggerL(
     if ( result )
         {
         const TInt KReadBufSize( 512 );
-        TInt triggerFileSize( 0 );
+        TInt64 triggerFileSize( 0 );
 
         CLOG_WRITE(
             "DMgrWrapper::DoDownloadAndHandleRoapTriggerL: download created" );

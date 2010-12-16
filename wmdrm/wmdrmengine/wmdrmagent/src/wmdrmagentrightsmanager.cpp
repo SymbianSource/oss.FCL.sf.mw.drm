@@ -18,10 +18,10 @@
 
 
 // INCLUDE FILES
-#include <caf.h>
+#include <caf/caf.h>
+#include <caf/rightsinfo.h>
 #include <utf.h>
 #include "wmdrmagentrightsmanager.h"
-#include "rightsinfo.h"
 #include "asf.h"
 
 #include "logfn.h"

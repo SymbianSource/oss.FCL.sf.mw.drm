@@ -209,8 +209,8 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
     {
     TInt r( KErrNone );
     HBufC8* buffer( NULL );
-    TInt pos( 0 );
-    RFile file;
+    TInt64 pos( 0 );
+    RFile64 file;
     TBuf8< 32 > header;
     TInt64 headerSize( 0 );
     TBool isDrmFile( EFalse );
@@ -336,7 +336,7 @@ EXPORT_C TBool DRM::CDrmUtility::GetDrmInfoL(
     DRM::TDrmProtectionStatus& aProtected ) const
     {
     TInt r( KErrNone );
-    RFile file;
+    RFile64 file;
     TPtr8 asfPtr( NULL, 0 );
     TBuf8< 32 > asfGuidHex;
     TBool isDrmFile( EFalse );

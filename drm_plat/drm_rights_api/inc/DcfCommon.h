@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -27,24 +27,17 @@
 #include <DRMTypes.h>
 
 using namespace ContentAccess;
-// CONSTANTS
-
-// FORWARD DECLARATIONS
-class RFile;
 
 // CLASS DECLARATION
 
 /**
-*  ?one_line_short_description.
-*  ?other_description_lines
+*  Class to handle all OMA DRM Dcf file format files
 *
-*  @lib ?library
-*  @since Series ?XX ?SeriesXX_version
+*  @lib drmdcf.dll
+*  @since 3.0
 */
 class CDcfCommon : public CBase
     {
-    public:  // Enumerations
-
     public:  // Constructors and destructor
         
         /**
@@ -52,7 +45,10 @@ class CDcfCommon : public CBase
         */
         IMPORT_C static CDcfCommon* NewL(
             const RFile& aFile);
-            
+
+        /**
+        * Two-phased constructor.
+        */            
         IMPORT_C static CDcfCommon* NewL(
             const TDesC& aFileName,
             RFs* aFs = NULL);
@@ -65,42 +61,44 @@ class CDcfCommon : public CBase
     public: // New functions
         
         /**
-        * ?member_description.
-        * @since Series ?XX ?SeriesXX_version
-        * @param ?arg1 ?description
-        * @return ?description
+        * Default implementation checks if the unique content id given
+        * is the default content object. Inherited classes can re-implement
+        * the method.
+        *
+        * @since    3.0
+        * @param    aUniqueId   Requested unique content id to be checked  
+        * @return   Symbian OS error code
         */
 		virtual TInt CheckUniqueId(const TDesC& aUniqueId);
+		
+        /**
+        * Open part with the requested unique content id
+        *
+        * @since    3.0
+        * @param    aUniqueId   Content id of the requested part
+        * @return   Symbian OS error code
+        */		
         virtual TInt OpenPart(const TDesC& aUniqueId) = 0;
-        virtual TInt OpenPart(TInt Index) = 0;
+
+        /**
+        * Open part at the requested index
+        *
+        * @since    3.0
+        * @param    aIndex   Index of the part in the file
+        * @return   Symbian OS error code
+        */	      
+        virtual TInt OpenPart(TInt aIndex) = 0;
+        
+        /**
+        * List the parts of the Dcf file
+        *
+        * @since    3.0
+        * @param    aPartList   Pointer array of parts, caller is responsible
+        *                       for deletion of the list and objects
+        * @leave    Symbian OS error code
+        * @return   None
+        */        
         virtual void GetPartIdsL(RPointerArray<HBufC8>& aPartList) = 0;
-
-    public: // Functions from base classes
-
-        /**
-        * From ?base_class ?member_description.
-        * @since Series ?XX ?SeriesXX_version
-        * @param ?arg1 ?description
-        * @return ?description
-        */
-        //?type ?member_function( ?type ?arg1 );
-        
-    protected:  // New functions
-        
-        /**
-        * ?member_description.
-        * @since Series ?XX ?SeriesXX_version
-        * @param ?arg1 ?description
-        * @return ?description
-        */
-        //?type ?member_function( ?type ?arg1 );
-
-    protected:  // Functions from base classes
-        
-        /**
-        * From ?base_class ?member_description
-        */
-        //?type ?member_function();
 
     protected:
 
@@ -114,21 +112,19 @@ class CDcfCommon : public CBase
         */
         void ConstructL(
             const RFile& aFile);
-            
+
+        /**
+        * Symbian 2nd phase constructor.
+        */            
         void ConstructL(
             const TDesC8& aMemoryBlock);
-            
-        // Prohibit copy constructor if not deriving from CBase.
-        // CDcfCommon( const CDcfCommon& );
-        // Prohibit assigment operator if not deriving from CBase.
-        // CDcfCommon& operator=( const CDcfCommon& );
 
     public:     // Data
         // File to be used for reading
-        RFile iFile;
+        RFile64 iFile;
 
         // Offset of the data part from the beginning of the file
-        TInt iOffset;
+        TInt64 iOffset;
 
         // The data part, used only when opening from a memory block
         HBufC8* iData;
@@ -137,13 +133,13 @@ class CDcfCommon : public CBase
         TUint iVersion;
 
         // Size of the DCF itself
-        TInt iLength;
+        TInt64 iLength;
 
         // Size of the encrypted data
-        TUint iDataLength;
+        TUint64 iDataLength;
 
         // Size of the decrypted data
-        TUint iPlainTextLength;
+        TUint64 iPlainTextLength;
 
         // Flag indicating if the padding is removed from the plaintext length
         TBool iPlainTextLengthValid;
@@ -171,22 +167,6 @@ class CDcfCommon : public CBase
         
         // URI for a descriptive icon
         HBufC8* iIconUri;
-
-    protected:  // Data
-
-    private:    // Data
-        // ?one_line_short_description_of_data
-        //?data_declaration;
-         
-        // Reserved pointer for future extension
-        //TAny* iReserved;
-
-    public:     // Friend classes
-        //?friend_class_declaration;
-    protected:  // Friend classes
-        //?friend_class_declaration;
-    private:    // Friend classes
-        //?friend_class_declaration;
 
     };
 

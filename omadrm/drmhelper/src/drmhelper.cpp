@@ -393,8 +393,8 @@ LOCAL_C TBool IsProtectedWmDrmL( RFile& aFileHandle )
     {
     TInt r( KErrNone );
     HBufC8* buffer( NULL );
-    TInt pos( 0 );
-    RFile file;
+    TInt64 pos( 0 );
+    RFile64 file;
     TBuf8< 32 > header;
 
     TInt64 headerSize( 0 );
@@ -854,7 +854,7 @@ EXPORT_C CDRMHelper::~CDRMHelper()
 EXPORT_C TInt CDRMHelper::HandleErrorL( TInt aError,
     const TDesC8& aURI )
     {
-    RFile fileHandle;
+    RFile64 fileHandle;
     TInt ret( KErrNotFound );
     CleanupClosePushL( fileHandle );
 
@@ -987,7 +987,7 @@ EXPORT_C TInt CDRMHelper::HandleErrorL( TInt aError, RFile& aFileHandle )
 //
 EXPORT_C TInt CDRMHelper::HandleErrorL( TInt aError, const TDesC& aFileName )
     {
-    RFile file;
+    RFile64 file;
     TInt r = KErrNone;
 
     r = file.Open(iFs, aFileName, EFileRead | EFileShareReadersOrWriters);
@@ -1840,7 +1840,7 @@ EXPORT_C TInt CDRMHelper::HandleErrorOrPreviewL(
     const TDesC& aFileName,
     HBufC8*& aEmbeddedPreviewUri )
     {
-    RFile file;
+    RFile64 file;
     TInt r = KErrNone;
 
     r = file.Open(iFs, aFileName, EFileRead | EFileShareReadersOrWriters);
@@ -2858,7 +2858,7 @@ EXPORT_C TInt CDRMHelper::CheckRightsAmountL(
     TInt aDays )
     {
     TInt buttonCode( 0 );
-    RFile fileHandle;
+    RFile64 fileHandle;
 
     CleanupClosePushL( fileHandle );
     if ( !GetFileHandleFromURIL( aUri, fileHandle ) )
@@ -4085,7 +4085,7 @@ EXPORT_C TInt CDRMHelper::CanSetAutomated(
     CData* content( NULL );
     TInt error( KErrNone );
 
-    RFile fileHandle;
+    RFile64 fileHandle;
     TBool protectedWmDrm( EFalse );
 
     error = fileHandle.Open( iFs, aFilename,
@@ -6012,7 +6012,7 @@ EXPORT_C TInt CDRMHelper::ConsumeFile2(
     TDRMHelperConsumeAction anAction)
     {
     CDcfCommon* dcf = NULL;
-    RFile file;
+    RFile64 file;
     TInt r = KErrNone;
 
     r = file.Open(iFs, aFileName, EFileRead | EFileShareReadersOrWriters);
@@ -6974,7 +6974,7 @@ TInt CDRMHelper::Intent( const HBufC* aMimeType )
 HBufC* CDRMHelper::MimeTypeFromURIL( const TDesC8& aURI )
     {
     HBufC* mimeType = NULL;
-    RFile fileHandle;
+    RFile64 fileHandle;
     TInt error ( KErrNone );
     CleanupClosePushL(fileHandle);
 

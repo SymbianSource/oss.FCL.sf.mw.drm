@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2004 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -111,10 +111,9 @@ NONSHARABLE_CLASS(COma2DcfPartInfo): public CBase
 
         HBufC8* iContentId;
         HBufC8* iMimeType;
-        TUint32 iType;
-        TInt iSize;
-        TInt iOffset;
-
+        TUint32 iType;       
+        TInt64 iSize;
+        TInt64 iOffset;
     protected:  // Data
         // ?one_line_short_description_of_data
         //?data_declaration;

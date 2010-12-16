@@ -226,8 +226,8 @@ TInt COma2AgentManager::CopyFile(
     {
     TInt driveNumber = 0;
     TChar drive( aDestination[0] );
-    RFile file;
-    TInt size = 0;
+    RFile64 file;
+    TInt64 size = 0;
     TInt result = KErrNone;
 
     TInt err = KErrNone;
@@ -288,7 +288,7 @@ TInt COma2AgentManager::CopyFile(RFile& aSource,
     TChar drive( aDestination[0] );
     TInt size = 0;
     TInt result = KErrNone;
-    RFile output;
+    RFile64 output;
     TFileName fileName;
 
     TInt err = KErrNone;
@@ -355,8 +355,8 @@ TInt COma2AgentManager::RenameFile(
     {
     TInt driveNumber = 0;
     TChar drive( aDestination[0] );
-    RFile file;
-    TInt size = 0;
+    RFile64 file;
+    TInt64 size = 0;
 
     TInt err = KErrNone;
     TBool retval = KErrNone;

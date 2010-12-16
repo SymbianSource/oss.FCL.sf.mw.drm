@@ -194,7 +194,7 @@ private:
 //*** DLA:
 
     void LoadDlaWrapperL();
-    void GetRFileFromCDataL( ContentAccess::CData& aContent, RFile& aFile );
+    void GetRFileFromCDataL( ContentAccess::CData& aContent, RFile64& aFile );
     TBool IsDlaLicenseAcquisitionSilentL( RFile& aFile  );
     void DlaLicenseAcquisitionL( RFile& aFile );
     void SilentDlaLicenseAcquisitionL( ContentAccess::CData& aContent );

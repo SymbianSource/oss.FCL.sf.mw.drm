@@ -605,7 +605,7 @@ void CDcfRepSrv::AddDomainRoL( const TDesC& aFile )
 #endif
 
     __UHEAP_MARK;
-    RFile file;
+    RFile64 file;
     TPtr8 ptr(NULL,0,0);
     CContent* content =NULL;
     User::LeaveIfError(file.Open(iFs, aFile, EFileShareReadersOrWriters | EFileWrite ) );
@@ -698,8 +698,8 @@ void CDcfRepSrv::CheckFileL(const TDesC& aFile , TInt& aType)
     WriteL(_L8("CheckFileL"));
 #endif
 
-    RFile f;
-    TInt pos = 0;
+    RFile64 f;
+    TInt64 pos = 0;
     TBuf8<256> buf;
 
     switch(iState)
@@ -774,7 +774,7 @@ void CDcfRepSrv::StoreFileL(const TDesC& aFile , TInt aType)
     WriteL(_L8("StoreFileL"));
 #endif
 
-    RFile f;
+    RFile64 f;
     User::LeaveIfError(f.Open(iFs,aFile,EFileRead|EFileShareReadersOrWriters));
     CleanupClosePushL(f);
     TInt i = 0;
@@ -918,7 +918,7 @@ void CDcfRepSrv::ResetTtidL(
     WriteL(_L8("ResetTtidL"));
 #endif
 
-    RFile f;
+    RFile64 f;
     User::LeaveIfError(f.Open(iFs,aFile, EFileWrite|EFileShareReadersOrWriters ));
     CleanupClosePushL(f);
     COma2Dcf* d = COma2Dcf::NewL(f);

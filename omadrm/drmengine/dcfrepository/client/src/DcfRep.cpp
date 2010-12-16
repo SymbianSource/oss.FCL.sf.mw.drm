@@ -339,6 +339,7 @@ void CDcfRep::DoGetFileHandleL(
     HBufC* buf = HBufC::NewLC(aCid.Length()+KDcfRepExtra);
     TPtr ptr(buf->Des());
     ptr.SetLength(0);
+    RFile64 file;
 
 
     User::LeaveIfError(From8To16(aCid,temp));
@@ -370,15 +371,18 @@ void CDcfRep::DoGetFileHandleL(
             strm.OpenLC(view,1);
             strm.ReadL(ptr,len);
             CleanupStack::PopAndDestroy(&strm);
-            err = aFile.Open(aFs, ptr, EFileRead|EFileShareReadersOrWriters);
+            err = file.Open(aFs, ptr, EFileRead|EFileShareReadersOrWriters);
             CleanupStack::PopAndDestroy(temp); // temp
-            if(err == KErrNotFound || err == KErrAccessDenied)
+            if(err == KErrNotFound || err == KErrAccessDenied || err == KErrInUse)
                 {
                 view.NextL();
                 }
             else
                 {
-                flag = EFalse;
+		// Take copy the file handle and close the local version
+		aFile.Duplicate( file );
+                file.Close();
+		flag = EFalse;
                 }
             }
         User::LeaveIfError(err);

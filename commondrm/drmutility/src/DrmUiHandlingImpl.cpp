@@ -2020,7 +2020,7 @@ void DRM::CDrmUiHandlingImpl::GetOmaBasedEndTimeL(
     {
     TInt err = KErrNone;
     RFs fileSession;
-    RFile file;
+    RFile64 file;
     TBuf8<KIntegerMaxLen> lenTxt;
     TInt readStart = 0;
     TInt headerLen = 0;

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006 - 2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006 - 2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -17,7 +17,7 @@
 
 
 // INCLUDE FILES
-#include <caf.h>
+#include <caf/caf.h>
 #include <http.h>
 #include <http/rhttpheaders.h>
 #include <stringpool.h>
@@ -128,9 +128,6 @@ TInt CWmDrmAgentManager::CopyFile(const TDesC& aSource,
     TInt size = 0;
     TInt result = KErrNone;
 
-    TInt r = KErrNone;
-    TBool retval(EFalse);
-
     // Check the destination drive letter
     result = iFs.CharToDrive(drive,driveNumber);
 
@@ -158,11 +155,14 @@ TInt CWmDrmAgentManager::CopyFile(const TDesC& aSource,
         return result;
         }
     // check that the drive has enough space for the copy operation
-    TRAP(r, retval = SysUtil::DiskSpaceBelowCriticalLevelL( &iFs,
-                                                             size,
-                                                             driveNumber ) );
-
-    if( retval )
+    TRAPD( err,
+           result = SysUtil::DiskSpaceBelowCriticalLevelL(
+               &iFs, size, driveNumber ) );
+    if ( err )
+        {
+        return err;
+        }
+    if ( result )
         {
         return KErrDiskFull;
         }
@@ -191,8 +191,6 @@ TInt CWmDrmAgentManager::CopyFile(RFile& aSource,
     TInt result = KErrNone;
     RFile output;
     TFileName fileName;
-    TInt r = KErrNone;
-    TBool retval(EFalse);
 
     // Same file, do not even try to copy
     // And since they are the same don't return an error
@@ -220,10 +218,14 @@ TInt CWmDrmAgentManager::CopyFile(RFile& aSource,
         }
 
     // check that the drive has enough space for the copy operation
-    TRAP(r, retval = SysUtil::DiskSpaceBelowCriticalLevelL( &iFs,
-                                                            size,
-                                                            driveNumber ) );
-    if( retval )
+    TRAPD( err,
+           result = SysUtil::DiskSpaceBelowCriticalLevelL(
+               &iFs, size, driveNumber ) );
+    if ( err )
+        {
+        return err;
+        }
+    if ( result )
         {
         return KErrDiskFull;
         }
@@ -263,8 +265,6 @@ TInt CWmDrmAgentManager::RenameFile(const TDesC& aSource,
     RFile file;
     TInt size = 0;
     TInt result = KErrNone;
-    TInt r = KErrNone;
-    TBool retval(EFalse);
 
     result = SetFileMan();
 
@@ -305,12 +305,16 @@ TInt CWmDrmAgentManager::RenameFile(const TDesC& aSource,
             {
             return result;
             }
-        // check that the drive has enough space for the copy operation
-        TRAP(r, retval = SysUtil::DiskSpaceBelowCriticalLevelL( &iFs,
-                                                                size,
-                                                                driveNumber ) );
 
-        if( retval )
+        // check that the drive has enough space for the copy operation
+        TRAPD( err,
+               result = SysUtil::DiskSpaceBelowCriticalLevelL(
+                   &iFs, size, driveNumber ) );
+        if ( err )
+            {
+            return err;
+            }
+        if ( result )
             {
             return KErrDiskFull;
             }

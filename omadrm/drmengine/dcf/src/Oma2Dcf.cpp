@@ -93,21 +93,21 @@ _LIT8( KTerminator, "\0" );
 _LIT8( KSeparator, ":" );
 _LIT8( KParamSeparator, ";" );
 
-const TInt KBrandingSize( 20 );
-const TInt KMaxBoxHeaderSize( 16 );
-const TInt KLengthBoxSize( 4 );
-const TInt KLengthBoxType( 4 );
-const TInt KLengthBoxSize64( 8 );
-const TInt KLengthVersion( 1 );
-const TInt KLengthFlags( 3 );
-const TInt KLengthEncMethod( 1 );
-const TInt KLengthPadType( 1 );
-const TInt KLengthPlainTextSize( 8 );
-const TInt KLengthDataLengthSize( 8 );
-const TInt KLengthContentIdSize( 2 );
-const TInt KLengthRiUrlSize( 2 );
-const TInt KLengthTextHeadersSize( 2 );
-const TInt KLengthTerminator( 1 );
+const TUint32 KBrandingSize( 20 );
+const TUint32 KMaxBoxHeaderSize( 16 );
+const TUint32 KLengthBoxSize( 4 );
+const TUint32 KLengthBoxType( 4 );
+const TUint32 KLengthBoxSize64( 8 );
+const TUint32 KLengthVersion( 1 );
+const TUint32 KLengthFlags( 3 );
+const TUint32 KLengthEncMethod( 1 );
+const TUint32 KLengthPadType( 1 );
+const TUint32 KLengthPlainTextSize( 8 );
+const TUint32 KLengthDataLengthSize( 8 );
+const TUint32 KLengthContentIdSize( 2 );
+const TUint32 KLengthRiUrlSize( 2 );
+const TUint32 KLengthTextHeadersSize( 2 );
+const TUint32 KLengthTerminator( 1 );
 
 // Smallest possible ISO based media box size
 // See ISO/IEC 14496-12 and DRM-DCF-CLI-12 in OMA-TS-DRM-DCF-V2_1
@@ -120,10 +120,32 @@ const TUint KUserDataBoxMask( 0x000001 );
 // ============================= LOCAL FUNCTIONS ===============================
 
 // -----------------------------------------------------------------------------
+// ReadUint64FromBlock
+// -----------------------------------------------------------------------------
+//
+LOCAL_C TInt64 ReadUint64FromBlock( const TDesC8& aBlock, TUint32 aOffset )
+    {
+    TInt64 input = 0;    
+    TInt64 output = 0;
+    TUint32 byteOffset = 0;
+    
+    for( TUint32 i = 0; i < 8; i++ )
+        {
+        byteOffset = (7 - i) * 8;    
+        input = aBlock[ aOffset + i ];
+        input <<= byteOffset;
+        output += input;   
+        }    
+        
+    return output;
+    }
+
+
+// -----------------------------------------------------------------------------
 // ReadUint32FromBlock
 // -----------------------------------------------------------------------------
 //
-LOCAL_C TUint32 ReadUint32FromBlock( const TDesC8& aBlock, TInt aOffset )
+LOCAL_C TUint32 ReadUint32FromBlock( const TDesC8& aBlock, TUint32 aOffset )
     {
     return ( aBlock[ aOffset ] << 24 ) +
         ( aBlock[ aOffset + 1 ] << 16 ) +
@@ -135,16 +157,34 @@ LOCAL_C TUint32 ReadUint32FromBlock( const TDesC8& aBlock, TInt aOffset )
 // ReadUint16FromBlock
 // -----------------------------------------------------------------------------
 //
-LOCAL_C TUint16 ReadUint16FromBlock( const TDesC8& aBlock, TInt aOffset )
+LOCAL_C TUint16 ReadUint16FromBlock( const TDesC8& aBlock, TUint32 aOffset )
     {
     return ( ( aBlock[ aOffset ] << 8 ) + aBlock[ aOffset + 1 ] );
+    }
+
+
+// -----------------------------------------------------------------------------
+// WriteInt64ToBlock
+// -----------------------------------------------------------------------------
+//
+LOCAL_C void WriteInt64ToBlock( TUint64 aValue, TDes8& aBlock, TUint32 aOffset )
+    {
+    aBlock.SetLength( 8 );
+    aBlock[ aOffset ] =     ( aValue & 0xff00000000000000u ) >> 56;
+    aBlock[ aOffset + 1 ] = ( aValue & 0x00ff000000000000u ) >> 48;
+    aBlock[ aOffset + 2 ] = ( aValue & 0x0000ff0000000000u ) >> 40;
+    aBlock[ aOffset + 3 ] = ( aValue & 0x000000ff00000000u ) >> 32;
+    aBlock[ aOffset + 4 ] = ( aValue & 0x00000000ff000000u ) >> 24;
+    aBlock[ aOffset + 5 ] = ( aValue & 0x0000000000ff0000u ) >> 16;
+    aBlock[ aOffset + 6 ] = ( aValue & 0x000000000000ff00u ) >> 8;
+    aBlock[ aOffset + 7 ] = ( aValue & 0x00000000000000ffu );
     }
 
 // -----------------------------------------------------------------------------
 // WriteIntToBlock
 // -----------------------------------------------------------------------------
 //
-LOCAL_C void WriteIntToBlock( TInt aValue, TDes8& aBlock, TInt aOffset )
+LOCAL_C void WriteIntToBlock( TUint32 aValue, TDes8& aBlock, TUint32 aOffset )
     {
     aBlock.SetLength( 4 );
     aBlock[ aOffset ] =     ( aValue & 0xff000000 ) >> 24;
@@ -321,11 +361,13 @@ EXPORT_C TBool COma2Dcf::IsValidDcf(
 void COma2Dcf::ReadPartsL( void )
     {
     TBuf8<KBrandingSize> buffer;
-    TInt size;
-    TUint32 type;
-    TInt offset;
-    TInt headerSize;
-    COma2DcfPartInfo* part;
+
+    TUint32 type = 0;  
+    TInt64 offset = 0;
+    TInt64 size = 0;
+    
+    TUint32 headerSize = 0;
+    COma2DcfPartInfo* part = NULL;
 
     User::LeaveIfError( iFile.Read( 0, buffer, KBrandingSize ) );
     if ( !IsValidDcf( buffer ) )
@@ -397,7 +439,7 @@ TInt COma2Dcf::CheckUniqueId( const TDesC& aUniqueId )
         if ( err == KErrNone )
             {
             r = KErrNotFound;
-            for ( TInt i( 0 );
+            for ( TUint32 i( 0 );
                 i < iParts.Count() && r == KErrNotFound;
                 i++ )
                 {
@@ -433,9 +475,9 @@ TInt COma2Dcf::OpenPart(
 TInt COma2Dcf::OpenPart(
     TInt aPart )
     {
-    TInt r( KErrNone );
-    TInt size( 0 );
-
+    TInt r( KErrNone );  
+    TInt64 size( 0 );
+	
     if ( aPart >= 0 && aPart < iParts.Count() )
         {
         TRAP( r, ReadContainerL( iParts[ aPart ]->iOffset, size ) );
@@ -454,29 +496,36 @@ TInt COma2Dcf::OpenPart(
 void COma2Dcf::GetPartIdsL( RPointerArray<HBufC8>& aPartList )
     {
     aPartList.ResetAndDestroy();
-    for ( TInt i( 0 ); i < iParts.Count(); i++ )
+    HBufC8* part = NULL;
+    
+    for ( TUint32 i( 0 ); i < iParts.Count(); i++ )
         {
-        aPartList.Append( iParts[ i ]->iContentId->AllocL() );
+        part = iParts[ i ]->iContentId->AllocLC();
+        aPartList.AppendL( part );
+        CleanupStack::Pop( part );
         }
     }
+
+
 
 // -----------------------------------------------------------------------------
 // COma2Dcf::ReadContainerL
 // -----------------------------------------------------------------------------
 //
 void COma2Dcf::ReadContainerL(
-    TInt aOffset,
-    TInt& aSize )
+    TInt64 aOffset,
+    TInt64& aSize )
     {
     TUint32 type( 0 );
-    TInt size( 0 );
+    TUint32 size( 0 ); 
+    TInt64 bsize( 0 );   
 
     ReadBoxSizeAndTypeL( aOffset, aSize, type, size );
     VerifyTypeL( type, KContainer );
     aOffset += size + KLengthVersion + KLengthFlags;
-    ReadDiscreteMediaHeaderL( aOffset, size );
-    aOffset += size;
-    ReadContentObjectL( aOffset, size );
+    ReadDiscreteMediaHeaderL( aOffset, bsize );
+    aOffset += bsize;
+    ReadContentObjectL( aOffset, bsize );
     }
 
 // -----------------------------------------------------------------------------
@@ -484,12 +533,13 @@ void COma2Dcf::ReadContainerL(
 // -----------------------------------------------------------------------------
 //
 void COma2Dcf::ReadDiscreteMediaHeaderL(
-    TInt aOffset,
-    TInt& aSize )
+    TInt64 aOffset,
+    TInt64& aSize )
     {
     TBuf8<1> valBuf;
     TBuf8<4> udtaBuf;
-    TInt size( 0 );
+    TUint32 size( 0 );
+    TInt64 bsize( 0 );
     TUint32 type( 0 );
     TUint8 length( 0 );
     TPtr8 ptr( 0, 0 );
@@ -527,15 +577,16 @@ void COma2Dcf::ReadDiscreteMediaHeaderL(
     aOffset += length;
 
     // read Common headers
-    ReadCommonHeadersL( aOffset, size );
+    bsize = size;
+    ReadCommonHeadersL( aOffset, bsize );
 
     // user data box would follow here
     if ( version_and_flags & KUserDataBoxMask )
         {
-        aOffset += size;
+        aOffset += bsize;
         User::LeaveIfError( iFile.Read( aOffset, udtaBuf, 4 ) );
-        size = ReadUint32FromBlock( udtaBuf, 0 );
-        ReadUserDataL( aOffset, size );
+        bsize = ReadUint32FromBlock( udtaBuf, 0 );
+        ReadUserDataL( aOffset, bsize );
         }
     }
 
@@ -544,11 +595,11 @@ void COma2Dcf::ReadDiscreteMediaHeaderL(
 // -----------------------------------------------------------------------------
 //
 void COma2Dcf::ReadContentObjectL(
-    TInt aOffset,
-    TInt& aSize )
+    TInt64 aOffset,
+    TInt64& aSize )
     {
     TBuf8<KMaxBoxHeaderSize> valBuf;
-    TInt size( 0 );
+    TUint32 size( 0 );
     TUint32 type( 0 );
 
     ReadBoxSizeAndTypeL( aOffset, aSize, type, size );
@@ -565,19 +616,14 @@ void COma2Dcf::ReadContentObjectL(
         }
 
     User::LeaveIfError( iFile.Read( aOffset, valBuf, KLengthDataLengthSize ) );
-    if ( ReadUint32FromBlock( valBuf, 0 ) != 0 )
+        
+    iDataLength = ReadUint64FromBlock( valBuf, 0 );
+    if ( iPlainTextLengthValid )
         {
-        // the size is larger than 2^32-1, we can't handle this.
-        User::Leave( KErrOverflow );
-        }
-    else
-        {
-        iDataLength = ReadUint32FromBlock( valBuf, KLengthDataLengthSize / 2 );
-        if ( iPlainTextLengthValid )
-            {
-            iPadding = iDataLength - iPlainTextLength;
-            }
-        }
+        iPadding = iDataLength - iPlainTextLength;
+        }    
+
+        
     iOffset = aOffset + KLengthDataLengthSize;
     }
 
@@ -586,14 +632,14 @@ void COma2Dcf::ReadContentObjectL(
 // -----------------------------------------------------------------------------
 //
 void COma2Dcf::ReadCommonHeadersL(
-    TInt aOffset,
-    TInt& aSize )
+    TInt64 aOffset,
+    TInt64& aSize )
     {
     TBuf8< KMaxBoxHeaderSize > valBuf;
-    TInt size( 0 );
-    TInt boxEnd( 0 );
+    TUint32 size( 0 );
+    TUint32 boxEnd( 0 );
     TUint32 type( 0 );
-    TInt offset( 0 );
+    TUint32 offset( 0 );
     TUint16 riURLLength( 0 );
     TUint16 contentIdLength( 0 );
     TUint16 textualHeadersLength( 0 );
@@ -697,8 +743,8 @@ void COma2Dcf::ParseTextualHeadersL(
     HBufC8* buf1( NULL );
     HBufC8* method( NULL );
     TInt r( KErrNone );
-    TInt silentOffset( 0 );
-    TInt previewOffset( 0 );
+    TUint32 silentOffset( 0 );
+    TUint32 previewOffset( 0 );
 
     silentOffset = ReadOneTextualHeaderL(
         aMemoryBlock, KSilentHeader, buf1, r );
@@ -856,7 +902,7 @@ void COma2Dcf::SetHeaderWithParameterL(
     HBufC8*& aMethod,
     HBufC8*& aParameter )
     {
-    TInt offset( 0 );
+    TInt32 offset( 0 );
 
     delete aMethod;
     aMethod = NULL;
@@ -923,16 +969,16 @@ TInt COma2Dcf::ReadOneTextualHeaderL(
 // -----------------------------------------------------------------------------
 //
 void COma2Dcf::ReadExtendedHeadersL(
-    TInt aOffset,
-    TInt aEndOfBox )
+    TInt64 aOffset,
+    TInt64 aEndOfBox )
     {
-    TInt size( 1 );
-    TInt groupIdSize( 0 );
-    TInt groupKeySize( 0 );
+    TInt64 size( 1 );
+    TUint32 groupIdSize( 0 );
+    TUint32 groupKeySize( 0 );
     TUint32 type( 0 );
-    TInt headerSize( 0 );
+    TUint32 headerSize( 0 );
     TInt dataSize( 0 );
-    TInt offset( 0 );
+    TInt64 offset( 0 );
     TPtr8 ptr( 0, 0 );
     HBufC8* buffer( NULL );
 
@@ -992,16 +1038,16 @@ void COma2Dcf::ReadExtendedHeadersL(
 // -----------------------------------------------------------------------------
 //
 void COma2Dcf::ReadMutableInfoL(
-    TInt aOffset,
-    TInt& aSize )
+    TInt64 aOffset,
+    TInt64& aSize )
     {
-    TInt size( 0 );
+    TInt64 size( 0 );
     TInt dataSize( 0 );
     TUint32 type( 0 );
-    TInt headerSize( 0 );
+    TUint32 headerSize( 0 );
     TPtr8 ptr( 0, 0 );
     HBufC8* buffer1( NULL );
-    TInt boxEnd( 0 );
+    TInt64 boxEnd( 0 );
     TInt offset( 0 );
 
     delete iTransactionTracking;
@@ -1063,10 +1109,10 @@ void COma2Dcf::ReadMutableInfoL(
 // -----------------------------------------------------------------------------
 //
 void COma2Dcf::ReadBoxSizeAndTypeL(
-    TInt aOffset,
-    TInt& aSize,
+    TInt64 aOffset,
+    TInt64& aSize,
     TUint32& aType,
-    TInt& aHeaderSize )
+    TUint32& aHeaderSize )
     {
     TBuf8< KLengthBoxSize + KLengthBoxType > buffer;
 
@@ -1093,11 +1139,9 @@ void COma2Dcf::ReadBoxSizeAndTypeL(
                 {
                 User::Leave( KErrArgument );
                 }
-            if ( ReadUint32FromBlock( buffer, 0 ) > 0 )
-                {
-                User::Leave( KErrOverflow );
-                }
-            aSize = ReadUint32FromBlock( buffer, 4 );
+            
+            aSize = ReadUint64FromBlock( buffer, 0 );
+          
             aHeaderSize += KLengthBoxSize64;
             }
         else if ( aSize == 0 )
@@ -1137,11 +1181,11 @@ EXPORT_C void COma2Dcf::SetTransactionIdL(
     {
     // Overwrite existing ID, otherwise, recreate the whole MDRI box
     if ( iTransactionTracking )
-        {
-        TInt size( 0 );
+        {           
+        TInt64 size( 0 );
+        TInt64 offset( 0 );       
         TUint32 type( 0 );
-        TInt headerSize( 0 );
-        TInt offset( 0 );
+        TUint32 headerSize( 0 );
 
         offset = iMutablePart->iOffset;
         // Read mutable box headers and skip them
@@ -1196,16 +1240,18 @@ EXPORT_C void COma2Dcf::SetRightsObjectsL(
 void COma2Dcf::RewriteMutableInfoL(
     const TDesC8& aTransactionId,
     RPointerArray<HBufC8>& aRoList )
-    {
-    TInt offset( 0 );
-    TBuf8<4> buffer;
-    TInt sizeOfRoBoxes( 0 );
-    TInt roBoxSize( 0 );
-    TInt tidBoxSize( 0 );
-    TInt mutableBoxSize( 0 );
+    {     
+    TInt64 offset( 0 );
+    TInt64 mutableBoxSize( 0 );
+    TUint64 writeSize( 0 );
+  
+    TBuf8<8> buffer;
+    TUint32 sizeOfRoBoxes( 0 );
+    TUint32 roBoxSize( 0 );
+    TUint32 tidBoxSize( 0 );
 
     // Remove the existing box
-    if ( iMutablePart )
+    if ( iMutablePart )     
         {
         User::LeaveIfError( iFile.SetSize( iMutablePart->iOffset ) );
         }
@@ -1213,7 +1259,7 @@ void COma2Dcf::RewriteMutableInfoL(
     // Append the box to the end of the file
     User::LeaveIfError( iFile.Size( offset ) );
 
-    for ( TInt i( 0 ); i < aRoList.Count(); i++ )
+    for ( TUint32 i( 0 ); i < aRoList.Count(); i++ )
         {
         sizeOfRoBoxes += aRoList[ i ]->Size() +
             KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
@@ -1224,9 +1270,26 @@ void COma2Dcf::RewriteMutableInfoL(
         KLengthBoxSize + KLengthBoxType + tidBoxSize + sizeOfRoBoxes;
 
     // MDRI box
-    WriteIntToBlock( mutableBoxSize, buffer, 0 );
+    if( mutableBoxSize > KMaxTUint32 )
+        {
+        WriteIntToBlock( 1, buffer, 0 );    
+        }
+    else
+        {    
+        WriteIntToBlock( static_cast<TUint32>(mutableBoxSize), buffer, 0 );
+        }
     User::LeaveIfError( iFile.Write( offset, buffer ) );
     User::LeaveIfError( iFile.Write( KMdri ) );
+    if( mutableBoxSize > KMaxTUint32 )
+        {
+        if( mutableBoxSize < 0 )
+            {
+            User::Leave(KErrArgument);    
+            }
+        writeSize = mutableBoxSize;        
+        WriteInt64ToBlock( writeSize, buffer, 0 );
+        iFile.Write( buffer );    
+        }  
 
     // ODTT box ( always written )
     WriteIntToBlock( tidBoxSize, buffer, 0 );
@@ -1246,7 +1309,7 @@ void COma2Dcf::RewriteMutableInfoL(
     // ODRB box
     if ( sizeOfRoBoxes > 0 )
         {
-        for ( TInt i( 0 ); i < aRoList.Count(); i++ )
+        for ( TUint32 i( 0 ); i < aRoList.Count(); i++ )
             {
             roBoxSize = aRoList[ i ]->Size() +
                 KLengthBoxSize + KLengthBoxType + KLengthVersion + KLengthFlags;
@@ -1271,7 +1334,7 @@ void COma2Dcf::RewriteMutableInfoL(
 //
 void COma2Dcf::ReadPartInfoL(
     COma2DcfPartInfo* aPart,
-    TInt aOffset )
+    TInt64 aOffset )
     {
     TBuf8<4> buffer;
     TUint32 size( 0 );
@@ -1354,10 +1417,10 @@ void COma2Dcf::ReadPartInfoL(
 // -----------------------------------------------------------------------------
 //
 void COma2Dcf::ReadUserDataL(
-    TInt aOffset,
-    TInt& aSize )
+    TInt64 aOffset,
+    TInt64& aSize )
     {
-    TInt size( 0 );
+    TUint32 size( 0 );
     TUint32 type( 0 );
     TPtr8 ptr( 0, 0 );
 
@@ -1534,7 +1597,7 @@ void COma2Dcf::ReadOneUserDataBoxL(
 
             subOffset += sizeof( keywordCnt );
 
-            for ( TInt count( 0 ); count < keywordCnt; count++ )
+            for ( TUint32 count( 0 ); count < keywordCnt; count++ )
                 {
                 keywordSize = subBlock->Des()[ subOffset ];
                 subOffset += sizeof( keywordSize );
@@ -1600,6 +1663,17 @@ void COma2Dcf::ReadOneUserDataBoxL(
             }
         CleanupStack::PopAndDestroy( subBlock );
         }
+    }
+
+
+// -----------------------------------------------------------------------------
+// COma2Dcf::GetHashL
+// not implemented
+// -----------------------------------------------------------------------------
+//
+EXPORT_C void COma2Dcf::GetHashL()
+    {
+    User::Leave(KErrNotSupported);    
     }
 
 

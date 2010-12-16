@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -22,8 +22,8 @@
 
 //  INCLUDES
 #include <f32file.h>
-#include <caf.h>
-#include <agentinterface.h>
+#include <caf/caf.h>
+#include <caf/agentinterface.h>
 #include <caf/attributeset.h>
 #include <caf/stringattributeset.h>
 
@@ -74,6 +74,12 @@ namespace ContentAccess
         TInt GetStringAttributeSet(RStringAttributeSet& aStringAttributeSet);
         TInt Read(TInt aPos, TDes8& aDes, TInt aLength, TRequestStatus& aStatus);
 
+		// 64-bit methods
+        void DataSize64L(TInt64 & aSize);
+        TInt Seek64(TSeek aMode,TInt64& aPos);
+        TInt Read64(TInt64 aPos, TDes8& aDes, TInt aLength, TRequestStatus& aStatus);
+
+
     private:
 
         /**
@@ -92,8 +98,9 @@ namespace ContentAccess
         /** Handle to the filesystem */
         RFs iFs;
 
-        /** RFile object */
-        RFile iFile;
+        /** RFile object */    
+        RFile64 iFile;
+      
         TVirtualPathPtr iVirtualPath;
 
         /** The ASF file */

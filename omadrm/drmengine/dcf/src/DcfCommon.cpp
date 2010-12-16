@@ -92,7 +92,7 @@ EXPORT_C CDcfCommon* CDcfCommon::NewL(
     RFs* aFs)
     {
     RFs* fs = NULL;
-    RFile file;
+    RFile64 file;
     TInt r = KErrNone;
     CDcfCommon* self = NULL;
 

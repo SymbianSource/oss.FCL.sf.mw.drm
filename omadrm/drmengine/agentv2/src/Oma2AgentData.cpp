@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -139,8 +139,10 @@ void COma2AgentData::InitializeL()
     {
     TInt r = KErrNone;
     TBuf8<KDCFKeySize * 2> blocks;
-    CDrmProtectedRoParser* parser;
-    TInt pos;
+    CDrmProtectedRoParser* parser;  
+    TInt64 pos;
+
+
     COma2Dcf* dcf2 = NULL;
     TInt i;
     TBool reinit = EFalse;
@@ -315,8 +317,66 @@ COma2AgentData::~COma2AgentData()
 //
 void COma2AgentData::DataSizeL( TInt &aSize )
     {
-    TInt fileSize = 0;
-    TInt seekPos = 0;
+    
+    TInt64 fileSize = 0;
+    TInt64 seekPos = 0;
+
+    User::LeaveIfError( iFile.Size( fileSize ) );
+
+    if ( iDcf )
+        {
+        // if the size of the file has changed update info:
+        if ( fileSize != iLastFileSize )
+            {
+            // Delete the old dcf
+            delete iDcf;
+            iDcf = NULL;
+
+            // seek the file to the beginning
+            iFile.Seek( ESeekStart, seekPos );
+
+            // Create new dcf as the size may have changed
+            iDcf = CDcfCommon::NewL( iFile );
+
+            // open the content part
+            if ( iUniqueId )
+                {
+                User::LeaveIfError( iDcf->OpenPart( iUniqueId->Des() ) );
+                }
+            else
+                {
+                User::LeaveIfError( iDcf->OpenPart( iVirtualPath.UniqueId() ) );
+                }
+            // re-initialize the dcf, this updates the iLastFileSize
+            InitializeL();
+            }
+
+        if( iDcf->iPlainTextLength <= KMaxTInt32 )
+            {
+            aSize = iDcf->iPlainTextLength;
+            }
+        else
+            {
+            User::Leave(KErrTooBig);    
+            }    
+        }
+    else
+        {
+        User::Leave( KErrNotReady );
+        }
+    }
+    
+
+// -----------------------------------------------------------------------------
+// COma2AgentData::DataSize64L
+// Re-create the DCF because it's size may have changed.
+// for progressive download etc.
+// -----------------------------------------------------------------------------
+//
+void COma2AgentData::DataSize64L( TInt64 &aSize )
+    {
+    TInt64 fileSize = 0;
+    TInt64 seekPos = 0;
 
     User::LeaveIfError( iFile.Size( fileSize ) );
 
@@ -355,6 +415,7 @@ void COma2AgentData::DataSizeL( TInt &aSize )
         User::Leave( KErrNotReady );
         }
     }
+
 
 // -----------------------------------------------------------------------------
 // COma2AgentData::EvaluateIntent
@@ -488,7 +549,7 @@ void COma2AgentData::Read(
 
 // -----------------------------------------------------------------------------
 // COma2AgentData::Read
-// asynchronous read (not really asynchronous)
+// asynchronous read 
 // -----------------------------------------------------------------------------
 //
 TInt COma2AgentData::Read(
@@ -498,6 +559,21 @@ TInt COma2AgentData::Read(
     TRequestStatus& aStatus )
     {
     return iCache->Read( aPos, aDes, aLength, aStatus );
+    }
+    
+    
+// -----------------------------------------------------------------------------
+// COma2AgentData::Read64
+// asynchronous read 
+// -----------------------------------------------------------------------------
+//
+TInt COma2AgentData::Read64(
+    TInt64 aPos,
+    TDes8& aDes,
+    TInt aLength,
+    TRequestStatus& aStatus )
+    {
+    return iCache->Read64( aPos, aDes, aLength, aStatus );
     }
 
 // -----------------------------------------------------------------------------
@@ -539,6 +615,37 @@ TInt COma2AgentData::Seek( TSeek aMode, TInt& aPos )
     iDataPosition = aPos;
     return r;
     }
+
+
+
+// -----------------------------------------------------------------------------
+// COma2AgentData::Seek64
+// -----------------------------------------------------------------------------
+//
+TInt COma2AgentData::Seek64( TSeek aMode, TInt64& aPos )
+    {
+    TInt r = KErrNone;
+
+    switch ( aMode )
+        {
+        case ESeekStart:
+            break;
+        case ESeekEnd:
+            aPos = iDcf->iPlainTextLength + aPos;
+            break;
+        case ESeekCurrent:
+            aPos = iDataPosition + aPos;
+            break;
+        default:
+            r = KErrNotSupported;
+            break;
+        }
+    aPos = Max( aPos, 0 );
+    aPos = Min( aPos, iDcf->iPlainTextLength );
+    iDataPosition = aPos;
+    return r;
+    }
+    
 
 // -----------------------------------------------------------------------------
 // COma2AgentData::SetProperty

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002, 2003 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -1765,8 +1765,9 @@ LOCAL_C TInt RegisterDynamicDataTypeL(const TDataType& aDataType)
 TInt CalculatePaddingL(COma1Dcf* dcf)
     {
     RDRMRightsClient rdb;
-    TBuf8<KDCFKeySize * 2> blocks;
-    TInt pos;
+    TBuf8<KDCFKeySize * 2> blocks; 
+    TInt64 pos = 0;  
+    
     TBool blocksValid = ETrue;
 
     if (!dcf->iPlainTextLengthValid)

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2005-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2005-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -347,6 +347,7 @@ TInt TOma2AgentAttributes::GetAttribute(
     TBool protection = ETrue;
     HBufC8* buffer;
     TInt traperror = KErrNone;
+    TInt ret = KErrNone;
 
     if (aDcfFile.iVersion == 2)
         {
@@ -726,14 +727,16 @@ TInt TOma2AgentAttributes::GetAttribute(
             case ERightsNone:
                 if (aRightsClient == NULL)
                     {
-                    value = client.Connect();
-                    if (value != KErrCANoRights)
+                    ret = client.Connect();
+                    if (ret != KErrNone)
                         {
+                        value = ret;
                         break;
                         }
                     TUint32 reason = 0;
-                    value = client.CheckRights(EPeek, *aDcfFile.iContentID, reason);
-                    if(value == KErrCANoRights  || KErrCANoPermission)
+                    value = EFalse;
+                    ret = client.CheckRights(EPeek, *aDcfFile.iContentID, reason);
+                    if(ret == KErrCANoRights  || ret == KErrCANoPermission)
                         {
                         value = ETrue;
                         }
@@ -742,8 +745,9 @@ TInt TOma2AgentAttributes::GetAttribute(
                 else
                     {
                     TUint32 reason = 0;
-                    value = aRightsClient->CheckRights(EPeek, *aDcfFile.iContentID, reason);
-                    if(value == KErrCANoRights  || KErrCANoPermission)
+                    value = EFalse;
+                    ret = aRightsClient->CheckRights(EPeek, *aDcfFile.iContentID, reason);
+                    if(ret == KErrCANoRights  || ret == KErrCANoPermission)
                         {
                         value = ETrue;
                         }
@@ -752,32 +756,42 @@ TInt TOma2AgentAttributes::GetAttribute(
             case ERightsHaveExpired:
                 if (aRightsClient == NULL)
                     {
-                    value = client.Connect();
-                    if (value != KErrNone)
+                    ret = client.Connect();
+                    if (ret != KErrNone)
                         {
+                        value = ret;
                         break;
                         }
                     value = ETrue;
                     TUint32 reason = 0;
-                    value = client.CheckRights(EPlay, *aDcfFile.iContentID, reason);
-                    if(value != KErrCANoRights  || KErrCANoPermission)
+                    ret = client.CheckRights(EPlay, *aDcfFile.iContentID, reason);
+                    if(ret != KErrCANoRights && ret != KErrCANoPermission)
                         {
                         value = EFalse;
                         }
-                    value = client.CheckRights(EView, *aDcfFile.iContentID, reason);
-                    if(value != KErrCANoRights  || KErrCANoPermission)
-                        {
-                        value = EFalse;
+                    if(value)
+                        { 
+                        ret = client.CheckRights(EView, *aDcfFile.iContentID, reason);
+                        if(ret != KErrCANoRights && ret != KErrCANoPermission)
+                            {
+                            value = EFalse;
+                            }
                         }
-                    value = client.CheckRights(EExecute, *aDcfFile.iContentID, reason);
-                    if(value != KErrCANoRights  || KErrCANoPermission)
+                    if(value)
                         {
-                        value = EFalse;
+                        ret = client.CheckRights(EExecute, *aDcfFile.iContentID, reason);
+                        if(ret != KErrCANoRights && ret != KErrCANoPermission)
+                            {
+                            value = EFalse;
+                            }
                         }
-                    value = client.CheckRights(EPrint, *aDcfFile.iContentID, reason);
-                    if(value != KErrCANoRights  || KErrCANoPermission)
+                    if(value)
                         {
-                        value = EFalse;
+                        ret = client.CheckRights(EPrint, *aDcfFile.iContentID, reason);
+                        if(ret != KErrCANoRights && ret != KErrCANoPermission)
+                            {
+                            value = EFalse;
+                            }
                         }
                     client.Close();
                     }
@@ -785,27 +799,35 @@ TInt TOma2AgentAttributes::GetAttribute(
                     {
                     value = ETrue;
                     TUint32 reason = 0;
-                    value = aRightsClient->CheckRights(EPlay, *aDcfFile.iContentID, reason);
-                    if(value != KErrCANoRights  || KErrCANoPermission)
+                    ret = aRightsClient->CheckRights(EPlay, *aDcfFile.iContentID, reason);
+                    if(ret != KErrCANoRights && ret!= KErrCANoPermission)
                         {
                         value = EFalse;
                         }
-                    value = aRightsClient->CheckRights(EView, *aDcfFile.iContentID, reason);
-                    if(value != KErrCANoRights  || KErrCANoPermission)
+                    if(value)
                         {
-                        value = EFalse;
+                        ret = aRightsClient->CheckRights(EView, *aDcfFile.iContentID, reason);
+                        if(ret != KErrCANoRights && ret != KErrCANoPermission)
+                            {
+                            value = EFalse;
+                            }
                         }
-                    value = aRightsClient->CheckRights(EExecute, *aDcfFile.iContentID, reason);
-                    if(value != KErrCANoRights  || KErrCANoPermission)
+                    if(value)
                         {
-                        value = EFalse;
+                        ret = aRightsClient->CheckRights(EExecute, *aDcfFile.iContentID, reason);
+                        if(ret != KErrCANoRights && ret != KErrCANoPermission)
+                            {
+                            value = EFalse;
+                            }
                         }
-                    value = aRightsClient->CheckRights(EPrint, *aDcfFile.iContentID, reason);
-                    if(value != KErrCANoRights  || KErrCANoPermission)
+                    if(value)
                         {
-                        value = EFalse;
+                        ret = aRightsClient->CheckRights(EPrint, *aDcfFile.iContentID, reason);
+                        if(ret != KErrCANoRights && ret != KErrCANoPermission)
+                            {
+                            value = EFalse;
+                            }
                         }
-
                     }
                 break;
             default:

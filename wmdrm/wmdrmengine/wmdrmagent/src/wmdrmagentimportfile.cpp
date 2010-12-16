@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -22,9 +22,9 @@
 #include <f32file.h>
 #include <caf/caf.h>
 #include <caf/caferr.h>
-#include <caf/SupplierOutputFile.h>
-#include <WmdrmAgent.h>
-#include "WmDrmAgentImportfile.h"
+#include <caf/supplieroutputfile.h>
+#include <wmdrmagent.h>
+#include "wmdrmagentimportfile.h"
 #include "logfn.h"
 
 using namespace ContentAccess;
@@ -112,16 +112,17 @@ CWmDrmAgentImportFile::CWmDrmAgentImportFile(
 // -----------------------------------------------------------------------------
 //
 CWmDrmAgentImportFile::~CWmDrmAgentImportFile()
-	{
-	LOGFN( "CWmDrmAgentImportFile::~CWmDrmAgentImportFile" );
-	if (iFileOpen)
-		{
-		iFile.Close();
-		iFileOpen = EFalse;
-		}
-	iFs.Close();
-	delete iOutputDirectory;
-	delete iSuggestedFileName;
+    {
+    LOGFN( "CWmDrmAgentImportFile::~CWmDrmAgentImportFile" );
+    if (iFileOpen)
+        {
+        iFile.Close();
+        iFileOpen = EFalse;
+        }
+    iFs.Close();
+    delete iMimeType;
+    delete iOutputDirectory;
+    delete iSuggestedFileName;
     delete iOutputFileName;
 	delete iLastWriteData;
 	iOutputFiles.ResetAndDestroy();

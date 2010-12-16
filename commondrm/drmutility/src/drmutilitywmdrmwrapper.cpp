@@ -567,7 +567,7 @@ void DRM::CDrmUtilityWMDrmWrapper::ShowNoRightsNoteL(
     if ( !err )
         {
         TInt ret( EAknSoftkeyYes );
-        RFile file;
+        RFile64 file;
         GetRFileFromCDataL( aContent, file );
         CleanupClosePushL( file );
         TBool isSilent( EFalse );
@@ -763,7 +763,7 @@ void DRM::CDrmUtilityWMDrmWrapper::LoadDlaWrapperL()
 //
 void DRM::CDrmUtilityWMDrmWrapper::GetRFileFromCDataL(
     ContentAccess::CData& aContent,
-    RFile& aFile )
+    RFile64& aFile )
     {
     TFileName fileName;
     User::LeaveIfError( aContent.GetStringAttribute( DRM::EDrmFullName, fileName ) );
@@ -822,7 +822,7 @@ void DRM::CDrmUtilityWMDrmWrapper::DlaLicenseAcquisitionL(
 void DRM::CDrmUtilityWMDrmWrapper::SilentDlaLicenseAcquisitionL(
     ContentAccess::CData& aContent )
     {
-    RFile file;
+    RFile64 file;
     GetRFileFromCDataL( aContent, file );
     CleanupClosePushL( file );
     DlaLicenseAcquisitionL( file );

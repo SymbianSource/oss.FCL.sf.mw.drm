@@ -472,7 +472,7 @@ TInt COma2AgentImportFile::ContinueWithNewOutputFile(
     RFile& aFile,
     const TDesC& aFileName)
     {
-    RFile file;
+    RFile64 file;
     TInt r = KErrNone;
 
     if (iOutputFileName != NULL)

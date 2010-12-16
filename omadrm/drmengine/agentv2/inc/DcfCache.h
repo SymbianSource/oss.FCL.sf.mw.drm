@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -58,12 +58,14 @@ public:
     /**
      * Two-phased constructor.
      */
+     
     static CDcfCache* NewL(
         RDRMRightsClient& aRightsClient,
-        RFile& aFile,
+        RFile64& aFile,
         CDcfCommon& aDcf,
         TInt aPageSize = 2048,
         TInt aPageCount = 32 );
+
 
     /**
      * Destructor.
@@ -76,16 +78,19 @@ public:
     /**
      * Read data from the file via the cache. Depending on the decryption
      * mode, the data is decrypted in the RightsServer or in the cache
-     * @since Series 60 3.0
+     * 64-bit version
+     *
+     * @since Series 60 5.2
      * @param aPos Position from the start of the file where to read from
      * @param aDes Descriptor holding the read data
      * @param aLength Amount of data to read
      * @return KErrNone if the data is read successfully
      */
     TInt Read(
-        TInt& aPos,
+        TInt64& aPos,
         TDes8& aDes,
         TInt aLength );
+
 
     /**
      * Set the decryption key to be used if decryption shall happen in the
@@ -106,21 +111,29 @@ public:
         TRequestStatus& aStatus );
 
     void ReadCancel( TRequestStatus& aStatus );
+
+    TInt Read64(
+        TInt64 aPos,
+        TDes8& aDes,
+        TInt aLength,
+        TRequestStatus& aStatus );    
+
 #endif
 
 protected:
     // New functions
 
+        
     void CachedReadL(
-        TInt& aPos,
+        TInt64& aPos,
         TDes8& aDes,
         TInt aLength );
 
     void UncachedReadL(
-        TInt& aPos,
+        TInt64& aPos,
         TDes8& aDes,
         TInt aLength );
-
+        
     /**
      * Check if a file position is in the give cache page
      * @since Series 60 3.0
@@ -128,7 +141,8 @@ protected:
      * @param aPosition Position to check
      * @return ETrue if the position is in the cache page
      */
-    TBool InPage( TInt aPage, TInt aPosition );
+    TBool InPage( TInt aPage, TInt64 aPosition );  
+
 
     /**
      * Return the index of a free cache page
@@ -143,7 +157,7 @@ protected:
      * @param aPage Page to read
      * @param aPosition Position to read
      */
-    void ReadPageL( TInt aPage, TInt aPosition );
+    void ReadPageL( TInt aPage, TInt64 aPosition );
 
     /**
      * Read a page of data for a given file position into the cache and
@@ -152,7 +166,7 @@ protected:
      * @param aPage Page to read
      * @param aPosition Position to read
      */
-    void ReadAndDecryptPageL( TInt aPage, TInt aPosition );
+    void ReadAndDecryptPageL( TInt aPage, TInt64 aPosition );
 
     /**
      * Copy data from a cache page into a descriptor
@@ -164,7 +178,8 @@ protected:
      * @param aLength Amount of data to be read, updated with the actual
      *                amount that was read
      */
-    void CopyOut( TInt aPage, TDes8& aDes, TInt& aPosition, TInt& aLength );
+    void CopyOut( TInt aPage, TDes8& aDes, TInt64& aPosition, TInt& aLength );
+
 
     /**
      * Decrypt a memory buffer using either the stored key or the
@@ -206,10 +221,10 @@ private:
 
     /**
      * C++ default constructor.
-     */
+     */  
     CDcfCache(
         RDRMRightsClient& aRightsClient,
-        RFile& aFile,
+        RFile64& aFile,
         CDcfCommon& aDcf,
         TInt aPageSize,
         TInt aPageCount );
@@ -239,21 +254,24 @@ protected:
 #endif
 protected:
     // Data
-    RFile& iFile;
+    RFile64& iFile;
     RDRMRightsClient& iRightsClient;
     CDcfCommon& iDcf;
     TInt iPageSize;
     TInt iPageCount;
     RPointerArray<TUint8> iPage;
-    RArray<TInt> iPageUsageCount;
-    RArray<TInt> iPagePosition;
+    RArray<TInt> iPageUsageCount; 
+    RArray<TInt64> iPagePosition;
+
     TEncryptionMethod iEncryptionMethod;
     TBuf8<KDCFKeySize> iKey;
     TDecryptionMode iDecryptionMode;
 
 #ifdef ASYNC_READ
     TRequestStatus* iAsyncStatus;
-    TInt iPos;
+
+    TInt64 iPos;
+    
     TDes8* iDes;
     TInt iLength;
     TReadMode iOperation;

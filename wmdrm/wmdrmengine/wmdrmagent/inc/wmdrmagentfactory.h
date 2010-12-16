@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -22,12 +22,12 @@
 #define WMDRMAGENTFACTORY_H
 
 //  INCLUDES
-#include <AgentFactory.h>
-#include "WmDrmAgentContent.h"
-#include "WmDrmAgentData.h"
-#include "WmDrmAgentManager.h"
-#include "WmDrmAgentRightsManager.h"
-#include "WmDrmAgentImportFile.h"
+#include <caf/agentfactory.h>
+#include "wmdrmagentcontent.h"
+#include "wmdrmagentdata.h"
+#include "wmdrmagentmanager.h"
+#include "wmdrmagentrightsmanager.h"
+#include "wmdrmagentimportfile.h"
 
 // CONSTANTS
 //const ?type ?constant_var = ?constant;

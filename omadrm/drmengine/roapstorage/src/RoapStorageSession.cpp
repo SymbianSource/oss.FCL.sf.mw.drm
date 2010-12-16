@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2004-2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2004-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -217,19 +217,38 @@ LOCAL_C TBool SortOcspCertsL( RPointerArray<CX509Certificate>& aOcspCerts,
     MACLOGLITDETAIL( "::SortOcspCertsL -->" )
     const TInt last( aOcspCerts.Count() - 1 );
     TBool sortable( EFalse );
-
+    TInt swapCert = KErrNotFound;
+    
+    
     // Find first find cert issued by root cert
     // There can be only one cert issued by Root on valid cert chain
-    for ( TInt i( 0 ); !sortable && i <= last; i++ )
+    for ( TInt i( 0 ); i <= last; i++ )
         {
-        if ( aRootCert->SubjectName().ExactMatchL(
-            aOcspCerts[i]->IssuerName() ) )
-            {
-            SwapElement<CX509Certificate> ( aOcspCerts, i, last );
-            sortable = ETrue;
+        // if the name of the issuer matches the root certs subject we may have a match
+        if ( aRootCert->SubjectName().ExactMatchL( aOcspCerts[i]->IssuerName() ) ) {
+            // if the verification against the root certs public key succees we have a definitive match
+            if( aOcspCerts[i]->VerifySignatureL( aRootCert->PublicKey().KeyData() ) )
+                {
+                sortable = ETrue;
+                if( aOcspCerts[i]->IssuerName().ExactMatchL( aOcspCerts[i]->SubjectName() ) ||
+                    swapCert == KErrNotFound )    
+                    {
+                    swapCert = i;
+                    }
+                }
             }
         }
-
+    
+    if( sortable && swapCert != last )
+        {
+        SwapElement<CX509Certificate> ( aOcspCerts, swapCert, last );
+        }
+    
+    // if we found something, it means that we have a root cert and we can check
+    // the other certs against this found cert. Since this should be a continuous
+    // chain we should always find exactly one that matches
+    // then just loop
+    
     for ( TInt s(last); sortable && s > 0; s-- )
         {
         sortable = EFalse;
@@ -239,10 +258,16 @@ LOCAL_C TBool SortOcspCertsL( RPointerArray<CX509Certificate>& aOcspCerts,
             if ( aOcspCerts[s]->SubjectName().ExactMatchL(
                 aOcspCerts[i]->IssuerName() ) )
                 {
-                SwapElement<CX509Certificate> ( aOcspCerts, i, s-1 );
-                sortable = ETrue;
+                if( aOcspCerts[i]->VerifySignatureL( aOcspCerts[s]->PublicKey().KeyData() ) )
+                    {
+                    if( i != s-1 ) 
+                        {
+                        SwapElement<CX509Certificate> ( aOcspCerts, i, s-1 );
+                        }
+                    sortable = ETrue;
+                    }
                 }
-            }
+            }            
         }
     MACLOGLITDETAIL( "--> ::SortOcspCertsL" )
     return sortable;

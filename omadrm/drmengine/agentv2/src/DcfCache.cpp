@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -36,38 +36,42 @@
 
 CDcfCache::CDcfCache(
     RDRMRightsClient& aRightsClient,
-    RFile& aFile,
+    RFile64& aFile,
     CDcfCommon& aDcf,
     TInt aPageSize,
     TInt aPageCount ) :
-CActive( CActive::EPriorityStandard ),
-iFile( aFile ),
-iRightsClient(aRightsClient ),
-iDcf( aDcf ),
-iPageSize( aPageSize ),
-iPageCount( aPageCount ),
-iDecryptionMode( EServerSide ),
-iDes( 0 ),
-iAsyncReadingOngoing( EFalse )
+    CActive( CActive::EPriorityStandard ),
+    iFile( aFile ),
+    iRightsClient(aRightsClient ),
+    iDcf( aDcf ),
+    iPageSize( aPageSize ),
+    iPageCount( aPageCount ),
+    iDecryptionMode( EServerSide ),
+    iDes( 0 ),
+    iAsyncReadingOngoing( EFalse )
     {
     }
+
+
 
 #else
 
 CDcfCache::CDcfCache(
     RDRMRightsClient& aRightsClient,
-    RFile& aFile,
+    RFile64& aFile,
     CDcfCommon& aDcf,
     TInt aPageSize,
     TInt aPageCount ) :
-iFile( aFile ),
-iRightsClient( aRightsClient ),
-iDcf( aDcf ),
-iPageSize( aPageSize ),
-iPageCount( aPageCount ),
-iDecryptionMode( EServerSide )
+    iFile( aFile ),
+    iRightsClient( aRightsClient ),
+    iDcf( aDcf ),
+    iPageSize( aPageSize ),
+    iPageCount( aPageCount ),
+    iDecryptionMode( EServerSide )
     {
     }
+
+    
 #endif
 // -----------------------------------------------------------------------------
 // CDcfCache::ConstructL
@@ -83,13 +87,13 @@ void CDcfCache::ConstructL()
         iPagePosition.AppendL( -1 );
         }
     }
-
+	
 // -----------------------------------------------------------------------------
 // CDcfCache::NewL
 // Two-phased constructor.
 // -----------------------------------------------------------------------------
 //
-CDcfCache* CDcfCache::NewL( RDRMRightsClient& aRightsClient, RFile& aFile,
+CDcfCache* CDcfCache::NewL( RDRMRightsClient& aRightsClient, RFile64& aFile,
     CDcfCommon& aDcf, TInt aPageSize, TInt aPageCount )
     {
     CDcfCache* self = new ( ELeave ) CDcfCache( aRightsClient, aFile, aDcf,
@@ -101,6 +105,7 @@ CDcfCache* CDcfCache::NewL( RDRMRightsClient& aRightsClient, RFile& aFile,
 
     return self;
     }
+
 
 // -----------------------------------------------------------------------------
 // CDcfCache::~CDcfCache
@@ -136,7 +141,7 @@ CDcfCache::~CDcfCache()
 // CDcfCache::Read
 // -----------------------------------------------------------------------------
 //
-TInt CDcfCache::Read( TInt& aPos, TDes8& aDes, TInt aLength )
+TInt CDcfCache::Read( TInt64& aPos, TDes8& aDes, TInt aLength )
     {
     TInt r = KErrNone;
 
@@ -160,6 +165,8 @@ TInt CDcfCache::Read( TInt& aPos, TDes8& aDes, TInt aLength )
         }
     return r;
     }
+
+
 
 // -----------------------------------------------------------------------------
 // CDcfCache::Read
@@ -208,6 +215,54 @@ TInt CDcfCache::Read( TInt aPos, TDes8& aDes, TInt aLength,
     return KErrNone;
     }
 
+
+
+// -----------------------------------------------------------------------------
+// CDcfCache::Read64
+// -----------------------------------------------------------------------------
+//
+
+TInt CDcfCache::Read64( TInt64 aPos, TDes8& aDes, TInt aLength,
+    TRequestStatus& aStatus )
+    {
+
+    // Check that the position is valid and the length is valid
+    if ( aPos < 0 || aLength < 0 )
+        {
+        return KErrArgument;
+        }
+
+    if ( !IsAdded() )
+        {
+        CActiveScheduler::Add( this );
+        }
+
+    if ( iAsyncReadingOngoing )
+        {
+        return KErrInUse;
+        }
+
+    iError = KErrNone;
+
+    iAsyncReadingOngoing = ETrue;
+
+    iPos = aPos;
+    iLength = aLength;
+    iDes = &aDes;
+    iOperation = EPosRead;
+
+    iAsyncStatus = &aStatus;
+    *iAsyncStatus = KRequestPending;
+
+    TRequestStatus* ownStatus = &iStatus;
+    *ownStatus = KRequestPending;
+
+    SetActive();
+    User::RequestComplete( ownStatus, KErrNone );
+    return KErrNone;
+    }
+
+
 // -----------------------------------------------------------------------------
 // CDcfCache::ReadCancel
 // -----------------------------------------------------------------------------
@@ -231,10 +286,76 @@ void CDcfCache::ReadCancel( TRequestStatus& aStatus )
 #endif
 
 // -----------------------------------------------------------------------------
+// CDcfCache::GetFreePage
+// -----------------------------------------------------------------------------
+//
+TInt CDcfCache::GetFreePage()
+    {
+    TInt i;
+    TInt n = -1;
+    TUint c = KMaxTUint32;
+
+    for ( i = 0; i < iPageCount; i++ )
+        {
+        if ( iPageUsageCount[i] == -1 )
+            {
+            n = i;
+            break;
+            }
+        else if ( iPageUsageCount[i] < c )
+            {
+            c = iPageUsageCount[i];
+            n = i;
+            }
+        }
+    return n;
+    }
+
+// -----------------------------------------------------------------------------
+// CDcfCache::SetKey
+// -----------------------------------------------------------------------------
+//
+void CDcfCache::SetKey( const TDesC8& aKey )
+    {
+    iKey.Copy( aKey );
+    iDecryptionMode = EClientSide;
+    }
+
+// -----------------------------------------------------------------------------
+// CDcfCache::DecryptL
+// -----------------------------------------------------------------------------
+//
+void CDcfCache::DecryptL( const TDesC8& aIv, TPtr8& aPtr )
+    {
+    if ( iDecryptionMode == EClientSide )
+        {
+        CModeCBCDecryptor* cbc( NULL );
+        CAESDecryptor* aes( CAESDecryptor::NewLC( iKey ) );
+		// takes ownership of the aes decryptor
+        cbc = CModeCBCDecryptor::NewL( aes, aIv );
+        CleanupStack::Pop( aes );
+        aes = NULL;
+        CleanupStack::PushL( cbc );
+        for ( TInt count = 0; count < aPtr.Length(); count += KDCFKeySize )
+            {
+            TPtr8 d( aPtr.MidTPtr( count, KDCFKeySize ) );
+            cbc->Transform( d );
+            }
+        CleanupStack::PopAndDestroy( cbc );
+        }
+    else
+        {
+        User::LeaveIfError( iRightsClient.Decrypt( aIv, aPtr ) );
+        }
+    }
+
+
+
+// -----------------------------------------------------------------------------
 // CDcfCache::CachedReadL
 // -----------------------------------------------------------------------------
 //
-void CDcfCache::CachedReadL( TInt& aPos, TDes8& aDes, TInt aLength )
+void CDcfCache::CachedReadL( TInt64& aPos, TDes8& aDes, TInt aLength )
     {
     TInt i;
 
@@ -275,12 +396,12 @@ void CDcfCache::CachedReadL( TInt& aPos, TDes8& aDes, TInt aLength )
 // CDcfCache::UncachedReadL
 // -----------------------------------------------------------------------------
 //
-void CDcfCache::UncachedReadL( TInt& aPos, TDes8& aDes, TInt aLength )
+void CDcfCache::UncachedReadL( TInt64& aPos, TDes8& aDes, TInt aLength )
     {
     HBufC8* buffer = NULL;
     TPtr8 ptr( NULL, 0 );
     TBuf8<KDCFKeySize> iv;
-    TInt pos;
+    TInt64 pos;
     TInt length;
 
     // Check that the position is valid and the length is valid
@@ -350,39 +471,15 @@ void CDcfCache::UncachedReadL( TInt& aPos, TDes8& aDes, TInt aLength )
     aPos += aDes.Length();
     }
 
-// -----------------------------------------------------------------------------
-// CDcfCache::GetFreePage
-// -----------------------------------------------------------------------------
-//
-TInt CDcfCache::GetFreePage()
-    {
-    TInt i;
-    TInt n = -1;
-    TUint c = KMaxTUint32;
 
-    for ( i = 0; i < iPageCount; i++ )
-        {
-        if ( iPageUsageCount[i] == -1 )
-            {
-            n = i;
-            break;
-            }
-        else if ( iPageUsageCount[i] < c )
-            {
-            c = iPageUsageCount[i];
-            n = i;
-            }
-        }
-    return n;
-    }
 
 // -----------------------------------------------------------------------------
 // CDcfCache::ReadPageL
 // -----------------------------------------------------------------------------
 //
-void CDcfCache::ReadPageL( TInt aPage, TInt aPosition )
+void CDcfCache::ReadPageL( TInt aPage, TInt64 aPosition )
     {
-    TInt pos;
+    TInt64 pos;
     TBuf8<KDCFKeySize> iv;
 
     iPageUsageCount[aPage] = 0;
@@ -397,9 +494,9 @@ void CDcfCache::ReadPageL( TInt aPage, TInt aPosition )
 // CDcfCache::ReadAndDecryptPageL
 // -----------------------------------------------------------------------------
 //
-void CDcfCache::ReadAndDecryptPageL( TInt aPage, TInt aPosition )
+void CDcfCache::ReadAndDecryptPageL( TInt aPage, TInt64 aPosition )
     {
-    TInt pos;
+    TInt64 pos;
     TBuf8<KDCFKeySize> iv;
 
     iPageUsageCount[aPage] = 0;
@@ -418,11 +515,11 @@ void CDcfCache::ReadAndDecryptPageL( TInt aPage, TInt aPosition )
 // CDcfCache::CopyOut
 // -----------------------------------------------------------------------------
 //
-void CDcfCache::CopyOut( TInt aPage, TDes8& aDes, TInt& aPosition,
+void CDcfCache::CopyOut( TInt aPage, TDes8& aDes, TInt64& aPosition,
     TInt& aLength )
     {
     TInt n;
-    TInt offset;
+    TInt64 offset;
 
     aLength = Min( aLength, iDcf.iPlainTextLength - aPosition );
     aLength = Min( aLength, aDes.MaxLength() - aDes.Length() );
@@ -438,48 +535,14 @@ void CDcfCache::CopyOut( TInt aPage, TDes8& aDes, TInt& aPosition,
 // CDcfCache::InPage
 // -----------------------------------------------------------------------------
 //
-TBool CDcfCache::InPage( TInt aPage, TInt aPosition )
+TBool CDcfCache::InPage( TInt aPage, TInt64 aPosition )
     {
     return iPagePosition[aPage] != -1 && iPagePosition[aPage] <= aPosition
         && aPosition < iPagePosition[aPage] + iPageSize ? ETrue : EFalse;
     }
 
-// -----------------------------------------------------------------------------
-// CDcfCache::SetKey
-// -----------------------------------------------------------------------------
-//
-void CDcfCache::SetKey( const TDesC8& aKey )
-    {
-    iKey.Copy( aKey );
-    iDecryptionMode = EClientSide;
-    }
 
-// -----------------------------------------------------------------------------
-// CDcfCache::DecryptL
-// -----------------------------------------------------------------------------
-//
-void CDcfCache::DecryptL( const TDesC8& aIv, TPtr8& aPtr )
-    {
-    if ( iDecryptionMode == EClientSide )
-        {
-        CModeCBCDecryptor* cbc( NULL );
-        CAESDecryptor* aes( CAESDecryptor::NewLC( iKey ) );
-        cbc = CModeCBCDecryptor::NewL( aes, aIv );
-        CleanupStack::Pop( aes );
-        aes = NULL;
-        CleanupStack::PushL( cbc );
-        for ( TInt count = 0; count < aPtr.Length(); count += KDCFKeySize )
-            {
-            TPtr8 d( aPtr.MidTPtr( count, KDCFKeySize ) );
-            cbc->Transform( d );
-            }
-        CleanupStack::PopAndDestroy( cbc );
-        }
-    else
-        {
-        User::LeaveIfError( iRightsClient.Decrypt( aIv, aPtr ) );
-        }
-    }
+
 
 #ifdef ASYNC_READ
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -123,11 +123,13 @@ class CAsf: public CBase
         
         // File to be used for reading
         RFs iFs;
-        RFile iFile;
         
+		// File handle  
+        RFile64 iFile;
+
         // Size of the ASF itself
-        TInt iLength;
-        
+        TInt64 iLength;
+
         // metadata from Content Description Object
         // All metadata is UTF-16 format.
         HBufC* iTitle;
@@ -176,6 +178,7 @@ class CAsf: public CBase
 		
 		// mainly for future use: Nbr of all Objects found from Hdr
 		TInt iNbrOfObjects;
+		
 		TInt iContentDescriptionOffset;
 		TInt iFilePropertiesOffset;
 		TInt iExtendedContentDescriptionOffset;

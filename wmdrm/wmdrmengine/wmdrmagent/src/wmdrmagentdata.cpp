@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2006-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -18,9 +18,8 @@
 
 
 // INCLUDE FILES
-#include <caf.h>
-#include <caf/caferr.h>
-#include <attribute.h>
+#include <caf/caf.h>
+#include <caf/attribute.h>
 #include <e32test.h>
 #include "wmdrmagentdata.h"
 #include "wmdrmagentattributes.h"
@@ -106,7 +105,7 @@ CWmDrmAgentData* CWmDrmAgentData::NewLC(
     }
 
 // -----------------------------------------------------------------------------
-// CWmDrmAgentData::NewLC
+// CWmDrmAgentData::NewL
 // -----------------------------------------------------------------------------
 //
 CWmDrmAgentData* CWmDrmAgentData::NewL(
@@ -172,8 +171,8 @@ void CWmDrmAgentData::ConstructL(const TVirtualPathPtr& aVirtualPath, TContentSh
 // -----------------------------------------------------------------------------
 //
 void CWmDrmAgentData::ConstructL(RFile& aFile, const TDesC& /*aUniqueId*/)
-    {
-    TInt pos = 0;
+    {      
+    TInt64 pos = 0;
 
     LOGFN( "CWmDrmAgentData::ConstructL (2)" );
     // When creating a CData from a file handle we must duplicate the file handle
@@ -191,6 +190,25 @@ void CWmDrmAgentData::ConstructL(RFile& aFile, const TDesC& /*aUniqueId*/)
 void CWmDrmAgentData::DataSizeL(TInt &aSize)
     {
     LOGFN( "CWmDrmAgentData::DataSizeL" );
+    TInt64 size = 0;
+    User::LeaveIfError(iFile.Size(size));
+    if( size <= KMaxTInt32 )
+        {
+        aSize = static_cast<TInt>( size );    
+        }
+    else
+        {
+        User::Leave(KErrTooBig);    
+        }             
+    }
+
+// -----------------------------------------------------------------------------
+// CWmDrmAgentData::DataSize64L
+// -----------------------------------------------------------------------------
+//
+void CWmDrmAgentData::DataSize64L(TInt64 &aSize)
+    {
+    LOGFN( "CWmDrmAgentData::DataSize64L" );
     User::LeaveIfError(iFile.Size(aSize));
     }
 
@@ -274,6 +292,46 @@ TInt CWmDrmAgentData::Read(TInt aPos, TDes8& aDes,
 // -----------------------------------------------------------------------------
 //
 TInt CWmDrmAgentData::Seek(TSeek aMode, TInt& aPos)
+    {
+    LOGFN( "CWmDrmAgentData::Seek" );
+    TInt64 pos = 0;
+    TInt error = KErrNone;
+   
+    pos = aPos;
+    error = iFile.Seek( aMode, pos );
+    if( !error )
+        {
+        if( pos < KMinTInt32 || pos > KMaxTInt32 )
+            {
+            error = KErrTooBig;    
+            }
+        else
+            {
+            aPos = static_cast<TInt>( pos );    
+            }    
+        }     
+    return error;      
+    }
+    
+
+// -----------------------------------------------------------------------------
+// CWmDrmAgentData::Read64
+// -----------------------------------------------------------------------------
+//
+TInt CWmDrmAgentData::Read64(TInt64 aPos, TDes8& aDes,
+                             TInt aLength,
+                             TRequestStatus& aStatus)
+    {
+    LOGFN( "CWmDrmAgentData::Read (5)" );
+    iFile.Read(aPos, aDes, aLength, aStatus);
+    return KErrNone;
+    }
+
+// -----------------------------------------------------------------------------
+// CWmDrmAgentData::Seek64
+// -----------------------------------------------------------------------------
+//
+TInt CWmDrmAgentData::Seek64(TSeek aMode, TInt64& aPos)
     {
     LOGFN( "CWmDrmAgentData::Seek" );
     return iFile.Seek(aMode, aPos);

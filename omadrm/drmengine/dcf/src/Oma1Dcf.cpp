@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2004 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -296,15 +296,16 @@ void COma1Dcf::ReadHeaderValuesL(void)
 TInt COma1Dcf::ReadHeaderL(void)
     {
     TInt r = KErrNone;
-    TInt pos = 0;
+    TInt64 pos = 0;
+  
     TUint8 v = 0;
     TPtr8 p(&v, 1, 1);
     TInt cidLength = 0;
     TInt mimeLength = 0;
     TInt fieldLength = 0;
     TBuf8<10> lengthFields;
-    TUint32 length;
-    TInt size;
+    TUint32 length;  
+    TInt64 size;
 
     iFile.Size(size);
     if (size<3)
@@ -371,9 +372,11 @@ TInt COma1Dcf::ReadHeaderL(void)
     iOffset = pos + fieldLength + iHeaderLength;
     if (iDataLength == 0)
         {
-        iDataLength = size - iOffset;
+        iDataLength = size;
+        iDataLength -= iOffset;
         }
-    iPlainTextLength = iDataLength - KDCFKeySize;
+    iPlainTextLength = iDataLength;
+    iPlainTextLength -= KDCFKeySize;
     iPlainTextLengthValid = EFalse;
 
     pos = pos + fieldLength;

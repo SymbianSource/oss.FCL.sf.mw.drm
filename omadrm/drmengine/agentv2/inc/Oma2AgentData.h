@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -80,11 +80,18 @@ namespace ContentAccess
         TInt GetAttributeSet( RAttributeSet& aAttributeSet );
         TInt GetStringAttribute( TInt aAttribute, TDes& aValue );
         TInt GetStringAttributeSet( RStringAttributeSet& aStringAttributeSet );
+        
 #ifdef ASYNC_READ
         void ReadCancel( TRequestStatus& aStatus );
         TInt Read( TInt aPos, TDes8& aDes, TInt aLength,
             TRequestStatus& aStatus );
+
+        TInt Read64( TInt64 aPos, TDes8& aDes, TInt aLength, TRequestStatus& aStatus );     
+        
 #endif
+
+        void DataSize64L(TInt64 &aSize);
+        TInt Seek64(TSeek aMode, TInt64& aPos);
 
     private:
 
@@ -110,14 +117,16 @@ namespace ContentAccess
         // Data
         CDcfCommon* iDcf;
         RFs iFs;
-        RFile iFile;
-        TInt iDataPosition;
+  
+        RFile64 iFile;
+        TInt64 iDataPosition;
+
         TInt iRightsStatus;
         RDRMRightsClient iRdb;
         TVirtualPathPtr iVirtualPath;
         CDcfCache* iCache;
-        TBool iGroupKeyUsed;
-        TInt iLastFileSize;
+        TBool iGroupKeyUsed;        
+        TInt64 iLastFileSize;
         HBufC* iUniqueId;
 
         };
